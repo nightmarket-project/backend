@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: item
+
+server:
+  port: 10020
