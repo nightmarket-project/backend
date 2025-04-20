@@ -1,4 +1,5 @@
 rootProject.name = 'nightmarket'
+include 'common'
 include 'item'
 project(':item').projectDir = file('domain/item')
 include 'order'
