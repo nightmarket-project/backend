@@ -1,0 +1,13 @@
+package store.nightmarket;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class NightMarketApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(NightMarketApplication.class, args);
+	}
+
+}
