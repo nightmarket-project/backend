@@ -1,1 +1,9 @@
 rootProject.name = 'nightmarket'
+include 'item'
+project(':item').projectDir = file('domain/item')
+include 'order'
+project(':order').projectDir = file('domain/order')
+include 'payment'
+project(':payment').projectDir = file('domain/payment')
+include 'delivery'
+project(':delivery').projectDir = file('domain/delivery')
