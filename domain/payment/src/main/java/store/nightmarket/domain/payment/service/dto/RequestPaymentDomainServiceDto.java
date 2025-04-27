@@ -14,8 +14,7 @@ public class RequestPaymentDomainServiceDto {
 	@Builder
 	public static class Input {
 
-		private final UserId userId;
-		private final List<Product> productList;
+		private final PaymentRecord paymentRecord;
 
 	}
 

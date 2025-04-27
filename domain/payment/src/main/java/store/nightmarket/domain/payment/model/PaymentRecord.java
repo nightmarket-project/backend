@@ -33,4 +33,9 @@ public class PaymentRecord extends BaseModel<PaymentRecordId> {
 		);
 	}
 
+	public void requestPay() {
+		detailPaymentRecordList.forEach(detailPaymentRecord ->
+			detailPaymentRecord.requestPay());
+	}
+
 }
