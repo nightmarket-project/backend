@@ -1,25 +1,21 @@
 package store.nightmarket.domain.payment.service.dto;
 
-import java.util.List;
-
 import lombok.Builder;
 import lombok.Getter;
 import store.nightmarket.domain.payment.model.PaymentRecord;
-import store.nightmarket.domain.payment.model.Product;
-import store.nightmarket.domain.payment.valueobject.UserId;
 
 public class RequestPaymentDomainServiceDto {
 
 	@Getter
 	@Builder
-	public static class Input {
+	public static class Command {
 
 		private final PaymentRecord paymentRecord;
 
 	}
 
 	@Builder
-	public static class Output {
+	public static class Event {
 
 		private final PaymentRecord paymentRecord;
 

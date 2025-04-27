@@ -9,15 +9,15 @@ import store.nightmarket.domain.payment.model.PaymentRecord;
 
 @Component
 public class RequestPaymentDomainService
-	implements BaseDomainService<Input, Output> {
+	implements BaseDomainService<Command, Event> {
 
 	@Override
-	public Output execute(Input input) {
+	public Event execute(Command input) {
 		PaymentRecord paymentRecord = input.getPaymentRecord();
 
 		paymentRecord.requestPay();
 
-		return Output.builder()
+		return Event.builder()
 			.paymentRecord(paymentRecord)
 			.build();
 	}
