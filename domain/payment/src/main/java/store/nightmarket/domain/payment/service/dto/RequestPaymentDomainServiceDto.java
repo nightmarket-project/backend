@@ -8,7 +8,7 @@ public class RequestPaymentDomainServiceDto {
 
 	@Getter
 	@Builder
-	public static class Command {
+	public static class Input {
 
 		private final PaymentRecord paymentRecord;
 
