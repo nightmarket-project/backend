@@ -50,35 +50,17 @@ subprojects {
     }
 }
 
-project(':item') {
-    dependencies {
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    }
-}
+def domain = [project(":item"), project(":order"), project(":payment"), project(":delivery")]
 
-project(':order') {
-    dependencies {
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+configure(domain) {
+    bootJar {
+        enabled = false
     }
-}
-
-project(':payment') {
     dependencies {
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    }
-}
-
-project(':delivery') {
-    dependencies {
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        compileOnly 'org.springframework.boot:spring-boot-starter'
     }
 }
 
@@ -90,5 +72,6 @@ project(':common') {
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        compileOnly 'org.springframework.boot:spring-boot-starter'
     }
 }
