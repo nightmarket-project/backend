@@ -50,7 +50,19 @@ subprojects {
     }
 }
 
-def domain = [project(":item"), project(":order"), project(":payment"), project(":delivery")]
+project(':common') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        compileOnly 'org.springframework.boot:spring-boot-starter'
+    }
+}
+
+def domain = [project(':item-core'), project(":order"), project(":payment"), project(":delivery")]
 
 configure(domain) {
     bootJar {
@@ -66,33 +78,9 @@ configure(domain) {
     }
 }
 
-project(':common') {
-    bootJar {
-        enabled = false
-    }
-    dependencies {
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-        compileOnly 'org.springframework.boot:spring-boot-starter'
-    }
-}
+def itemDomain = [project(":item"), project(":item-web")]
 
-project(':item-core') {
-    bootJar {
-        enabled = false
-    }
-    dependencies {
-        implementation project(':common')
-
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-        compileOnly 'org.springframework.boot:spring-boot-starter'
-    }
-}
-
-project(':item-web') {
+configure(itemDomain) {
     bootJar {
         enabled = false
     }
