@@ -9,3 +9,5 @@ include 'payment'
 project(':payment').projectDir = file('domain/payment')
 include 'delivery'
 project(':delivery').projectDir = file('domain/delivery')
+include 'item-web'
+project(':item-web').projectDir = file('domain/item-web')
