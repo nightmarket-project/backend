@@ -77,3 +77,17 @@ project(':common') {
         compileOnly 'org.springframework.boot:spring-boot-starter'
     }
 }
+
+project(':item-core') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':common')
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        compileOnly 'org.springframework.boot:spring-boot-starter'
+    }
+}
