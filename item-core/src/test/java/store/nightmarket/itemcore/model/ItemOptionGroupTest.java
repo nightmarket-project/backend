@@ -12,32 +12,64 @@ import static org.assertj.core.api.Assertions.*;
 
 class ItemOptionGroupTest {
 
-    private final Name NAME = new Name("색상");
-    private final List<ItemOption> ITEM_OPTIONS = List.of(
-            ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
-                    new Name("블랙"),
-                    new Price(BigDecimal.valueOf(1000)),
-                    new Quantity(BigDecimal.valueOf(10))
-            ),
-            ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
-                    new Name("화이트"),
-                    new Price(BigDecimal.valueOf(2000)),
-                    new Quantity(BigDecimal.valueOf(20))
-            )
-    );
-
     @Test
-    @DisplayName("DetailItemOption은 id, 이름, 종류로 생성된다")
-    void newInstanceDetailItemOptionSuccessfully() {
-        ItemOptionGroup option = newInstanceDetailItemOption();
+    @DisplayName("ItemOptionGroup 성공적으로 객체가 생성된다")
+    void newInstanceItemOptionGroupSuccessfully() {
+        ItemOptionGroup option = newInstanceItemOptionGroup();
 
         assertThat(option).isNotNull();
         assertThat(option).isInstanceOf(ItemOptionGroup.class);
     }
 
-    private ItemOptionGroup newInstanceDetailItemOption() {
+    @Test
+    @DisplayName("ItemOptionGroup의 모든 itemOption이 수량이 0보다 크기 때문에 구매 가능하다.")
+    void isAvailableToBuySuccessfully() {
+        ItemOptionGroup option = newInstanceItemOptionGroup();
+        assertThat(option.isAvailableToBuy()).isTrue();
+    }
+
+    @Test
+    @DisplayName("ItemOptionGroup의 어떤 itemOption이 수량이 0이기 때문에 구매 불가하다.")
+    void isNotAvailableToBuyFailure() {
+        ItemOptionGroup option = newInstanceItemOptionGroupWithZeroQuantity();
+        assertThat(option.isAvailableToBuy()).isFalse();
+    }
+
+    private ItemOptionGroup newInstanceItemOptionGroup() {
         return ItemOptionGroup.newInstance(
-                new ItemOptionGroupId(UUID.randomUUID()), NAME, ITEM_OPTIONS
+                new ItemOptionGroupId(UUID.randomUUID()),
+                new Name("색상"),
+                List.of(
+                        ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
+                                new Name("블랙"),
+                                new Price(BigDecimal.valueOf(1000)),
+                                new Quantity(BigDecimal.valueOf(10))
+                        ),
+                        ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
+                                new Name("화이트"),
+                                new Price(BigDecimal.valueOf(2000)),
+                                new Quantity(BigDecimal.valueOf(20))
+                        )
+                )
+        );
+    }
+
+    private ItemOptionGroup newInstanceItemOptionGroupWithZeroQuantity() {
+        return ItemOptionGroup.newInstance(
+                new ItemOptionGroupId(UUID.randomUUID()),
+                new Name("색상"),
+                List.of(
+                        ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
+                                new Name("블랙"),
+                                new Price(BigDecimal.valueOf(1000)),
+                                new Quantity(BigDecimal.valueOf(10))
+                        ),
+                        ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
+                                new Name("화이트"),
+                                new Price(BigDecimal.valueOf(2000)),
+                                new Quantity(BigDecimal.ZERO)
+                        )
+                )
         );
     }
 }

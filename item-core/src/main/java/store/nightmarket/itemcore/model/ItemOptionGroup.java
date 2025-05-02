@@ -28,4 +28,9 @@ public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
     ) {
         return new ItemOptionGroup(id, name, itemOptions);
     }
+
+    public boolean isAvailableToBuy() {
+        return itemOptions.stream()
+                .allMatch(ItemOption::isAvailableToBuy);
+    }
 }
