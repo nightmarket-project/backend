@@ -32,4 +32,9 @@ public class ItemOptionCombination extends BaseModel<ItemOptionCombinationId> {
         );
     }
 
+    public boolean isAvailableToBuy() {
+        return itemOptionGroups.stream()
+                .allMatch(ItemOptionGroup::isAvailableToBuy);
+    }
+
 }
