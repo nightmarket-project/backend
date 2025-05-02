@@ -1,7 +1,6 @@
 package store.nightmarket.itemcore.valueobject;
 
 import store.nightmarket.itemcore.exception.PriceException;
-import store.nightmarket.itemcore.exception.QuantityException;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -16,11 +15,11 @@ public class Price {
     }
 
     private void validate(BigDecimal amount) {
-        if(amount == null) {
+        if (amount == null) {
             throw new PriceException("Amount cannot be null");
         }
 
-        if(amount.compareTo(BigDecimal.ZERO) <= 0) {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new PriceException("The price must be greater than zero");
         }
     }
@@ -40,9 +39,9 @@ public class Price {
 
     @Override
     public boolean equals(Object obj) {
-        if(this == obj) return true;
-        if(obj == null || getClass() != obj.getClass()) return false;
-        Price other = (Price)obj;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Price other = (Price) obj;
         return Objects.equals(amount, other.amount);
     }
 }
