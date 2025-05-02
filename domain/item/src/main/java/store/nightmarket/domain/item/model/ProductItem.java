@@ -6,13 +6,11 @@ import store.nightmarket.itemcore.model.ItemOptionCombination;
 import store.nightmarket.itemcore.model.ItemOptionGroup;
 import store.nightmarket.itemcore.valueobject.*;
 
-import java.util.List;
-
 public class ProductItem extends BaseModel<ItemId> {
 
     private Name name;
     private ItemOptionCombination basicOption;
-    private ItemOptionGroup AdditionalOption;
+    private ItemOptionGroup additionalOption;
     private RegistrantId registrantId;
 
 
@@ -26,7 +24,7 @@ public class ProductItem extends BaseModel<ItemId> {
         super(id);
         this.name = name;
         this.basicOption = basicOption;
-        AdditionalOption = additionalOption;
+        this.additionalOption = additionalOption;
         this.registrantId = registrantId;
     }
 
