@@ -29,7 +29,6 @@ class ProductItemTest {
                 new ItemId(UUID.randomUUID()),
                 new Name("user"),
                 new Price(BigDecimal.valueOf(10000)),
-                new Quantity(BigDecimal.valueOf(1000)),
                 newBasicOption(),
                 newAdditionOption(),
                 new RegistrantId(UUID.randomUUID())

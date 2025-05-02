@@ -9,7 +9,6 @@ public class ProductItem extends BaseModel<ItemId> {
 
     private Name name;
     private Price price;
-    private Quantity quantity;
     private ItemOptionCombination basicOption;
     private ItemOptionGroup AdditionalOption;
     private RegistrantId registrantId;
@@ -19,7 +18,6 @@ public class ProductItem extends BaseModel<ItemId> {
             ItemId id,
             Name name,
             Price price,
-            Quantity quantity,
             ItemOptionCombination basicOption,
             ItemOptionGroup additionalOption,
             RegistrantId registrantId
@@ -27,7 +25,6 @@ public class ProductItem extends BaseModel<ItemId> {
         super(id);
         this.name = name;
         this.price = price;
-        this.quantity = quantity;
         this.basicOption = basicOption;
         AdditionalOption = additionalOption;
         this.registrantId = registrantId;
@@ -37,7 +34,6 @@ public class ProductItem extends BaseModel<ItemId> {
             ItemId id,
             Name name,
             Price price,
-            Quantity quantity,
             ItemOptionCombination basicOption,
             ItemOptionGroup additionalOption,
             RegistrantId registrantId
@@ -46,7 +42,6 @@ public class ProductItem extends BaseModel<ItemId> {
                 id,
                 name,
                 price,
-                quantity,
                 basicOption,
                 additionalOption,
                 registrantId
