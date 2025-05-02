@@ -43,7 +43,7 @@ class QuantityTest {
     @Test
     @DisplayName("Quantity은 0보다 작은 값이 안된다")
     void QuantityLessZeroValidationTest() {
-        assertThatThrownBy(() -> new Quantity(BigDecimal.ZERO)).isInstanceOf(QuantityException.class);
+        assertThatThrownBy(() -> new Quantity(BigDecimal.valueOf(-1))).isInstanceOf(QuantityException.class);
     }
 
     @Test
@@ -73,5 +73,13 @@ class QuantityTest {
         Quantity result = quantity1.subtract(quantity2);
 
         assertThat(result).isEqualTo(new Quantity(BigDecimal.valueOf(500)));
+    }
+
+    @Test
+    @DisplayName("Quantity의 value가 0이면 참이다.")
+    void isZeroTest() {
+        Quantity quantity = new Quantity(BigDecimal.ZERO);
+        boolean result = quantity.isZero();
+        assertThat(result).isTrue();
     }
 }

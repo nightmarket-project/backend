@@ -19,8 +19,8 @@ public class Quantity {
         if (value == null) {
             throw new QuantityException("Quantity cannot be null");
         }
-        if (value.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new QuantityException("Quantity must be positive");
+        if (value.compareTo(BigDecimal.ZERO) < 0) {
+            throw new QuantityException("Quantity must be positive, Zero");
         }
         if (value.compareTo(MAX_QUANTITY) >= 0) {
             throw new QuantityException("Quantity must be less than to " + MAX_QUANTITY);
@@ -34,6 +34,10 @@ public class Quantity {
 
     public Quantity subtract(Quantity other) {
         return new Quantity(value.subtract(other.value));
+    }
+
+    public boolean isZero() {
+        return value.compareTo(BigDecimal.ZERO) == 0;
     }
 
     @Override
