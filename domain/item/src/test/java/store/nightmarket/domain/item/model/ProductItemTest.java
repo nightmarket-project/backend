@@ -28,7 +28,6 @@ class ProductItemTest {
         return ProductItem.newInstance(
                 new ItemId(UUID.randomUUID()),
                 new Name("user"),
-                new Price(BigDecimal.valueOf(10000)),
                 newBasicOption(),
                 newAdditionOption(),
                 new RegistrantId(UUID.randomUUID())

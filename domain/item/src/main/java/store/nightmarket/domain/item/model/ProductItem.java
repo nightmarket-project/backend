@@ -1,14 +1,16 @@
 package store.nightmarket.domain.item.model;
 
 import store.nightmarket.common.domain.model.BaseModel;
+import store.nightmarket.itemcore.model.ItemOption;
 import store.nightmarket.itemcore.model.ItemOptionCombination;
 import store.nightmarket.itemcore.model.ItemOptionGroup;
 import store.nightmarket.itemcore.valueobject.*;
 
+import java.util.List;
+
 public class ProductItem extends BaseModel<ItemId> {
 
     private Name name;
-    private Price price;
     private ItemOptionCombination basicOption;
     private ItemOptionGroup AdditionalOption;
     private RegistrantId registrantId;
@@ -17,14 +19,12 @@ public class ProductItem extends BaseModel<ItemId> {
     private ProductItem(
             ItemId id,
             Name name,
-            Price price,
             ItemOptionCombination basicOption,
             ItemOptionGroup additionalOption,
             RegistrantId registrantId
     ) {
         super(id);
         this.name = name;
-        this.price = price;
         this.basicOption = basicOption;
         AdditionalOption = additionalOption;
         this.registrantId = registrantId;
@@ -33,7 +33,6 @@ public class ProductItem extends BaseModel<ItemId> {
     public static ProductItem newInstance(
             ItemId id,
             Name name,
-            Price price,
             ItemOptionCombination basicOption,
             ItemOptionGroup additionalOption,
             RegistrantId registrantId
@@ -41,10 +40,15 @@ public class ProductItem extends BaseModel<ItemId> {
         return new ProductItem(
                 id,
                 name,
-                price,
                 basicOption,
                 additionalOption,
                 registrantId
         );
+    }
+
+    public void requestPurchase(
+            List<ItemOption> options
+    ) {
+
     }
 }
