@@ -16,7 +16,13 @@ public class ItemOption extends BaseModel<ItemOptionId> {
     private Quantity quantity;
     private OptionState state;
 
-    private ItemOption(ItemOptionId id, Name name, Price price, Quantity quantity, OptionState state) {
+    private ItemOption(
+            ItemOptionId id,
+            Name name,
+            Price price,
+            Quantity quantity,
+            OptionState state
+    ) {
         super(id);
         this.name = name;
         this.price = price;
@@ -24,7 +30,13 @@ public class ItemOption extends BaseModel<ItemOptionId> {
         this.state = state;
     }
 
-    public static ItemOption newInstance(ItemOptionId id, Name name, Price price, Quantity quantity, OptionState state) {
+    public static ItemOption newInstance(
+            ItemOptionId id,
+            Name name,
+            Price price,
+            Quantity quantity,
+            OptionState state
+    ) {
         return new ItemOption(id, name, price, quantity, state);
     }
 
