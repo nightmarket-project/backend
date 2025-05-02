@@ -18,7 +18,6 @@ class ItemOptionTest {
     private final Name NAME = new Name("색상:블랙");
     private final Price PRICE = new Price(new BigDecimal("1000"));
     private final Quantity QUANTITY = new Quantity(new BigDecimal("100"));
-    private final OptionState STATE = OptionState.BASIC;
 
     @Test
     @DisplayName("ItemOption은 이름, 가격, 수량, 상태로 생성된다")
@@ -29,12 +28,11 @@ class ItemOptionTest {
         assertThat(itemOption.getName()).isEqualTo(NAME);
         assertThat(itemOption.getPrice()).isEqualTo(PRICE);
         assertThat(itemOption.getQuantity()).isEqualTo(QUANTITY);
-        assertThat(itemOption.getState()).isEqualTo(STATE);
     }
 
     private ItemOption newInstanceItemOption() {
         return ItemOption.newInstance(
-                new ItemOptionId(UUID.randomUUID()), NAME, PRICE, QUANTITY, STATE
+                new ItemOptionId(UUID.randomUUID()), NAME, PRICE, QUANTITY
         );
     }
 
