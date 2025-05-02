@@ -24,10 +24,10 @@ public class CancelDetailOrderDomainServiceTest {
         DetailOrderRecordId id1 = new DetailOrderRecordId(UUID.randomUUID());
         DetailOrderRecordId id2 = new DetailOrderRecordId(UUID.randomUUID());
         OrderRecord orderRecord = orderRecord(id1, id2);
-        Input input = Input.builder().
-                            orderRecord(orderRecord).
-                            detailOrderRecordId(id1).
-                            build();
+        Input input = Input.builder()
+                        .orderRecord(orderRecord)
+                        .detailOrderRecordId(id1)
+                        .build();
 
         CancelDetailOrderDomainService service = new CancelDetailOrderDomainService();
 

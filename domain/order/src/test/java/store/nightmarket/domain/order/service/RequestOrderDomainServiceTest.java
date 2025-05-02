@@ -22,9 +22,9 @@ public class RequestOrderDomainServiceTest {
     void WhenRequestOrderThenAllDetailOrderStateChangesToSubmitted() {
         // given
         OrderRecord orderRecord = orderRecord();
-        Input input = Input.builder().
-                            orderRecord(orderRecord).
-                            build();
+        Input input = Input.builder()
+                        .orderRecord(orderRecord)
+                        .build();
 
         RequestOrderDomainService service = new RequestOrderDomainService();
 

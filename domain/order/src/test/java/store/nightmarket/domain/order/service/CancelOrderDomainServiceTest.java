@@ -22,9 +22,9 @@ public class CancelOrderDomainServiceTest {
     void WhenCancelOrderThenAllDetailOrderStateChangesToCanceled() {
         // given
         OrderRecord orderRecord = orderRecord();
-        Input input = Input.builder().
-                            orderRecord(orderRecord).
-                            build();
+        Input input = Input.builder()
+                        .orderRecord(orderRecord)
+                        .build();
 
         CancelOrderDomainService service = new CancelOrderDomainService();
 
