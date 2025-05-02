@@ -8,7 +8,7 @@ import java.util.Objects;
 @Getter
 public class Name {
 
-    private String value;
+    private final String value;
 
     public Name(String value) {
         validate(value);
