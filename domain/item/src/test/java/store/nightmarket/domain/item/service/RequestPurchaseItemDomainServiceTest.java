@@ -4,18 +4,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.exception.ProductItemException;
 import store.nightmarket.domain.item.model.ProductItem;
+import store.nightmarket.itemcore.model.ItemOption;
 import store.nightmarket.itemcore.model.ItemOptionCombination;
 import store.nightmarket.itemcore.model.ItemOptionGroup;
-import store.nightmarket.itemcore.valueobject.ItemId;
-import store.nightmarket.itemcore.valueobject.Name;
-import store.nightmarket.itemcore.valueobject.RegistrantId;
+import store.nightmarket.itemcore.valueobject.*;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static store.nightmarket.domain.item.service.dto.RequestPurchaseItemDomainServiceDto.Event;
 import static store.nightmarket.domain.item.service.dto.RequestPurchaseItemDomainServiceDto.Input;
 
@@ -28,19 +27,7 @@ class RequestPurchaseItemDomainServiceTest {
     @DisplayName("정상적인 구매 요청 시 Event를 반환한다.")
     void shouldReturnEvent_WhenPurchaseRequestIsValid() {
 
-        ItemOptionCombination mockBasicOption = mock(ItemOptionCombination.class);
-        ItemOptionGroup mockAdditionalOption = mock(ItemOptionGroup.class);
-
-        when(mockBasicOption.isAvailableToBuy()).thenReturn(true);
-        when(mockAdditionalOption.isAvailableToBuy()).thenReturn(true);
-
-        ProductItem productItem = ProductItem.newInstance(
-                new ItemId(UUID.randomUUID()),
-                new Name("테스트상품"),
-                mockBasicOption,
-                mockAdditionalOption,
-                new RegistrantId(UUID.randomUUID())
-        );
+        ProductItem productItem = newProductItem();
 
         Input input = Input.builder()
                 .productItem(productItem).build();
@@ -54,19 +41,7 @@ class RequestPurchaseItemDomainServiceTest {
     @DisplayName("구매 수량이 부족할 경우 예외가 발생합니다.")
     void shouldThrowException_WhenPurchaseQuantityIsNotAvailableToBuy() {
 
-        ItemOptionCombination mockBasicOption = mock(ItemOptionCombination.class);
-        ItemOptionGroup mockAdditionalOption = mock(ItemOptionGroup.class);
-
-        when(mockBasicOption.isAvailableToBuy()).thenReturn(true);
-        when(mockAdditionalOption.isAvailableToBuy()).thenReturn(false);
-
-        ProductItem productItem = ProductItem.newInstance(
-                new ItemId(UUID.randomUUID()),
-                new Name("item-2"),
-                mockBasicOption,
-                mockAdditionalOption,
-                new RegistrantId(UUID.randomUUID())
-        );
+        ProductItem productItem = newProductItemWithZeroQuantity();
 
         Input input = Input.builder()
                 .productItem(productItem)
@@ -75,4 +50,111 @@ class RequestPurchaseItemDomainServiceTest {
         assertThatThrownBy(() -> service.execute(input))
                 .isInstanceOf(ProductItemException.class);
     }
+
+    private ProductItem newProductItem() {
+        return ProductItem.newInstance(
+                new ItemId(UUID.randomUUID()),
+                new Name("user"),
+                newBasicOption(),
+                newAdditionOption(),
+                new RegistrantId(UUID.randomUUID())
+        );
+    }
+
+    private ProductItem newProductItemWithZeroQuantity() {
+        return ProductItem.newInstance(
+                new ItemId(UUID.randomUUID()),
+                new Name("user"),
+                newBasicOption(),
+                newAdditionOptionWithZeroQuantity(),
+                new RegistrantId(UUID.randomUUID())
+        );
+    }
+
+    private ItemOptionCombination newBasicOption() {
+        return ItemOptionCombination.newInstance(
+                new ItemOptionCombinationId(UUID.randomUUID()),
+                new ItemId(UUID.randomUUID()),
+                List.of(
+                        ItemOptionGroup.newInstance(
+                                new ItemOptionGroupId(UUID.randomUUID()),
+                                new Name("색상"),
+                                colorOptionList()),
+                        ItemOptionGroup.newInstance(
+                                new ItemOptionGroupId(UUID.randomUUID()),
+                                new Name("사이즈"),
+                                sizeOptionList()
+                        )
+                )
+        );
+    }
+
+    private ItemOptionGroup newAdditionOption() {
+        return ItemOptionGroup.newInstance(
+                new ItemOptionGroupId(UUID.randomUUID()),
+                new Name("추가 상품"),
+                List.of(
+                        ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
+                                new Name("양말"),
+                                new Price(BigDecimal.valueOf(5000)),
+                                new Quantity(BigDecimal.valueOf(10))
+                        ),
+                        ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
+                                new Name("모자"),
+                                new Price(BigDecimal.valueOf(6000)),
+                                new Quantity(BigDecimal.valueOf(10))
+                        )
+                )
+        );
+    }
+
+    private ItemOptionGroup newAdditionOptionWithZeroQuantity() {
+        return ItemOptionGroup.newInstance(
+                new ItemOptionGroupId(UUID.randomUUID()),
+                new Name("추가 상품"),
+                List.of(
+                        ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
+                                new Name("양말"),
+                                new Price(BigDecimal.valueOf(5000)),
+                                new Quantity(BigDecimal.valueOf(10))
+                        ),
+                        ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
+                                new Name("모자"),
+                                new Price(BigDecimal.valueOf(6000)),
+                                new Quantity(BigDecimal.ZERO)
+                        )
+                )
+        );
+    }
+
+    private List<ItemOption> colorOptionList() {
+        return List.of(
+                ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
+                        new Name("블랙"),
+                        new Price(BigDecimal.valueOf(1000)),
+                        new Quantity(BigDecimal.valueOf(10))
+                ),
+                ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
+                        new Name("화이트"),
+                        new Price(BigDecimal.valueOf(2000)),
+                        new Quantity(BigDecimal.valueOf(20))
+                )
+        );
+    }
+
+    private List<ItemOption> sizeOptionList() {
+        return List.of(
+                ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
+                        new Name("100"),
+                        new Price(BigDecimal.valueOf(1000)),
+                        new Quantity(BigDecimal.valueOf(10))
+                ),
+                ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
+                        new Name("105"),
+                        new Price(BigDecimal.valueOf(1000)),
+                        new Quantity(BigDecimal.valueOf(20))
+                )
+        );
+    }
+
 }
