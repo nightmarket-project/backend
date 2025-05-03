@@ -21,6 +21,7 @@ class ReviewTest {
                 new ReviewId(UUID.randomUUID()),
                 new RegistrantId(UUID.randomUUID()),
                 mock(PostContent.class),
+                4,
                 List.of(mock(Reply.class))
         );
 
