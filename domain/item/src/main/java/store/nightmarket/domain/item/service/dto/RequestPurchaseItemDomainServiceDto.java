@@ -10,6 +10,7 @@ public class RequestPurchaseItemDomainServiceDto {
     @Builder
     public static class Input {
         private final ProductItem productItem;
+        private final ProductItem buyProductItem;
     }
 
     @Getter

@@ -2,6 +2,7 @@ package store.nightmarket.itemcore.model;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import store.nightmarket.itemcore.exception.ItemOptionException;
 import store.nightmarket.itemcore.valueobject.*;
 
 import java.math.BigDecimal;
@@ -22,17 +23,23 @@ class ItemOptionGroupTest {
     }
 
     @Test
-    @DisplayName("ItemOptionGroup의 모든 itemOption이 수량이 0보다 크면 구매 가능하다.")
-    void shouldReturnTrue_WhenItemOptionQuantityIsGreaterThanZero() {
-        ItemOptionGroup option = newInstanceItemOptionGroup();
-        assertThat(option.isAvailableToBuy()).isTrue();
+    @DisplayName("ItemOptionGroup의 모든 옵션 수량이 다른 ItemOptionGroup 옵션 수량보다 크거나 같으면 구매 가능하다.")
+    void shouldNotThrowException_WhenAllOptionIsGreaterThanOrEqualOtherOption() {
+        ItemOptionGroup group = newInstanceItemOptionGroup();
+        ItemOptionGroup otherGroup = newInstanceItemOptionGroup();
+
+        assertThatCode(()-> group.isAvailableToBuy(otherGroup))
+                .doesNotThrowAnyException();
     }
 
     @Test
-    @DisplayName("ItemOptionGroup의 어떤 itemOption이 수량이 0이면 구매 불가하다.")
-    void shouldReturnFalse_WhenAnyItemOptionHasZeroQuantity() {
-        ItemOptionGroup option = newInstanceItemOptionGroupWithZeroQuantity();
-        assertThat(option.isAvailableToBuy()).isFalse();
+    @DisplayName("ItemOptionGroup의 어떤 옵션 수량이 다른 ItemOptionGroup 옵션 수량보다 작으면 구매 불가능하다.")
+    void shouldThrowException_WhenAnyItemOptionIsLessThanOtherOption() {
+        ItemOptionGroup group = newInstanceItemOptionGroupWithZeroQuantity();
+        ItemOptionGroup otherGroup = newInstanceItemOptionGroup();
+
+        assertThatThrownBy(()-> group.isAvailableToBuy(otherGroup))
+                .isInstanceOf(ItemOptionException.class);
     }
 
     private ItemOptionGroup newInstanceItemOptionGroup() {

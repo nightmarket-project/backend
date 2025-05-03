@@ -12,11 +12,11 @@ public class RequestPurchaseItemDomainService
     @Override
     public Event execute(Input input) {
         ProductItem productItem = input.getProductItem();
-
-        productItem.isAvailableToBuy();
+        ProductItem buyProductITem = input.getBuyProductItem();
+        productItem.isAvailableToBuy(buyProductITem);
 
         return Event.builder()
-                .productItem(productItem)
+                .productItem(buyProductITem)
                 .build();
     }
 }

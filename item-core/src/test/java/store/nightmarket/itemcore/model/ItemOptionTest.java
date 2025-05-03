@@ -2,6 +2,7 @@ package store.nightmarket.itemcore.model;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import store.nightmarket.itemcore.exception.ItemOptionException;
 import store.nightmarket.itemcore.valueobject.ItemOptionId;
 import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.Price;
@@ -10,7 +11,7 @@ import store.nightmarket.itemcore.valueobject.Quantity;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class ItemOptionTest {
 
@@ -29,21 +30,13 @@ class ItemOptionTest {
     }
 
     @Test
-    @DisplayName("수량이 0보다 크면 ItemOption을 구매할 수 있다.")
-    void shouldReturnTrue_WhenQuantityIsGreaterThanZero() {
-        ItemOption itemOption = newInstanceItemOption();
-
-        boolean result = itemOption.isAvailableToBuy();
-        assertThat(result).isTrue();
-    }
-
-    @Test
-    @DisplayName("수량이 0이면 ItemOption을 구매할 수 없다.")
-    void shouldReturnFalse_WhenQuantityIsZero() {
+    @DisplayName("ItemOption이 구매하고 싶은 ItemOption Quantity 보다 작으면 구매할 수 없다.")
+    void shouldThrowException_WhenOptionIsLessThanOtherOption() {
         ItemOption itemOption = newInstanceItemOptionWithZeroQuantity();
+        ItemOption buyItemOption = newInstanceItemOption();
 
-        boolean result = itemOption.isAvailableToBuy();
-        assertThat(result).isFalse();
+        assertThatThrownBy(() -> itemOption.isAvailableToBuy(buyItemOption))
+                .isInstanceOf(ItemOptionException.class);
     }
 
     private ItemOption newInstanceItemOption() {

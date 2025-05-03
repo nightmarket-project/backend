@@ -30,7 +30,8 @@ class ProductItemTest {
     @DisplayName("ProductItem 어떤 옵션이 구매 불가능하다면 예외 발생")
     void shouldThrowException_WhenAnyProductItemOptionIsNotAvailableToBuy() {
         ProductItem productItem = newProductItemWithZeroQuantity();
-        assertThatThrownBy(productItem::isAvailableToBuy).isInstanceOf(ProductItemException.class);
+        ProductItem otherProductItem = newProductItem();
+        assertThatThrownBy(() -> productItem.isAvailableToBuy(otherProductItem)).isInstanceOf(ProductItemException.class);
     }
 
     private ProductItem newProductItem() {

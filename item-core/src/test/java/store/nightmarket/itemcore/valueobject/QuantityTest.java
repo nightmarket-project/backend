@@ -76,10 +76,15 @@ class QuantityTest {
     }
 
     @Test
-    @DisplayName("Quantity의 value가 0이면 참이다.")
-    void ShoudReturnTrue_WhenValueIsZero() {
-        Quantity quantity = new Quantity(BigDecimal.ZERO);
-        boolean result = quantity.isZero();
+    @DisplayName("Quantity의 value가 다른 Quantity의 value보다 크거나 같으면 참이다.")
+    void ShoudReturnTrue_WhenhThisQuantityIsGreaterThanOrEqualToOtherQuantity() {
+        Quantity quantity1 = new Quantity(BigDecimal.TEN);
+        Quantity quantity2 = new Quantity(BigDecimal.ZERO);
+        Quantity quantity3 = new Quantity(BigDecimal.TEN);
+        boolean result = quantity1.isGreaterThanOrEqualTo(quantity2);
+        boolean result2 = quantity1.isGreaterThanOrEqualTo(quantity3);
+
         assertThat(result).isTrue();
+        assertThat(result2).isTrue();
     }
 }

@@ -36,8 +36,8 @@ public class Quantity {
         return new Quantity(value.subtract(other.value));
     }
 
-    public boolean isZero() {
-        return value.compareTo(BigDecimal.ZERO) == 0;
+    public boolean isGreaterThanOrEqualTo(Quantity other) {
+        return value.compareTo(other.value) >= 0;
     }
 
     @Override

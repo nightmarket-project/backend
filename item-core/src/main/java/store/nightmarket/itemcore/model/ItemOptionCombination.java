@@ -6,6 +6,7 @@ import store.nightmarket.itemcore.valueobject.ItemOptionCombinationId;
 
 import java.util.List;
 
+
 public class ItemOptionCombination extends BaseModel<ItemOptionCombinationId> {
 
     private ItemId itemId;
@@ -32,9 +33,13 @@ public class ItemOptionCombination extends BaseModel<ItemOptionCombinationId> {
         );
     }
 
-    public boolean isAvailableToBuy() {
-        return itemOptionGroups.stream()
-                .allMatch(ItemOptionGroup::isAvailableToBuy);
+    public void isAvailableToBuy(ItemOptionCombination buyCombination) {
+        for (int i = 0; i < itemOptionGroups.size(); i++) {
+            ItemOptionGroup itemOptionGroup = itemOptionGroups.get(i);
+            ItemOptionGroup itemOptionGroupUserBuy = buyCombination.itemOptionGroups.get(i);
+
+            itemOptionGroup.isAvailableToBuy(itemOptionGroupUserBuy);
+        }
     }
 
 }

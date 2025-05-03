@@ -2,13 +2,14 @@ package store.nightmarket.itemcore.model;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import store.nightmarket.itemcore.exception.ItemOptionException;
 import store.nightmarket.itemcore.valueobject.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class ItemOptionCombinationTest {
 
@@ -22,17 +23,24 @@ class ItemOptionCombinationTest {
     }
 
     @Test
-    @DisplayName("ItemOptionCombination 모든 itemOption 수량이 0보다 크면 구매 가능하다.")
-    void shouldReturnTrue_WhenItemOptionQuantityIsGreaterThanZero() {
-        ItemOptionCombination option = newItemOptionCombination();
-        assertThat(option.isAvailableToBuy()).isTrue();
+    @DisplayName("ItemOptionCombination의 모든 수량이 다른 ItemOptionCombination 보다 크거나 같으면 구매 가능하다.")
+    void shouldNotThrowException_WhenAllOptionQuantityIsGreaterThanOrOtherOptionQuantity() {
+        ItemOptionCombination combination = newItemOptionCombination();
+        ItemOptionCombination otherCombination = newItemOptionCombinationWithZeroQuantity();
+
+        assertThatCode(()->combination.isAvailableToBuy(otherCombination))
+                .doesNotThrowAnyException();
     }
 
     @Test
-    @DisplayName("ItemOptionCombination 어떤 itemOption 수량이 0이면 구매 불가하다.")
-    void shouldReturnFalse_WhenAnyItemOptionHasZeroQuantity() {
-        ItemOptionCombination option = newItemOptionCombinationWithZeroQuantity();
-        assertThat(option.isAvailableToBuy()).isFalse();
+    @DisplayName("ItemOptionCombination 어떤 itemOption 수량이 다른 ItemOptionCombination의 옵션보다 작으면 구매 불가하다.")
+    void shouldThrowException_WhenAnyOptionQuantityIsLessThanOtherOptionQuantity() {
+        ItemOptionCombination combination = newItemOptionCombinationWithZeroQuantity();
+        ItemOptionCombination otherCombination = newItemOptionCombination();
+
+        assertThatThrownBy(()->combination.isAvailableToBuy(otherCombination))
+                .isInstanceOf(ItemOptionException.class);
+
     }
 
     private ItemOptionCombination newItemOptionCombination() {
