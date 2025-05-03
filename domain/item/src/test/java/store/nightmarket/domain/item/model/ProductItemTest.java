@@ -2,6 +2,7 @@ package store.nightmarket.domain.item.model;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import store.nightmarket.domain.item.exception.ProductItemException;
 import store.nightmarket.itemcore.model.ItemOption;
 import store.nightmarket.itemcore.model.ItemOptionCombination;
 import store.nightmarket.itemcore.model.ItemOptionGroup;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ProductItemTest {
 
@@ -24,12 +26,29 @@ class ProductItemTest {
         assertThat(productItem).isInstanceOf(ProductItem.class);
     }
 
+    @Test
+    @DisplayName("ProductItem 어떤 옵션이 구매 불가능하다면 requestPurchase 예외 발생")
+    void requestPurchaseProductTest() {
+        ProductItem productItem = newProductItemWithZeroQuantity();
+        assertThatThrownBy(productItem::requestPurchase).isInstanceOf(ProductItemException.class);
+    }
+
     private ProductItem newProductItem() {
         return ProductItem.newInstance(
                 new ItemId(UUID.randomUUID()),
                 new Name("user"),
                 newBasicOption(),
                 newAdditionOption(),
+                new RegistrantId(UUID.randomUUID())
+        );
+    }
+
+    private ProductItem newProductItemWithZeroQuantity() {
+        return ProductItem.newInstance(
+                new ItemId(UUID.randomUUID()),
+                new Name("user"),
+                newBasicOption(),
+                newAdditionOptionWithZeroQuantity(),
                 new RegistrantId(UUID.randomUUID())
         );
     }
@@ -71,6 +90,25 @@ class ProductItemTest {
         );
     }
 
+    private ItemOptionGroup newAdditionOptionWithZeroQuantity() {
+        return ItemOptionGroup.newInstance(
+                new ItemOptionGroupId(UUID.randomUUID()),
+                new Name("추가 상품"),
+                List.of(
+                        ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
+                                new Name("양말"),
+                                new Price(BigDecimal.valueOf(5000)),
+                                new Quantity(BigDecimal.valueOf(10))
+                        ),
+                        ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
+                                new Name("모자"),
+                                new Price(BigDecimal.valueOf(6000)),
+                                new Quantity(BigDecimal.ZERO)
+                        )
+                )
+        );
+    }
+
     private List<ItemOption> colorOptionList() {
         return List.of(
                 ItemOption.newInstance(new ItemOptionId(UUID.randomUUID()),
@@ -100,6 +138,5 @@ class ProductItemTest {
                 )
         );
     }
-
 
 }

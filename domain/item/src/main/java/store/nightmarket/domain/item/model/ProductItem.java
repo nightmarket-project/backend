@@ -1,7 +1,7 @@
 package store.nightmarket.domain.item.model;
 
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemcore.model.ItemOption;
+import store.nightmarket.domain.item.exception.ProductItemException;
 import store.nightmarket.itemcore.model.ItemOptionCombination;
 import store.nightmarket.itemcore.model.ItemOptionGroup;
 import store.nightmarket.itemcore.valueobject.*;
@@ -44,9 +44,10 @@ public class ProductItem extends BaseModel<ItemId> {
         );
     }
 
-    public void requestPurchase(
-            List<ItemOption> options
-    ) {
-
+    public void requestPurchase() {
+        if(!basicOption.isAvailableToBuy()
+                || !additionalOption.isAvailableToBuy()) {
+            throw new ProductItemException("You cannot place a purchase request because there is no purchase quantity.");
+        }
     }
 }
