@@ -15,7 +15,7 @@ class PostContentTest {
 
     @Test
     @DisplayName("PostContent 생성 테스트 ")
-    void createPostContentTest() {
+    void shouldCreatePostContent_Successfully() {
         PostContent postContent = newInstance("hello", 2);
 
         assertThat(postContent).isNotNull();
@@ -23,27 +23,27 @@ class PostContentTest {
     }
 
     @Test
-    @DisplayName("PostContent text가 빈 문자열이면 예외 발생")
-    void emptyTextPostContentTest() {
+    @DisplayName("PostContent text가 빈 문자열을 가지면 예외 발생한다.")
+    void shouldThrowException_WhenTextIsBlank() {
         assertThatThrownBy(() -> newInstance("", 2)).isInstanceOf(ItemWebException.class);
     }
 
     @Test
     @DisplayName("PostContent text 최대 문자 길이보다 크면 예외 발생")
-    void maxLengthTextPostContentTest() {
+    void shouldThrowException_WhenTextIsBiggerThanMaxLength() {
         String text = "a".repeat(256);
         assertThatThrownBy(() -> newInstance(text, 2)).isInstanceOf(ItemWebException.class);
     }
 
     @Test
     @DisplayName("PostContent Image 최대 개수보다 크면 예외 발생")
-    void maxSizeImagePostContentTest() {
+    void shouldThrowException_WhenImageQuantityIsBiggerThanMaxQuantity() {
         assertThatThrownBy(() -> newInstance("hello", 11)).isInstanceOf(ItemWebException.class);
     }
 
     @Test
-    @DisplayName("PostContent text와 images가 같으면 같다")
-    void equalPostContentTest() {
+    @DisplayName("같은 text와 images로 생성한 PostContent은 equals 비교에서 같다")
+    void shouldBeEqual_WhenTextAndImagesAreEqual() {
         String text = "equal";
         Image image = mock(Image.class);
         PostContent postContent1 = new PostContent(text, List.of(image));
@@ -53,8 +53,8 @@ class PostContentTest {
     }
 
     @Test
-    @DisplayName("PostContent text, images 둘 중 1개가 다르면 다르다")
-    void notEqualPostContentTest() {
+    @DisplayName("PostContent 어떤 text, images가 다르면 equals 비교에서 다르다")
+    void shouldNotBeEqual_WhenAnyTextAndAnyImagesAreNotEqual() {
         String text = "notEqual";
         Image image1 = mock(Image.class);
         Image image2 = mock(Image.class);

@@ -16,7 +16,7 @@ class ReviewTest {
 
     @Test
     @DisplayName("Review 생성 테스트")
-    void createReviewTest() {
+    void shouldCreateReview_Successfully() {
         Review review = Review.newInstance(
                 new ReviewId(UUID.randomUUID()),
                 new RegistrantId(UUID.randomUUID()),

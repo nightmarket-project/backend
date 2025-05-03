@@ -16,7 +16,7 @@ class ProductPostTest {
 
     @Test
     @DisplayName("ProductPost 생성 테스트")
-    void craeteProductPostTest() {
+    void shouldCraeteProductPost_Successfully() {
         ProductPost productPost = ProductPost.newInstance(
                 new ProductPostId(UUID.randomUUID()),
                 new ItemId(UUID.randomUUID()),

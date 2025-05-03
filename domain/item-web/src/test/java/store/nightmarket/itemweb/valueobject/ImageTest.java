@@ -10,7 +10,7 @@ class ImageTest {
 
     @Test
     @DisplayName("Image 객체 생성 테스트")
-    void createImageTest() {
+    void shouldCreateImage_Successfully() {
         String url = "https://picsum.photos/200/300";
         Image image1 = newInstanceImage(url, 1);
 
@@ -19,8 +19,8 @@ class ImageTest {
     }
 
     @Test
-    @DisplayName("같은 url과 order로 생성된 Image는 같다")
-    void imageEqualTest() {
+    @DisplayName("같은 url과 order로 생성된 Image는 equals 비교에서 같다")
+    void shouldBeEqual_WhenUrlAndOrderAreEqual() {
         String url = "https://picsum.photos/200/300";
         Image image1 = newInstanceImage(url, 1);
         Image image2 = newInstanceImage(url, 1);
@@ -29,8 +29,8 @@ class ImageTest {
     }
 
     @Test
-    @DisplayName("다른 url로 생성된 Image는 다르다")
-    void imageNotEqualTest() {
+    @DisplayName("Image 어떤 url, order가 다르면 equals 비교에서 다르다")
+    void shouldNotBeEqual_WhenAnyUrlAndAnyOrderAreNotEqual() {
         String url1 = "https://picsum.photos/200/300";
         String url2 = "https://picsum.photos/300/400";
         Image image1 = newInstanceImage(url1, 1);
