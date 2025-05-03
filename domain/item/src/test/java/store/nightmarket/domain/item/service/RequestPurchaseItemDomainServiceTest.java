@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.exception.ProductItemException;
 import store.nightmarket.domain.item.model.ProductItem;
-import store.nightmarket.domain.item.service.dto.RequestPurchaseItemDomainServiceDto;
 import store.nightmarket.itemcore.model.ItemOptionCombination;
 import store.nightmarket.itemcore.model.ItemOptionGroup;
 import store.nightmarket.itemcore.valueobject.ItemId;
@@ -15,9 +14,10 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static store.nightmarket.domain.item.service.dto.RequestPurchaseItemDomainServiceDto.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static store.nightmarket.domain.item.service.dto.RequestPurchaseItemDomainServiceDto.Event;
+import static store.nightmarket.domain.item.service.dto.RequestPurchaseItemDomainServiceDto.Input;
 
 
 class RequestPurchaseItemDomainServiceTest {

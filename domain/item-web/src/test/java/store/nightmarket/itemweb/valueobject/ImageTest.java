@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.itemcore.valueobject.Name;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ImageTest {
 
@@ -39,6 +38,7 @@ class ImageTest {
 
         assertThat(image1).isNotEqualTo(image2);
     }
+
     private Image newInstanceImage(String url, int order) {
         return new Image(
                 url,

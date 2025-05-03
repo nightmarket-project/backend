@@ -2,7 +2,6 @@ package store.nightmarket.itemcore.model;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.itemcore.state.OptionState;
 import store.nightmarket.itemcore.valueobject.ItemOptionId;
 import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.Price;
@@ -37,6 +36,7 @@ class ItemOptionTest {
         boolean result = itemOption.isAvailableToBuy();
         assertThat(result).isTrue();
     }
+
     @Test
     @DisplayName("ItemOption을 수량이 0일때 구매할 수 없다.")
     void isAvailableToBuyFailTest() {

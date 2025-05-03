@@ -2,7 +2,6 @@ package store.nightmarket.itemweb.model;
 
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.itemcore.valueobject.RegistrantId;
-import store.nightmarket.itemweb.valueobject.Image;
 import store.nightmarket.itemweb.valueobject.PostContent;
 import store.nightmarket.itemweb.valueobject.ReviewId;
 
