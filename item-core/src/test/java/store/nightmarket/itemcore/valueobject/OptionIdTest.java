@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class OptionIdTest {
     @Test
     @DisplayName("같은 UUID로 생성한 OptionId는 equals 비교에서 같다")
-    void OptionIdEqualTest() {
+    void shouldBeEqual_WhenUUIDsAreEqual() {
         UUID id = UUID.randomUUID();
         OptionId optionId1 = new OptionId(id);
         OptionId optionId2 = new OptionId(id);
@@ -20,7 +20,7 @@ class OptionIdTest {
 
     @Test
     @DisplayName("다른 UUID로 생성한 OptionId는 equals 비교에서 다르다")
-    void OptionIdNotEqualTest() {
+    void shouldNotBeEqual_WhenUUIDsAreDifferent() {
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
         OptionId optionId1 = new OptionId(id1);

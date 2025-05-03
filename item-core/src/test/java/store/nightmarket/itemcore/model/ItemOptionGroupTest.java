@@ -14,7 +14,7 @@ class ItemOptionGroupTest {
 
     @Test
     @DisplayName("ItemOptionGroup 성공적으로 객체가 생성된다")
-    void newInstanceItemOptionGroupSuccessfully() {
+    void shouldCreateItemOptionGroup_Successfully() {
         ItemOptionGroup option = newInstanceItemOptionGroup();
 
         assertThat(option).isNotNull();
@@ -22,15 +22,15 @@ class ItemOptionGroupTest {
     }
 
     @Test
-    @DisplayName("ItemOptionGroup의 모든 itemOption이 수량이 0보다 크기 때문에 구매 가능하다.")
-    void isAvailableToBuySuccessfully() {
+    @DisplayName("ItemOptionGroup의 모든 itemOption이 수량이 0보다 크면 구매 가능하다.")
+    void shouldReturnTrue_WhenItemOptionQuantityIsGreaterThanZero() {
         ItemOptionGroup option = newInstanceItemOptionGroup();
         assertThat(option.isAvailableToBuy()).isTrue();
     }
 
     @Test
-    @DisplayName("ItemOptionGroup의 어떤 itemOption이 수량이 0이기 때문에 구매 불가하다.")
-    void isNotAvailableToBuyFailure() {
+    @DisplayName("ItemOptionGroup의 어떤 itemOption이 수량이 0이면 구매 불가하다.")
+    void shouldReturnFalse_WhenAnyItemOptionHasZeroQuantity() {
         ItemOptionGroup option = newInstanceItemOptionGroupWithZeroQuantity();
         assertThat(option.isAvailableToBuy()).isFalse();
     }

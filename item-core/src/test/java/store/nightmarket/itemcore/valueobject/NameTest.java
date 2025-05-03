@@ -10,7 +10,7 @@ class NameTest {
 
     @Test
     @DisplayName("같은 value로 생성한 Name은 equals 비교에서 같다")
-    void NameEqualTest() {
+    void shouldBeEqual_WhenUUIDsAreEqual() {
         String value = "ACICS";
 
         Name name1 = new Name(value);
@@ -21,7 +21,7 @@ class NameTest {
 
     @Test
     @DisplayName("다른 value로 생성한 Name은 equals 비교에서 다르다")
-    void NameNotEqualTest() {
+    void shouldNotBeEqual_WhenUUIDsAreDifferent() {
         String value1 = "ACICS";
         String value2 = "NIKE";
 

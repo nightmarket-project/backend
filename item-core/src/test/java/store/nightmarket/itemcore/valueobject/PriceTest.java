@@ -13,7 +13,7 @@ class PriceTest {
 
     @Test
     @DisplayName("같은 값으로 생성한 Price는 equals 비교에서 같다")
-    void PriceEqualTest() {
+    void shouldBeEqual_WhenAmountsAreEqual() {
         BigDecimal amount = new BigDecimal(100);
 
         Price price1 = new Price(amount);
@@ -24,7 +24,7 @@ class PriceTest {
 
     @Test
     @DisplayName("다른 값으로 생성한 Price는 equals 비교에서 다르다")
-    void PriceNotEqualTest() {
+    void shouldNotBeEqual_WhenAmountsAreDifferent() {
         BigDecimal amount1 = new BigDecimal(101);
         BigDecimal amount2 = new BigDecimal(102);
 
@@ -35,20 +35,20 @@ class PriceTest {
     }
 
     @Test
-    @DisplayName("Price은 null 값이 안된다")
-    void PriceNullValidationTest() {
+    @DisplayName("Price의 amount는 null 값을 가지면 예외가 발생한다.")
+    void shouldThrowException_WhenAmountIsNull() {
         assertThatThrownBy(() -> new Price(null)).isInstanceOf(PriceException.class);
     }
 
     @Test
-    @DisplayName("Price은 0보다 작은 값이 안된다")
-    void PriceLessZeroValidationTest() {
+    @DisplayName("Price의 amount은 0보다 작은 값을 가지면 예외가 발생한다.")
+    void shouldThrowException_WhenAmountIsLessThanZero() {
         assertThatThrownBy(() -> new Price(BigDecimal.ZERO)).isInstanceOf(PriceException.class);
     }
 
     @Test
-    @DisplayName("Price를 더하면 금액이 합산된다")
-    void PriceAddTest() {
+    @DisplayName("Price끼리 add하면 두 값의 합을 가진 새로운 Price를 반환한다.")
+    void shouldReturnNewPriceWithSum_WhenTwoPricesAreAdded() {
         Price price1 = new Price(BigDecimal.valueOf(1000));
         Price price2 = new Price(BigDecimal.valueOf(500));
 
@@ -58,8 +58,8 @@ class PriceTest {
     }
 
     @Test
-    @DisplayName("Price를 빼면 금액이 차감된다")
-    void PriceSubtractTest() {
+    @DisplayName("Price끼리 subtract하면 두 값의 뺀 결과 값을 가진 새로운 Price를 반환한다.")
+    void shouldReturnNewPriceWithSubtract_WhenTwoPricesAreSubtracted() {
         Price price1 = new Price(BigDecimal.valueOf(1000));
         Price price2 = new Price(BigDecimal.valueOf(500));
 

@@ -20,8 +20,8 @@ class ItemOptionTest {
     private final Quantity ZERO_QUANTITY = new Quantity(BigDecimal.ZERO);
 
     @Test
-    @DisplayName("ItemOption은 이름, 가격, 수량, 상태로 생성된다")
-    void newInstanceItemOptionSuccessfully() {
+    @DisplayName("ItemOption은 이름, 가격, 수량로 생성된다")
+    void shouldCreateItemOption_WithNamePriceQuantity() {
         ItemOption itemOption = newInstanceItemOption();
 
         assertThat(itemOption).isNotNull();
@@ -29,8 +29,8 @@ class ItemOptionTest {
     }
 
     @Test
-    @DisplayName("ItemOption을 수량이 0초과일때 구매할 수 있다.")
-    void isAvailableToBuySuccessfullyTest() {
+    @DisplayName("수량이 0보다 크면 ItemOption을 구매할 수 있다.")
+    void shouldReturnTrue_WhenQuantityIsGreaterThanZero() {
         ItemOption itemOption = newInstanceItemOption();
 
         boolean result = itemOption.isAvailableToBuy();
@@ -38,8 +38,8 @@ class ItemOptionTest {
     }
 
     @Test
-    @DisplayName("ItemOption을 수량이 0일때 구매할 수 없다.")
-    void isAvailableToBuyFailTest() {
+    @DisplayName("수량이 0이면 ItemOption을 구매할 수 없다.")
+    void shouldReturnFalse_WhenQuantityIsZero() {
         ItemOption itemOption = newInstanceItemOptionWithZeroQuantity();
 
         boolean result = itemOption.isAvailableToBuy();

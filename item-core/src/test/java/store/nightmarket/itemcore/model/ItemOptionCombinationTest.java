@@ -13,8 +13,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ItemOptionCombinationTest {
 
     @Test
-    @DisplayName("ItemOptionCombination은 id, 이름, 종류로 구성된다.")
-    void newInstanceItemOptionCombinationSuccessfully() {
+    @DisplayName("ItemOptionCombination 성공적으로 객체가 생성된다.")
+    void shouldCreateItemOptionCombination_Successfully() {
         ItemOptionCombination option = newItemOptionCombination();
 
         assertThat(option).isNotNull();
@@ -22,15 +22,15 @@ class ItemOptionCombinationTest {
     }
 
     @Test
-    @DisplayName("ItemOptionCombination 모든 itemOption 수량이 0보다 크기 때문에 구매 가능하다.")
-    void isAvailableToBuySuccessfully() {
+    @DisplayName("ItemOptionCombination 모든 itemOption 수량이 0보다 크면 구매 가능하다.")
+    void shouldReturnTrue_WhenItemOptionQuantityIsGreaterThanZero() {
         ItemOptionCombination option = newItemOptionCombination();
         assertThat(option.isAvailableToBuy()).isTrue();
     }
 
     @Test
-    @DisplayName("ItemOptionCombination 어떤 itemOption 수량이 0을 가지기 때문에 구매 불가하다.")
-    void isAvailableToBuyFailure() {
+    @DisplayName("ItemOptionCombination 어떤 itemOption 수량이 0이면 구매 불가하다.")
+    void shouldReturnFalse_WhenAnyItemOptionHasZeroQuantity() {
         ItemOptionCombination option = newItemOptionCombinationWithZeroQuantity();
         assertThat(option.isAvailableToBuy()).isFalse();
     }
