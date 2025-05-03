@@ -7,17 +7,6 @@ import store.nightmarket.itemcore.model.ItemOptionCombination;
 import store.nightmarket.itemcore.model.ItemOptionGroup;
 import store.nightmarket.itemcore.valueobject.*;
 
-/**
- * application
- * ---------------
- * item domain | item-web domain
- * -----------------
- * item-core
- */
-
-/**
- *  ProductItem 목적: order, payment, delievery, item-web
- */
 @Getter
 public class ProductItem extends BaseModel<ItemId> {
 
