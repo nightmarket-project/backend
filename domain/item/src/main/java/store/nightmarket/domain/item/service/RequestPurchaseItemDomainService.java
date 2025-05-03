@@ -13,7 +13,7 @@ public class RequestPurchaseItemDomainService
     public Event execute(Input input) {
         ProductItem productItem = input.getProductItem();
 
-        productItem.requestPurchase();
+        productItem.isAvailableToBuy();
 
         return Event.builder()
                 .productItem(productItem)

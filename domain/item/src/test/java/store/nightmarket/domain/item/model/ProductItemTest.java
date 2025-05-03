@@ -28,9 +28,9 @@ class ProductItemTest {
 
     @Test
     @DisplayName("ProductItem 어떤 옵션이 구매 불가능하다면 requestPurchase 예외 발생")
-    void requestPurchaseProductTest() {
+    void isAvailableToBuyProductTest() {
         ProductItem productItem = newProductItemWithZeroQuantity();
-        assertThatThrownBy(productItem::requestPurchase).isInstanceOf(ProductItemException.class);
+        assertThatThrownBy(productItem::isAvailableToBuy).isInstanceOf(ProductItemException.class);
     }
 
     private ProductItem newProductItem() {

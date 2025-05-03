@@ -44,7 +44,7 @@ public class ProductItem extends BaseModel<ItemId> {
         );
     }
 
-    public void requestPurchase() {
+    public void isAvailableToBuy() {
         if(!basicOption.isAvailableToBuy()
                 || !additionalOption.isAvailableToBuy()) {
             throw new ProductItemException("You cannot place a purchase request because there is no purchase quantity.");
