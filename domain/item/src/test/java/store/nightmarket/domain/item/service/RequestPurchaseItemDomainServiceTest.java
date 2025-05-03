@@ -26,7 +26,7 @@ class RequestPurchaseItemDomainServiceTest {
 
     @Test
     @DisplayName("정상적인 구매 요청 시 Event를 반환한다.")
-    void requestPurchaseItemSuccess() {
+    void shouldReturnEvent_WhenPurchaseRequestIsValid() {
 
         ItemOptionCombination mockBasicOption = mock(ItemOptionCombination.class);
         ItemOptionGroup mockAdditionalOption = mock(ItemOptionGroup.class);
@@ -52,7 +52,7 @@ class RequestPurchaseItemDomainServiceTest {
 
     @Test
     @DisplayName("구매 수량이 부족할 경우 예외가 발생합니다.")
-    void requestPurchaseItemFailure() {
+    void shouldThrowException_WhenPurchaseQuantityIsNotAvailableToBuy() {
 
         ItemOptionCombination mockBasicOption = mock(ItemOptionCombination.class);
         ItemOptionGroup mockAdditionalOption = mock(ItemOptionGroup.class);
