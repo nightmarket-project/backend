@@ -19,8 +19,8 @@ public class Name {
         if (name == null) {
             throw new NameException("이름은 null이 안된다");
         }
-        if (name.isEmpty()) {
-            throw new NameException("Name cannot be empty");
+        if (name.isBlank()) {
+            throw new NameException("Name cannot be blank");
         }
         if (name.length() > 64) {
             throw new NameException("Name cannot be longer than 64 characters");
