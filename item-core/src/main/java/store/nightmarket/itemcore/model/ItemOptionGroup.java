@@ -7,7 +7,6 @@ import store.nightmarket.itemcore.valueobject.Name;
 
 import java.util.List;
 
-@Getter
 public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
 
     private Name name;

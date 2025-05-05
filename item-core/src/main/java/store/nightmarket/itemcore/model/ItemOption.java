@@ -8,7 +8,6 @@ import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.Price;
 import store.nightmarket.itemcore.valueobject.Quantity;
 
-@Getter
 public class ItemOption extends BaseModel<ItemOptionId> {
 
     private Name name;
@@ -37,8 +36,9 @@ public class ItemOption extends BaseModel<ItemOptionId> {
     }
 
     public void isAvailableToBuy(ItemOption buyOption) {
-        if (!quantity.isGreaterThanOrEqualTo(buyOption.getQuantity())) {
+        if (!quantity.isGreaterThanOrEqualTo(buyOption.quantity)) {
             throw new ItemOptionException("해당 옵션은 수량 부족으로 구매 불가합니다. 옵션 이름: " + name.getValue());
         }
     }
+
 }

@@ -29,4 +29,5 @@ class RegistrantIdTest {
 
         assertThat(registrantId1).isNotEqualTo(registrantId2);
     }
+
 }
