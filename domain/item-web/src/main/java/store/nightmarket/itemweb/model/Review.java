@@ -1,7 +1,7 @@
 package store.nightmarket.itemweb.model;
 
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemcore.valueobject.RegistrantId;
+import store.nightmarket.itemcore.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.valueobject.PostContent;
 import store.nightmarket.itemweb.valueobject.ReviewId;
@@ -10,14 +10,14 @@ import java.util.List;
 
 public class Review extends BaseModel<ReviewId> {
 
-    private RegistrantId author;
+    private UserId author;
     private PostContent content;
     private int rating;
     private List<Reply> replies;
 
     private Review(
             ReviewId id,
-            RegistrantId author,
+            UserId author,
             PostContent content,
             int rating,
             List<Reply> replies
@@ -33,7 +33,7 @@ public class Review extends BaseModel<ReviewId> {
 
     public static Review newInstance(
             ReviewId id,
-            RegistrantId author,
+            UserId author,
             PostContent content,
             int rating,
             List<Reply> replies

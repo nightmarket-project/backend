@@ -7,15 +7,15 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RegistrantIdTest {
+class UserIdTest {
     @Test
     @DisplayName("같은 UUID로 생성한 RegistrantId는 equals 비교에서 같다")
     void shouldBeEqual_WhenUUIDsAreEqual() {
         UUID id = UUID.randomUUID();
-        RegistrantId registrantId1 = new RegistrantId(id);
-        RegistrantId registrantId2 = new RegistrantId(id);
+        UserId userId1 = new UserId(id);
+        UserId userId2 = new UserId(id);
 
-        assertThat(registrantId1).isEqualTo(registrantId2);
+        assertThat(userId1).isEqualTo(userId2);
     }
 
     @Test
@@ -24,10 +24,10 @@ class RegistrantIdTest {
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
 
-        RegistrantId registrantId1 = new RegistrantId(id1);
-        RegistrantId registrantId2 = new RegistrantId(id2);
+        UserId userId1 = new UserId(id1);
+        UserId userId2 = new UserId(id2);
 
-        assertThat(registrantId1).isNotEqualTo(registrantId2);
+        assertThat(userId1).isNotEqualTo(userId2);
     }
 
 }

@@ -2,7 +2,7 @@ package store.nightmarket.itemweb.model;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.itemcore.valueobject.RegistrantId;
+import store.nightmarket.itemcore.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.valueobject.ReviewId;
 
@@ -40,7 +40,7 @@ class ReplyTest {
         return Reply.newInstance(
                 new ReviewId(UUID.randomUUID()),
                 content,
-                new RegistrantId(UUID.randomUUID())
+                new UserId(UUID.randomUUID())
         );
     }
 

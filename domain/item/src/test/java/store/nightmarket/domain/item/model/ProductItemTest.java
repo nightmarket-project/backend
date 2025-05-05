@@ -40,7 +40,7 @@ class ProductItemTest {
                 new Name("user"),
                 newBasicOption(),
                 newAdditionOption(),
-                new RegistrantId(UUID.randomUUID())
+                new UserId(UUID.randomUUID())
         );
     }
 
@@ -50,7 +50,7 @@ class ProductItemTest {
                 new Name("user"),
                 newBasicOption(),
                 newAdditionOptionWithZeroQuantity(),
-                new RegistrantId(UUID.randomUUID())
+                new UserId(UUID.randomUUID())
         );
     }
 

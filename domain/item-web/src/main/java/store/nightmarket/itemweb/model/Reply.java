@@ -1,20 +1,20 @@
 package store.nightmarket.itemweb.model;
 
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemcore.valueobject.RegistrantId;
+import store.nightmarket.itemcore.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.valueobject.ReviewId;
 
 public class Reply extends BaseModel<ReviewId> {
 
     private String content;
-    private RegistrantId author;
+    private UserId author;
     private static int MAX_LENGTH = 255;
 
     private Reply(
             ReviewId id,
             String content,
-            RegistrantId author
+            UserId author
     ) {
         super(id);
         this.content = content;
@@ -25,7 +25,7 @@ public class Reply extends BaseModel<ReviewId> {
     public static Reply newInstance(
             ReviewId id,
             String content,
-            RegistrantId author
+            UserId author
     ) {
         return new Reply(
                 id,
