@@ -5,28 +5,49 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.itemcore.exception.ItemOptionException;
 import store.nightmarket.itemcore.fixture.TestObjectFactory;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
 
 class ItemOptionTest {
 
     @Test
-    @DisplayName("ItemOption은 이름, 가격, 수량로 생성된다")
-    void shouldCreateItemOptionWithNamePriceQuantity() {
-        ItemOption itemOption = TestObjectFactory.defaultOption();
+    @DisplayName("ItemOption 성공적으로 객체가 생성된다")
+    void shouldCreateItemOptionGroupSuccessfully() {
+        ItemOption group = TestObjectFactory.defaultGroup();
 
-        assertThat(itemOption).isNotNull();
-        assertThat(itemOption).isInstanceOf(ItemOption.class);
+        assertThat(group).isNotNull();
+        assertThat(group).isInstanceOf(ItemOption.class);
     }
 
     @Test
-    @DisplayName("ItemOption이 구매하고 싶은 ItemOption Quantity 보다 작으면 구매할 수 없다.")
-    void shouldThrowExceptionWhenOptionIsLessThanOtherOption() {
-        ItemOption itemOption = TestObjectFactory.defaultOption();
-        ItemOption buyItemOption = TestObjectFactory.createItemOption("블랙", 1000, 10);
+    @DisplayName("ItemOption의 모든 옵션 수량이 다른 ItemOptionGroup 옵션 수량보다 크거나 같으면 구매 가능하다.")
+    void shouldNotThrowExceptionWhenAllOptionIsGreaterThanOrEqualOtherOption() {
+        ItemOption group = TestObjectFactory.defaultGroup();
 
-        assertThatThrownBy(() -> itemOption.isAvailableToBuy(buyItemOption))
+        assertThatCode(() -> group.isAvailableToBuy(group))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("ItemOption의 어떤 옵션 수량이 다른 ItemOptionGroup 옵션 수량보다 작으면 구매 불가능하다.")
+    void shouldThrowExceptionWhenAnyItemOptionIsLessThanOtherOption() {
+        ItemOption group = createEmptyStockOption();
+        ItemOption otherGroup = TestObjectFactory.defaultGroup();
+
+
+        assertThatThrownBy(() -> group.isAvailableToBuy(otherGroup))
                 .isInstanceOf(ItemOptionException.class);
+    }
+
+    private ItemOption createEmptyStockOption() {
+        return TestObjectFactory.createItemOption(
+                "색상",
+                List.of(
+                        TestObjectFactory.createDetailOption("블랙", 1000, 0),
+                        TestObjectFactory.createDetailOption("화이트", 2000, 0)
+                )
+        );
     }
 
 

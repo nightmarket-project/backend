@@ -12,43 +12,54 @@ import static org.assertj.core.api.Assertions.*;
 class ItemOptionGroupTest {
 
     @Test
-    @DisplayName("ItemOptionGroup 성공적으로 객체가 생성된다")
-    void shouldCreateItemOptionGroupSuccessfully() {
-        ItemOptionGroup group = TestObjectFactory.defaultGroup();
+    @DisplayName("ItemOptionGroup성공적으로 객체가 생성된다.")
+    void shouldCreateItemOptionCombinationSuccessfully() {
+        ItemOptionGroup option = TestObjectFactory.defaultCombination();
 
-        assertThat(group).isNotNull();
-        assertThat(group).isInstanceOf(ItemOptionGroup.class);
+        assertThat(option).isNotNull();
+        assertThat(option).isInstanceOf(ItemOptionGroup.class);
     }
 
     @Test
-    @DisplayName("ItemOptionGroup의 모든 옵션 수량이 다른 ItemOptionGroup 옵션 수량보다 크거나 같으면 구매 가능하다.")
-    void shouldNotThrowExceptionWhenAllOptionIsGreaterThanOrEqualOtherOption() {
-        ItemOptionGroup group = TestObjectFactory.defaultGroup();
+    @DisplayName("ItemOptionGroup의 모든 수량이 다른 ItemOptionGroup 보다 크거나 같으면 구매 가능하다.")
+    void shouldNotThrowExceptionWhenAllOptionQuantityIsGreaterThanOrOtherOptionQuantity() {
+        ItemOptionGroup combination = TestObjectFactory.defaultCombination();
+        ItemOptionGroup otherCombination = createEmptyStockGroup();
 
-        assertThatCode(() -> group.isAvailableToBuy(group))
+        assertThatCode(() -> combination.isAvailableToBuy(otherCombination))
                 .doesNotThrowAnyException();
     }
 
     @Test
-    @DisplayName("ItemOptionGroup의 어떤 옵션 수량이 다른 ItemOptionGroup 옵션 수량보다 작으면 구매 불가능하다.")
-    void shouldThrowExceptionWhenAnyItemOptionIsLessThanOtherOption() {
-        ItemOptionGroup group = TestObjectFactory.defaultGroup();
+    @DisplayName("ItemOptionGroup 어떤 itemOption 수량이 다른 ItemOptionGroup의 옵션보다 작으면 구매 불가하다.")
+    void shouldThrowExceptionWhenAnyOptionQuantityIsLessThanOtherOptionQuantity() {
+        ItemOptionGroup combination = createEmptyStockGroup();
+        ItemOptionGroup otherCombination = TestObjectFactory.defaultCombination();
 
-        ItemOptionGroup otherGroup = createEmptyStockGroup();
-
-        assertThatThrownBy(() -> group.isAvailableToBuy(otherGroup))
+        assertThatThrownBy(() -> combination.isAvailableToBuy(otherCombination))
                 .isInstanceOf(ItemOptionException.class);
+
     }
 
     private ItemOptionGroup createEmptyStockGroup() {
         return TestObjectFactory.createItemOptionGroup(
-                "색상",
                 List.of(
-                        TestObjectFactory.createItemOption("블랙", 1000, 0),
-                        TestObjectFactory.createItemOption("화이트", 2000, 0)
+                        TestObjectFactory.createItemOption(
+                                "색상",
+                                List.of(
+                                        TestObjectFactory.createDetailOption("블랙", 1000, 100),
+                                        TestObjectFactory.createDetailOption("화이트", 2000, 200)
+                                )
+                        ),
+                        TestObjectFactory.createItemOption(
+                                "cpu",
+                                List.of(
+                                        TestObjectFactory.createDetailOption("4core", 20000, 0),
+                                        TestObjectFactory.createDetailOption("8core", 40000, 50)
+                                )
+                        )
                 )
         );
     }
-
 
 }

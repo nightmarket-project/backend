@@ -6,11 +6,11 @@ import store.nightmarket.common.domain.model.BaseId;
 import java.util.UUID;
 
 @Getter
-public class ItemOptionCombinationId extends BaseId<UUID> {
+public class ItemDetailOptionId extends BaseId<UUID> {
 
     private final UUID id;
 
-    public ItemOptionCombinationId(UUID id) {
+    public ItemDetailOptionId(UUID id) {
         this.id = id;
     }
 

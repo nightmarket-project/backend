@@ -3,24 +3,24 @@ package store.nightmarket.domain.item.model;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.exception.ProductItemException;
-import store.nightmarket.itemcore.model.ItemOptionCombination;
 import store.nightmarket.itemcore.model.ItemOptionGroup;
+import store.nightmarket.itemcore.model.ItemOption;
 import store.nightmarket.itemcore.valueobject.*;
 
 @Getter
 public class ProductItem extends BaseModel<ItemId> {
 
     private Name name;
-    private ItemOptionCombination basicOption;
-    private ItemOptionGroup additionalOption;
+    private ItemOptionGroup basicOption;
+    private ItemOption additionalOption;
     private UserId seller;
 
 
     private ProductItem(
             ItemId id,
             Name name,
-            ItemOptionCombination basicOption,
-            ItemOptionGroup additionalOption,
+            ItemOptionGroup basicOption,
+            ItemOption additionalOption,
             UserId seller
     ) {
         super(id);
@@ -33,8 +33,8 @@ public class ProductItem extends BaseModel<ItemId> {
     public static ProductItem newInstance(
             ItemId id,
             Name name,
-            ItemOptionCombination basicOption,
-            ItemOptionGroup additionalOption,
+            ItemOptionGroup basicOption,
+            ItemOption additionalOption,
             UserId seller
     ) {
         return new ProductItem(

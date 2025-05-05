@@ -1,44 +1,41 @@
 package store.nightmarket.itemcore.model;
 
-import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemcore.exception.ItemOptionException;
 import store.nightmarket.itemcore.valueobject.ItemOptionId;
 import store.nightmarket.itemcore.valueobject.Name;
-import store.nightmarket.itemcore.valueobject.Price;
-import store.nightmarket.itemcore.valueobject.Quantity;
+
+import java.util.List;
 
 public class ItemOption extends BaseModel<ItemOptionId> {
 
     private Name name;
-    private Price price;
-    private Quantity quantity;
+    private List<ItemDetailOption> itemDetailOptions;
 
     private ItemOption(
             ItemOptionId id,
             Name name,
-            Price price,
-            Quantity quantity
+            List<ItemDetailOption> itemDetailOptions // 창고 있는 물품
     ) {
         super(id);
         this.name = name;
-        this.price = price;
-        this.quantity = quantity;
+        this.itemDetailOptions = itemDetailOptions;
     }
 
     public static ItemOption newInstance(
             ItemOptionId id,
             Name name,
-            Price price,
-            Quantity quantity
+            List<ItemDetailOption> itemDetailOptions
     ) {
-        return new ItemOption(id, name, price, quantity);
+        return new ItemOption(id, name, itemDetailOptions);
     }
 
-    public void isAvailableToBuy(ItemOption buyOption) {
-        if (!quantity.isGreaterThanOrEqualTo(buyOption.quantity)) {
-            throw new ItemOptionException("해당 옵션은 수량 부족으로 구매 불가합니다. 옵션 이름: " + name.getValue());
+    public void isAvailableToBuy(ItemOption buyGroup) {
+
+        for (int i = 0; i < itemDetailOptions.size(); i++) {
+            ItemDetailOption itemDetailOption = itemDetailOptions.get(i);
+            ItemDetailOption itemDetailOptionUserBuy = buyGroup.itemDetailOptions.get(i);
+
+            itemDetailOption.isAvailableToBuy(itemDetailOptionUserBuy);
         }
     }
-
 }

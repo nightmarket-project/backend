@@ -1,8 +1,8 @@
 package store.nightmarket.itemcore.fixture;
 
-import store.nightmarket.itemcore.model.ItemOption;
-import store.nightmarket.itemcore.model.ItemOptionCombination;
+import store.nightmarket.itemcore.model.ItemDetailOption;
 import store.nightmarket.itemcore.model.ItemOptionGroup;
+import store.nightmarket.itemcore.model.ItemOption;
 import store.nightmarket.itemcore.valueobject.*;
 
 import java.math.BigDecimal;
@@ -12,69 +12,69 @@ import java.util.UUID;
 
 public class TestObjectFactory {
 
-    public static ItemOption createItemOption(
+    public static ItemDetailOption createDetailOption(
             String name,
             int price,
             int quantity
     ) {
-        return ItemOption.newInstance(
-                new ItemOptionId(UUID.randomUUID()),
+        return ItemDetailOption.newInstance(
+                new ItemDetailOptionId(UUID.randomUUID()),
                 new Name(name),
                 new Price(new BigDecimal(price)),
                 new Quantity(new BigDecimal(quantity))
         );
     }
 
-    public static ItemOptionGroup createItemOptionGroup(
+    public static ItemOption createItemOption(
             String groupName,
+            List<ItemDetailOption> itemDetailOptions
+    ) {
+        return ItemOption.newInstance(
+                new ItemOptionId(UUID.randomUUID()),
+                new Name(groupName),
+                new ArrayList<>(itemDetailOptions)
+        );
+    }
+
+    public static ItemOptionGroup createItemOptionGroup(
             List<ItemOption> itemOptions
     ) {
         return ItemOptionGroup.newInstance(
                 new ItemOptionGroupId(UUID.randomUUID()),
-                new Name(groupName),
+                new ItemId(UUID.randomUUID()),
                 new ArrayList<>(itemOptions)
         );
     }
 
-    public static ItemOptionCombination createItemOptionCombination(
-            List<ItemOptionGroup> itemOptionGroups
-    ) {
-        return ItemOptionCombination.newInstance(
-                new ItemOptionCombinationId(UUID.randomUUID()),
-                new ItemId(UUID.randomUUID()),
-                new ArrayList<>(itemOptionGroups)
-        );
+    public static ItemDetailOption defaultOption() {
+        return TestObjectFactory.createDetailOption("블랙", 1000, 10);
     }
 
-    public static ItemOption defaultOption() {
-        return TestObjectFactory.createItemOption("블랙", 1000, 10);
-    }
-
-    public static ItemOptionGroup defaultGroup() {
-        return TestObjectFactory.createItemOptionGroup(
+    public static ItemOption defaultGroup() {
+        return TestObjectFactory.createItemOption(
                 "색상",
                 List.of(
-                        TestObjectFactory.createItemOption("블랙", 1000, 10),
-                        TestObjectFactory.createItemOption("화이트", 2000, 20)
+                        TestObjectFactory.createDetailOption("블랙", 1000, 10),
+                        TestObjectFactory.createDetailOption("화이트", 2000, 20)
                 )
         );
     }
 
-    public static ItemOptionCombination defaultCombination() {
-        return TestObjectFactory.createItemOptionCombination(
+    public static ItemOptionGroup defaultCombination() {
+        return TestObjectFactory.createItemOptionGroup(
                 List.of(
-                        TestObjectFactory.createItemOptionGroup(
+                        TestObjectFactory.createItemOption(
                                 "색상",
                                 List.of(
-                                        TestObjectFactory.createItemOption("블랙", 1000, 100),
-                                        TestObjectFactory.createItemOption("화이트", 2000, 200)
+                                        TestObjectFactory.createDetailOption("블랙", 1000, 100),
+                                        TestObjectFactory.createDetailOption("화이트", 2000, 200)
                                 )
                         ),
-                        TestObjectFactory.createItemOptionGroup(
+                        TestObjectFactory.createItemOption(
                                 "cpu",
                                 List.of(
-                                        TestObjectFactory.createItemOption("4core", 20000, 100),
-                                        TestObjectFactory.createItemOption("8core", 40000, 50)
+                                        TestObjectFactory.createDetailOption("4core", 20000, 100),
+                                        TestObjectFactory.createDetailOption("8core", 40000, 50)
                                 )
                         )
                 )
