@@ -19,7 +19,7 @@ class ProductItemTest {
 
     @Test
     @DisplayName("ProductItem 객체가 생성이 되는지 테스트")
-    void shouldCreateProductItem_Successfully() {
+    void shouldCreateProductItemSuccessfully() {
         ProductItem productItem = newProductItem();
 
         assertThat(productItem).isNotNull();
@@ -28,7 +28,7 @@ class ProductItemTest {
 
     @Test
     @DisplayName("ProductItem 어떤 옵션이 구매 불가능하다면 예외 발생")
-    void shouldThrowException_WhenAnyProductItemOptionIsNotAvailableToBuy() {
+    void shouldThrowExceptionWhenAnyProductItemOptionIsNotAvailableToBuy() {
         ProductItem productItem = newProductItemWithZeroQuantity();
         ProductItem otherProductItem = newProductItem();
         assertThatThrownBy(() -> productItem.isAvailableToBuy(otherProductItem)).isInstanceOf(ProductItemException.class);

@@ -13,7 +13,7 @@ class QuantityTest {
 
     @Test
     @DisplayName("같은 값으로 생성한 Quantity는 equals 비교에서 같다")
-    void shouldBeEqual_WhenValueAreEqual() {
+    void shouldBeEqualWhenValueAreEqual() {
         BigDecimal value = new BigDecimal(100);
 
         Quantity quantity1 = new Quantity(value);
@@ -24,7 +24,7 @@ class QuantityTest {
 
     @Test
     @DisplayName("다른 값으로 생성한 Quantity는 equals 비교에서 다르다")
-    void shouldNotBeEqual_WhenValuesAreDifferent() {
+    void shouldNotBeEqualWhenValuesAreDifferent() {
         BigDecimal value1 = new BigDecimal(101);
         BigDecimal value2 = new BigDecimal(102);
 
@@ -36,26 +36,26 @@ class QuantityTest {
 
     @Test
     @DisplayName("Quantity의 value가 null 값이면 예외가 발생한다")
-    void shouldThrowException_WhenQuantityValueIsNull() {
+    void shouldThrowExceptionWhenQuantityValueIsNull() {
         assertThatThrownBy(() -> new Quantity(null)).isInstanceOf(QuantityException.class);
     }
 
     @Test
     @DisplayName("Quantity은 0보다 작은 값이면 예외가 발생한다.")
-    void shouldThrowException_WhenQuantityValueIsLessThanZero() {
+    void shouldThrowExceptionWhenQuantityValueIsLessThanZero() {
         assertThatThrownBy(() -> new Quantity(BigDecimal.valueOf(-1))).isInstanceOf(QuantityException.class);
     }
 
     @Test
     @DisplayName("Quantity는 최대 수량 값보다 크면 예외가 발생한다.")
-    void shouldThrowException_WhenQuantityValueIsBiggerThanMaxValue() {
+    void shouldThrowExceptionWhenQuantityValueIsBiggerThanMaxValue() {
         BigDecimal max = BigDecimal.valueOf(Integer.MAX_VALUE);
         assertThatThrownBy(() -> new Quantity(max)).isInstanceOf(QuantityException.class);
     }
 
     @Test
     @DisplayName("Quantity끼리 add하면 두 값의 합을 가진 새로운 Quantity를 반환한다.")
-    void shouldReturnNewQuantityWithSum_WhenTwoQuantitiesAreAdded() {
+    void shouldReturnNewQuantityWithSumWhenTwoQuantitiesAreAdded() {
         Quantity quantity1 = new Quantity(BigDecimal.valueOf(1000));
         Quantity quantity2 = new Quantity(BigDecimal.valueOf(500));
 
@@ -66,7 +66,7 @@ class QuantityTest {
 
     @Test
     @DisplayName("Quantity끼리 subtract하면 두 값의 뺀 결과 값을 가진 새로운 Quantity를 반환한다.")
-    void shouldReturnNewQuantityWithSubtract_WhenTwoQuantitiesAreSubtracted() {
+    void shouldReturnNewQuantityWithSubtractWhenTwoQuantitiesAreSubtracted() {
         Quantity quantity1 = new Quantity(BigDecimal.valueOf(1000));
         Quantity quantity2 = new Quantity(BigDecimal.valueOf(500));
 
@@ -77,7 +77,7 @@ class QuantityTest {
 
     @Test
     @DisplayName("Quantity의 value가 다른 Quantity의 value보다 크거나 같으면 참이다.")
-    void ShoudReturnTrue_WhenhThisQuantityIsGreaterThanOrEqualToOtherQuantity() {
+    void ShoudReturnTrueWhenThisQuantityIsGreaterThanOrEqualToOtherQuantity() {
         Quantity quantity1 = new Quantity(BigDecimal.TEN);
         Quantity quantity2 = new Quantity(BigDecimal.ZERO);
         Quantity quantity3 = new Quantity(BigDecimal.TEN);
@@ -87,4 +87,5 @@ class QuantityTest {
         assertThat(result).isTrue();
         assertThat(result2).isTrue();
     }
+
 }

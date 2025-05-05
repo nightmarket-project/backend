@@ -11,7 +11,7 @@ class ProductPostIdTest {
 
     @Test
     @DisplayName("ProductPostId 생성 테스트")
-    void shouldCreateProductPostId_Successfully() {
+    void shouldCreateProductPostIdSuccessfully() {
         ProductPostId productPostId = new ProductPostId(UUID.randomUUID());
 
         assertThat(productPostId).isNotNull();
@@ -20,7 +20,7 @@ class ProductPostIdTest {
 
     @Test
     @DisplayName("같은 UUID로 생성한 ItemId는 equals 비교에서 같다")
-    void shouldBeEqual_WhenUUIDsAreEqual() {
+    void shouldBeEqualWhenUUIDsAreEqual() {
         UUID id = UUID.randomUUID();
 
         ProductPostId productPostId1 = new ProductPostId(id);
@@ -31,11 +31,11 @@ class ProductPostIdTest {
 
     @Test
     @DisplayName("다른 UUID로 생성한 ItemId는 equals 비교에서 다르다")
-    void shouldNotBeEqual_WhenUUIDsAreDifferent() {
+    void shouldNotBeEqualWhenUUIDsAreDifferent() {
         ProductPostId productPostId1 = new ProductPostId(UUID.randomUUID());
         ProductPostId productPostId2 = new ProductPostId(UUID.randomUUID());
 
         assertThat(productPostId1).isNotEqualTo(productPostId2);
-
     }
+
 }

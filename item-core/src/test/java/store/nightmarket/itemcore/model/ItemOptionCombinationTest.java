@@ -15,7 +15,7 @@ class ItemOptionCombinationTest {
 
     @Test
     @DisplayName("ItemOptionCombination 성공적으로 객체가 생성된다.")
-    void shouldCreateItemOptionCombination_Successfully() {
+    void shouldCreateItemOptionCombinationSuccessfully() {
         ItemOptionCombination option = newItemOptionCombination();
 
         assertThat(option).isNotNull();
@@ -24,7 +24,7 @@ class ItemOptionCombinationTest {
 
     @Test
     @DisplayName("ItemOptionCombination의 모든 수량이 다른 ItemOptionCombination 보다 크거나 같으면 구매 가능하다.")
-    void shouldNotThrowException_WhenAllOptionQuantityIsGreaterThanOrOtherOptionQuantity() {
+    void shouldNotThrowExceptionWhenAllOptionQuantityIsGreaterThanOrOtherOptionQuantity() {
         ItemOptionCombination combination = newItemOptionCombination();
         ItemOptionCombination otherCombination = newItemOptionCombinationWithZeroQuantity();
 
@@ -34,7 +34,7 @@ class ItemOptionCombinationTest {
 
     @Test
     @DisplayName("ItemOptionCombination 어떤 itemOption 수량이 다른 ItemOptionCombination의 옵션보다 작으면 구매 불가하다.")
-    void shouldThrowException_WhenAnyOptionQuantityIsLessThanOtherOptionQuantity() {
+    void shouldThrowExceptionWhenAnyOptionQuantityIsLessThanOtherOptionQuantity() {
         ItemOptionCombination combination = newItemOptionCombinationWithZeroQuantity();
         ItemOptionCombination otherCombination = newItemOptionCombination();
 

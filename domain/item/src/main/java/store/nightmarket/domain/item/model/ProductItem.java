@@ -13,7 +13,7 @@ public class ProductItem extends BaseModel<ItemId> {
     private Name name;
     private ItemOptionCombination basicOption;
     private ItemOptionGroup additionalOption;
-    private UserId userId;
+    private UserId seller;
 
 
     private ProductItem(
@@ -21,13 +21,13 @@ public class ProductItem extends BaseModel<ItemId> {
             Name name,
             ItemOptionCombination basicOption,
             ItemOptionGroup additionalOption,
-            UserId userId
+            UserId seller
     ) {
         super(id);
         this.name = name;
         this.basicOption = basicOption;
         this.additionalOption = additionalOption;
-        this.userId = userId;
+        this.seller = seller;
     }
 
     public static ProductItem newInstance(
@@ -35,14 +35,14 @@ public class ProductItem extends BaseModel<ItemId> {
             Name name,
             ItemOptionCombination basicOption,
             ItemOptionGroup additionalOption,
-            UserId userId
+            UserId seller
     ) {
         return new ProductItem(
                 id,
                 name,
                 basicOption,
                 additionalOption,
-                userId
+                seller
         );
     }
 

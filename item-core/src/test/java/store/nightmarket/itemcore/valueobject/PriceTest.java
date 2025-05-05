@@ -48,7 +48,7 @@ class PriceTest {
 
     @Test
     @DisplayName("Price끼리 add하면 두 값의 합을 가진 새로운 Price를 반환한다.")
-    void shouldReturnNewPriceWithSum_WhenTwoPricesAreAdded() {
+    void shouldReturnNewPriceWithSumWhenTwoPricesAreAdded() {
         Price price1 = new Price(BigDecimal.valueOf(1000));
         Price price2 = new Price(BigDecimal.valueOf(500));
 
@@ -59,7 +59,7 @@ class PriceTest {
 
     @Test
     @DisplayName("Price끼리 subtract하면 두 값의 뺀 결과 값을 가진 새로운 Price를 반환한다.")
-    void shouldReturnNewPriceWithSubtract_WhenTwoPricesAreSubtracted() {
+    void shouldReturnNewPriceWithSubtractWhenTwoPricesAreSubtracted() {
         Price price1 = new Price(BigDecimal.valueOf(1000));
         Price price2 = new Price(BigDecimal.valueOf(500));
 

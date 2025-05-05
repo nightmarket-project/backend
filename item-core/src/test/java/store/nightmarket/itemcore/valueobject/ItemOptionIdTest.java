@@ -11,7 +11,7 @@ class ItemOptionIdTest {
 
     @Test
     @DisplayName("같은 UUID로 생성한 ItemOptionId equals 비교에서 같다")
-    void shouldBeEqual_WhenUUIDsAreEqual() {
+    void shouldBeEqualWhenUUIDsAreEqual() {
         UUID id = UUID.randomUUID();
         ItemOptionId itemOptionId1 = new ItemOptionId(id);
         ItemOptionId itemOptionId2 = new ItemOptionId(id);
@@ -22,7 +22,7 @@ class ItemOptionIdTest {
 
     @Test
     @DisplayName("다른 UUID로 생성한 ItemOptionId equals 비교에서 다르다")
-    void shouldNotBeEqual_WhenUUIDsAreDifferent() {
+    void shouldNotBeEqualWhenUUIDsAreDifferent() {
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
 
@@ -31,4 +31,5 @@ class ItemOptionIdTest {
 
         assertThat(itemOptionId1).isNotEqualTo(itemOptionId2);
     }
+
 }

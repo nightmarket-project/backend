@@ -15,7 +15,7 @@ class ItemOptionGroupTest {
 
     @Test
     @DisplayName("ItemOptionGroup 성공적으로 객체가 생성된다")
-    void shouldCreateItemOptionGroup_Successfully() {
+    void shouldCreateItemOptionGroupSuccessfully() {
         ItemOptionGroup option = newInstanceItemOptionGroup();
 
         assertThat(option).isNotNull();
@@ -24,7 +24,7 @@ class ItemOptionGroupTest {
 
     @Test
     @DisplayName("ItemOptionGroup의 모든 옵션 수량이 다른 ItemOptionGroup 옵션 수량보다 크거나 같으면 구매 가능하다.")
-    void shouldNotThrowException_WhenAllOptionIsGreaterThanOrEqualOtherOption() {
+    void shouldNotThrowExceptionWhenAllOptionIsGreaterThanOrEqualOtherOption() {
         ItemOptionGroup group = newInstanceItemOptionGroup();
         ItemOptionGroup otherGroup = newInstanceItemOptionGroup();
 
@@ -34,7 +34,7 @@ class ItemOptionGroupTest {
 
     @Test
     @DisplayName("ItemOptionGroup의 어떤 옵션 수량이 다른 ItemOptionGroup 옵션 수량보다 작으면 구매 불가능하다.")
-    void shouldThrowException_WhenAnyItemOptionIsLessThanOtherOption() {
+    void shouldThrowExceptionWhenAnyItemOptionIsLessThanOtherOption() {
         ItemOptionGroup group = newInstanceItemOptionGroupWithZeroQuantity();
         ItemOptionGroup otherGroup = newInstanceItemOptionGroup();
 

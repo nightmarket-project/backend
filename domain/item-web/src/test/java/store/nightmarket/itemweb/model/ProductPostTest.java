@@ -16,7 +16,7 @@ class ProductPostTest {
 
     @Test
     @DisplayName("ProductPost 생성 테스트")
-    void shouldCraeteProductPost_Successfully() {
+    void shouldCreateProductPostSuccessfully() {
         ProductPost productPost = ProductPost.newInstance(
                 new ProductPostId(UUID.randomUUID()),
                 new ItemId(UUID.randomUUID()),
@@ -27,4 +27,5 @@ class ProductPostTest {
         assertThat(productPost).isNotNull();
         assertThat(productPost).isInstanceOf(ProductPost.class);
     }
+
 }

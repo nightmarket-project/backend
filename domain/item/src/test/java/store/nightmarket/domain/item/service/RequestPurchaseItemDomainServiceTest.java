@@ -25,7 +25,7 @@ class RequestPurchaseItemDomainServiceTest {
 
     @Test
     @DisplayName("정상적인 구매 요청 시 Event를 반환한다.")
-    void shouldReturnEvent_WhenPurchaseRequestIsValid() {
+    void shouldReturnEventWhenPurchaseRequestIsValid() {
 
         ProductItem productItem = newProductItem();
 
@@ -39,7 +39,7 @@ class RequestPurchaseItemDomainServiceTest {
 
     @Test
     @DisplayName("구매 수량이 부족할 경우 예외가 발생합니다.")
-    void shouldThrowException_WhenPurchaseQuantityIsNotAvailableToBuy() {
+    void shouldThrowExceptionWhenPurchaseQuantityIsNotAvailableToBuy() {
 
         ProductItem productItem = newProductItemWithZeroQuantity();
 

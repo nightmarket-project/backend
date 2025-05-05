@@ -15,7 +15,7 @@ class PostContentTest {
 
     @Test
     @DisplayName("PostContent 생성 테스트 ")
-    void shouldCreatePostContent_Successfully() {
+    void shouldCreatePostContentSuccessfully() {
         PostContent postContent = newInstance("hello", 2);
 
         assertThat(postContent).isNotNull();
@@ -24,26 +24,26 @@ class PostContentTest {
 
     @Test
     @DisplayName("PostContent text가 빈 문자열을 가지면 예외 발생한다.")
-    void shouldThrowException_WhenTextIsBlank() {
+    void shouldThrowExceptionWhenTextIsBlank() {
         assertThatThrownBy(() -> newInstance("", 2)).isInstanceOf(ItemWebException.class);
     }
 
     @Test
     @DisplayName("PostContent text 최대 문자 길이보다 크면 예외 발생")
-    void shouldThrowException_WhenTextIsBiggerThanMaxLength() {
+    void shouldThrowExceptionWhenTextIsBiggerThanMaxLength() {
         String text = "a".repeat(256);
         assertThatThrownBy(() -> newInstance(text, 2)).isInstanceOf(ItemWebException.class);
     }
 
     @Test
     @DisplayName("PostContent Image 최대 개수보다 크면 예외 발생")
-    void shouldThrowException_WhenImageQuantityIsBiggerThanMaxQuantity() {
+    void shouldThrowExceptionWhenImageQuantityIsBiggerThanMaxQuantity() {
         assertThatThrownBy(() -> newInstance("hello", 11)).isInstanceOf(ItemWebException.class);
     }
 
     @Test
     @DisplayName("같은 text와 images로 생성한 PostContent은 equals 비교에서 같다")
-    void shouldBeEqual_WhenTextAndImagesAreEqual() {
+    void shouldBeEqualWhenTextAndImagesAreEqual() {
         String text = "equal";
         Image image = mock(Image.class);
         PostContent postContent1 = new PostContent(text, List.of(image));
@@ -54,7 +54,7 @@ class PostContentTest {
 
     @Test
     @DisplayName("PostContent 어떤 text, images가 다르면 equals 비교에서 다르다")
-    void shouldNotBeEqual_WhenAnyTextAndAnyImagesAreNotEqual() {
+    void shouldNotBeEqualWhenAnyTextAndAnyImagesAreNotEqual() {
         String text = "notEqual";
         Image image1 = mock(Image.class);
         Image image2 = mock(Image.class);
@@ -71,4 +71,5 @@ class PostContentTest {
 
         return new PostContent(text, images);
     }
+
 }

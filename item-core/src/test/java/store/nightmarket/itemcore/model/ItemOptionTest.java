@@ -22,7 +22,7 @@ class ItemOptionTest {
 
     @Test
     @DisplayName("ItemOption은 이름, 가격, 수량로 생성된다")
-    void shouldCreateItemOption_WithNamePriceQuantity() {
+    void shouldCreateItemOptionWithNamePriceQuantity() {
         ItemOption itemOption = newInstanceItemOption();
 
         assertThat(itemOption).isNotNull();
@@ -31,7 +31,7 @@ class ItemOptionTest {
 
     @Test
     @DisplayName("ItemOption이 구매하고 싶은 ItemOption Quantity 보다 작으면 구매할 수 없다.")
-    void shouldThrowException_WhenOptionIsLessThanOtherOption() {
+    void shouldThrowExceptionWhenOptionIsLessThanOtherOption() {
         ItemOption itemOption = newInstanceItemOptionWithZeroQuantity();
         ItemOption buyItemOption = newInstanceItemOption();
 

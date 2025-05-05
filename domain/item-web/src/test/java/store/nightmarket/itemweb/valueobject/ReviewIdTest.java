@@ -11,7 +11,7 @@ class ReviewIdTest {
 
     @Test
     @DisplayName("ReviewId 생성 테스트")
-    void shouldCreateReviewId_Successfully() {
+    void shouldCreateReviewIdSuccessfully() {
         ReviewId ReviewId = new ReviewId(UUID.randomUUID());
 
         assertThat(ReviewId).isNotNull();
@@ -20,7 +20,7 @@ class ReviewIdTest {
 
     @Test
     @DisplayName("같은 UUID로 생성한 ItemId는 equals 비교에서 같다")
-    void shouldBeEqual_WhenUUIDsAreEqual() {
+    void shouldBeEqualWhenUUIDsAreEqual() {
         UUID id = UUID.randomUUID();
 
         ReviewId ReviewId1 = new ReviewId(id);
@@ -31,11 +31,11 @@ class ReviewIdTest {
 
     @Test
     @DisplayName("다른 UUID로 생성한 ItemId는 equals 비교에서 다르다")
-    void shouldNotBeEqual_WhenUUIDsAreDifferent() {
+    void shouldNotBeEqualWhenUUIDsAreDifferent() {
         ReviewId ReviewId1 = new ReviewId(UUID.randomUUID());
         ReviewId ReviewId2 = new ReviewId(UUID.randomUUID());
 
         assertThat(ReviewId1).isNotEqualTo(ReviewId2);
-
     }
+
 }

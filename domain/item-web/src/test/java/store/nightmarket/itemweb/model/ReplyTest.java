@@ -14,7 +14,7 @@ class ReplyTest {
 
     @Test
     @DisplayName("Reply 생성 테스트")
-    void shoudCreateReply_Successfully() {
+    void shoudCreateReplySuccessfully() {
         Reply reply = newReply("hello");
 
         assertThat(reply).isNotNull();
@@ -23,14 +23,14 @@ class ReplyTest {
 
     @Test
     @DisplayName("Reply content가 blank면 예외 발생")
-    void shouldThrowException_WhenReplyContentIsBlank() {
+    void shouldThrowExceptionWhenReplyContentIsBlank() {
 
         assertThatThrownBy(() ->  newReply(" ")).isInstanceOf(ItemWebException.class);
     }
 
     @Test
     @DisplayName("Reply content의 최대 길이보다 크면 예외 발생")
-    void shouldThrowException_WhenReplyContentIsLongerThanMaxLength() {
+    void shouldThrowExceptionWhenReplyContentIsLongerThanMaxLength() {
         String content = "a".repeat(256);
 
         assertThatThrownBy(() -> newReply(content)).isInstanceOf(ItemWebException.class);

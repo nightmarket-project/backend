@@ -16,7 +16,7 @@ class ReviewTest {
 
     @Test
     @DisplayName("Review 생성 테스트")
-    void shouldCreateReview_Successfully() {
+    void shouldCreateReviewSuccessfully() {
         Review review = Review.newInstance(
                 new ReviewId(UUID.randomUUID()),
                 new UserId(UUID.randomUUID()),
@@ -28,4 +28,5 @@ class ReviewTest {
         assertThat(review).isNotNull();
         assertThat(review).isInstanceOf(Review.class);
     }
+
 }

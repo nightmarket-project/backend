@@ -10,7 +10,7 @@ class NameTest {
 
     @Test
     @DisplayName("같은 value로 생성한 Name은 equals 비교에서 같다")
-    void shouldBeEqual_WhenValuesAreEqual() {
+    void shouldBeEqualWhenValuesAreEqual() {
         String value = "ACICS";
 
         Name name1 = new Name(value);
@@ -21,7 +21,7 @@ class NameTest {
 
     @Test
     @DisplayName("다른 value로 생성한 Name은 equals 비교에서 다르다")
-    void shouldNotBeEqual_WhenValuesAreDifferent() {
+    void shouldNotBeEqualWhenValuesAreDifferent() {
         String value1 = "ACICS";
         String value2 = "NIKE";
 
@@ -33,7 +33,7 @@ class NameTest {
 
     @Test
     @DisplayName("Name 생성 시 이름이 null이면 예외가 발생한다")
-    void shouldThrowException_WhenNameValueIsNull() {
+    void shouldThrowExceptionWhenNameValueIsNull() {
         String value = null;
 
         assertThatThrownBy(() -> new Name(value)).isInstanceOf(NameException.class);
@@ -41,7 +41,7 @@ class NameTest {
 
     @Test
     @DisplayName("Name 생성 시 이름이 비어 있으면 예외가 발생한다.")
-    void shouldThrowException_WhenNameValueIsBlank() {
+    void shouldThrowExceptionWhenNameValueIsBlank() {
         String value = "";
 
         assertThatThrownBy(() -> new Name(value)).isInstanceOf(NameException.class);
@@ -49,8 +49,9 @@ class NameTest {
 
     @Test
     @DisplayName("Name은 길이가 64보다 크면 예외가 발생한다.")
-    void shouldThrowException_WhenNameValueIsLongerThan64() {
+    void shouldThrowExceptionWhenNameValueIsLongerThan64() {
         String value = "a".repeat(65);
         assertThatThrownBy(() -> new Name(value)).isInstanceOf(NameException.class);
     }
+
 }
