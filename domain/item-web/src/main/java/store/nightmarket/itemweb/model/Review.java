@@ -4,6 +4,7 @@ import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.itemcore.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.valueobject.PostContent;
+import store.nightmarket.itemweb.valueobject.Rating;
 import store.nightmarket.itemweb.valueobject.ReviewId;
 
 import java.util.List;
@@ -12,14 +13,14 @@ public class Review extends BaseModel<ReviewId> {
 
     private UserId author;
     private PostContent content;
-    private int rating;
+    private Rating rating;
     private List<Reply> replies;
 
     private Review(
             ReviewId id,
             UserId author,
             PostContent content,
-            int rating,
+            Rating rating,
             List<Reply> replies
     ) {
         super(id);
@@ -27,15 +28,13 @@ public class Review extends BaseModel<ReviewId> {
         this.content = content;
         this.rating = rating;
         this.replies = replies;
-
-        validateRating();
     }
 
     public static Review newInstance(
             ReviewId id,
             UserId author,
             PostContent content,
-            int rating,
+            Rating rating,
             List<Reply> replies
     ) {
         return new Review(
@@ -47,9 +46,5 @@ public class Review extends BaseModel<ReviewId> {
         );
     }
 
-    private void validateRating() {
-        if(!(rating >= 0 && rating <= 5)) {
-            throw new ItemWebException("Rating must be between 0 and 5");
-        }
-    }
+
 }
