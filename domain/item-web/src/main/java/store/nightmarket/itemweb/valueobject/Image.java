@@ -7,16 +7,13 @@ import java.util.Objects;
 public class Image {
 
     private final String url;
-    private final Name name;
     private final int order;
 
     public Image(
             String url,
-            Name name,
             int order
     ) {
         this.url = url;
-        this.name = name;
         this.order = order;
     }
 

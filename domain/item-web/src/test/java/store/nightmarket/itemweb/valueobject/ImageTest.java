@@ -42,7 +42,6 @@ class ImageTest {
     private Image newInstanceImage(String url, int order) {
         return new Image(
                 url,
-                new Name("example-image.jpg"),
                 order
         );
     }
