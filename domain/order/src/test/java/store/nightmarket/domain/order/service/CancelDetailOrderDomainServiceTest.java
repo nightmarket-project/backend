@@ -1,79 +1,112 @@
 package store.nightmarket.domain.order.service;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import store.nightmarket.domain.order.model.DetailOrderRecord;
-import store.nightmarket.domain.order.model.OrderRecord;
-import store.nightmarket.domain.order.status.DetailOrderState;
-import store.nightmarket.domain.order.valueobject.*;
+import static org.assertj.core.api.Assertions.*;
+import static store.nightmarket.domain.order.service.dto.CancelDetailOrderDomainServiceDto.*;
+import static store.nightmarket.domain.order.util.OrderTestUtil.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static store.nightmarket.domain.order.service.dto.CancelDetailOrderDomainServiceDto.Event;
-import static store.nightmarket.domain.order.service.dto.CancelDetailOrderDomainServiceDto.Input;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import store.nightmarket.domain.order.exception.OrderException;
+import store.nightmarket.domain.order.model.DetailOrderRecord;
+import store.nightmarket.domain.order.model.OrderRecord;
+import store.nightmarket.domain.order.status.DetailOrderState;
 
 public class CancelDetailOrderDomainServiceTest {
 
-    @Test
-    @DisplayName("세부주문을 취소하면 해당 세부주문 만 취소상태로 변해야 한다")
-    void WhenCancelDetailOrderThenDetailOrderStateChangesToCanceled() {
-        // given
-        DetailOrderRecordId id1 = new DetailOrderRecordId(UUID.randomUUID());
-        DetailOrderRecordId id2 = new DetailOrderRecordId(UUID.randomUUID());
-        OrderRecord orderRecord = orderRecord(id1, id2);
-        Input input = Input.builder()
-                        .orderRecord(orderRecord)
-                        .detailOrderRecordId(id1)
-                        .build();
+	@Test
+	@DisplayName("세부주문을 취소하면 해당 세부주문 만 취소상태로 변해야 한다")
+	void WhenCancelDetailOrderThenDetailOrderStateChangesToCanceled() {
+		// given
+		DetailOrderRecord detailOrderRecord1 = makeDetailOrderRecord(
+			UUID.randomUUID(),
+			UUID.randomUUID(),
+			1,
+			DetailOrderState.COMPLETED
+		);
+		DetailOrderRecord detailOrderRecord2 = makeDetailOrderRecord(
+			UUID.randomUUID(),
+			UUID.randomUUID(),
+			1,
+			DetailOrderState.COMPLETED
+		);
 
-        CancelDetailOrderDomainService service = new CancelDetailOrderDomainService();
+		OrderRecord orderRecord = makeOrderRecord(List.of(detailOrderRecord1, detailOrderRecord2));
 
-        // when
-        Event event = service.execute(input);
-        OrderRecord canceledOrder = event.getOrderRecord();
-        DetailOrderRecord detailOrderRecord1 = canceledOrder.getDetailOrderRecordList().getFirst();
-        DetailOrderRecord detailOrderRecord2 = canceledOrder.getDetailOrderRecordList().getLast();
+		Input input = makeDetailCancelInput(orderRecord, detailOrderRecord1);
 
-        // then
-        assertTrue(detailOrderRecord1.isCanceled());
-        assertFalse(detailOrderRecord2.isCanceled());
-    }
+		CancelDetailOrderDomainService service = new CancelDetailOrderDomainService();
 
-    private DetailOrderRecord detailOrderRecord1(DetailOrderRecordId id) {
-        return DetailOrderRecord.newInstance(
-                id,
-                new ProductId(UUID.randomUUID()),
-                new Quantity(1),
-                DetailOrderState.SUBMITTED
-        );
-    }
+		// when
+		Event event = service.execute(input);
 
-    private DetailOrderRecord detailOrderRecord2(DetailOrderRecordId id) {
-        return DetailOrderRecord.newInstance(
-                id,
-                new ProductId(UUID.randomUUID()),
-                new Quantity(1),
-                DetailOrderState.SUBMITTED
-        );
-    }
+		// then
+		OrderRecord canceledOrder = event.getOrderRecord();
 
-    private OrderRecord orderRecord(DetailOrderRecordId id1, DetailOrderRecordId id2) {
-        return OrderRecord.newInstance(
-                new OrderRecordId(UUID.randomUUID()),
-                List.of(detailOrderRecord1(id1), detailOrderRecord2(id2)),
-                new Address("111111","하늘로 111-111","구름아파트 111동 111호"),
-                LocalDate.of(2025,4,29),
-                new UserId(UUID.randomUUID())
-        );
-    }
+		DetailOrderRecord canceledRecord1 = canceledOrder.getDetailOrderRecordList().getFirst();
+		DetailOrderRecord canceledRecord2 = canceledOrder.getDetailOrderRecordList().getLast();
 
-    private Input input(OrderRecord orderRecord) {
-        return Input.builder()
-                .orderRecord(orderRecord)
-                .build();
-    }
+		assertThat(canceledRecord1.isCanceled()).isTrue();
+		assertThat(canceledRecord2.isCanceled()).isFalse();
+	}
+
+	@Test
+	@DisplayName("이미 취소된 세부주문은 다시 취소 할 수 없다")
+	void throwExceptionIfDetailOrderAlreadyCanceled() {
+		// given
+		DetailOrderRecord detailOrderRecord1 = makeDetailOrderRecord(
+			UUID.randomUUID(),
+			UUID.randomUUID(),
+			1,
+			DetailOrderState.CANCELED
+		);
+		DetailOrderRecord detailOrderRecord2 = makeDetailOrderRecord(
+			UUID.randomUUID(),
+			UUID.randomUUID(),
+			1,
+			DetailOrderState.COMPLETED
+		);
+
+		OrderRecord orderRecord = makeOrderRecord(List.of(detailOrderRecord1, detailOrderRecord2));
+
+		Input input = makeDetailCancelInput(orderRecord, detailOrderRecord1);
+
+		CancelDetailOrderDomainService service = new CancelDetailOrderDomainService();
+
+		// when & then
+		assertThatThrownBy(() -> service.execute(input))
+			.isInstanceOf(OrderException.class);
+	}
+
+	@Test
+	@DisplayName("이미 제출된 세부주문은 취소 할 수 없다")
+	void throwExceptionIfDetailOrderAlreadySubmitted() {
+		// given
+		DetailOrderRecord detailOrderRecord1 = makeDetailOrderRecord(
+			UUID.randomUUID(),
+			UUID.randomUUID(),
+			1,
+			DetailOrderState.SUBMITTED
+		);
+		DetailOrderRecord detailOrderRecord2 = makeDetailOrderRecord(
+			UUID.randomUUID(),
+			UUID.randomUUID(),
+			1,
+			DetailOrderState.COMPLETED
+		);
+
+		OrderRecord orderRecord = makeOrderRecord(List.of(detailOrderRecord1, detailOrderRecord2));
+
+		Input input = makeDetailCancelInput(orderRecord, detailOrderRecord1);
+
+		CancelDetailOrderDomainService service = new CancelDetailOrderDomainService();
+
+		// when & then
+		assertThatThrownBy(() -> service.execute(input))
+			.isInstanceOf(OrderException.class);
+	}
 
 }
