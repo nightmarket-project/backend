@@ -1,81 +1,56 @@
 package store.nightmarket.domain.delivery.service;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import store.nightmarket.domain.delivery.model.DeliveryRecord;
-import store.nightmarket.domain.delivery.model.DeliveryTrackingRecord;
-import store.nightmarket.domain.delivery.state.DetailDeliveryState;
-import store.nightmarket.domain.delivery.valueobject.*;
+import static org.assertj.core.api.Assertions.*;
+import static store.nightmarket.domain.delivery.service.dto.AddDeliveryTrackRecordDomainServiceDto.*;
+import static store.nightmarket.domain.delivery.util.DeliveryTestUtil.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static store.nightmarket.domain.delivery.service.dto.AddDeliveryTrackRecordDomainServiceDto.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import store.nightmarket.domain.delivery.model.DeliveryRecord;
+import store.nightmarket.domain.delivery.model.DeliveryTrackingRecord;
+import store.nightmarket.domain.delivery.state.DetailDeliveryState;
 
 public class AddDeliveryTrackRecordDomainServiceTest {
 
-    @Test
-    @DisplayName("배송 추적 기록 추가 시 현재 상태로 반영된다")
-    void addTrackingRecordShouldUpdateCurrentRecord() {
-        // given
-        DeliveryRecord deliveryRecord = deliveryRecord();
-        DeliveryTrackingRecord deliveryTrackingRecord = deliveryTrackingRecord3();
-        Input input = Input.builder()
-                        .deliveryRecord(deliveryRecord)
-                        .deliveryTrackingRecord(deliveryTrackingRecord)
-                        .build();
+	@Test
+	@DisplayName("배송 추적 기록 추가 시 현재 상태로 반영된다")
+	void addTrackingRecordShouldUpdateCurrentRecord() {
+		// given
+		DeliveryTrackingRecord deliveryTrackingRecord1 = makeDeliveryTrackingRecord(
+			UUID.randomUUID(),
+			"출하지",
+			DetailDeliveryState.SHIPPED,
+			"재고가 출하 되었습니다."
+		);
+		DeliveryTrackingRecord deliveryTrackingRecord2 = makeDeliveryTrackingRecord(
+			UUID.randomUUID(),
+			"HUB",
+			DetailDeliveryState.IN_DELIVERY,
+			"물류 허브에 도착했습니다."
+		);
 
-        AddDeliveryTrackRecordDomainService service = new AddDeliveryTrackRecordDomainService();
+		List<DeliveryTrackingRecord> list = new ArrayList<>();
+		list.add(deliveryTrackingRecord2);
 
-        // when
-        Event event = service.execute(input);
-        DeliveryRecord addedRecord = event.getDeliveryRecord();
-        DeliveryTrackingRecord currentRecord = addedRecord.getCurrentRecord();
+		DeliveryRecord deliveryRecord = makeDeliveryRecord(list);
 
-        // then
-        assertEquals(deliveryTrackingRecord, currentRecord);
-    }
+		Input input = makeAddDeliveryTrackInput(deliveryRecord, deliveryTrackingRecord2);
 
-    private DeliveryTrackingRecord deliveryTrackingRecord1() {
-        return DeliveryTrackingRecord.newInstance(
-            new DeliveryTrackingRecordId(UUID.randomUUID()),
-            LocalDateTime.of(2025,5,1, 15,15),
-            new Location("HUB"),
-            DetailDeliveryState.SHIPPED,
-            "물류 허브에서 출고 되었습니다."
-        );
-    }
+		AddDeliveryTrackRecordDomainService service = new AddDeliveryTrackRecordDomainService();
 
-    private DeliveryTrackingRecord deliveryTrackingRecord2() {
-        return DeliveryTrackingRecord.newInstance(
-                new DeliveryTrackingRecordId(UUID.randomUUID()),
-                LocalDateTime.of(2025,5,1, 16,16),
-                new Location("LOCAL HUB"),
-                DetailDeliveryState.IN_DELIVERY,
-                "중간 허브를 거쳤습니다."
-        );
-    }
+		// when
+		Event event = service.execute(input);
 
-    private DeliveryTrackingRecord deliveryTrackingRecord3() {
-        return DeliveryTrackingRecord.newInstance(
-                new DeliveryTrackingRecordId(UUID.randomUUID()),
-                LocalDateTime.of(2025,5,1, 16,16),
-                new Location("배송지"),
-                DetailDeliveryState.DELIVERED,
-                "배송 완료"
-        );
-    }
+		// then
+		DeliveryRecord addedRecord = event.getDeliveryRecord();
+		DeliveryTrackingRecord currentRecord = addedRecord.getCurrentRecord();
 
-    private DeliveryRecord deliveryRecord() {
-        return DeliveryRecord.newInstance(
-            new DeliveryRecordId(UUID.randomUUID()),
-            new Address("111111","하늘로 111-111","구름아파트 111동 111호"),
-            new UserId(UUID.randomUUID()),
-            new ArrayList<>(List.of(deliveryTrackingRecord1(), deliveryTrackingRecord2()))
-        );
-    }
+		assertThat(currentRecord).isEqualTo(deliveryTrackingRecord2);
+	}
 
 }
