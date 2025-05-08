@@ -1,45 +1,47 @@
 package store.nightmarket.domain.delivery.service;
 
-import static org.assertj.core.api.Assertions.*;
 import static store.nightmarket.domain.delivery.service.dto.AddDeliveryTrackRecordDomainServiceDto.*;
 import static store.nightmarket.domain.delivery.util.DeliveryTestUtil.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import store.nightmarket.domain.delivery.exception.DeliveryException;
 import store.nightmarket.domain.delivery.model.DeliveryRecord;
 import store.nightmarket.domain.delivery.model.DeliveryTrackingRecord;
 import store.nightmarket.domain.delivery.state.DetailDeliveryState;
 
 public class AddDeliveryTrackRecordDomainServiceTest {
 
-	@Test
-	@DisplayName("배송 추적 기록 추가 시 현재 상태로 반영된다")
-	void addTrackingRecordShouldUpdateCurrentRecord() {
+	@ParameterizedTest
+	@MethodSource("validTransitions")
+	@DisplayName("허용된 상태 전이는 반드시 최신 상태를 반영해야 한다.")
+	void addTrackingRecordShouldUpdateCurrentRecord(DetailDeliveryState currentState, DetailDeliveryState nextState) {
 		// given
-		DeliveryTrackingRecord deliveryTrackingRecord1 = makeDeliveryTrackingRecord(
+		DeliveryTrackingRecord currentRecord = makeDeliveryTrackingRecord(
 			UUID.randomUUID(),
-			"출하지",
-			DetailDeliveryState.SHIPPED,
-			"재고가 출하 되었습니다."
+			"장소1",
+			currentState,
+			currentState.name()
 		);
-		DeliveryTrackingRecord deliveryTrackingRecord2 = makeDeliveryTrackingRecord(
+		DeliveryTrackingRecord nextRecord = makeDeliveryTrackingRecord(
 			UUID.randomUUID(),
-			"HUB",
-			DetailDeliveryState.IN_DELIVERY,
-			"물류 허브에 도착했습니다."
+			"장소2",
+			nextState,
+			nextState.name()
 		);
 
-		List<DeliveryTrackingRecord> list = new ArrayList<>();
-		list.add(deliveryTrackingRecord2);
+		DeliveryRecord deliveryRecord = makeDeliveryRecord(new ArrayList<>(List.of(currentRecord)));
 
-		DeliveryRecord deliveryRecord = makeDeliveryRecord(list);
-
-		Input input = makeAddDeliveryTrackInput(deliveryRecord, deliveryTrackingRecord2);
+		Input input = makeAddDeliveryTrackInput(deliveryRecord, nextRecord);
 
 		AddDeliveryTrackRecordDomainService service = new AddDeliveryTrackRecordDomainService();
 
@@ -47,10 +49,88 @@ public class AddDeliveryTrackRecordDomainServiceTest {
 		Event event = service.execute(input);
 
 		// then
-		DeliveryRecord addedRecord = event.getDeliveryRecord();
-		DeliveryTrackingRecord currentRecord = addedRecord.getCurrentRecord();
+		DeliveryRecord executedDeliveryRecord = event.getDeliveryRecord();
+		DeliveryTrackingRecord executedCurrentRecord = executedDeliveryRecord.getCurrentRecord();
 
-		assertThat(currentRecord).isEqualTo(deliveryTrackingRecord2);
+		SoftAssertions softly = new SoftAssertions();
+
+		softly.assertThat(executedCurrentRecord.getState()).isEqualTo(nextRecord.getState());
+		softly.assertThat(executedDeliveryRecord.getDeliveryTrackingRecordList().size()).isEqualTo(2);
+
+		softly.assertAll();
+	}
+
+	private static Stream<Arguments> validTransitions() {
+		return Stream.of(
+			Arguments.of(DetailDeliveryState.NONE, DetailDeliveryState.PREPARING),
+			Arguments.of(DetailDeliveryState.PREPARING, DetailDeliveryState.SHIPPED),
+			Arguments.of(DetailDeliveryState.SHIPPED, DetailDeliveryState.IN_DELIVERY),
+			Arguments.of(DetailDeliveryState.IN_DELIVERY, DetailDeliveryState.IN_DELIVERY),
+			Arguments.of(DetailDeliveryState.IN_DELIVERY, DetailDeliveryState.DELIVERED),
+			Arguments.of(DetailDeliveryState.DELIVERED, DetailDeliveryState.RETURNED)
+		);
+	}
+
+	@ParameterizedTest
+	@MethodSource("invalidTransitions")
+	@DisplayName("허용되지 않은 상태 전이는 예외를 던진다")
+	void throwExceptionWhenInvalidTransition(DetailDeliveryState currentState, DetailDeliveryState nextState) {
+		// given
+		DeliveryTrackingRecord currentRecord = makeDeliveryTrackingRecord(
+			UUID.randomUUID(),
+			"장소1",
+			currentState,
+			currentState.name()
+		);
+		DeliveryTrackingRecord nextRecord = makeDeliveryTrackingRecord(
+			UUID.randomUUID(),
+			"장소2",
+			nextState,
+			nextState.name()
+		);
+
+		DeliveryRecord deliveryRecord = makeDeliveryRecord(new ArrayList<>(List.of(currentRecord)));
+
+		Input input = makeAddDeliveryTrackInput(deliveryRecord, nextRecord);
+
+		AddDeliveryTrackRecordDomainService service = new AddDeliveryTrackRecordDomainService();
+
+		// when & then
+		SoftAssertions softly = new SoftAssertions();
+
+		softly.assertThatThrownBy(() -> service.execute(input))
+			.isInstanceOf(DeliveryException.class)
+			.hasMessageContaining("Cannot change to");
+
+		softly.assertAll();
+	}
+
+	private static Stream<Arguments> invalidTransitions() {
+		return Stream.of(
+			Arguments.of(DetailDeliveryState.PREPARING, DetailDeliveryState.PREPARING),
+			Arguments.of(DetailDeliveryState.SHIPPED, DetailDeliveryState.PREPARING),
+			Arguments.of(DetailDeliveryState.IN_DELIVERY, DetailDeliveryState.PREPARING),
+			Arguments.of(DetailDeliveryState.DELIVERED, DetailDeliveryState.PREPARING),
+			Arguments.of(DetailDeliveryState.CANCELLED, DetailDeliveryState.PREPARING),
+			Arguments.of(DetailDeliveryState.RETURNED, DetailDeliveryState.PREPARING),
+
+			Arguments.of(DetailDeliveryState.SHIPPED, DetailDeliveryState.SHIPPED),
+			Arguments.of(DetailDeliveryState.IN_DELIVERY, DetailDeliveryState.SHIPPED),
+			Arguments.of(DetailDeliveryState.DELIVERED, DetailDeliveryState.SHIPPED),
+			Arguments.of(DetailDeliveryState.CANCELLED, DetailDeliveryState.SHIPPED),
+			Arguments.of(DetailDeliveryState.RETURNED, DetailDeliveryState.SHIPPED),
+
+			Arguments.of(DetailDeliveryState.PREPARING, DetailDeliveryState.IN_DELIVERY),
+			Arguments.of(DetailDeliveryState.DELIVERED, DetailDeliveryState.IN_DELIVERY),
+			Arguments.of(DetailDeliveryState.CANCELLED, DetailDeliveryState.IN_DELIVERY),
+			Arguments.of(DetailDeliveryState.RETURNED, DetailDeliveryState.IN_DELIVERY),
+
+			Arguments.of(DetailDeliveryState.PREPARING, DetailDeliveryState.DELIVERED),
+			Arguments.of(DetailDeliveryState.SHIPPED, DetailDeliveryState.DELIVERED),
+			Arguments.of(DetailDeliveryState.DELIVERED, DetailDeliveryState.DELIVERED),
+			Arguments.of(DetailDeliveryState.CANCELLED, DetailDeliveryState.DELIVERED),
+			Arguments.of(DetailDeliveryState.RETURNED, DetailDeliveryState.DELIVERED)
+		);
 	}
 
 }
