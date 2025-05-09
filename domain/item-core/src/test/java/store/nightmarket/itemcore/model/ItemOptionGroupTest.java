@@ -2,64 +2,139 @@ package store.nightmarket.itemcore.model;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.itemcore.exception.ItemOptionException;
-import store.nightmarket.itemcore.fixture.TestObjectFactory;
+import store.nightmarket.itemcore.fixture.TestOptionFactory;
+import store.nightmarket.itemcore.fixture.TestUserOptionFactory;
 
 import java.util.List;
+import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ItemOptionGroupTest {
 
     @Test
-    @DisplayName("ItemOptionGroup성공적으로 객체가 생성된다.")
-    void shouldCreateItemOptionCombinationSuccessfully() {
-        ItemOptionGroup option = TestObjectFactory.defaultCombination();
+    @DisplayName("ItemOptionGroup, buyOptionGroup의 optionId가 다를때" +
+            " userGroup객체에는 빈 리스트 옵션이 생성된다,")
+    void shouldCreateUserOptionGroupWithEmptyListWhenGroupIdIsDifferent() {
+        ItemOptionGroup group = TestOptionFactory.defaultOptionGroup();
+        UserItemOptionGroup userItemOptionGroup = TestUserOptionFactory.defaultUserOptionGroup();
 
-        assertThat(option).isNotNull();
-        assertThat(option).isInstanceOf(ItemOptionGroup.class);
+        UserItemOptionGroup availableToBuy = group.isAvailableToBuy(userItemOptionGroup);
+        assertThat(availableToBuy.getUserItemOptions()).isEmpty();
+    }
+
+
+    @Test
+    @DisplayName("ItemOptionGroup, buyOptionGroup의 optionId가 같고 " +
+            "ItemOption Quantity가 buyOption Quantity 보다 크면 " +
+            "buyOption의 isPurchasable값이 true다")
+    void canPurchaseWhenValidOptionAndEnoughStock() {
+        ItemOptionTestData testData = createTestData(
+                100, 200, 300,
+                10, 20, 30
+        );
+
+        List<UserItemOption> userOptions = getAvailableToBuyOptions(testData);
+
+        assertThat(userOptions).hasSize(2);
+        assertThat(userOptions.get(0).getUserItemDetailOptions()).allMatch(UserItemDetailOption::isPurchasable);
+        assertThat(userOptions.get(1).getUserItemDetailOptions()).allMatch(UserItemDetailOption::isPurchasable);
     }
 
     @Test
-    @DisplayName("ItemOptionGroup의 모든 수량이 다른 ItemOptionGroup 보다 크거나 같으면 구매 가능하다.")
-    void shouldNotThrowExceptionWhenAllOptionQuantityIsGreaterThanOrOtherOptionQuantity() {
-        ItemOptionGroup combination = TestObjectFactory.defaultCombination();
-        ItemOptionGroup otherCombination = createEmptyStockGroup();
+    @DisplayName("ItemOptionGroup, buyOptionGroup의 optionId가 같고 " +
+            "ItemOption Quantity가 buyOption Quantity 보다 작으면 " +
+            "buyOption의 isPurchasable값이 false다")
+    void canNotPurchaseWhenValidOptionAndEnoughNotStock() {
+        ItemOptionTestData testData = createTestData(
+                100, 200, 300,
+                1000, 20, 3000
+        );
 
-        assertThatCode(() -> combination.isAvailableToBuy(otherCombination))
-                .doesNotThrowAnyException();
+        List<UserItemOption> userOptions = getAvailableToBuyOptions(testData);
+
+        assertThat(userOptions).hasSize(2);
+
+        List<UserItemDetailOption> colorOptions = userOptions.get(0).getUserItemDetailOptions();
+        List<UserItemDetailOption> cpuOptions = userOptions.get(1).getUserItemDetailOptions();
+
+        assertThat(colorOptions.get(0).isPurchasable()).isFalse();
+        assertThat(colorOptions.get(1).isPurchasable()).isTrue();
+        assertThat(cpuOptions.get(0).isPurchasable()).isFalse();
     }
 
-    @Test
-    @DisplayName("ItemOptionGroup 어떤 itemOption 수량이 다른 ItemOptionGroup의 옵션보다 작으면 구매 불가하다.")
-    void shouldThrowExceptionWhenAnyOptionQuantityIsLessThanOtherOptionQuantity() {
-        ItemOptionGroup combination = createEmptyStockGroup();
-        ItemOptionGroup otherCombination = TestObjectFactory.defaultCombination();
-
-        assertThatThrownBy(() -> combination.isAvailableToBuy(otherCombination))
-                .isInstanceOf(ItemOptionException.class);
-
+    private List<UserItemOption> getAvailableToBuyOptions(ItemOptionTestData data) {
+        return data.group.isAvailableToBuy(data.userGroup)
+                .getUserItemOptions();
     }
 
-    private ItemOptionGroup createEmptyStockGroup() {
-        return TestObjectFactory.createItemOptionGroup(
-                List.of(
-                        TestObjectFactory.createItemOption(
-                                "색상",
-                                List.of(
-                                        TestObjectFactory.createDetailOption("블랙", 1000, 100),
-                                        TestObjectFactory.createDetailOption("화이트", 2000, 200)
-                                )
-                        ),
-                        TestObjectFactory.createItemOption(
-                                "cpu",
-                                List.of(
-                                        TestObjectFactory.createDetailOption("4core", 20000, 0),
-                                        TestObjectFactory.createDetailOption("8core", 40000, 50)
-                                )
+    private ItemOptionTestData createTestData(
+            int blackQty,
+            int whiteQty,
+            int cpuQty,
+            int blackUserQty,
+            int whiteUserQty,
+            int cpuUserQty
+    ) {
+        UUID groupId = UUID.randomUUID();
+        UUID optionColorId = UUID.randomUUID();
+        UUID optionCpuId = UUID.randomUUID();
+        UUID blackId = UUID.randomUUID();
+        UUID whiteId = UUID.randomUUID();
+        UUID cpuId = UUID.randomUUID();
+
+        ItemOptionGroup group = TestOptionFactory.createItemOptionGroup(
+                groupId,
+                TestOptionFactory.createItemOption(
+                        optionColorId,
+                        "색깔",
+                        TestOptionFactory.createDetailOption(
+                                blackId,
+                                "검은색",
+                                1000,
+                                blackQty
+                        ), TestOptionFactory.createDetailOption(
+                                whiteId,
+                                "하얀색",
+                                2000,
+                                whiteQty
+                        )
+                ), TestOptionFactory.createItemOption(
+                        optionCpuId,
+                        "cpu",
+                        TestOptionFactory.createDetailOption(
+                                cpuId,
+                                "4코어",
+                                3000,
+                                cpuQty
                         )
                 )
         );
+
+        UserItemOptionGroup userGroup = TestUserOptionFactory.createUserItemOptionGroup(
+                groupId,
+                TestUserOptionFactory.createUserItemOption(
+                        optionColorId,
+                        TestUserOptionFactory.createUserItemDetailOption(
+                                blackId,
+                                blackUserQty
+                        ), TestUserOptionFactory.createUserItemDetailOption(
+                                whiteId,
+                                whiteUserQty
+                        )
+                ),
+                TestUserOptionFactory.createUserItemOption(
+                        optionCpuId,
+                        TestUserOptionFactory.createUserItemDetailOption(
+                                cpuId,
+                                cpuUserQty
+                        )
+                )
+        );
+
+        return new ItemOptionTestData(group, userGroup);
     }
+
+    private record ItemOptionTestData(ItemOptionGroup group, UserItemOptionGroup userGroup) {}
 
 }

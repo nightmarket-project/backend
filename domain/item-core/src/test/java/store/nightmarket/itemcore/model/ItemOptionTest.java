@@ -3,52 +3,133 @@ package store.nightmarket.itemcore.model;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.nightmarket.itemcore.exception.ItemOptionException;
-import store.nightmarket.itemcore.fixture.TestObjectFactory;
+import store.nightmarket.itemcore.fixture.TestOptionFactory;
+import store.nightmarket.itemcore.fixture.TestUserOptionFactory;
+import store.nightmarket.itemcore.valueobject.ItemOptionId;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ItemOptionTest {
 
     @Test
-    @DisplayName("ItemOption 성공적으로 객체가 생성된다")
-    void shouldCreateItemOptionGroupSuccessfully() {
-        ItemOption group = TestObjectFactory.defaultGroup();
+    @DisplayName("buyOption의 userItemDetailOptions가 빈 리스트일때 Optional.empty를 반환한다")
+    void shouldCreateOptionalEmptyWhenUserItemDetailOptionsIsEmpty() {
+        UUID optionId = UUID.randomUUID();
+        ItemOption option = TestOptionFactory.createItemOption(
+                optionId,
+                "색깔",
+                TestOptionFactory.defaultDetailOption()
+        );
+        UserItemOption userItemOption = UserItemOption.newInstance(
+                new ItemOptionId(optionId),
+                Collections.EMPTY_LIST
+        );
 
-        assertThat(group).isNotNull();
-        assertThat(group).isInstanceOf(ItemOption.class);
+        Optional<UserItemOption> availableToBuy = option.isAvailableToBuy(userItemOption);
+        assertThat(availableToBuy).isEqualTo(Optional.empty());
     }
 
     @Test
-    @DisplayName("ItemOption의 모든 옵션 수량이 다른 ItemOptionGroup 옵션 수량보다 크거나 같으면 구매 가능하다.")
-    void shouldNotThrowExceptionWhenAllOptionIsGreaterThanOrEqualOtherOption() {
-        ItemOption group = TestObjectFactory.defaultGroup();
+    @DisplayName("ItemOption, buyOption의 OptionId가 다르면 Optional empty를 반환한다.")
+    void shouldCreateOptionalEmptyWhenOptionIdIsDifferent() {
 
-        assertThatCode(() -> group.isAvailableToBuy(group))
-                .doesNotThrowAnyException();
+        ItemOption option = TestOptionFactory.defaultOption();
+        UserItemOption buyOption = TestUserOptionFactory.defaultUserOption();
+
+        Optional<UserItemOption> availableToBuy = option.isAvailableToBuy(buyOption);
+
+        assertThat(availableToBuy).isEqualTo(Optional.empty());
     }
 
     @Test
-    @DisplayName("ItemOption의 어떤 옵션 수량이 다른 ItemOptionGroup 옵션 수량보다 작으면 구매 불가능하다.")
-    void shouldThrowExceptionWhenAnyItemOptionIsLessThanOtherOption() {
-        ItemOption group = createEmptyStockOption();
-        ItemOption otherGroup = TestObjectFactory.defaultGroup();
+    @DisplayName("ItemOption, buyOption의 optionId가 같고 " +
+            "ItemOption Quantity가 buyOption Quantity 보다 크면 " +
+            "buyOption의 isPurchasable값이 true다")
+    void canPurchaseWhenValidOptionAndEnoughStock() {
+        ItemOptionTestData testData = createTestData(
+                10, 10,
+                2, 2
+        );
 
+        List<UserItemDetailOption> userDetailOptions = getAvailableToBuyOptions(testData);
 
-        assertThatThrownBy(() -> group.isAvailableToBuy(otherGroup))
-                .isInstanceOf(ItemOptionException.class);
+        assertThat(userDetailOptions).hasSize(2);
+        for (UserItemDetailOption option : userDetailOptions) {
+            assertThat(option.isPurchasable()).isTrue();
+        }
     }
 
-    private ItemOption createEmptyStockOption() {
-        return TestObjectFactory.createItemOption(
-                "색상",
-                List.of(
-                        TestObjectFactory.createDetailOption("블랙", 1000, 0),
-                        TestObjectFactory.createDetailOption("화이트", 2000, 0)
+    @Test
+    @DisplayName("ItemOption, buyOption의 optionId가 같고 " +
+            "ItemOption Quantity가 buyOption Quantity 보다 작으면 " +
+            "buyOption의 isPurchasable값이 false다")
+    void canNotPurchaseWhenValidOptionAndNotEnoughStock() {
+        ItemOptionTestData testData = createTestData(
+                10, 10,
+                2, 20
+        );
+
+        List<UserItemDetailOption> userDetailOptions = getAvailableToBuyOptions(testData);
+
+        assertThat(userDetailOptions).hasSize(2);
+        assertThat(userDetailOptions.get(0).isPurchasable()).isTrue();
+        assertThat(userDetailOptions.get(1).isPurchasable()).isFalse();
+    }
+
+    private List<UserItemDetailOption> getAvailableToBuyOptions(
+            ItemOptionTestData testData
+    ) {
+        return testData.option.isAvailableToBuy(testData.userOption)
+                .orElseThrow(() -> new ItemOptionException("옵션 불일치"))
+                .getUserItemDetailOptions();
+    }
+
+    private ItemOptionTestData createTestData(
+            int blackQty,
+            int whiteQty,
+            int blackUserQty,
+            int whiteUserQty
+    ) {
+        UUID optionColorId = UUID.randomUUID();
+        UUID blackId = UUID.randomUUID();
+        UUID whiteId = UUID.randomUUID();
+
+        ItemOption itemOption = TestOptionFactory.createItemOption(
+                optionColorId,
+                "색깔",
+                TestOptionFactory.createDetailOption(
+                        blackId,
+                        "검은색",
+                        1000,
+                        blackQty
+                ), TestOptionFactory.createDetailOption(
+                        whiteId,
+                        "하얀색",
+                        2000,
+                        whiteQty
                 )
         );
+
+        UserItemOption userItemOption = TestUserOptionFactory.createUserItemOption(
+                optionColorId,
+                TestUserOptionFactory.createUserItemDetailOption(
+                        blackId,
+                        blackUserQty
+                ), TestUserOptionFactory.createUserItemDetailOption(
+                        whiteId,
+                        whiteUserQty
+                )
+        );
+
+        return new ItemOptionTestData(itemOption, userItemOption);
     }
 
+    private record ItemOptionTestData(ItemOption option, UserItemOption userOption) {
+    }
 
 }

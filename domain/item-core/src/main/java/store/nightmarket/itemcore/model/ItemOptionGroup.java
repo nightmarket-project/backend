@@ -1,45 +1,55 @@
 package store.nightmarket.itemcore.model;
 
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemcore.valueobject.ItemId;
 import store.nightmarket.itemcore.valueobject.ItemOptionGroupId;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
 
-    private ItemId itemId;
     private List<ItemOption> itemOptions;
 
     private ItemOptionGroup(
             ItemOptionGroupId id,
-            ItemId itemId,
-            List<ItemOption> itemOptions) {
+            List<ItemOption> itemOptions
+    ) {
         super(id);
-        this.itemId = itemId;
         this.itemOptions = itemOptions;
     }
 
     public static ItemOptionGroup newInstance(
             ItemOptionGroupId id,
-            ItemId itemId,
             List<ItemOption> itemOptions
     ) {
         return new ItemOptionGroup(
                 id,
-                itemId,
                 itemOptions
         );
     }
 
-    public void isAvailableToBuy(ItemOptionGroup buyCombination) {
-        for (int i = 0; i < itemOptions.size(); i++) {
-            ItemOption itemOption = itemOptions.get(i);
-            ItemOption itemOptionUserBuy = buyCombination.itemOptions.get(i);
+    public UserItemOptionGroup isAvailableToBuy(
+            UserItemOptionGroup buyGroup
+    ) {
+        List<UserItemOption> availableOptions = filterPurchasableOptions(buyGroup);
 
-            itemOption.isAvailableToBuy(itemOptionUserBuy);
-        }
+        return UserItemOptionGroup.newInstance(
+                buyGroup.getOptionGroupId(),
+                availableOptions
+        );
+    }
+
+    private List<UserItemOption> filterPurchasableOptions(UserItemOptionGroup buyGroup) {
+        List<UserItemOption> userItemOptions = buyGroup.getUserItemOptions();
+
+        return itemOptions.stream()
+                .flatMap(itemOption ->
+                        userItemOptions.stream()
+                                .map(itemOption::isAvailableToBuy)
+                                .flatMap(Optional::stream))
+                .collect(Collectors.toList());
     }
 
 }

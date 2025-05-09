@@ -1,11 +1,12 @@
 package store.nightmarket.itemcore.model;
 
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemcore.exception.ItemOptionException;
 import store.nightmarket.itemcore.valueobject.ItemDetailOptionId;
 import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.Price;
 import store.nightmarket.itemcore.valueobject.Quantity;
+
+import java.util.Optional;
 
 public class ItemDetailOption extends BaseModel<ItemDetailOptionId> {
 
@@ -34,10 +35,26 @@ public class ItemDetailOption extends BaseModel<ItemDetailOptionId> {
         return new ItemDetailOption(id, name, price, quantity);
     }
 
-    public void isAvailableToBuy(ItemDetailOption buyOption) {
-        if (!quantity.isGreaterThanOrEqualTo(buyOption.quantity)) {
-            throw new ItemOptionException("해당 옵션은 수량 부족으로 구매 불가합니다. 옵션 이름: " + name.getValue());
+    private ItemDetailOptionId getDetailOptionId() {
+        return internalId();
+    }
+
+    public Optional<UserItemDetailOption> isAvailableToBuy(UserItemDetailOption buyOption) {
+        if(!this.getDetailOptionId().equals(buyOption.getDetailOptionId())) {
+            return Optional.empty();
         }
+
+        updatePurchasableStatus(buyOption);
+
+        return Optional.of(buyOption);
+    }
+
+    private void updatePurchasableStatus(UserItemDetailOption buyOption) {
+        if (!quantity.isGreaterThanOrEqualTo(buyOption.getQuantity())) {
+            buyOption.markAsNotPurchasable();
+            return;
+        }
+        buyOption.markAsPurchasable();
     }
 
 }

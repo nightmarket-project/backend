@@ -8,4 +8,7 @@ public abstract class BaseModel<IdType> {
 		this.id = id;
 	}
 
+	protected IdType internalId() {
+		return id;
+	}
 }

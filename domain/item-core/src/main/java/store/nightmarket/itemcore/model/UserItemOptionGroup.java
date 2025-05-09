@@ -1,36 +1,37 @@
 package store.nightmarket.itemcore.model;
 
+import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.itemcore.valueobject.ItemId;
 import store.nightmarket.itemcore.valueobject.ItemOptionGroupId;
 
 import java.util.List;
 
+@Getter
 public class UserItemOptionGroup extends BaseModel<ItemOptionGroupId> {
 
-    private ItemId itemId;
-    private List<ItemOption> itemOptions;
+    private List<UserItemOption> userItemOptions;
 
     private UserItemOptionGroup(
             ItemOptionGroupId groupId,
-            ItemId itemId,
-            List<ItemOption> itemOptions
+            List<UserItemOption> userItemOptions
     ) {
         super(groupId);
-        this.itemId = itemId;
-        this.itemOptions = itemOptions;
+        this.userItemOptions = userItemOptions;
     }
 
-    private UserItemOptionGroup newInstance(
+    public static UserItemOptionGroup newInstance(
             ItemOptionGroupId groupId,
-            ItemId itemId,
-            List<ItemOption> itemOptions
+            List<UserItemOption> userItemOptions
     ) {
         return new UserItemOptionGroup(
                 groupId,
-                itemId,
-                itemOptions
+                userItemOptions
         );
+    }
+
+    public ItemOptionGroupId getOptionGroupId() {
+        return internalId();
     }
 
 }

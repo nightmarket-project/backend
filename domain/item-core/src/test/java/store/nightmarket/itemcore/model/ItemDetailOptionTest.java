@@ -3,31 +3,65 @@ package store.nightmarket.itemcore.model;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.nightmarket.itemcore.exception.ItemOptionException;
-import store.nightmarket.itemcore.fixture.TestObjectFactory;
+import store.nightmarket.itemcore.fixture.TestOptionFactory;
+import store.nightmarket.itemcore.fixture.TestUserOptionFactory;
+
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ItemDetailOptionTest {
 
     @Test
-    @DisplayName("ItemDetailOption은 이름, 가격, 수량로 생성된다")
-    void shouldCreateItemOptionWithNamePriceQuantity() {
-        ItemDetailOption itemDetailOption = TestObjectFactory.defaultOption();
+    @DisplayName("ItemDetailOption, buyDetailOption의 detailOptionId가 다르면 Optional empty를 반환한다.")
+    void shouldCreateOptionalEmptyWhenOptionIdIsDifferent() {
+        ItemDetailOption itemDetailOption = TestOptionFactory.defaultDetailOption();
+        UserItemDetailOption buyDetailOption = TestUserOptionFactory.defaultUserDetailOption();
 
-        assertThat(itemDetailOption).isNotNull();
-        assertThat(itemDetailOption).isInstanceOf(ItemDetailOption.class);
+        Optional<UserItemDetailOption> availableToBuy = itemDetailOption.isAvailableToBuy(buyDetailOption);
+
+        assertThat(availableToBuy).isEqualTo(Optional.empty());
     }
 
     @Test
-    @DisplayName("ItemDetailOption이 구매하고 싶은 ItemOption Quantity 보다 작으면 구매할 수 없다.")
-    void shouldThrowExceptionWhenOptionIsLessThanOtherOption() {
-        ItemDetailOption itemDetailOption = TestObjectFactory.createDetailOption("블랙", 1000, 0);
-        ItemDetailOption buyItemDetailOption = TestObjectFactory.defaultOption();
+    @DisplayName("ItemOption, buyDetailOption의 detailOptionId가 같고 " +
+            "ItemOption Quantity가 buyOption Quantity 보다 크면 " +
+            "buyOption의 isPurchasable값이 true다")
+    void canPurchaseWhenValidOptionAndEnoughStock() {
+        UUID optionId = UUID.randomUUID();
 
-        assertThatThrownBy(() -> itemDetailOption.isAvailableToBuy(buyItemDetailOption))
-                .isInstanceOf(ItemOptionException.class);
+        ItemDetailOption option = TestOptionFactory.createDetailOption(
+                optionId,"블랙", 1000, 10
+        );
+        UserItemDetailOption buyOption = TestUserOptionFactory.createUserItemDetailOption(
+                optionId, 10
+        );
+
+        UserItemDetailOption isPurchasableOption = option.isAvailableToBuy(buyOption)
+                .orElseThrow(() -> new ItemOptionException("option id 불일치"));
+
+        assertThat(isPurchasableOption.isPurchasable()).isTrue();
     }
 
+    @Test
+    @DisplayName("ItemOption, buyDetailOption의 detailOptionId가 같고 " +
+            "ItemOption Quantity가 buyOption Quantity 보다 작으면 " +
+            "buyOption을 Optional로 감싸서 반환한다.")
+    void canNotPurchaseWhenValidOptionAndNotEnoughStock() {
+        UUID optionId = UUID.randomUUID();
+
+        ItemDetailOption option = TestOptionFactory.createDetailOption(
+                optionId,"블랙", 1000, 1
+        );
+        UserItemDetailOption buyOption = TestUserOptionFactory.createUserItemDetailOption(
+                optionId, 10
+        );
+
+        UserItemDetailOption isPurchasableOption = option.isAvailableToBuy(buyOption)
+                .orElseThrow(() -> new ItemOptionException("option id 불일치"));
+
+        assertThat(isPurchasableOption.isPurchasable()).isFalse();
+    }
 
 }
