@@ -48,15 +48,6 @@ public class TestOptionFactory {
         );
     }
 
-    public static ItemDetailOption defaultDetailOption() {
-        return createDetailOption(
-                UUID.randomUUID(),
-                "블랙",
-                1000,
-                100
-        );
-    }
-
     public static ItemOption defaultOption() {
         return createItemOption(
                 UUID.randomUUID(),
@@ -75,27 +66,5 @@ public class TestOptionFactory {
 
         );
     }
-
-    public static ItemOptionGroup defaultOptionGroup() {
-        return createItemOptionGroup(
-                UUID.randomUUID(),
-                defaultOption(),
-                createItemOption(
-                        UUID.randomUUID(),
-                        "cpu",
-                        createDetailOption(
-                                UUID.randomUUID(),
-                                "4core",
-                                20000,
-                                100
-                        ), createDetailOption(
-                                UUID.randomUUID(),
-                                "8core",
-                                40000,
-                                500
-                        )
-                )
-        );
-    }
-
+    
 }

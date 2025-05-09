@@ -2,7 +2,6 @@ package store.nightmarket.itemcore.model;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemcore.valueobject.ItemId;
 import store.nightmarket.itemcore.valueobject.ItemOptionGroupId;
 
 import java.util.List;

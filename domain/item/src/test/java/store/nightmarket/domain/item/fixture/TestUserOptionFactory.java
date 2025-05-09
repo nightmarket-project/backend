@@ -60,12 +60,4 @@ public class TestUserOptionFactory {
         );
     }
 
-    public static UserItemOptionGroup defaultUserOptionGroup() {
-        return createUserItemOptionGroup(
-                UUID.randomUUID(),
-                defaultUserOption(),
-                defaultUserOption()
-        );
-    }
-
 }

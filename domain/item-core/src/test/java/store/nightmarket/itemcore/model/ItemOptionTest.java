@@ -27,7 +27,7 @@ class ItemOptionTest {
         );
         UserItemOption userItemOption = UserItemOption.newInstance(
                 new ItemOptionId(optionId),
-                Collections.EMPTY_LIST
+                Collections.emptyList()
         );
 
         Optional<UserItemOption> availableToBuy = option.isAvailableToBuy(userItemOption);

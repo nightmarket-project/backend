@@ -6,7 +6,6 @@ import store.nightmarket.domain.item.exception.ProductItemException;
 import store.nightmarket.domain.item.fixture.TestItemFactory;
 import store.nightmarket.itemcore.model.UserItemDetailOption;
 import store.nightmarket.itemcore.model.UserItemOption;
-import store.nightmarket.itemcore.model.UserItemOptionGroup;
 
 import java.util.List;
 import java.util.Optional;

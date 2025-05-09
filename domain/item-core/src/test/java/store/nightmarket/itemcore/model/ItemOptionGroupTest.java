@@ -60,7 +60,7 @@ class ItemOptionGroupTest {
 
         assertThat(colorOptions.get(0).isPurchasable()).isFalse();
         assertThat(colorOptions.get(1).isPurchasable()).isTrue();
-        assertThat(cpuOptions.get(0).isPurchasable()).isFalse();
+        assertThat(cpuOptions.getFirst().isPurchasable()).isFalse();
     }
 
     private List<UserItemOption> getAvailableToBuyOptions(ItemOptionTestData data) {
