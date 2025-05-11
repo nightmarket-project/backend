@@ -1,0 +1,63 @@
+package store.nightmarket.domain.delivery.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import lombok.Getter;
+import store.nightmarket.common.domain.model.BaseModel;
+import store.nightmarket.domain.delivery.exception.DeliveryException;
+import store.nightmarket.domain.delivery.state.DetailDeliveryState;
+import store.nightmarket.domain.delivery.valueobject.Address;
+import store.nightmarket.domain.delivery.valueobject.DeliveryRecordId;
+import store.nightmarket.domain.delivery.valueobject.UserId;
+
+@Getter
+public class DeliveryRecord extends BaseModel<DeliveryRecordId> {
+
+	private Address address;
+	private UserId userId;
+	private List<DeliveryTrackingRecord> deliveryTrackingRecordList;
+
+	public DeliveryRecord(
+		DeliveryRecordId id,
+		Address address,
+		UserId userId,
+		List<DeliveryTrackingRecord> deliveryTrackingRecordList
+	) {
+
+		super(id);
+		this.address = address;
+		this.userId = userId;
+		this.deliveryTrackingRecordList =
+			deliveryTrackingRecordList != null ? deliveryTrackingRecordList : new ArrayList<DeliveryTrackingRecord>();
+	}
+
+	public static DeliveryRecord newInstance(
+		DeliveryRecordId id,
+		Address address,
+		UserId userId,
+		List<DeliveryTrackingRecord> deliveryTrackingRecordList
+	) {
+
+		return new DeliveryRecord(
+			id,
+			address,
+			userId,
+			deliveryTrackingRecordList
+		);
+	}
+
+	public DeliveryTrackingRecord getCurrentRecord() {
+		return deliveryTrackingRecordList.isEmpty() ? null : deliveryTrackingRecordList.getLast();
+	}
+
+	public void addDeliveryTrackingRecord(DeliveryTrackingRecord record) {
+		DetailDeliveryState curState = getCurrentRecord().getState();
+		DetailDeliveryState nextState = record.getState();
+		if (!curState.canTransitionTo(nextState)) {
+			throw new DeliveryException("Cannot change to " + nextState.toString() + " state");
+		}
+		this.deliveryTrackingRecordList.add(record);
+	}
+
+}
