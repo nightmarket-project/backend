@@ -15,15 +15,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class PostContentTest {
 
     @Test
-    @DisplayName("PostContent 생성 테스트 ")
-    void shouldCreatePostContentSuccessfully() {
-        PostContent postContent = TestObjectFactory.defaultPostContent();
-
-        assertThat(postContent).isNotNull();
-        assertThat(postContent).isInstanceOf(PostContent.class);
-    }
-
-    @Test
     @DisplayName("PostContent text가 빈 문자열을 가지면 예외 발생한다.")
     void shouldThrowExceptionWhenTextIsBlank() {
         assertThatThrownBy(

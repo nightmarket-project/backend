@@ -5,19 +5,9 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.fixture.TestObjectFactory;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ReplyTest {
-
-    @Test
-    @DisplayName("Reply 생성 테스트")
-    void shouldCreateReplySuccessfully() {
-        Reply reply = TestObjectFactory.defaultReply();
-
-        assertThat(reply).isNotNull();
-        assertThat(reply).isInstanceOf(Reply.class);
-    }
 
     @Test
     @DisplayName("Reply content가 blank면 예외 발생")

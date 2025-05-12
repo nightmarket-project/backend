@@ -10,15 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ProductPostIdTest {
 
     @Test
-    @DisplayName("ProductPostId 생성 테스트")
-    void shouldCreateProductPostIdSuccessfully() {
-        ProductPostId productPostId = new ProductPostId(UUID.randomUUID());
-
-        assertThat(productPostId).isNotNull();
-        assertThat(productPostId).isInstanceOf(ProductPostId.class);
-    }
-
-    @Test
     @DisplayName("같은 UUID로 생성한 ItemId는 equals 비교에서 같다")
     void shouldBeEqualWhenUUIDsAreEqual() {
         UUID id = UUID.randomUUID();

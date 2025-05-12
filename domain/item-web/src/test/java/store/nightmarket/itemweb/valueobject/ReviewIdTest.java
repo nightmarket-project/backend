@@ -10,15 +10,6 @@ import static org.assertj.core.api.Assertions.*;
 class ReviewIdTest {
 
     @Test
-    @DisplayName("ReviewId 생성 테스트")
-    void shouldCreateReviewIdSuccessfully() {
-        ReviewId ReviewId = new ReviewId(UUID.randomUUID());
-
-        assertThat(ReviewId).isNotNull();
-        assertThat(ReviewId).isInstanceOf(ReviewId.class);
-    }
-
-    @Test
     @DisplayName("같은 UUID로 생성한 ItemId는 equals 비교에서 같다")
     void shouldBeEqualWhenUUIDsAreEqual() {
         UUID id = UUID.randomUUID();

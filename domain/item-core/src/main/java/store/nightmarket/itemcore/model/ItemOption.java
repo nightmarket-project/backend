@@ -36,8 +36,8 @@ public class ItemOption extends BaseModel<ItemOptionId> {
     }
 
     public Optional<UserItemOption> isAvailableToBuy(UserItemOption buyGroup) {
-        if(!getOptionId().equals(buyGroup.getOptionId()) ||
-                buyGroup.getUserItemDetailOptions().isEmpty()) {
+        if(!getOptionId().equals(buyGroup.getOptionId())
+                || buyGroup.getUserItemDetailOptions().isEmpty()) {
             return Optional.empty();
         }
 
