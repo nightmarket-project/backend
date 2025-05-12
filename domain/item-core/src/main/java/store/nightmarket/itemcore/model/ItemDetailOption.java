@@ -50,11 +50,12 @@ public class ItemDetailOption extends BaseModel<ItemDetailOptionId> {
     }
 
     private void updatePurchasableStatus(UserItemDetailOption buyOption) {
-        if (!quantity.isGreaterThanOrEqualTo(buyOption.getQuantity())) {
-            buyOption.markAsNotPurchasable();
+        if (quantity.isGreaterThanOrEqualTo(buyOption.getQuantity())) {
+            buyOption.markAsPurchasable();
             return;
         }
-        buyOption.markAsPurchasable();
+        buyOption.markAsNotPurchasable();
+
     }
 
 }
