@@ -12,17 +12,22 @@ class ReplyTest {
     @Test
     @DisplayName("Reply content가 blank면 예외 발생")
     void shouldThrowExceptionWhenReplyContentIsBlank() {
+        //given
+        String replyContent = " ";
 
+        //when & then
         assertThatThrownBy(
-                () -> TestObjectFactory.createReply(" ")
+                () -> TestObjectFactory.createReply(replyContent)
         ).isInstanceOf(ItemWebException.class);
     }
 
     @Test
     @DisplayName("Reply content의 최대 길이보다 크면 예외 발생")
     void shouldThrowExceptionWhenReplyContentIsLongerThanMaxLength() {
+        //given
         String content = "a".repeat(256);
 
+        //when & then
         assertThatThrownBy(
                 () -> TestObjectFactory.createReply(content)
         ).isInstanceOf(ItemWebException.class);

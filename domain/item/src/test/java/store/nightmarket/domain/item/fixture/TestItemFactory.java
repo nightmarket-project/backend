@@ -221,10 +221,6 @@ public class TestItemFactory {
         return new ProductItemTestData(productItem, userProductItem);
     }
 
-    public static Optional<UserProductItem> getAvailableToBuyItem(ProductItemTestData data) {
-        return data.productItem.isAvailableToBuy(data.userProductItem);
-    }
-
     public static class ProductItemTestData {
         final ProductItem productItem;
         final UserProductItem userProductItem;
@@ -242,4 +238,5 @@ public class TestItemFactory {
             return userProductItem;
         }
     }
+
 }

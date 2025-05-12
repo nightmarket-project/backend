@@ -88,16 +88,4 @@ public class TestObjectFactory {
         );
     }
 
-    public static ProductPost defaultProductPost() {
-        return ProductPost.newInstance(
-                new ProductPostId(UUID.randomUUID()),
-                new ItemId(UUID.randomUUID()),
-                defaultPostContent(),
-                List.of(
-                        defaultReview(),
-                        defaultReview()
-                )
-        );
-    }
-
 }

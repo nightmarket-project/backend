@@ -1,5 +1,7 @@
 package store.nightmarket.itemcore.model;
 
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.nightmarket.itemcore.fixture.TestOptionFactory;
@@ -12,14 +14,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ItemOptionGroupTest {
 
+    private SoftAssertions softly;
+
+    @BeforeEach
+    void setUp() {
+        softly = new SoftAssertions();
+    }
+
     @Test
     @DisplayName("ItemOptionGroup, buyOptionGroup의 optionId가 다를때" +
             " userGroup객체에는 빈 리스트 옵션이 생성된다,")
     void shouldCreateUserOptionGroupWithEmptyListWhenGroupIdIsDifferent() {
+        //given
         ItemOptionGroup group = TestOptionFactory.defaultOptionGroup();
         UserItemOptionGroup userItemOptionGroup = TestUserOptionFactory.defaultUserOptionGroup();
 
+        //when
         UserItemOptionGroup availableToBuy = group.isAvailableToBuy(userItemOptionGroup);
+
+        //then
         assertThat(availableToBuy.getUserItemOptions()).isEmpty();
     }
 
@@ -29,16 +42,21 @@ class ItemOptionGroupTest {
             "ItemOption Quantity가 buyOption Quantity 보다 크면 " +
             "buyOption의 isPurchasable값이 true다")
     void canPurchaseWhenValidOptionAndEnoughStock() {
+        //given
         ItemOptionTestData testData = createTestData(
                 100, 200, 300,
                 10, 20, 30
         );
 
-        List<UserItemOption> userOptions = getAvailableToBuyOptions(testData);
+        //when
+        List<UserItemOption> userOptions = testData.group.isAvailableToBuy(testData.userGroup)
+                .getUserItemOptions();
 
-        assertThat(userOptions).hasSize(2);
-        assertThat(userOptions.get(0).getUserItemDetailOptions()).allMatch(UserItemDetailOption::isPurchasable);
-        assertThat(userOptions.get(1).getUserItemDetailOptions()).allMatch(UserItemDetailOption::isPurchasable);
+        //then
+        softly.assertThat(userOptions).hasSize(2);
+        softly.assertThat(userOptions.get(0).getUserItemDetailOptions()).allMatch(UserItemDetailOption::isPurchasable);
+        softly.assertThat(userOptions.get(1).getUserItemDetailOptions()).allMatch(UserItemDetailOption::isPurchasable);
+        softly.assertAll();
     }
 
     @Test
@@ -46,26 +64,24 @@ class ItemOptionGroupTest {
             "ItemOption Quantity가 buyOption Quantity 보다 작으면 " +
             "buyOption의 isPurchasable값이 false다")
     void canNotPurchaseWhenValidOptionAndEnoughNotStock() {
+        //given
         ItemOptionTestData testData = createTestData(
                 100, 200, 300,
                 1000, 20, 3000
         );
 
-        List<UserItemOption> userOptions = getAvailableToBuyOptions(testData);
-
-        assertThat(userOptions).hasSize(2);
-
+        //when
+        List<UserItemOption> userOptions = testData.group.isAvailableToBuy(testData.userGroup)
+                .getUserItemOptions();
         List<UserItemDetailOption> colorOptions = userOptions.get(0).getUserItemDetailOptions();
         List<UserItemDetailOption> cpuOptions = userOptions.get(1).getUserItemDetailOptions();
 
-        assertThat(colorOptions.get(0).isPurchasable()).isFalse();
-        assertThat(colorOptions.get(1).isPurchasable()).isTrue();
-        assertThat(cpuOptions.getFirst().isPurchasable()).isFalse();
-    }
-
-    private List<UserItemOption> getAvailableToBuyOptions(ItemOptionTestData data) {
-        return data.group.isAvailableToBuy(data.userGroup)
-                .getUserItemOptions();
+        //then
+         softly.assertThat(userOptions).hasSize(2);
+         softly.assertThat(colorOptions.get(0).isPurchasable()).isFalse();
+         softly.assertThat(colorOptions.get(1).isPurchasable()).isTrue();
+         softly.assertThat(cpuOptions.getFirst().isPurchasable()).isFalse();
+         softly.assertAll();
     }
 
     private ItemOptionTestData createTestData(
@@ -135,6 +151,7 @@ class ItemOptionGroupTest {
         return new ItemOptionTestData(group, userGroup);
     }
 
-    private record ItemOptionTestData(ItemOptionGroup group, UserItemOptionGroup userGroup) {}
+    private record ItemOptionTestData(ItemOptionGroup group, UserItemOptionGroup userGroup) {
+    }
 
 }

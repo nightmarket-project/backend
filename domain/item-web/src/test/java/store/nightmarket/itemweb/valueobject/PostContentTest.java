@@ -17,10 +17,15 @@ class PostContentTest {
     @Test
     @DisplayName("PostContent text가 빈 문자열을 가지면 예외 발생한다.")
     void shouldThrowExceptionWhenTextIsBlank() {
+        //given
+        String blankText = " ";
+        Image image = TestObjectFactory.defaultImage();
+
+        //when & then
         assertThatThrownBy(
                 () -> TestObjectFactory.createPostContent(
-                        " ",
-                        List.of(TestObjectFactory.defaultImage())
+                        blankText,
+                        List.of(image)
                 )
         ).isInstanceOf(ItemWebException.class);
     }
@@ -28,11 +33,15 @@ class PostContentTest {
     @Test
     @DisplayName("PostContent text 최대 문자 길이보다 크면 예외 발생")
     void shouldThrowExceptionWhenTextIsBiggerThanMaxLength() {
+        //given
         String text = "a".repeat(256);
+        Image image = TestObjectFactory.defaultImage();
+
+        //when & then
         assertThatThrownBy(
                 () -> TestObjectFactory.createPostContent(
                         text,
-                        List.of(TestObjectFactory.defaultImage())
+                        List.of(image)
                 )
         ).isInstanceOf(ItemWebException.class);
     }
@@ -40,34 +49,46 @@ class PostContentTest {
     @Test
     @DisplayName("PostContent Image 최대 개수보다 크면 예외 발생")
     void shouldThrowExceptionWhenImageQuantityIsBiggerThanMaxQuantity() {
+        //given
+        String text = "hello";
         List<Image> images = IntStream.range(0, 11)
                 .mapToObj(i -> TestObjectFactory.defaultImage())
                 .collect(Collectors.toList());
+
+        //when & then
         assertThatThrownBy(
-                () -> TestObjectFactory.createPostContent("hello", images)
+                () -> TestObjectFactory.createPostContent(text, images)
         ).isInstanceOf(ItemWebException.class);
     }
 
     @Test
     @DisplayName("같은 text와 images로 생성한 PostContent은 equals 비교에서 같다")
     void shouldBeEqualWhenTextAndImagesAreEqual() {
+        //given
         String text = "equal";
         Image image = TestObjectFactory.defaultImage();
+
+        //when
         PostContent postContent1 = new PostContent(text, List.of(image));
         PostContent postContent2 = new PostContent(text, List.of(image));
 
+        //then
         assertThat(postContent1).isEqualTo(postContent2);
     }
 
     @Test
     @DisplayName("PostContent 어떤 text, images가 다르면 equals 비교에서 다르다")
     void shouldNotBeEqualWhenAnyTextAndAnyImagesAreNotEqual() {
+        //given
         String text1 = "notEqual1";
         String text2 = "notEqual2";
         Image image = TestObjectFactory.defaultImage();
+
+        //when
         PostContent postContent1 = new PostContent(text1, List.of(image));
         PostContent postContent2 = new PostContent(text2, List.of(image));
 
+        //then
         assertThat(postContent1).isNotEqualTo(postContent2);
     }
 

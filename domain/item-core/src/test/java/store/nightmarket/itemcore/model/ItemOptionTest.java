@@ -1,5 +1,7 @@
 package store.nightmarket.itemcore.model;
 
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.nightmarket.itemcore.exception.ItemOptionException;
@@ -16,9 +18,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ItemOptionTest {
 
+    private SoftAssertions softly;
+
+    @BeforeEach
+    void setUp() {
+        softly = new SoftAssertions();
+    }
+
     @Test
     @DisplayName("buyOption의 userItemDetailOptions가 빈 리스트일때 Optional.empty를 반환한다")
     void shouldCreateOptionalEmptyWhenUserItemDetailOptionsIsEmpty() {
+        //given
         UUID optionId = UUID.randomUUID();
         ItemOption option = TestOptionFactory.createItemOption(
                 optionId,
@@ -30,19 +40,24 @@ class ItemOptionTest {
                 Collections.emptyList()
         );
 
+        //when
         Optional<UserItemOption> availableToBuy = option.isAvailableToBuy(userItemOption);
+
+        //then
         assertThat(availableToBuy).isEqualTo(Optional.empty());
     }
 
     @Test
     @DisplayName("ItemOption, buyOption의 OptionId가 다르면 Optional empty를 반환한다.")
     void shouldCreateOptionalEmptyWhenOptionIdIsDifferent() {
-
+        //given
         ItemOption option = TestOptionFactory.defaultOption();
         UserItemOption buyOption = TestUserOptionFactory.defaultUserOption();
 
+        //when
         Optional<UserItemOption> availableToBuy = option.isAvailableToBuy(buyOption);
 
+        //then
         assertThat(availableToBuy).isEqualTo(Optional.empty());
     }
 
@@ -51,17 +66,21 @@ class ItemOptionTest {
             "ItemOption Quantity가 buyOption Quantity 보다 크면 " +
             "buyOption의 isPurchasable값이 true다")
     void canPurchaseWhenValidOptionAndEnoughStock() {
+        //given
         ItemOptionTestData testData = createTestData(
                 10, 10,
                 2, 2
         );
 
+        //when
         List<UserItemDetailOption> userDetailOptions = getAvailableToBuyOptions(testData);
 
-        assertThat(userDetailOptions).hasSize(2);
+        //then
+       softly.assertThat(userDetailOptions).hasSize(2);
         for (UserItemDetailOption option : userDetailOptions) {
-            assertThat(option.isPurchasable()).isTrue();
+            softly.assertThat(option.isPurchasable()).isTrue();
         }
+        softly.assertAll();
     }
 
     @Test
@@ -76,9 +95,10 @@ class ItemOptionTest {
 
         List<UserItemDetailOption> userDetailOptions = getAvailableToBuyOptions(testData);
 
-        assertThat(userDetailOptions).hasSize(2);
-        assertThat(userDetailOptions.get(0).isPurchasable()).isTrue();
-        assertThat(userDetailOptions.get(1).isPurchasable()).isFalse();
+        softly.assertThat(userDetailOptions).hasSize(2);
+        softly.assertThat(userDetailOptions.get(0).isPurchasable()).isTrue();
+        softly.assertThat(userDetailOptions.get(1).isPurchasable()).isFalse();
+        softly.assertAll();
     }
 
     private List<UserItemDetailOption> getAvailableToBuyOptions(
