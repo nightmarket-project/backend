@@ -1,10 +1,13 @@
 package store.nightmarket.domain.item.exception;
 
-public class ProductItemException extends RuntimeException{
+import store.nightmarket.common.exception.DomainException;
+
+public class ProductItemException extends DomainException {
 
     public ProductItemException() {}
 
     public ProductItemException(String message) {
         super(message);
     }
+
 }

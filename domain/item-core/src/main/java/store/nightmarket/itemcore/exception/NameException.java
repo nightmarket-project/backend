@@ -1,6 +1,6 @@
 package store.nightmarket.itemcore.exception;
 
-public class NameException extends RuntimeException {
+public class NameException extends ItemCoreException {
 
     public NameException() {}
 
