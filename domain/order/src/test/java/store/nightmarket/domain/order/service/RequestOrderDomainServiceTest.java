@@ -1,14 +1,19 @@
 package store.nightmarket.domain.order.service;
 
-import static org.assertj.core.api.Assertions.*;
 import static store.nightmarket.domain.order.service.dto.RequestOrderDomainServiceDto.*;
 import static store.nightmarket.domain.order.util.OrderTestUtil.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import store.nightmarket.domain.order.exception.OrderException;
 import store.nightmarket.domain.order.model.DetailOrderRecord;
@@ -16,6 +21,13 @@ import store.nightmarket.domain.order.model.OrderRecord;
 import store.nightmarket.domain.order.status.DetailOrderState;
 
 public class RequestOrderDomainServiceTest {
+
+	private SoftAssertions softly;
+
+	@BeforeEach
+	void setUp() {
+		softly = new SoftAssertions();
+	}
 
 	@Test
 	@DisplayName("주문을 요청하면 세부주문 전부 제출상태로 변해야 한다")
@@ -47,18 +59,21 @@ public class RequestOrderDomainServiceTest {
 		OrderRecord submittedOrder = event.getOrderRecord();
 
 		submittedOrder.getDetailOrderRecordList()
-			.forEach(detail -> assertThat(detail.isSubmitted()).isTrue());
+			.forEach(detail -> softly.assertThat(detail.isSubmitted()).isTrue());
+
+		softly.assertAll();
 	}
 
-	@Test
-	@DisplayName("이미 제출된 주문은 다시 제출 할 수 없다")
-	void throwExceptionIfOrderAlreadySubmitted() {
+	@ParameterizedTest
+	@MethodSource("invalidStates")
+	@DisplayName("주문 요청 시 허용되지 않은 상태는 예외를 던진다")
+	void RequestOrderThrowExceptionWhenInvalidState(DetailOrderState state) {
 		// given
 		DetailOrderRecord detailOrderRecord = makeDetailOrderRecord(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
 			1,
-			DetailOrderState.SUBMITTED
+			state
 		);
 
 		OrderRecord orderRecord = makeOrderRecord(List.of(detailOrderRecord));
@@ -68,30 +83,22 @@ public class RequestOrderDomainServiceTest {
 		RequestOrderDomainService service = new RequestOrderDomainService();
 
 		// when & then
-		assertThatThrownBy(() -> service.execute(input))
+		softly.assertThatThrownBy(() -> service.execute(input))
 			.isInstanceOf(OrderException.class);
+
+		softly.assertAll();
 	}
 
-	@Test
-	@DisplayName("이미 완료된 주문은 제출 할 수 없다")
-	void throwExceptionIfOrderAlreadyCompleted() {
-		// given
-		DetailOrderRecord detailOrderRecord = makeDetailOrderRecord(
-			UUID.randomUUID(),
-			UUID.randomUUID(),
-			1,
-			DetailOrderState.COMPLETED
+	private static Stream<Arguments> invalidStates() {
+		return Stream.of(
+			Arguments.of(DetailOrderState.SUBMITTED),
+			Arguments.of(DetailOrderState.COMPLETED),
+			Arguments.of(DetailOrderState.SHIPPED),
+			Arguments.of(DetailOrderState.DELIVERED),
+			Arguments.of(DetailOrderState.CANCELED),
+			Arguments.of(DetailOrderState.RETURNED),
+			Arguments.of(DetailOrderState.REFUNDED)
 		);
-
-		OrderRecord orderRecord = makeOrderRecord(List.of(detailOrderRecord));
-
-		Input input = makeRequestInput(orderRecord);
-
-		RequestOrderDomainService service = new RequestOrderDomainService();
-
-		// when & then
-		assertThatThrownBy(() -> service.execute(input))
-			.isInstanceOf(OrderException.class);
 	}
 
 }
