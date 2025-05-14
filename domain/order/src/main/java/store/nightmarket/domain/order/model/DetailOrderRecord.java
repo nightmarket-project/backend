@@ -44,14 +44,14 @@ public class DetailOrderRecord extends BaseModel<DetailOrderRecordId> {
 	}
 
 	public void submit() {
-		if (!state.isAbleToChangeToSubmitted()) {
+		if (!state.canTransitionTo(DetailOrderState.SUBMITTED)) {
 			throw new OrderException("cannot change state to submitted");
 		}
 		this.state = DetailOrderState.SUBMITTED;
 	}
 
 	public void cancel() {
-		if (!state.isAbleToChangeToCanceled()) {
+		if (!state.canTransitionTo(DetailOrderState.CANCELED)) {
 			throw new OrderException("cannot change state to canceled");
 		}
 		this.state = DetailOrderState.CANCELED;
