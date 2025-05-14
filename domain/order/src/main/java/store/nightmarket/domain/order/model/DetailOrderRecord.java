@@ -1,5 +1,7 @@
 package store.nightmarket.domain.order.model;
 
+import java.util.Objects;
+
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.order.exception.OrderException;
@@ -65,8 +67,21 @@ public class DetailOrderRecord extends BaseModel<DetailOrderRecordId> {
 		return state.equals(DetailOrderState.CANCELED);
 	}
 
-	public boolean isMatched(DetailOrderRecord detailOrderRecord) {
-		return getId().equals(detailOrderRecord.getId());
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null || obj.getClass() != getClass())
+			return false;
+		DetailOrderRecord other = (DetailOrderRecord)obj;
+		return Objects.equals(productId, other.productId) &&
+			Objects.equals(quantity, other.quantity) &&
+			state == other.state;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(productId, quantity, state);
 	}
 
 }

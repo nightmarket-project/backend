@@ -60,7 +60,7 @@ public class OrderRecord extends BaseModel<OrderRecordId> {
 
 	public void cancelDetailOrder(DetailOrderRecord detailOrderRecord) {
 		DetailOrderRecord detail = detailOrderRecordList.stream()
-			.filter(d -> d.isMatched(detailOrderRecord))
+			.filter(d -> d.equals(detailOrderRecord))
 			.findFirst()
 			.orElseThrow(() -> new OrderException("Detail order not found"));
 
