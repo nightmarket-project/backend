@@ -24,12 +24,11 @@ public class DeliveryRecord extends BaseModel<DeliveryRecordId> {
 		UserId userId,
 		List<DeliveryTrackingRecord> deliveryTrackingRecordList
 	) {
-
 		super(id);
 		this.address = address;
 		this.userId = userId;
 		this.deliveryTrackingRecordList =
-			deliveryTrackingRecordList != null ? deliveryTrackingRecordList : new ArrayList<DeliveryTrackingRecord>();
+			deliveryTrackingRecordList != null ? new ArrayList<>(deliveryTrackingRecordList) : new ArrayList<>();
 	}
 
 	public static DeliveryRecord newInstance(
@@ -38,7 +37,6 @@ public class DeliveryRecord extends BaseModel<DeliveryRecordId> {
 		UserId userId,
 		List<DeliveryTrackingRecord> deliveryTrackingRecordList
 	) {
-
 		return new DeliveryRecord(
 			id,
 			address,
@@ -47,12 +45,12 @@ public class DeliveryRecord extends BaseModel<DeliveryRecordId> {
 		);
 	}
 
-	public DeliveryTrackingRecord getCurrentRecord() {
+	public DeliveryTrackingRecord getLatestRecord() {
 		return deliveryTrackingRecordList.isEmpty() ? null : deliveryTrackingRecordList.getLast();
 	}
 
 	public void addDeliveryTrackingRecord(DeliveryTrackingRecord record) {
-		DetailDeliveryState curState = getCurrentRecord().getState();
+		DetailDeliveryState curState = getLatestRecord().getState();
 		DetailDeliveryState nextState = record.getState();
 		if (!curState.canTransitionTo(nextState)) {
 			throw new DeliveryException("Cannot change to " + nextState.toString() + " state");
