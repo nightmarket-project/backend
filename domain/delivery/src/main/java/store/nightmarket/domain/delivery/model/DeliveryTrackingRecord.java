@@ -23,7 +23,6 @@ public class DeliveryTrackingRecord extends BaseModel<DeliveryTrackingRecordId> 
 		DetailDeliveryState state,
 		String content
 	) {
-
 		super(id);
 		this.time = time;
 		this.location = location;
@@ -38,7 +37,6 @@ public class DeliveryTrackingRecord extends BaseModel<DeliveryTrackingRecordId> 
 		DetailDeliveryState state,
 		String content
 	) {
-
 		return new DeliveryTrackingRecord(
 			id,
 			time,
