@@ -23,7 +23,6 @@ public class DetailOrderRecord extends BaseModel<DetailOrderRecordId> {
 		Quantity quantity,
 		DetailOrderState state
 	) {
-
 		super(id);
 		this.productId = productId;
 		this.quantity = quantity;
@@ -36,7 +35,6 @@ public class DetailOrderRecord extends BaseModel<DetailOrderRecordId> {
 		Quantity quantity,
 		DetailOrderState state
 	) {
-
 		return new DetailOrderRecord(
 			id,
 			productId,

@@ -13,40 +13,38 @@ import store.nightmarket.domain.order.valueobject.UserId;
 @Getter
 public class OrderRecord extends BaseModel<OrderRecordId> {
 
-	private List<DetailOrderRecord> detailOrderRecordList;
 	private Address address;
 	private LocalDate orderDate;
 	private UserId userId;
+	private List<DetailOrderRecord> detailOrderRecordList;
 
 	public OrderRecord(
 		OrderRecordId id,
-		List<DetailOrderRecord> detailOrderRecordList,
 		Address address,
 		LocalDate orderDate,
-		UserId userId
+		UserId userId,
+		List<DetailOrderRecord> detailOrderRecordList
 	) {
-
 		super(id);
-		this.detailOrderRecordList = detailOrderRecordList;
 		this.address = address;
 		this.orderDate = orderDate;
 		this.userId = userId;
+		this.detailOrderRecordList = detailOrderRecordList;
 	}
 
 	public static OrderRecord newInstance(
 		OrderRecordId id,
-		List<DetailOrderRecord> detailOrderRecordList,
 		Address address,
 		LocalDate orderDate,
-		UserId userId
+		UserId userId,
+		List<DetailOrderRecord> detailOrderRecordList
 	) {
-
 		return new OrderRecord(
 			id,
-			detailOrderRecordList,
 			address,
 			orderDate,
-			userId
+			userId,
+			detailOrderRecordList
 		);
 	}
 
