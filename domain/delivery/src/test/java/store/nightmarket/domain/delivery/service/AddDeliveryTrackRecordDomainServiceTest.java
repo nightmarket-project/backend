@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -20,6 +21,13 @@ import store.nightmarket.domain.delivery.model.DeliveryTrackingRecord;
 import store.nightmarket.domain.delivery.state.DetailDeliveryState;
 
 public class AddDeliveryTrackRecordDomainServiceTest {
+
+	private SoftAssertions softly;
+
+	@BeforeEach
+	void setUp() {
+		softly = new SoftAssertions();
+	}
 
 	@ParameterizedTest
 	@MethodSource("validTransitions")
@@ -50,9 +58,7 @@ public class AddDeliveryTrackRecordDomainServiceTest {
 
 		// then
 		DeliveryRecord executedDeliveryRecord = event.getDeliveryRecord();
-		DeliveryTrackingRecord executedCurrentRecord = executedDeliveryRecord.getCurrentRecord();
-
-		SoftAssertions softly = new SoftAssertions();
+		DeliveryTrackingRecord executedCurrentRecord = executedDeliveryRecord.getLatestRecord();
 
 		softly.assertThat(executedCurrentRecord.getState()).isEqualTo(nextRecord.getState());
 		softly.assertThat(executedDeliveryRecord.getDeliveryTrackingRecordList().size()).isEqualTo(2);
@@ -96,8 +102,6 @@ public class AddDeliveryTrackRecordDomainServiceTest {
 		AddDeliveryTrackRecordDomainService service = new AddDeliveryTrackRecordDomainService();
 
 		// when & then
-		SoftAssertions softly = new SoftAssertions();
-
 		softly.assertThatThrownBy(() -> service.execute(input))
 			.isInstanceOf(DeliveryException.class)
 			.hasMessageContaining("Cannot change to");
