@@ -29,72 +29,22 @@ public class TestOptionFactory {
     public static ItemOption createItemOption(
             UUID id,
             String optionName,
-            ItemDetailOption... detailOptions
+            List<ItemDetailOption> detailOptions
     ) {
         return ItemOption.newInstance(
                 new ItemOptionId(id),
                 new Name(optionName),
-                new ArrayList<>(List.of(detailOptions))
+                new ArrayList<>(detailOptions)
         );
     }
 
     public static ItemOptionGroup createItemOptionGroup(
             UUID groupId,
-            ItemOption... options
+            List<ItemOption> options
     ) {
         return ItemOptionGroup.newInstance(
                 new ItemOptionGroupId(groupId),
-                new ArrayList<>(List.of(options))
-        );
-    }
-
-    public static ItemDetailOption defaultDetailOption() {
-        return createDetailOption(
-                UUID.randomUUID(),
-                "블랙",
-                1000,
-                100
-        );
-    }
-
-    public static ItemOption defaultOption() {
-        return createItemOption(
-                UUID.randomUUID(),
-                "색상",
-                createDetailOption(
-                        UUID.randomUUID(),
-                        "블랙",
-                        1000,
-                        100
-                ), createDetailOption(
-                        UUID.randomUUID(),
-                        "화이트",
-                        2000,
-                        200
-                )
-
-        );
-    }
-
-    public static ItemOptionGroup defaultOptionGroup() {
-        return createItemOptionGroup(
-                UUID.randomUUID(),
-                defaultOption(),
-                createItemOption(
-                        UUID.randomUUID(),
-                        "cpu",
-                        createDetailOption(
-                                UUID.randomUUID(),
-                                "4core",
-                                20000,
-                                100
-                        ), createDetailOption(
-                                UUID.randomUUID(),
-                                "8core",
-                                40000,
-                                500
-                        )
-                )
+                new ArrayList<>(options)
         );
     }
 

@@ -104,27 +104,31 @@ class ItemOptionTest {
         ItemOption itemOption = TestOptionFactory.createItemOption(
                 optionColorId,
                 "색깔",
-                TestOptionFactory.createDetailOption(
-                        blackId,
-                        "검은색",
-                        1000,
-                        blackQty
-                ), TestOptionFactory.createDetailOption(
-                        whiteId,
-                        "하얀색",
-                        2000,
-                        whiteQty
+                List.of(
+                        TestOptionFactory.createDetailOption(
+                                blackId,
+                                "검은색",
+                                1000,
+                                blackQty
+                        ), TestOptionFactory.createDetailOption(
+                                whiteId,
+                                "하얀색",
+                                2000,
+                                whiteQty
+                        )
                 )
         );
 
         UserItemOption userItemOption = TestUserOptionFactory.createUserItemOption(
                 optionColorId,
-                TestUserOptionFactory.createUserItemDetailOption(
-                        blackId,
-                        blackUserQty
-                ), TestUserOptionFactory.createUserItemDetailOption(
-                        whiteId,
-                        whiteUserQty
+                List.of(
+                        TestUserOptionFactory.createUserItemDetailOption(
+                                blackId,
+                                blackUserQty
+                        ), TestUserOptionFactory.createUserItemDetailOption(
+                                whiteId,
+                                whiteUserQty
+                        )
                 )
         );
 

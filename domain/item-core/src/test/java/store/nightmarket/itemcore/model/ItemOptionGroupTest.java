@@ -125,49 +125,61 @@ class ItemOptionGroupTest {
 
         ItemOptionGroup group = TestOptionFactory.createItemOptionGroup(
                 groupId,
-                TestOptionFactory.createItemOption(
-                        optionColorId,
-                        "색깔",
-                        TestOptionFactory.createDetailOption(
-                                blackId,
-                                "검은색",
-                                1000,
-                                blackQty
-                        ), TestOptionFactory.createDetailOption(
-                                whiteId,
-                                "하얀색",
-                                2000,
-                                whiteQty
-                        )
-                ), TestOptionFactory.createItemOption(
-                        optionCpuId,
-                        "cpu",
-                        TestOptionFactory.createDetailOption(
-                                cpuId,
-                                "4코어",
-                                3000,
-                                cpuQty
+                List.of(
+                        TestOptionFactory.createItemOption(
+                                optionColorId,
+                                "색깔",
+                                List.of(
+                                        TestOptionFactory.createDetailOption(
+                                                blackId,
+                                                "검은색",
+                                                1000,
+                                                blackQty
+                                        ), TestOptionFactory.createDetailOption(
+                                                whiteId,
+                                                "하얀색",
+                                                2000,
+                                                whiteQty
+                                        )
+                                )
+                        ), TestOptionFactory.createItemOption(
+                                optionCpuId,
+                                "cpu",
+                                List.of(
+                                        TestOptionFactory.createDetailOption(
+                                                cpuId,
+                                                "4코어",
+                                                3000,
+                                                cpuQty
+                                        )
+                                )
                         )
                 )
         );
 
         UserItemOptionGroup userGroup = TestUserOptionFactory.createUserItemOptionGroup(
                 groupId,
-                TestUserOptionFactory.createUserItemOption(
-                        optionColorId,
-                        TestUserOptionFactory.createUserItemDetailOption(
-                                blackId,
-                                blackUserQty
-                        ), TestUserOptionFactory.createUserItemDetailOption(
-                                whiteId,
-                                whiteUserQty
-                        )
-                ),
-                TestUserOptionFactory.createUserItemOption(
-                        optionCpuId,
-                        TestUserOptionFactory.createUserItemDetailOption(
-                                cpuId,
-                                cpuUserQty
+                List.of(
+                        TestUserOptionFactory.createUserItemOption(
+                                optionColorId,
+                                List.of(
+                                        TestUserOptionFactory.createUserItemDetailOption(
+                                                blackId,
+                                                blackUserQty
+                                        ), TestUserOptionFactory.createUserItemDetailOption(
+                                                whiteId,
+                                                whiteUserQty
+                                        )
+                                )
+                        ),
+                        TestUserOptionFactory.createUserItemOption(
+                                optionCpuId,
+                                List.of(
+                                        TestUserOptionFactory.createUserItemDetailOption(
+                                                cpuId,
+                                                cpuUserQty
+                                        )
+                                )
                         )
                 )
         );

@@ -6,6 +6,7 @@ import store.nightmarket.itemcore.valueobject.ItemId;
 import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.UserId;
 
+import java.util.List;
 import java.util.UUID;
 
 public class TestItemFactory {
@@ -16,49 +17,57 @@ public class TestItemFactory {
                 new Name("TestItem"),
                 TestOptionFactory.createItemOptionGroup(
                         UUID.randomUUID(),
-                        TestOptionFactory.createItemOption(
-                                UUID.randomUUID(),
-                                "색깔",
-                                TestOptionFactory.createDetailOption(
+                        List.of(
+                                TestOptionFactory.createItemOption(
                                         UUID.randomUUID(),
-                                        "검은색",
-                                        1000,
-                                        100
-                                ), TestOptionFactory.createDetailOption(
+                                        "색깔",
+                                        List.of(
+                                                TestOptionFactory.createDetailOption(
+                                                        UUID.randomUUID(),
+                                                        "검은색",
+                                                        1000,
+                                                        100
+                                                ), TestOptionFactory.createDetailOption(
+                                                        UUID.randomUUID(),
+                                                        "하얀색",
+                                                        2000,
+                                                        200
+                                                )
+                                        )
+                                ), TestOptionFactory.createItemOption(
                                         UUID.randomUUID(),
-                                        "하얀색",
-                                        2000,
-                                        200
-                                )
-                        ), TestOptionFactory.createItemOption(
-                                UUID.randomUUID(),
-                                "cpu core",
-                                TestOptionFactory.createDetailOption(
-                                        UUID.randomUUID(),
-                                        "4코어",
-                                        10000,
-                                        100
-                                ), TestOptionFactory.createDetailOption(
-                                        UUID.randomUUID(),
-                                        "8코어",
-                                        20000,
-                                        200
+                                        "cpu core",
+                                        List.of(
+                                                TestOptionFactory.createDetailOption(
+                                                        UUID.randomUUID(),
+                                                        "4코어",
+                                                        10000,
+                                                        100
+                                                ), TestOptionFactory.createDetailOption(
+                                                        UUID.randomUUID(),
+                                                        "8코어",
+                                                        20000,
+                                                        200
+                                                )
+                                        )
                                 )
                         )
                 ),
                 TestOptionFactory.createItemOption(
                         UUID.randomUUID(),
                         "모니터",
-                        TestOptionFactory.createDetailOption(
-                                UUID.randomUUID(),
-                                "모니터60hz",
-                                5000,
-                                50
-                        ), TestOptionFactory.createDetailOption(
-                                UUID.randomUUID(),
-                                "모니터144hz",
-                                7000,
-                                70
+                        List.of(
+                                TestOptionFactory.createDetailOption(
+                                        UUID.randomUUID(),
+                                        "모니터60hz",
+                                        5000,
+                                        50
+                                ), TestOptionFactory.createDetailOption(
+                                        UUID.randomUUID(),
+                                        "모니터144hz",
+                                        7000,
+                                        70
+                                )
                         )
                 ),
                 new UserId(UUID.randomUUID())
@@ -70,33 +79,41 @@ public class TestItemFactory {
                 new ItemId(UUID.randomUUID()),
                 TestUserOptionFactory.createUserItemOptionGroup(
                         UUID.randomUUID(),
-                        TestUserOptionFactory.createUserItemOption(
-                                UUID.randomUUID(),
-                                TestUserOptionFactory.createUserItemDetailOption(
+                        List.of(
+                                TestUserOptionFactory.createUserItemOption(
                                         UUID.randomUUID(),
-                                        10
-                                ), TestUserOptionFactory.createUserItemDetailOption(
+                                        List.of(
+                                                TestUserOptionFactory.createUserItemDetailOption(
+                                                        UUID.randomUUID(),
+                                                        10
+                                                ), TestUserOptionFactory.createUserItemDetailOption(
+                                                        UUID.randomUUID(),
+                                                        10
+                                                )
+                                        )
+                                ), TestUserOptionFactory.createUserItemOption(
                                         UUID.randomUUID(),
-                                        10
-                                )
-                        ), TestUserOptionFactory.createUserItemOption(
-                                UUID.randomUUID(),
-                                TestUserOptionFactory.createUserItemDetailOption(
-                                        UUID.randomUUID(),
-                                        10
-                                ), TestUserOptionFactory.createUserItemDetailOption(
-                                        UUID.randomUUID(),
-                                        10
+                                        List.of(
+                                                TestUserOptionFactory.createUserItemDetailOption(
+                                                        UUID.randomUUID(),
+                                                        10
+                                                ), TestUserOptionFactory.createUserItemDetailOption(
+                                                        UUID.randomUUID(),
+                                                        10
+                                                )
+                                        )
                                 )
                         )
                 ), TestUserOptionFactory.createUserItemOption(
                         UUID.randomUUID(),
-                        TestUserOptionFactory.createUserItemDetailOption(
-                                UUID.randomUUID(),
-                                10
-                        ), TestUserOptionFactory.createUserItemDetailOption(
-                                UUID.randomUUID(),
-                                10
+                        List.of(
+                                TestUserOptionFactory.createUserItemDetailOption(
+                                        UUID.randomUUID(),
+                                        10
+                                ), TestUserOptionFactory.createUserItemDetailOption(
+                                        UUID.randomUUID(),
+                                        10
+                                )
                         )
                 )
         );
@@ -134,49 +151,57 @@ public class TestItemFactory {
                 new Name("ComputerParts"),
                 TestOptionFactory.createItemOptionGroup(
                         basicOption,
-                        TestOptionFactory.createItemOption(
-                                colorOption,
-                                "색깔",
-                                TestOptionFactory.createDetailOption(
-                                        blackId,
-                                        "검은색",
-                                        1000,
-                                        blackQty
-                                ), TestOptionFactory.createDetailOption(
-                                        whiteId,
-                                        "하얀색",
-                                        2000,
-                                        whiteQty
-                                )
-                        ), TestOptionFactory.createItemOption(
-                                cpuOption,
-                                "cpu core",
-                                TestOptionFactory.createDetailOption(
-                                        cpu4Id,
-                                        "4코어",
-                                        10000,
-                                        cpu4Qty
-                                ), TestOptionFactory.createDetailOption(
-                                        cpu8Id,
-                                        "8코어",
-                                        20000,
-                                        cpu8Qty
+                        List.of(
+                                TestOptionFactory.createItemOption(
+                                        colorOption,
+                                        "색깔",
+                                        List.of(
+                                                TestOptionFactory.createDetailOption(
+                                                        blackId,
+                                                        "검은색",
+                                                        1000,
+                                                        blackQty
+                                                ), TestOptionFactory.createDetailOption(
+                                                        whiteId,
+                                                        "하얀색",
+                                                        2000,
+                                                        whiteQty
+                                                )
+                                        )
+                                ), TestOptionFactory.createItemOption(
+                                        cpuOption,
+                                        "cpu core",
+                                        List.of(
+                                                TestOptionFactory.createDetailOption(
+                                                        cpu4Id,
+                                                        "4코어",
+                                                        10000,
+                                                        cpu4Qty
+                                                ), TestOptionFactory.createDetailOption(
+                                                        cpu8Id,
+                                                        "8코어",
+                                                        20000,
+                                                        cpu8Qty
+                                                )
+                                        )
                                 )
                         )
                 ),
                 TestOptionFactory.createItemOption(
                         additionalOption,
                         "모니터",
-                        TestOptionFactory.createDetailOption(
-                                monitor60hzId,
-                                "모니터60hz",
-                                5000,
-                                monitor60Qty
-                        ), TestOptionFactory.createDetailOption(
-                                monitor144hzId,
-                                "모니터144hz",
-                                7000,
-                                monitor144Qty
+                        List.of(
+                                TestOptionFactory.createDetailOption(
+                                        monitor60hzId,
+                                        "모니터60hz",
+                                        5000,
+                                        monitor60Qty
+                                ), TestOptionFactory.createDetailOption(
+                                        monitor144hzId,
+                                        "모니터144hz",
+                                        7000,
+                                        monitor144Qty
+                                )
                         )
                 ),
                 new UserId(UUID.randomUUID())
@@ -186,33 +211,41 @@ public class TestItemFactory {
                 itemId,
                 TestUserOptionFactory.createUserItemOptionGroup(
                         basicOption,
-                        TestUserOptionFactory.createUserItemOption(
-                                colorOption,
-                                TestUserOptionFactory.createUserItemDetailOption(
-                                        blackId,
-                                        blackUserQty
-                                ), TestUserOptionFactory.createUserItemDetailOption(
-                                        whiteId,
-                                        whiteUserQty
-                                )
-                        ), TestUserOptionFactory.createUserItemOption(
-                                cpuOption,
-                                TestUserOptionFactory.createUserItemDetailOption(
-                                        cpu4Id,
-                                        cpu4UserQty
-                                ), TestUserOptionFactory.createUserItemDetailOption(
-                                        cpu8Id,
-                                        cpu8UserQty
+                        List.of(
+                                TestUserOptionFactory.createUserItemOption(
+                                        colorOption,
+                                        List.of(
+                                                TestUserOptionFactory.createUserItemDetailOption(
+                                                        blackId,
+                                                        blackUserQty
+                                                ), TestUserOptionFactory.createUserItemDetailOption(
+                                                        whiteId,
+                                                        whiteUserQty
+                                                )
+                                        )
+                                ), TestUserOptionFactory.createUserItemOption(
+                                        cpuOption,
+                                        List.of(
+                                                TestUserOptionFactory.createUserItemDetailOption(
+                                                        cpu4Id,
+                                                        cpu4UserQty
+                                                ), TestUserOptionFactory.createUserItemDetailOption(
+                                                        cpu8Id,
+                                                        cpu8UserQty
+                                                )
+                                        )
                                 )
                         )
                 ), TestUserOptionFactory.createUserItemOption(
                         additionalOption,
-                        TestUserOptionFactory.createUserItemDetailOption(
-                                monitor60hzId,
-                                monitor60UserQty
-                        ), TestUserOptionFactory.createUserItemDetailOption(
-                                monitor144hzId,
-                                monitor144UserQty
+                        List.of(
+                                TestUserOptionFactory.createUserItemDetailOption(
+                                        monitor60hzId,
+                                        monitor60UserQty
+                                ), TestUserOptionFactory.createUserItemDetailOption(
+                                        monitor144hzId,
+                                        monitor144UserQty
+                                )
                         )
                 )
         );

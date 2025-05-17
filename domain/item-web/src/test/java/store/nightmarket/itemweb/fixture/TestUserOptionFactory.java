@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class TestUserOptionFactory {
+
     public static UserItemDetailOption createUserItemDetailOption(
             UUID detailId,
             int quantity
@@ -26,37 +27,21 @@ public class TestUserOptionFactory {
 
     public static UserItemOption createUserItemOption(
             UUID optionId,
-            UserItemDetailOption... userDetailOptions
+            List<UserItemDetailOption> userDetailOptions
     ) {
         return UserItemOption.newInstance(
                 new ItemOptionId(optionId),
-                new ArrayList<>(List.of(userDetailOptions))
+                new ArrayList<>(userDetailOptions)
         );
     }
 
     public static UserItemOptionGroup createUserItemOptionGroup(
             UUID groupId,
-            UserItemOption... userOptions
+            List<UserItemOption> userOptions
     ) {
         return UserItemOptionGroup.newInstance(
                 new ItemOptionGroupId(groupId),
-                new ArrayList<>(List.of(userOptions))
-        );
-    }
-
-
-    public static UserItemDetailOption defaultUserDetailOption() {
-        return createUserItemDetailOption(
-                UUID.randomUUID(),
-                10
-        );
-    }
-
-    public static UserItemOption defaultUserOption() {
-        return createUserItemOption(
-                UUID.randomUUID(),
-                defaultUserDetailOption(),
-                defaultUserDetailOption()
+                new ArrayList<>(userOptions)
         );
     }
 
