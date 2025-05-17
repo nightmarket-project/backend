@@ -1,6 +1,8 @@
 package store.nightmarket.itemcore.model;
 
+import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
+import store.nightmarket.itemcore.exception.ErrorResult;
 import store.nightmarket.itemcore.valueobject.ItemDetailOptionId;
 import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.Price;
@@ -12,6 +14,7 @@ public class ItemDetailOption extends BaseModel<ItemDetailOptionId> {
 
     private Name name;
     private Price price;
+    @Getter
     private Quantity quantity;
 
     private ItemDetailOption(
@@ -35,27 +38,21 @@ public class ItemDetailOption extends BaseModel<ItemDetailOptionId> {
         return new ItemDetailOption(id, name, price, quantity);
     }
 
-    private ItemDetailOptionId getDetailOptionId() {
+    public ItemDetailOptionId getDetailOptionId() {
         return internalId();
     }
 
-    public Optional<UserItemDetailOption> isAvailableToBuy(UserItemDetailOption buyOption) {
-        if(!this.getDetailOptionId().equals(buyOption.getDetailOptionId())) {
-            return Optional.empty();
-        }
-
-        updatePurchasableStatus(buyOption);
-
-        return Optional.of(buyOption);
+    // 상세 수량 수량 차감
+    public void reduceQuantityBy(UserItemDetailOption buyDetailOption) {
+        quantity = quantity.subtract(buyDetailOption.getQuantity());
     }
 
-    private void updatePurchasableStatus(UserItemDetailOption buyOption) {
-        if (quantity.isGreaterThanOrEqualTo(buyOption.getQuantity())) {
-            buyOption.markAsPurchasable();
-            return;
+    public Optional<ErrorResult> findError(UserItemDetailOption buyDetailOption) {
+        if (quantity.isLessThan(buyDetailOption.getQuantity())) {
+            return Optional.of(new ErrorResult(getDetailOptionId(), "보유 수량이 요청 수량보다 작다."));
         }
-        buyOption.markAsNotPurchasable();
 
+        return Optional.empty();
     }
 
 }

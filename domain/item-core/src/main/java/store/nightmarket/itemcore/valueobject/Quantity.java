@@ -40,6 +40,10 @@ public class Quantity {
         return value.compareTo(other.value) >= 0;
     }
 
+    public boolean isLessThan(Quantity other) {
+        return value.compareTo(other.value) < 0;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(value);
@@ -52,4 +56,5 @@ public class Quantity {
         Quantity other = (Quantity) obj;
         return Objects.equals(value, other.value);
     }
+
 }

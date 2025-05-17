@@ -4,15 +4,18 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.domain.item.exception.ProductItemException;
-import store.nightmarket.domain.item.fixture.TestItemFactory;
-import store.nightmarket.itemcore.model.UserItemDetailOption;
-import store.nightmarket.itemcore.model.UserItemOption;
+import store.nightmarket.itemcore.exception.ErrorResult;
+import store.nightmarket.itemcore.exception.QuantityException;
+import store.nightmarket.itemcore.model.*;
+import store.nightmarket.itemcore.valueobject.Quantity;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static store.nightmarket.domain.item.fixture.TestItemFactory.*;
 
 class ProductItemTest {
 
@@ -24,90 +27,95 @@ class ProductItemTest {
     }
 
     @Test
-    @DisplayName("ProductItem, UserProductItem의  itemId가 다를때 Optional.empty를 반환한다.")
-    void shouldReturnOptionalEmptyWhenItemIdAndUserItemIdIsDifferent() {
-        //given
-        ProductItem productItem = TestItemFactory.defaultProductItem();
-        UserProductItem userProductItem = TestItemFactory.defaultUserProductItem();
+    @DisplayName("아이템 제품 수량이 요청 수량보다 많을때 Optional empty를 반환한다.")
+    void shouldReturnOptionalEmptyWhenProductQuantityIsSufficient() {
+        // given
+        ProductItemTestData testData = createTestData(
+                10, 10, 10, 10, 10, 10,
+                5, 5, 5, 5, 5, 5
+        );
 
-        //when
-        Optional<UserProductItem> availableToBuy = productItem.isAvailableToBuy(userProductItem);
+        // when
+        Optional<List<ErrorResult>> productItemErrors = testData.getProductItem().findProductItemErrors(testData.getUserProductItem());
 
-        //then
-        assertThat(availableToBuy).isEqualTo(Optional.empty());
+        // then
+        assertThat(productItemErrors).isEmpty();
     }
 
     @Test
-    @DisplayName("ProductItem, UserProductItem의 ItemId가 같고 " +
-            "ItemOption Quantity가 buyOption Quantity 보다 크면 " +
-            "buyOption의 isPurchasable값이 true다")
-    void canPurchaseWhenValidOptionAndEnoughStock() {
-        //given
-        TestItemFactory.ProductItemTestData testData = TestItemFactory.createTestData(
+    @DisplayName("3개 세부 옵션 수량이 요청 수량보다 적을때 ErrorResult 3개를 반환한다.")
+    void shouldReturnErrorResultsWhenProductQuantityIsInsufficient() {
+        // given
+        ProductItemTestData testData = createTestData(
                 10, 10, 10, 10, 10, 10,
-                1, 1, 1, 1, 1, 1
+                15, 5, 15, 5, 15, 5
         );
 
-        //when
-        UserProductItem userProductItem = getAvailableForPurchaseItem(testData);
-        List<UserItemOption> computerPartsOption = userProductItem
-                .getBasicOption()
-                .getUserItemOptions();
-        List<UserItemDetailOption> monitorOption = userProductItem
-                .getAdditionalOption()
-                .getUserItemDetailOptions();
-        List<UserItemDetailOption> colorOption = computerPartsOption.getFirst().getUserItemDetailOptions();
-        List<UserItemDetailOption> cpuOption = computerPartsOption.getLast().getUserItemDetailOptions();
+        // when
+        Optional<List<ErrorResult>> productItemErrors = testData.getProductItem().findProductItemErrors(testData.getUserProductItem());
 
-        //then
-        softly.assertThat(computerPartsOption).hasSize(2);
-        softly.assertThat(colorOption).hasSize(2);
-        softly.assertThat(cpuOption).hasSize(2);
-        softly.assertThat(monitorOption).hasSize(2);
-        softly.assertThat(colorOption).allMatch(UserItemDetailOption::isPurchasable);
-        softly.assertThat(cpuOption).allMatch(UserItemDetailOption::isPurchasable);
-        softly.assertThat(monitorOption).allMatch(UserItemDetailOption::isPurchasable);
+
+        // then
+        productItemErrors.ifPresent(
+                errorResults -> {
+                    softly.assertThat(errorResults).isNotEmpty();
+                    softly.assertThat(errorResults).hasSize(3);
+
+                    List<UserItemOption> userBasicOptions = testData.getUserProductItem().getBasicOption().getUserItemOptions();
+                    List<UserItemDetailOption> userAdditionalOptions = testData.getUserProductItem().getAdditionalOption().getUserItemDetailOptions();
+                    softly.assertThat(errorResults.getFirst().optionId()).isEqualTo(
+                            userBasicOptions.getFirst().getUserItemDetailOptions().getFirst().getDetailOptionId());
+                    softly.assertThat(errorResults.get(1).optionId()).isEqualTo(
+                            userBasicOptions.getLast().getUserItemDetailOptions().getFirst().getDetailOptionId());
+                    softly.assertThat(errorResults.getLast().optionId()).isEqualTo(
+                            userAdditionalOptions.getFirst().getDetailOptionId());
+                }
+        );
+
         softly.assertAll();
     }
 
     @Test
-    @DisplayName("ProductItem, UserProductItem의 ItemId가 같고 " +
-            "ItemOption Quantity가 buyOption Quantity 보다 작으면 " +
-            "buyOption의 isPurchasable값이 false다")
-    void canNotPurchaseWhenValidOptionAndNotEnoughStock() {
-        //given
-        TestItemFactory.ProductItemTestData testData = TestItemFactory.createTestData(
+    @DisplayName("product 수량이 요청 수량보다 많아서 제품 수량이 감소한다")
+    void shouldReduceProductQuantityWhenProductQuantityIsSufficient() {
+        // given
+        ProductItemTestData testData = createTestData(
                 10, 10, 10, 10, 10, 10,
-                1, 1, 11, 1, 1, 11
+                5, 5, 5, 5, 5, 5
         );
 
-        //when
-        UserProductItem userProductItem = getAvailableForPurchaseItem(testData);
-        List<UserItemOption> computerOption = userProductItem
-                .getBasicOption()
-                .getUserItemOptions();
-        List<UserItemDetailOption> monitorOption = userProductItem
-                .getAdditionalOption()
-                .getUserItemDetailOptions();
-        List<UserItemDetailOption> colorOption = computerOption.getFirst().getUserItemDetailOptions();
-        List<UserItemDetailOption> cpuOption = computerOption.getLast().getUserItemDetailOptions();
+        // when
+        testData.getProductItem().reduceProductBy(testData.getUserProductItem());
 
-        //then
-        softly.assertThat(computerOption).hasSize(2);
-        softly.assertThat(colorOption).hasSize(2);
-        softly.assertThat(cpuOption).hasSize(2);
-        softly.assertThat(monitorOption).hasSize(2);
-        softly.assertThat(colorOption).allMatch(UserItemDetailOption::isPurchasable);
-        softly.assertThat(cpuOption.getFirst().isPurchasable()).isFalse();
-        softly.assertThat(cpuOption.getLast().isPurchasable()).isTrue();
-        softly.assertThat(monitorOption.getFirst().isPurchasable()).isTrue();
-        softly.assertThat(monitorOption.getLast().isPurchasable()).isFalse();
+        // then
+        Quantity quantity = new Quantity(new BigDecimal(5));
+        List<ItemOption> basicOptions = testData.getProductItem().getBasicOption().getItemOptions();
+        List<ItemDetailOption> colorOption = basicOptions.getFirst().getItemDetailOptions();
+        List<ItemDetailOption> cpuOption = basicOptions.getLast().getItemDetailOptions();
+        List<ItemDetailOption> additionalOptions = testData.getProductItem().getAdditionalOption().getItemDetailOptions();
+
+        softly.assertThat(colorOption.getFirst().getQuantity()).isEqualTo(quantity);
+        softly.assertThat(colorOption.getLast().getQuantity()).isEqualTo(quantity);
+        softly.assertThat(cpuOption.getFirst().getQuantity()).isEqualTo(quantity);
+        softly.assertThat(cpuOption.getLast().getQuantity()).isEqualTo(quantity);
+        softly.assertThat(additionalOptions.getFirst().getQuantity()).isEqualTo(quantity);
+        softly.assertThat(additionalOptions.getLast().getQuantity()).isEqualTo(quantity);
+
         softly.assertAll();
     }
 
-    private UserProductItem getAvailableForPurchaseItem(TestItemFactory.ProductItemTestData testData) {
-        return testData.getProductItem().isAvailableToBuy(testData.getUserProductItem())
-                .orElseThrow(() -> new ProductItemException("itemId 불일치"));
+    @Test
+    @DisplayName("product 수량이 요청 수량보다 적어서 수량 예외가 발생한다.")
+    void shouldReturnQuantityErrorWhenProductQuantityIsInsufficient() {
+        // given
+        ProductItemTestData testData = createTestData(
+                10, 10, 10, 10, 10, 10,
+                5, 5, 15, 5, 5, 5
+        );
+
+        // when & then
+        assertThatThrownBy(() -> testData.getProductItem().reduceProductBy(testData.getUserProductItem()))
+                .isInstanceOf(QuantityException.class);
     }
 
 }

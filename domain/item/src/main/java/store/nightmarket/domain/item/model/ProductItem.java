@@ -1,17 +1,19 @@
 package store.nightmarket.domain.item.model;
 
+import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
+import store.nightmarket.itemcore.exception.ErrorResult;
 import store.nightmarket.itemcore.model.ItemOption;
 import store.nightmarket.itemcore.model.ItemOptionGroup;
-import store.nightmarket.itemcore.model.UserItemOption;
-import store.nightmarket.itemcore.model.UserItemOptionGroup;
 import store.nightmarket.itemcore.valueobject.ItemId;
 import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.UserId;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+@Getter
 public class ProductItem extends BaseModel<ItemId> {
 
     private Name name;
@@ -50,35 +52,23 @@ public class ProductItem extends BaseModel<ItemId> {
         );
     }
 
-    private ItemId getItemId() {
+    public ItemId getItemId() {
         return internalId();
     }
 
-    public Optional<UserProductItem> isAvailableToBuy(UserProductItem buyUserItem) {
-        if (!getItemId().equals(buyUserItem.getItemId())) {
-            return Optional.empty();
-        }
+    public Optional<List<ErrorResult>> findProductItemErrors(UserBuyProductItem buyProductItem) {
+        List<ErrorResult> findErrors = new ArrayList<>();
+        basicOption.findOptionGroupErrors(buyProductItem.getBasicOption())
+                .ifPresent(findErrors::addAll);
+        additionalOption.findErrors(buyProductItem.getAdditionalOption())
+                .ifPresent(findErrors::addAll);
 
-        PurchasableOptionResult buyResult = getAvailableToBuy(buyUserItem);
-
-        return Optional.of(UserProductItem.newInstance(
-                buyUserItem.getItemId(),
-                buyResult.buyBasicOption(),
-                buyResult.buyAdditionalOption()));
+        return findErrors.isEmpty() ? Optional.empty() : Optional.of(findErrors);
     }
 
-    private PurchasableOptionResult getAvailableToBuy(UserProductItem buyUserItem) {
-        UserItemOptionGroup buyBasicOption = basicOption.isAvailableToBuy(buyUserItem.getBasicOption());
-
-        UserItemOption userAdditionalOption = buyUserItem.getAdditionalOption();
-        UserItemOption buyAdditionalOption = additionalOption.isAvailableToBuy(userAdditionalOption)
-                .orElseGet(() -> UserItemOption.newInstance(
-                        userAdditionalOption.getOptionId(),
-                        Collections.EMPTY_LIST));
-        return new PurchasableOptionResult(buyBasicOption, buyAdditionalOption);
-    }
-
-    private record PurchasableOptionResult(UserItemOptionGroup buyBasicOption, UserItemOption buyAdditionalOption) {
+    public void reduceProductBy(UserBuyProductItem buyProductItem) {
+        basicOption.reduceOptionsBy(buyProductItem.getBasicOption());
+        additionalOption.reduceStockBy(buyProductItem.getAdditionalOption());
     }
 
 }

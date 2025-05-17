@@ -4,13 +4,19 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import store.nightmarket.itemcore.exception.ErrorResult;
+import store.nightmarket.itemcore.exception.QuantityException;
 import store.nightmarket.itemcore.fixture.TestOptionFactory;
 import store.nightmarket.itemcore.fixture.TestUserOptionFactory;
+import store.nightmarket.itemcore.valueobject.Quantity;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ItemOptionGroupTest {
 
@@ -22,66 +28,84 @@ class ItemOptionGroupTest {
     }
 
     @Test
-    @DisplayName("ItemOptionGroup, buyOptionGroup의 optionId가 다를때" +
-            " userGroup객체에는 빈 리스트 옵션이 생성된다,")
-    void shouldCreateUserOptionGroupWithEmptyListWhenGroupIdIsDifferent() {
-        //given
-        ItemOptionGroup group = TestOptionFactory.defaultOptionGroup();
-        UserItemOptionGroup userItemOptionGroup = TestUserOptionFactory.defaultUserOptionGroup();
-
-        //when
-        UserItemOptionGroup availableToBuy = group.isAvailableToBuy(userItemOptionGroup);
-
-        //then
-        assertThat(availableToBuy.getUserItemOptions()).isEmpty();
-    }
-
-
-    @Test
-    @DisplayName("ItemOptionGroup, buyOptionGroup의 optionId가 같고 " +
-            "ItemOption Quantity가 buyOption Quantity 보다 크면 " +
-            "buyOption의 isPurchasable값이 true다")
-    void canPurchaseWhenValidOptionAndEnoughStock() {
-        //given
+    @DisplayName("아이템그룹 수량이 요청 수량보다 많을때 Optional empty를 반환한다.")
+    void shouldReturnOptionalEmptyWhenOptionGroupQuantityIsSufficient() {
+        // given
         ItemOptionTestData testData = createTestData(
-                100, 200, 300,
-                10, 20, 30
+                10, 10, 10,
+                5, 5, 5
         );
 
-        //when
-        List<UserItemOption> userOptions = testData.group.isAvailableToBuy(testData.userGroup)
-                .getUserItemOptions();
+        // when
+        Optional<List<ErrorResult>> optionGroupErrors = testData.group.findOptionGroupErrors(testData.userGroup);
+        // then
+        assertThat(optionGroupErrors).isEmpty();
+    }
 
-        //then
-        softly.assertThat(userOptions).hasSize(2);
-        softly.assertThat(userOptions.get(0).getUserItemDetailOptions()).allMatch(UserItemDetailOption::isPurchasable);
-        softly.assertThat(userOptions.get(1).getUserItemDetailOptions()).allMatch(UserItemDetailOption::isPurchasable);
+    @Test
+    @DisplayName("2개 아이템 수량이 2개 요청 수량보다 적을때 ErrorResult 2개를 반환한다.")
+    void shouldReturnErrorResultsWhenOptionGroupQuantityIsInsufficient() {
+        // given
+        ItemOptionTestData testData = createTestData(
+                10, 10, 10,
+                15, 5, 15
+        );
+        // when
+        Optional<List<ErrorResult>> optionGroupErrors = testData.group.findOptionGroupErrors(testData.userGroup);
+
+        // then
+        optionGroupErrors.ifPresent(
+                errorResults -> {
+                    softly.assertThat(errorResults).isNotEmpty();
+                    softly.assertThat(errorResults).hasSize(2);
+
+                    List<UserItemOption> userItemOptions = testData.userGroup.getUserItemOptions();
+                    softly.assertThat(errorResults.getFirst().optionId()).isEqualTo(
+                            userItemOptions.getFirst()
+                                    .getUserItemDetailOptions().getFirst().getDetailOptionId());
+                    softly.assertThat(errorResults.getLast().optionId()).isEqualTo(
+                            userItemOptions.getLast()
+                                    .getUserItemDetailOptions().getFirst().getDetailOptionId());
+                }
+        );
         softly.assertAll();
     }
 
     @Test
-    @DisplayName("ItemOptionGroup, buyOptionGroup의 optionId가 같고 " +
-            "ItemOption Quantity가 buyOption Quantity 보다 작으면 " +
-            "buyOption의 isPurchasable값이 false다")
-    void canNotPurchaseWhenValidOptionAndEnoughNotStock() {
-        //given
+    @DisplayName("옵션수량이 요청수량보다 많을때 옵션수량은 요청수량만큼 감소한다.")
+    void shouldReduceOptionGroupQuantityWhenOptionGroupIsSufficient() {
+        // given
         ItemOptionTestData testData = createTestData(
-                100, 200, 300,
-                1000, 20, 3000
+                10, 10, 10,
+                5, 5, 5
+        );
+        // when
+        testData.group.reduceOptionsBy(testData.userGroup);
+
+        // then
+        Quantity quantity = new Quantity(new BigDecimal(5));
+        List<ItemDetailOption> colorOption = testData.group.getItemOptions().getFirst().getItemDetailOptions();
+        List<ItemDetailOption> cpuOption = testData.group.getItemOptions().getLast().getItemDetailOptions();
+
+        assertThat(colorOption.getFirst().getQuantity()).isEqualTo(quantity);
+        assertThat(colorOption.getLast().getQuantity()).isEqualTo(quantity);
+        assertThat(cpuOption.getFirst().getQuantity()).isEqualTo(quantity);
+
+        softly.assertAll();
+    }
+
+    @Test
+    @DisplayName("옵션 수량이 요청수량보다 적을때 수량 오류 예외가 발생한다.")
+    void shouldThrowQuantityErrorWhenOptionGroupIsInsufficient() {
+        // given
+        ItemOptionTestData testData = createTestData(
+                10, 10, 10,
+                15, 5, 15
         );
 
-        //when
-        List<UserItemOption> userOptions = testData.group.isAvailableToBuy(testData.userGroup)
-                .getUserItemOptions();
-        List<UserItemDetailOption> colorOptions = userOptions.get(0).getUserItemDetailOptions();
-        List<UserItemDetailOption> cpuOptions = userOptions.get(1).getUserItemDetailOptions();
-
-        //then
-         softly.assertThat(userOptions).hasSize(2);
-         softly.assertThat(colorOptions.get(0).isPurchasable()).isFalse();
-         softly.assertThat(colorOptions.get(1).isPurchasable()).isTrue();
-         softly.assertThat(cpuOptions.getFirst().isPurchasable()).isFalse();
-         softly.assertAll();
+        // when & then
+        assertThatThrownBy(() -> testData.group.reduceOptionsBy(testData.userGroup))
+                .isInstanceOf(QuantityException.class);
     }
 
     private ItemOptionTestData createTestData(

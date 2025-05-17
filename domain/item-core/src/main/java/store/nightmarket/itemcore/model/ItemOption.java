@@ -1,16 +1,23 @@
 package store.nightmarket.itemcore.model;
 
+import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
+import store.nightmarket.itemcore.exception.ErrorResult;
+import store.nightmarket.itemcore.valueobject.ItemDetailOptionId;
 import store.nightmarket.itemcore.valueobject.ItemOptionId;
 import store.nightmarket.itemcore.valueobject.Name;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ItemOption extends BaseModel<ItemOptionId> {
 
     private Name name;
+    @Getter
     private List<ItemDetailOption> itemDetailOptions;
 
     private ItemOption(
@@ -31,34 +38,38 @@ public class ItemOption extends BaseModel<ItemOptionId> {
         return new ItemOption(id, name, itemDetailOptions);
     }
 
-    private ItemOptionId getOptionId() {
+    public ItemOptionId getOptionId() {
         return internalId();
     }
 
-    public Optional<UserItemOption> isAvailableToBuy(UserItemOption buyGroup) {
-        if(!getOptionId().equals(buyGroup.getOptionId())
-                || buyGroup.getUserItemDetailOptions().isEmpty()) {
-            return Optional.empty();
-        }
+    //옵션 내 재고(상세 옵션들) 차감
+    public void reduceStockBy(UserItemOption buyUserOption) {
+        Map<ItemDetailOptionId, ItemDetailOption> itemDetailOptionMap = itemDetailOptions.stream()
+                .collect(Collectors.toMap(ItemDetailOption::getDetailOptionId, Function.identity()));
 
-        List<UserItemDetailOption> availableOptions = filterPurchasableOptions(buyGroup);
-        UserItemOption purchasableOptions = UserItemOption.newInstance(
-                buyGroup.getOptionId(),
-                availableOptions
-        );
-
-        return Optional.of(purchasableOptions);
+        buyUserOption.getUserItemDetailOptions()
+                .forEach(buyDetailOption -> {
+                    ItemDetailOption itemDetailOption = itemDetailOptionMap.get(buyDetailOption.getDetailOptionId());
+                    if (itemDetailOption != null) {
+                        itemDetailOption.reduceQuantityBy(buyDetailOption);
+                    }
+                });
     }
 
-    private List<UserItemDetailOption> filterPurchasableOptions(UserItemOption buyGroup) {
-        List<UserItemDetailOption> userItemDetailOptions = buyGroup.getUserItemDetailOptions();
+    public Optional<List<ErrorResult>> findErrors(UserItemOption buyUserOption) {
+        List<ErrorResult> errors = new ArrayList<>();
+        Map<ItemDetailOptionId, ItemDetailOption> itemDetailOptionsMap = itemDetailOptions.stream()
+                .collect(Collectors.toMap(ItemDetailOption::getDetailOptionId, Function.identity()));
 
-        return itemDetailOptions.stream()
-                .flatMap(itemDetailOption ->
-                        userItemDetailOptions.stream()
-                                .map(itemDetailOption::isAvailableToBuy)
-                                .flatMap(Optional::stream))
-                .collect(Collectors.toList());
+        buyUserOption.getUserItemDetailOptions()
+                .forEach(buyDetailOption -> {
+                    ItemDetailOption option = itemDetailOptionsMap.get(buyDetailOption.getDetailOptionId());
+                    if (option != null) {
+                        option.findError(buyDetailOption)
+                                .ifPresent(errors::add);
+                    }
+                });
+
+        return errors.isEmpty() ? Optional.empty() : Optional.of(errors);
     }
-
 }

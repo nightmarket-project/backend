@@ -1,12 +1,11 @@
 package store.nightmarket.domain.item.fixture;
 
 import store.nightmarket.domain.item.model.ProductItem;
-import store.nightmarket.domain.item.model.UserProductItem;
+import store.nightmarket.domain.item.model.UserBuyProductItem;
 import store.nightmarket.itemcore.valueobject.ItemId;
 import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.UserId;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class TestItemFactory {
@@ -66,8 +65,8 @@ public class TestItemFactory {
         );
     }
 
-    public static UserProductItem defaultUserProductItem() {
-        return UserProductItem.newInstance(
+    public static UserBuyProductItem defaultUserProductItem() {
+        return UserBuyProductItem.newInstance(
                 new ItemId(UUID.randomUUID()),
                 TestUserOptionFactory.createUserItemOptionGroup(
                         UUID.randomUUID(),
@@ -183,7 +182,7 @@ public class TestItemFactory {
                 new UserId(UUID.randomUUID())
         );
 
-        UserProductItem userProductItem = UserProductItem.newInstance(
+        UserBuyProductItem userBuyProductItem = UserBuyProductItem.newInstance(
                 itemId,
                 TestUserOptionFactory.createUserItemOptionGroup(
                         basicOption,
@@ -218,24 +217,24 @@ public class TestItemFactory {
                 )
         );
 
-        return new ProductItemTestData(productItem, userProductItem);
+        return new ProductItemTestData(productItem, userBuyProductItem);
     }
 
     public static class ProductItemTestData {
         final ProductItem productItem;
-        final UserProductItem userProductItem;
+        final UserBuyProductItem userBuyProductItem;
 
-        public ProductItemTestData(ProductItem productItem, UserProductItem userProductItem) {
+        public ProductItemTestData(ProductItem productItem, UserBuyProductItem userBuyProductItem) {
             this.productItem = productItem;
-            this.userProductItem = userProductItem;
+            this.userBuyProductItem = userBuyProductItem;
         }
 
         public ProductItem getProductItem() {
             return productItem;
         }
 
-        public UserProductItem getUserProductItem() {
-            return userProductItem;
+        public UserBuyProductItem getUserProductItem() {
+            return userBuyProductItem;
         }
     }
 

@@ -1,13 +1,19 @@
 package store.nightmarket.itemcore.model;
 
+import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
+import store.nightmarket.itemcore.exception.ErrorResult;
 import store.nightmarket.itemcore.valueobject.ItemOptionGroupId;
+import store.nightmarket.itemcore.valueobject.ItemOptionId;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
-
+@Getter
 public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
 
     private List<ItemOption> itemOptions;
@@ -30,26 +36,34 @@ public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
         );
     }
 
-    public UserItemOptionGroup isAvailableToBuy(
-            UserItemOptionGroup buyGroup
-    ) {
-        List<UserItemOption> availableOptions = filterPurchasableOptions(buyGroup);
+    // 전체 옵션 그룹의 수량 일괄 차감
+    public void reduceOptionsBy(UserItemOptionGroup buyOptionGroup) {
+        Map<ItemOptionId, ItemOption> itemOptionMap = itemOptions.stream()
+                .collect(Collectors.toMap(ItemOption::getOptionId, Function.identity()));
 
-        return UserItemOptionGroup.newInstance(
-                buyGroup.getOptionGroupId(),
-                availableOptions
-        );
+        buyOptionGroup.getUserItemOptions()
+                .forEach(buyItemOption -> {
+                    ItemOption option = itemOptionMap.get(buyItemOption.getOptionId());
+                    if (option != null) {
+                        option.reduceStockBy(buyItemOption);
+                    }
+                });
     }
 
-    private List<UserItemOption> filterPurchasableOptions(UserItemOptionGroup buyGroup) {
-        List<UserItemOption> userItemOptions = buyGroup.getUserItemOptions();
+    public Optional<List<ErrorResult>> findOptionGroupErrors(UserItemOptionGroup buyOptionGroup) {
+        List<ErrorResult> errors = new ArrayList<>();
+        Map<ItemOptionId, ItemOption> itemOptionMap = itemOptions.stream()
+                .collect(Collectors.toMap(ItemOption::getOptionId, Function.identity()));
 
-        return itemOptions.stream()
-                .flatMap(itemOption ->
-                        userItemOptions.stream()
-                                .map(itemOption::isAvailableToBuy)
-                                .flatMap(Optional::stream))
-                .collect(Collectors.toList());
+        buyOptionGroup.getUserItemOptions()
+                .forEach(buyProductItemOption -> {
+                    ItemOption option = itemOptionMap.get(buyProductItemOption.getOptionId());
+                    if (option != null) {
+                        option.findErrors(buyProductItemOption)
+                                .ifPresent(errors::addAll);
+                    }
+                });
+
+        return errors.isEmpty() ? Optional.empty() : Optional.of(errors);
     }
-
 }

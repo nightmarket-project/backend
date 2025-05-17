@@ -7,12 +7,12 @@ import store.nightmarket.itemcore.model.UserItemOptionGroup;
 import store.nightmarket.itemcore.valueobject.ItemId;
 
 @Getter
-public class UserProductItem extends BaseModel<ItemId> {
+public class UserBuyProductItem extends BaseModel<ItemId> {
 
     private UserItemOptionGroup basicOption;
     private UserItemOption additionalOption;
 
-    private UserProductItem(
+    private UserBuyProductItem(
             ItemId id,
             UserItemOptionGroup basicOption,
             UserItemOption additionalOption
@@ -22,12 +22,12 @@ public class UserProductItem extends BaseModel<ItemId> {
         this.additionalOption = additionalOption;
     }
 
-    public static UserProductItem newInstance(
+    public static UserBuyProductItem newInstance(
             ItemId itemId,
             UserItemOptionGroup basicOption,
             UserItemOption additionalOption
     ) {
-        return new UserProductItem(
+        return new UserBuyProductItem(
                 itemId,
                 basicOption,
                 additionalOption
