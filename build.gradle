@@ -82,13 +82,27 @@ configure(domain) {
     }
 }
 
-def itemDomain = [project(":item"), project(":item-web")]
-
-configure(itemDomain) {
+project(':item') {
     bootJar {
         enabled = false
     }
     dependencies {
+        implementation project(':item-core')
+        implementation project(':common')
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        compileOnly 'org.springframework.boot:spring-boot-starter'
+    }
+}
+
+project(':item-web') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':item')
         implementation project(':item-core')
         implementation project(':common')
 
