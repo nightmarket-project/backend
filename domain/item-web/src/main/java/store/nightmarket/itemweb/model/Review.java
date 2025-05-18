@@ -46,5 +46,4 @@ public class Review extends BaseModel<ReviewId> {
         );
     }
 
-
 }

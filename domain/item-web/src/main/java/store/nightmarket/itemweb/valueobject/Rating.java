@@ -31,4 +31,5 @@ public class Rating {
             throw new ItemWebException("Rating must be between 0 and 5");
         }
     }
+
 }

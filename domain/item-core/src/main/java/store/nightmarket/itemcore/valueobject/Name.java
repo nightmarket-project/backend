@@ -39,4 +39,5 @@ public class Name {
         Name other = (Name) obj;
         return Objects.equals(value, other.value);
     }
+
 }

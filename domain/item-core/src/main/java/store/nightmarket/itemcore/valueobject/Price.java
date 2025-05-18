@@ -44,4 +44,5 @@ public class Price {
         Price other = (Price) obj;
         return Objects.equals(amount, other.amount);
     }
+
 }

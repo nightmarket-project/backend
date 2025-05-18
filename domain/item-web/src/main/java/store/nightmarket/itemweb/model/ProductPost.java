@@ -38,4 +38,5 @@ public class ProductPost extends BaseModel<ProductPostId> {
                 review
         );
     }
+
 }

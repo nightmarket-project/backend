@@ -29,4 +29,5 @@ public class Image {
     public int hashCode() {
         return Objects.hashCode(url);
     }
+
 }

@@ -66,4 +66,5 @@ public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
 
         return errors.isEmpty() ? Optional.empty() : Optional.of(errors);
     }
+
 }

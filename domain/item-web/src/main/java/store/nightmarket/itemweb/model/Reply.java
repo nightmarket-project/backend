@@ -42,4 +42,5 @@ public class Reply extends BaseModel<ReviewId> {
             throw new ItemWebException("The content is too long");
         }
     }
+
 }

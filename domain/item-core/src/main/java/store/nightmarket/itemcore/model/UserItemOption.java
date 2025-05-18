@@ -29,4 +29,5 @@ public class UserItemOption extends BaseModel<ItemOptionId> {
     public ItemOptionId getOptionId() {
         return internalId();
     }
+
 }
