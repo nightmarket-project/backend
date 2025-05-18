@@ -43,7 +43,7 @@ public class ItemOption extends BaseModel<ItemOptionId> {
     }
 
     //옵션 내 재고(상세 옵션들) 차감
-    public void reduceStockBy(UserItemOption buyUserOption) {
+    public void reduceOptionQuantityBy(UserItemOption buyUserOption) {
         Map<ItemDetailOptionId, ItemDetailOption> itemDetailOptionMap = itemDetailOptions.stream()
                 .collect(Collectors.toMap(ItemDetailOption::getDetailOptionId, Function.identity()));
 
@@ -51,12 +51,12 @@ public class ItemOption extends BaseModel<ItemOptionId> {
                 .forEach(buyDetailOption -> {
                     ItemDetailOption itemDetailOption = itemDetailOptionMap.get(buyDetailOption.getDetailOptionId());
                     if (itemDetailOption != null) {
-                        itemDetailOption.reduceQuantityBy(buyDetailOption);
+                        itemDetailOption.reduceDetailOptionQuantityBy(buyDetailOption);
                     }
                 });
     }
 
-    public Optional<List<ErrorResult>> findErrors(UserItemOption buyUserOption) {
+    public Optional<List<ErrorResult>> findOptionErrors(UserItemOption buyUserOption) {
         List<ErrorResult> errors = new ArrayList<>();
         Map<ItemDetailOptionId, ItemDetailOption> itemDetailOptionsMap = itemDetailOptions.stream()
                 .collect(Collectors.toMap(ItemDetailOption::getDetailOptionId, Function.identity()));
@@ -65,7 +65,7 @@ public class ItemOption extends BaseModel<ItemOptionId> {
                 .forEach(buyDetailOption -> {
                     ItemDetailOption option = itemDetailOptionsMap.get(buyDetailOption.getDetailOptionId());
                     if (option != null) {
-                        option.findError(buyDetailOption)
+                        option.findDetailOptionError(buyDetailOption)
                                 .ifPresent(errors::add);
                     }
                 });

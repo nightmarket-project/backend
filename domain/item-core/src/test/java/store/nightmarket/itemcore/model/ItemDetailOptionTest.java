@@ -33,7 +33,7 @@ class ItemDetailOptionTest {
         DetailOptionTestData testData = createTestData(15);
 
         // when
-        Optional<ErrorResult> error = testData.detailOption.findError(testData.userItemDetailOption);
+        Optional<ErrorResult> error = testData.detailOption.findDetailOptionError(testData.userItemDetailOption);
 
         // then
         assertThat(error.isEmpty()).isTrue();
@@ -46,7 +46,7 @@ class ItemDetailOptionTest {
         DetailOptionTestData testData = createTestData(5);
 
         // when
-        Optional<ErrorResult> error = testData.detailOption.findError(testData.userItemDetailOption);
+        Optional<ErrorResult> error = testData.detailOption.findDetailOptionError(testData.userItemDetailOption);
         // then
         error.ifPresent(
                 errorResult -> {
@@ -65,7 +65,7 @@ class ItemDetailOptionTest {
         DetailOptionTestData testData = createTestData(15);
 
         // when
-        testData.detailOption.reduceQuantityBy(testData.userItemDetailOption);
+        testData.detailOption.reduceDetailOptionQuantityBy(testData.userItemDetailOption);
 
         // then
         Quantity quantity = new Quantity(new BigDecimal(5));
@@ -79,7 +79,7 @@ class ItemDetailOptionTest {
         DetailOptionTestData testData = createTestData(5);
 
         // when & then
-        assertThatThrownBy(() ->  testData.detailOption.reduceQuantityBy(testData.userItemDetailOption))
+        assertThatThrownBy(() ->  testData.detailOption.reduceDetailOptionQuantityBy(testData.userItemDetailOption))
                 .isInstanceOf(QuantityException.class);
     }
 

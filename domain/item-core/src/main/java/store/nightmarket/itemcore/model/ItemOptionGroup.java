@@ -37,7 +37,7 @@ public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
     }
 
     // 전체 옵션 그룹의 수량 일괄 차감
-    public void reduceOptionsBy(UserItemOptionGroup buyOptionGroup) {
+    public void reduceOptionGroupQuantityBy(UserItemOptionGroup buyOptionGroup) {
         Map<ItemOptionId, ItemOption> itemOptionMap = itemOptions.stream()
                 .collect(Collectors.toMap(ItemOption::getOptionId, Function.identity()));
 
@@ -45,7 +45,7 @@ public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
                 .forEach(buyItemOption -> {
                     ItemOption option = itemOptionMap.get(buyItemOption.getOptionId());
                     if (option != null) {
-                        option.reduceStockBy(buyItemOption);
+                        option.reduceOptionQuantityBy(buyItemOption);
                     }
                 });
     }
@@ -59,7 +59,7 @@ public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
                 .forEach(buyProductItemOption -> {
                     ItemOption option = itemOptionMap.get(buyProductItemOption.getOptionId());
                     if (option != null) {
-                        option.findErrors(buyProductItemOption)
+                        option.findOptionErrors(buyProductItemOption)
                                 .ifPresent(errors::addAll);
                     }
                 });

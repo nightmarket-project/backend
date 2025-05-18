@@ -43,11 +43,11 @@ public class ItemDetailOption extends BaseModel<ItemDetailOptionId> {
     }
 
     // 상세 수량 수량 차감
-    public void reduceQuantityBy(UserItemDetailOption buyDetailOption) {
+    public void reduceDetailOptionQuantityBy(UserItemDetailOption buyDetailOption) {
         quantity = quantity.subtract(buyDetailOption.getQuantity());
     }
 
-    public Optional<ErrorResult> findError(UserItemDetailOption buyDetailOption) {
+    public Optional<ErrorResult> findDetailOptionError(UserItemDetailOption buyDetailOption) {
         if (quantity.isLessThan(buyDetailOption.getQuantity())) {
             return Optional.of(new ErrorResult(getDetailOptionId(), "보유 수량이 요청 수량보다 작다."));
         }

@@ -80,7 +80,7 @@ class ItemOptionGroupTest {
                 5, 5, 5
         );
         // when
-        testData.group.reduceOptionsBy(testData.userGroup);
+        testData.group.reduceOptionGroupQuantityBy(testData.userGroup);
 
         // then
         Quantity quantity = new Quantity(new BigDecimal(5));
@@ -104,7 +104,7 @@ class ItemOptionGroupTest {
         );
 
         // when & then
-        assertThatThrownBy(() -> testData.group.reduceOptionsBy(testData.userGroup))
+        assertThatThrownBy(() -> testData.group.reduceOptionGroupQuantityBy(testData.userGroup))
                 .isInstanceOf(QuantityException.class);
     }
 

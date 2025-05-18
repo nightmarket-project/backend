@@ -60,15 +60,15 @@ public class ProductItem extends BaseModel<ItemId> {
         List<ErrorResult> findErrors = new ArrayList<>();
         basicOption.findOptionGroupErrors(buyProductItem.getBasicOption())
                 .ifPresent(findErrors::addAll);
-        additionalOption.findErrors(buyProductItem.getAdditionalOption())
+        additionalOption.findOptionErrors(buyProductItem.getAdditionalOption())
                 .ifPresent(findErrors::addAll);
 
         return findErrors.isEmpty() ? Optional.empty() : Optional.of(findErrors);
     }
 
     public void reduceProductBy(UserBuyProductItem buyProductItem) {
-        basicOption.reduceOptionsBy(buyProductItem.getBasicOption());
-        additionalOption.reduceStockBy(buyProductItem.getAdditionalOption());
+        basicOption.reduceOptionGroupQuantityBy(buyProductItem.getBasicOption());
+        additionalOption.reduceOptionQuantityBy(buyProductItem.getAdditionalOption());
     }
 
 }
