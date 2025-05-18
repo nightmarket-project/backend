@@ -1,6 +1,7 @@
 package store.nightmarket.domain.order.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -29,7 +30,8 @@ public class OrderRecord extends BaseModel<OrderRecordId> {
 		this.address = address;
 		this.orderDate = orderDate;
 		this.userId = userId;
-		this.detailOrderRecordList = detailOrderRecordList;
+		this.detailOrderRecordList =
+			detailOrderRecordList != null ? new ArrayList<>(detailOrderRecordList) : new ArrayList<>();
 	}
 
 	public static OrderRecord newInstance(
