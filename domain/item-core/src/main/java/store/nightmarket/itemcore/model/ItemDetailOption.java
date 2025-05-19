@@ -8,13 +8,13 @@ import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.Price;
 import store.nightmarket.itemcore.valueobject.Quantity;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class ItemDetailOption extends BaseModel<ItemDetailOptionId> {
 
     private Name name;
     private Price price;
-    @Getter
     private Quantity quantity;
 
     private ItemDetailOption(
@@ -53,6 +53,20 @@ public class ItemDetailOption extends BaseModel<ItemDetailOptionId> {
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDetailOptionId(), quantity);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) return true;
+        if(obj == null || getClass() != obj.getClass()) return false;
+        ItemDetailOption other = (ItemDetailOption) obj;
+        return Objects.equals(getDetailOptionId(), other.getDetailOptionId())
+                && Objects.equals(quantity, other.quantity);
     }
 
 }
