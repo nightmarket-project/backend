@@ -30,24 +30,6 @@ public class TestObjectFactory {
         return new Image(url, order);
     }
 
-    public static Review createReview(PostContent postContent, int rating, List<Reply> replyList) {
-        return Review.newInstance(
-                new ReviewId(UUID.randomUUID()),
-                new UserId(UUID.randomUUID()),
-                postContent,
-                new Rating(rating),
-                new ArrayList<>(replyList)
-        );
-    }
-
-    public static ProductPost createProductPost(PostContent postContent, List<Review> reviewList) {
-        return ProductPost.newInstance(
-                new ProductPostId(UUID.randomUUID()),
-                new ItemId(UUID.randomUUID()),
-                postContent,
-                reviewList
-        );
-    }
 
     public static Reply defaultReply() {
         return Reply.newInstance(
@@ -62,29 +44,6 @@ public class TestObjectFactory {
         return new Image(
                 "https://picsum.photos/" + random.nextInt() + "/" + random.nextInt(),
                 random.nextInt(100)
-        );
-    }
-
-    public static PostContent defaultPostContent() {
-        return new PostContent(
-                "default",
-                List.of(
-                        defaultImage(),
-                        defaultImage()
-                )
-        );
-    }
-
-    public static Review defaultReview() {
-        return Review.newInstance(
-                new ReviewId(UUID.randomUUID()),
-                new UserId(UUID.randomUUID()),
-                defaultPostContent(),
-                new Rating(5),
-                List.of(
-                        defaultReply(),
-                        defaultReply()
-                )
         );
     }
 

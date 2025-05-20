@@ -11,121 +11,33 @@ import java.util.UUID;
 
 public class TestItemFactory {
 
-    public static ProductItem defaultProductItem() {
-        return ProductItem.newInstance(
-                new ItemId(UUID.randomUUID()),
-                new Name("TestItem"),
-                TestOptionFactory.createItemOptionGroup(
-                        UUID.randomUUID(),
-                        List.of(
-                                TestOptionFactory.createItemOption(
-                                        UUID.randomUUID(),
-                                        "색깔",
-                                        List.of(
-                                                TestOptionFactory.createDetailOption(
-                                                        UUID.randomUUID(),
-                                                        "검은색",
-                                                        1000,
-                                                        100
-                                                ), TestOptionFactory.createDetailOption(
-                                                        UUID.randomUUID(),
-                                                        "하얀색",
-                                                        2000,
-                                                        200
-                                                )
-                                        )
-                                ), TestOptionFactory.createItemOption(
-                                        UUID.randomUUID(),
-                                        "cpu core",
-                                        List.of(
-                                                TestOptionFactory.createDetailOption(
-                                                        UUID.randomUUID(),
-                                                        "4코어",
-                                                        10000,
-                                                        100
-                                                ), TestOptionFactory.createDetailOption(
-                                                        UUID.randomUUID(),
-                                                        "8코어",
-                                                        20000,
-                                                        200
-                                                )
-                                        )
-                                )
-                        )
-                ),
-                TestOptionFactory.createItemOption(
-                        UUID.randomUUID(),
-                        "모니터",
-                        List.of(
-                                TestOptionFactory.createDetailOption(
-                                        UUID.randomUUID(),
-                                        "모니터60hz",
-                                        5000,
-                                        50
-                                ), TestOptionFactory.createDetailOption(
-                                        UUID.randomUUID(),
-                                        "모니터144hz",
-                                        7000,
-                                        70
-                                )
-                        )
-                ),
-                new UserId(UUID.randomUUID())
-        );
+    private final ItemId itemId;
+    private final UUID basicOption;
+    private final UUID additionalOption;
+    private final UUID colorOption;
+    private final UUID cpuOption;
+    private final UUID blackId;
+    private final UUID whiteId;
+    private final UUID cpu4Id;
+    private final UUID cpu8Id;
+    private final UUID monitor60hzId;
+    private final UUID monitor144hzId;
+
+    public TestItemFactory() {
+        itemId = new ItemId(UUID.randomUUID());
+        basicOption = UUID.randomUUID();
+        additionalOption = UUID.randomUUID();
+        colorOption = UUID.randomUUID();
+        cpuOption = UUID.randomUUID();
+        blackId = UUID.randomUUID();
+        whiteId = UUID.randomUUID();
+        cpu4Id = UUID.randomUUID();
+        cpu8Id = UUID.randomUUID();
+        monitor60hzId = UUID.randomUUID();
+        monitor144hzId = UUID.randomUUID();
     }
 
-    public static UserBuyProductItem defaultUserProductItem() {
-        return UserBuyProductItem.newInstance(
-                new ItemId(UUID.randomUUID()),
-                TestUserOptionFactory.createUserItemOptionGroup(
-                        UUID.randomUUID(),
-                        List.of(
-                                TestUserOptionFactory.createUserItemOption(
-                                        UUID.randomUUID(),
-                                        List.of(
-                                                TestUserOptionFactory.createUserItemDetailOption(
-                                                        UUID.randomUUID(),
-                                                        10
-                                                ), TestUserOptionFactory.createUserItemDetailOption(
-                                                        UUID.randomUUID(),
-                                                        10
-                                                )
-                                        )
-                                ), TestUserOptionFactory.createUserItemOption(
-                                        UUID.randomUUID(),
-                                        List.of(
-                                                TestUserOptionFactory.createUserItemDetailOption(
-                                                        UUID.randomUUID(),
-                                                        10
-                                                ), TestUserOptionFactory.createUserItemDetailOption(
-                                                        UUID.randomUUID(),
-                                                        10
-                                                )
-                                        )
-                                )
-                        )
-                ), TestUserOptionFactory.createUserItemOption(
-                        UUID.randomUUID(),
-                        List.of(
-                                TestUserOptionFactory.createUserItemDetailOption(
-                                        UUID.randomUUID(),
-                                        10
-                                ), TestUserOptionFactory.createUserItemDetailOption(
-                                        UUID.randomUUID(),
-                                        10
-                                )
-                        )
-                )
-        );
-    }
-
-    public static ProductItemTestData createTestData(
-            int blackQty,
-            int whiteQty,
-            int cpu4Qty,
-            int cpu8Qty,
-            int monitor60Qty,
-            int monitor144Qty,
+    public UserBuyProductItem createTestUserBuyProductItem(
             int blackUserQty,
             int whiteUserQty,
             int cpu4UserQty,
@@ -133,20 +45,112 @@ public class TestItemFactory {
             int monitor60UserQty,
             int monitor144UserQty
     ) {
-        ItemId itemId = new ItemId(UUID.randomUUID());
-        UUID basicOption = UUID.randomUUID();
-        UUID additionalOption = UUID.randomUUID();
-        UUID colorOption = UUID.randomUUID();
-        UUID cpuOption = UUID.randomUUID();
-        UUID blackId = UUID.randomUUID();
-        UUID whiteId = UUID.randomUUID();
-        UUID cpu4Id = UUID.randomUUID();
-        UUID cpu8Id = UUID.randomUUID();
-        UUID monitor60hzId = UUID.randomUUID();
-        UUID monitor144hzId = UUID.randomUUID();
+        return UserBuyProductItem.newInstance(
+                itemId,
+                TestUserOptionFactory.createUserItemOptionGroup(
+                        basicOption,
+                        List.of(
+                                TestUserOptionFactory.createUserItemOption(
+                                        colorOption,
+                                        List.of(
+                                                TestUserOptionFactory.createUserItemDetailOption(
+                                                        blackId,
+                                                        blackUserQty
+                                                ), TestUserOptionFactory.createUserItemDetailOption(
+                                                        whiteId,
+                                                        whiteUserQty
+                                                )
+                                        )
+                                ), TestUserOptionFactory.createUserItemOption(
+                                        cpuOption,
+                                        List.of(
+                                                TestUserOptionFactory.createUserItemDetailOption(
+                                                        cpu4Id,
+                                                        cpu4UserQty
+                                                ), TestUserOptionFactory.createUserItemDetailOption(
+                                                        cpu8Id,
+                                                        cpu8UserQty
+                                                )
+                                        )
+                                )
+                        )
+                ), TestUserOptionFactory.createUserItemOption(
+                        additionalOption,
+                        List.of(
+                                TestUserOptionFactory.createUserItemDetailOption(
+                                        monitor60hzId,
+                                        monitor60UserQty
+                                ), TestUserOptionFactory.createUserItemDetailOption(
+                                        monitor144hzId,
+                                        monitor144UserQty
+                                )
+                        )
+                )
+        );
+    }
 
+    public UserBuyProductItem createTestUserBuyProductItem(
+            UUID productId,
+            int blackUserQty,
+            int whiteUserQty,
+            int cpu4UserQty,
+            int cpu8UserQty,
+            int monitor60UserQty,
+            int monitor144UserQty
+    ) {
+        return UserBuyProductItem.newInstance(
+                new ItemId(productId),
+                TestUserOptionFactory.createUserItemOptionGroup(
+                        basicOption,
+                        List.of(
+                                TestUserOptionFactory.createUserItemOption(
+                                        colorOption,
+                                        List.of(
+                                                TestUserOptionFactory.createUserItemDetailOption(
+                                                        blackId,
+                                                        blackUserQty
+                                                ), TestUserOptionFactory.createUserItemDetailOption(
+                                                        whiteId,
+                                                        whiteUserQty
+                                                )
+                                        )
+                                ), TestUserOptionFactory.createUserItemOption(
+                                        cpuOption,
+                                        List.of(
+                                                TestUserOptionFactory.createUserItemDetailOption(
+                                                        cpu4Id,
+                                                        cpu4UserQty
+                                                ), TestUserOptionFactory.createUserItemDetailOption(
+                                                        cpu8Id,
+                                                        cpu8UserQty
+                                                )
+                                        )
+                                )
+                        )
+                ), TestUserOptionFactory.createUserItemOption(
+                        additionalOption,
+                        List.of(
+                                TestUserOptionFactory.createUserItemDetailOption(
+                                        monitor60hzId,
+                                        monitor60UserQty
+                                ), TestUserOptionFactory.createUserItemDetailOption(
+                                        monitor144hzId,
+                                        monitor144UserQty
+                                )
+                        )
+                )
+        );
+    }
 
-        ProductItem productItem = ProductItem.newInstance(
+    public ProductItem createTestProductItem(
+            int blackQty,
+            int whiteQty,
+            int cpu4Qty,
+            int cpu8Qty,
+            int monitor60Qty,
+            int monitor144Qty
+    ) {
+        return ProductItem.newInstance(
                 itemId,
                 new Name("ComputerParts"),
                 TestOptionFactory.createItemOptionGroup(
@@ -206,69 +210,77 @@ public class TestItemFactory {
                 ),
                 new UserId(UUID.randomUUID())
         );
-
-        UserBuyProductItem userBuyProductItem = UserBuyProductItem.newInstance(
-                itemId,
-                TestUserOptionFactory.createUserItemOptionGroup(
-                        basicOption,
-                        List.of(
-                                TestUserOptionFactory.createUserItemOption(
-                                        colorOption,
-                                        List.of(
-                                                TestUserOptionFactory.createUserItemDetailOption(
-                                                        blackId,
-                                                        blackUserQty
-                                                ), TestUserOptionFactory.createUserItemDetailOption(
-                                                        whiteId,
-                                                        whiteUserQty
-                                                )
-                                        )
-                                ), TestUserOptionFactory.createUserItemOption(
-                                        cpuOption,
-                                        List.of(
-                                                TestUserOptionFactory.createUserItemDetailOption(
-                                                        cpu4Id,
-                                                        cpu4UserQty
-                                                ), TestUserOptionFactory.createUserItemDetailOption(
-                                                        cpu8Id,
-                                                        cpu8UserQty
-                                                )
-                                        )
-                                )
-                        )
-                ), TestUserOptionFactory.createUserItemOption(
-                        additionalOption,
-                        List.of(
-                                TestUserOptionFactory.createUserItemDetailOption(
-                                        monitor60hzId,
-                                        monitor60UserQty
-                                ), TestUserOptionFactory.createUserItemDetailOption(
-                                        monitor144hzId,
-                                        monitor144UserQty
-                                )
-                        )
-                )
-        );
-
-        return new ProductItemTestData(productItem, userBuyProductItem);
     }
 
-    public static class ProductItemTestData {
-        final ProductItem productItem;
-        final UserBuyProductItem userBuyProductItem;
-
-        public ProductItemTestData(ProductItem productItem, UserBuyProductItem userBuyProductItem) {
-            this.productItem = productItem;
-            this.userBuyProductItem = userBuyProductItem;
-        }
-
-        public ProductItem getProductItem() {
-            return productItem;
-        }
-
-        public UserBuyProductItem getUserProductItem() {
-            return userBuyProductItem;
-        }
+    public ProductItem createTestProductItem(
+            UUID productId,
+            int blackQty,
+            int whiteQty,
+            int cpu4Qty,
+            int cpu8Qty,
+            int monitor60Qty,
+            int monitor144Qty
+    ) {
+        return ProductItem.newInstance(
+                new ItemId(productId),
+                new Name("ComputerParts"),
+                TestOptionFactory.createItemOptionGroup(
+                        basicOption,
+                        List.of(
+                                TestOptionFactory.createItemOption(
+                                        colorOption,
+                                        "색깔",
+                                        List.of(
+                                                TestOptionFactory.createDetailOption(
+                                                        blackId,
+                                                        "검은색",
+                                                        1000,
+                                                        blackQty
+                                                ), TestOptionFactory.createDetailOption(
+                                                        whiteId,
+                                                        "하얀색",
+                                                        2000,
+                                                        whiteQty
+                                                )
+                                        )
+                                ), TestOptionFactory.createItemOption(
+                                        cpuOption,
+                                        "cpu core",
+                                        List.of(
+                                                TestOptionFactory.createDetailOption(
+                                                        cpu4Id,
+                                                        "4코어",
+                                                        10000,
+                                                        cpu4Qty
+                                                ), TestOptionFactory.createDetailOption(
+                                                        cpu8Id,
+                                                        "8코어",
+                                                        20000,
+                                                        cpu8Qty
+                                                )
+                                        )
+                                )
+                        )
+                ),
+                TestOptionFactory.createItemOption(
+                        additionalOption,
+                        "모니터",
+                        List.of(
+                                TestOptionFactory.createDetailOption(
+                                        monitor60hzId,
+                                        "모니터60hz",
+                                        5000,
+                                        monitor60Qty
+                                ), TestOptionFactory.createDetailOption(
+                                        monitor144hzId,
+                                        "모니터144hz",
+                                        7000,
+                                        monitor144Qty
+                                )
+                        )
+                ),
+                new UserId(UUID.randomUUID())
+        );
     }
 
 }

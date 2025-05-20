@@ -13,9 +13,9 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Getter
 public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
 
+    @Getter
     private List<ItemOption> itemOptions;
 
     private ItemOptionGroup(

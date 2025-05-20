@@ -31,11 +31,14 @@ class removeProductFromBasketItemWebDomainServiceTest {
     @DisplayName("장바구니에 삭제 제품과 동일한 제품이 있을때 장바구니에서 제품을 삭제한다.")
     void ShouldRemoveProductFromBasketWhenBasketHaveProduct() {
         // given
+        TestItemFactory factory = new TestItemFactory();
+        UserBuyProductItem testUserBuyProductItem = factory.createTestUserBuyProductItem(
+                5, 5, 5, 5, 5, 5);
         ShoppingBasket shoppingBasket = newShoppingBasket();
-        UserBuyProductItem userBuyProductItem = TestItemFactory.defaultUserProductItem();
-        shoppingBasket.addProductToBasket(userBuyProductItem);
+
+        shoppingBasket.addProductToBasket(testUserBuyProductItem);
         Input input = Input.builder()
-                .userBuyProductItem(userBuyProductItem)
+                .userBuyProductItem(testUserBuyProductItem)
                 .shoppingBasket(shoppingBasket)
                 .build();
 
@@ -44,7 +47,8 @@ class removeProductFromBasketItemWebDomainServiceTest {
 
         // then
         List<UserBuyProductItem> userBuyProductItems = event.getShoppingBasket().getUserBuyProductItems();
-        assertThat(userBuyProductItems).isEmpty();
+        assertThat(userBuyProductItems)
+                .isEmpty();
     }
 
     @Test
@@ -52,9 +56,11 @@ class removeProductFromBasketItemWebDomainServiceTest {
     void shouldThrowItemWebExceptionWhenBasketDontHaveProduct() {
         // given
         ShoppingBasket shoppingBasket = newShoppingBasket();
-        UserBuyProductItem userBuyProductItem = TestItemFactory.defaultUserProductItem();
+        TestItemFactory factory = new TestItemFactory();
+        UserBuyProductItem testUserBuyProductItem = factory.createTestUserBuyProductItem(
+                5, 5, 5, 5, 5, 5);
         Input input = Input.builder()
-                .userBuyProductItem(userBuyProductItem)
+                .userBuyProductItem(testUserBuyProductItem)
                 .shoppingBasket(shoppingBasket)
                 .build();
 

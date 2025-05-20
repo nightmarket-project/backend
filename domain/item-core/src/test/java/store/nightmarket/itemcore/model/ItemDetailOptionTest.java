@@ -20,39 +20,51 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class ItemDetailOptionTest {
 
     SoftAssertions softly;
+    private UUID detailOptionId;
 
     @BeforeEach
     void setUp() {
         softly = new SoftAssertions();
+        detailOptionId = UUID.randomUUID();
     }
 
     @Test
     @DisplayName("아이템 세부 옵션 수량이 요청 수량보다 많을때 Optional empty를 반환한다.")
     void shouldReturnOptionalEmptyWhenDetailOptionQuantityIsSufficient() {
         // given
-        DetailOptionTestData testData = createTestData(15);
+        ItemDetailOption detailOption = createTestDetailOption(detailOptionId, 15);
+        UserItemDetailOption userItemDetailOption = createTestUserItemDetailOption(detailOptionId, 10);
 
         // when
-        Optional<ErrorResult> error = testData.detailOption.findDetailOptionError(testData.userItemDetailOption);
+        Optional<ErrorResult> error = detailOption.findDetailOptionError(userItemDetailOption);
 
         // then
-        assertThat(error.isEmpty()).isTrue();
+        assertThat(error.isEmpty())
+                .isTrue();
     }
+
+
 
     @Test
     @DisplayName("아이템 수량이 요청 수량보다 부족할때 ErrorResult를 반환한다.")
     void shouldReturnErrorResultWhenItemDetailQuantityIsInsufficient() {
         // given
-        DetailOptionTestData testData = createTestData(5);
+        ItemDetailOption detailOption = createTestDetailOption(detailOptionId,5);
+        UserItemDetailOption userItemDetailOption = createTestUserItemDetailOption(detailOptionId, 10);
 
         // when
-        Optional<ErrorResult> error = testData.detailOption.findDetailOptionError(testData.userItemDetailOption);
+        Optional<ErrorResult> error = detailOption.findDetailOptionError(userItemDetailOption);
+
         // then
+        softly.assertThat(error.isEmpty()).isFalse();
         error.ifPresent(
                 errorResult -> {
-                    softly.assertThat(errorResult).isNotNull();
-                    softly.assertThat(errorResult.optionId()).isEqualTo(testData.detailOption.getDetailOptionId());
-                    softly.assertThat(errorResult.message()).isEqualTo("보유 수량이 요청 수량보다 작다.");
+                    softly.assertThat(errorResult)
+                            .isNotNull();
+                    softly.assertThat(errorResult.optionId())
+                            .isEqualTo(detailOption.getDetailOptionId());
+                    softly.assertThat(errorResult.message())
+                            .isEqualTo("보유 수량이 요청 수량보다 작다.");
                 }
         );
         softly.assertAll();
@@ -62,43 +74,46 @@ class ItemDetailOptionTest {
     @DisplayName("옵션수량이 요청수량보다 많을때 옵션수량은 요청수량만큼 감소한다.")
     void shouldReduceDetailOptionQuantityWhenDetailOptionIsSufficient() {
         // given
-        DetailOptionTestData testData = createTestData(15);
+        ItemDetailOption detailOption = createTestDetailOption(detailOptionId, 10);
+        UserItemDetailOption userItemDetailOption = createTestUserItemDetailOption(detailOptionId, 5);
 
         // when
-        testData.detailOption.reduceDetailOptionQuantityBy(testData.userItemDetailOption);
+        detailOption.reduceDetailOptionQuantityBy(userItemDetailOption);
 
         // then
-        Quantity quantity = new Quantity(new BigDecimal(5));
-        assertThat(testData.detailOption.getQuantity()).isEqualTo(quantity);
+        Quantity testQuantity = new Quantity(BigDecimal.valueOf(5));
+
+        assertThat(detailOption)
+                .extracting("quantity")
+                .isEqualTo(testQuantity);
     }
 
     @Test
     @DisplayName("옵션수량이 요청수량보다 적을때 수량 오류 예외가 발생한다.")
     void shouldThrowQuantityErrorWhenDetailOptionQuantityIsInsufficient() {
         // given
-        DetailOptionTestData testData = createTestData(5);
+        ItemDetailOption detailOption = createTestDetailOption(detailOptionId, 5);
+        UserItemDetailOption userItemDetailOption = createTestUserItemDetailOption(detailOptionId, 10);
 
         // when & then
-        assertThatThrownBy(() ->  testData.detailOption.reduceDetailOptionQuantityBy(testData.userItemDetailOption))
+        assertThatThrownBy(() ->  detailOption.reduceDetailOptionQuantityBy(userItemDetailOption))
                 .isInstanceOf(QuantityException.class);
     }
 
-    private DetailOptionTestData createTestData(int quantity) {
-        UUID uuid = UUID.randomUUID();
-        ItemDetailOption detailOption = TestOptionFactory.createDetailOption(
+    private ItemDetailOption createTestDetailOption(UUID uuid, int quantity) {
+        return TestOptionFactory.createDetailOption(
                 uuid,
                 "하얀색",
                 500,
                 quantity
         );
-        UserItemDetailOption userItemDetailOption = TestUserOptionFactory.createUserItemDetailOption(
-                uuid,
-                10
-        );
-
-        return new DetailOptionTestData(detailOption, userItemDetailOption);
     }
 
-    private record DetailOptionTestData(ItemDetailOption detailOption, UserItemDetailOption userItemDetailOption) {}
+    private UserItemDetailOption createTestUserItemDetailOption(UUID uuid, int quantity) {
+        return TestUserOptionFactory.createUserItemDetailOption(
+                uuid,
+                quantity
+        );
+    }
 
 }

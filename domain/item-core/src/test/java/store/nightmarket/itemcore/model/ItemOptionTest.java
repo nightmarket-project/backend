@@ -21,20 +21,27 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class ItemOptionTest {
 
     private SoftAssertions softly;
+    private UUID optionColorId;
+    private UUID blackId;
+    private UUID whiteId;
 
     @BeforeEach
     void setUp() {
         softly = new SoftAssertions();
+        optionColorId = UUID.randomUUID();
+        blackId = UUID.randomUUID();
+        whiteId = UUID.randomUUID();
     }
 
     @Test
     @DisplayName("아이템 수량이 요청 수량보다 많을때 Optional empty를 반환한다.")
     void shouldReturnOptionalEmptyWhenOptionQuantityIsSufficient() {
         // given
-        ItemOptionTestData testData = createTestData(10, 10, 5, 5);
+        ItemOption testItemOption = createTestItemOption(10, 10);
+        UserItemOption testUserItemOption = createTestUserItemOption(5, 5);
 
         // when
-        Optional<List<ErrorResult>> errors = testData.option.findOptionErrors(testData.userOption);
+        Optional<List<ErrorResult>> errors = testItemOption.findOptionErrors(testUserItemOption);
 
         // then
         assertThat(errors).isEmpty();
@@ -44,10 +51,11 @@ class ItemOptionTest {
     @DisplayName("2개 아이템 수량이 2개 요청 수량보다 적을때 ErrorResult 2개를 반환한다.")
     void shouldReturnErrorResultsWhenOptionQuantityIsInsufficient() {
         // given
-        ItemOptionTestData testData = createTestData(10, 10, 15, 15);
+        ItemOption testItemOption = createTestItemOption(10, 10);
+        UserItemOption testUserItemOption = createTestUserItemOption(15, 15);
 
         // when
-        Optional<List<ErrorResult>> errors = testData.option.findOptionErrors(testData.userOption);
+        Optional<List<ErrorResult>> errors = testItemOption.findOptionErrors(testUserItemOption);
 
         // then
         errors.ifPresent(
@@ -55,9 +63,9 @@ class ItemOptionTest {
                     softly.assertThat(errorResults).isNotEmpty();
                     softly.assertThat(errorResults).hasSize(2);
                     softly.assertThat(errorResults.getFirst().optionId()).isEqualTo(
-                            testData.userOption.getUserItemDetailOptions().getFirst().getDetailOptionId());
+                            testUserItemOption.getUserItemDetailOptions().getFirst().getDetailOptionId());
                     softly.assertThat(errorResults.getLast().optionId()).isEqualTo(
-                            testData.userOption.getUserItemDetailOptions().getLast().getDetailOptionId());
+                            testUserItemOption.getUserItemDetailOptions().getLast().getDetailOptionId());
 
                 }
         );
@@ -68,15 +76,20 @@ class ItemOptionTest {
     @DisplayName("옵션수량이 요청수량보다 많을때 옵션수량은 요청수량만큼 감소한다.")
     void shouldReduceDetailOptionQuantityWhenOptionIsSufficient() {
         // given
-        ItemOptionTestData testData = createTestData(10, 10, 5, 5);
+        ItemOption testItemOption = createTestItemOption(10, 10);
+        UserItemOption testUserItemOption = createTestUserItemOption(5, 5);
 
         // when
-        testData.option.reduceOptionQuantityBy(testData.userOption);
+        testItemOption.reduceOptionQuantityBy(testUserItemOption);
 
         // then
         Quantity quantity = new Quantity(new BigDecimal(5));
-        softly.assertThat(testData.option.getItemDetailOptions().getFirst().getQuantity()).isEqualTo(quantity);
-        softly.assertThat(testData.option.getItemDetailOptions().getLast().getQuantity()).isEqualTo(quantity);
+        softly.assertThat(testItemOption.getItemDetailOptions().getFirst())
+                .extracting("quantity")
+                .isEqualTo(quantity);
+        softly.assertThat(testItemOption.getItemDetailOptions().getLast())
+                .extracting("quantity")
+                .isEqualTo(quantity);
         softly.assertAll();
     }
 
@@ -84,24 +97,31 @@ class ItemOptionTest {
     @DisplayName("옵션수량이 요청수량보다 적을때 수량 오류 예외가 발생한다.")
     void shouldThrowQuantityErrorWhenOptionIsInsufficient() {
         // given
-        ItemOptionTestData testData = createTestData(10, 10, 5, 15);
+        ItemOption testItemOption = createTestItemOption(10, 10);
+        UserItemOption testUserItemOption = createTestUserItemOption(5, 15);
 
         // when & then
-        assertThatThrownBy(() -> testData.option.reduceOptionQuantityBy(testData.userOption))
+        assertThatThrownBy(() -> testItemOption.reduceOptionQuantityBy(testUserItemOption))
                 .isInstanceOf(QuantityException.class);
     }
 
-    private ItemOptionTestData createTestData(
-            int blackQty,
-            int whiteQty,
-            int blackUserQty,
-            int whiteUserQty
-    ) {
-        UUID optionColorId = UUID.randomUUID();
-        UUID blackId = UUID.randomUUID();
-        UUID whiteId = UUID.randomUUID();
+    private UserItemOption createTestUserItemOption(int blackUserQty, int whiteUserQty) {
+        return TestUserOptionFactory.createUserItemOption(
+                optionColorId,
+                List.of(
+                        TestUserOptionFactory.createUserItemDetailOption(
+                                blackId,
+                                blackUserQty
+                        ), TestUserOptionFactory.createUserItemDetailOption(
+                                whiteId,
+                                whiteUserQty
+                        )
+                )
+        );
+    }
 
-        ItemOption itemOption = TestOptionFactory.createItemOption(
+    private ItemOption createTestItemOption(int blackQty, int whiteQty) {
+        return TestOptionFactory.createItemOption(
                 optionColorId,
                 "색깔",
                 List.of(
@@ -118,24 +138,6 @@ class ItemOptionTest {
                         )
                 )
         );
-
-        UserItemOption userItemOption = TestUserOptionFactory.createUserItemOption(
-                optionColorId,
-                List.of(
-                        TestUserOptionFactory.createUserItemDetailOption(
-                                blackId,
-                                blackUserQty
-                        ), TestUserOptionFactory.createUserItemDetailOption(
-                                whiteId,
-                                whiteUserQty
-                        )
-                )
-        );
-
-        return new ItemOptionTestData(itemOption, userItemOption);
-    }
-
-    private record ItemOptionTestData(ItemOption option, UserItemOption userOption) {
     }
 
 }
