@@ -36,10 +36,10 @@ public class OrderTestUtil {
 	public static OrderRecord makeOrderRecord(List<DetailOrderRecord> list) {
 		return OrderRecord.newInstance(
 			new OrderRecordId(UUID.randomUUID()),
-			list,
 			new Address("111111", "하늘로 111-111", "구름아파트 111동 111호"),
 			LocalDate.now(),
-			new UserId(UUID.randomUUID())
+			new UserId(UUID.randomUUID()),
+			list
 		);
 	}
 

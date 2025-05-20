@@ -1,5 +1,8 @@
 package store.nightmarket.domain.order.status;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 public enum DetailOrderState {
 
 	NONE, //
@@ -11,12 +14,22 @@ public enum DetailOrderState {
 	RETURNED, //(반품됨)	고객이 상품을 반품함
 	REFUNDED; //(환불 완료)	결제금액이 환불 처리됨
 
-	public boolean isAbleToChangeToSubmitted() {
-		return DetailOrderState.NONE.equals(this);
+	private Set<DetailOrderState> nextStates;
+
+	static {
+		NONE.nextStates = EnumSet.of(SUBMITTED);
+		SUBMITTED.nextStates = EnumSet.of(COMPLETED);
+		COMPLETED.nextStates = EnumSet.of(SHIPPED, CANCELED);
+		SHIPPED.nextStates = EnumSet.of(DELIVERED);
+		DELIVERED.nextStates = EnumSet.of(RETURNED, REFUNDED);
+		CANCELED.nextStates = EnumSet.noneOf(DetailOrderState.class);
+		RETURNED.nextStates = EnumSet.noneOf(DetailOrderState.class);
+		REFUNDED.nextStates = EnumSet.noneOf(DetailOrderState.class);
+
 	}
 
-	public boolean isAbleToChangeToCanceled() {
-		return DetailOrderState.COMPLETED.equals(this);
+	public boolean canTransitionTo(DetailOrderState target) {
+		return nextStates.contains(target);
 	}
 
 }

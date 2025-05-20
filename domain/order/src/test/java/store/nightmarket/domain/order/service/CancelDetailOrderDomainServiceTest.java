@@ -1,14 +1,19 @@
 package store.nightmarket.domain.order.service;
 
-import static org.assertj.core.api.Assertions.*;
 import static store.nightmarket.domain.order.service.dto.CancelDetailOrderDomainServiceDto.*;
 import static store.nightmarket.domain.order.util.OrderTestUtil.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import store.nightmarket.domain.order.exception.OrderException;
 import store.nightmarket.domain.order.model.DetailOrderRecord;
@@ -16,6 +21,13 @@ import store.nightmarket.domain.order.model.OrderRecord;
 import store.nightmarket.domain.order.status.DetailOrderState;
 
 public class CancelDetailOrderDomainServiceTest {
+
+	private SoftAssertions softly;
+
+	@BeforeEach
+	void setUp() {
+		softly = new SoftAssertions();
+	}
 
 	@Test
 	@DisplayName("세부주문을 취소하면 해당 세부주문 만 취소상태로 변해야 한다")
@@ -49,19 +61,22 @@ public class CancelDetailOrderDomainServiceTest {
 		DetailOrderRecord canceledRecord1 = canceledOrder.getDetailOrderRecordList().getFirst();
 		DetailOrderRecord canceledRecord2 = canceledOrder.getDetailOrderRecordList().getLast();
 
-		assertThat(canceledRecord1.isCanceled()).isTrue();
-		assertThat(canceledRecord2.isCanceled()).isFalse();
+		softly.assertThat(canceledRecord1.isCanceled()).isTrue();
+		softly.assertThat(canceledRecord2.isCanceled()).isFalse();
+
+		softly.assertAll();
 	}
 
-	@Test
-	@DisplayName("이미 취소된 세부주문은 다시 취소 할 수 없다")
-	void throwExceptionIfDetailOrderAlreadyCanceled() {
+	@ParameterizedTest
+	@MethodSource("invalidStates")
+	@DisplayName("세부 주문 취소 시 허용되지 않은 상태는 예외를 던진다")
+	void CancelDetailOrderThrowExceptionWhenInvalidState(DetailOrderState state) {
 		// given
 		DetailOrderRecord detailOrderRecord1 = makeDetailOrderRecord(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
 			1,
-			DetailOrderState.CANCELED
+			state
 		);
 		DetailOrderRecord detailOrderRecord2 = makeDetailOrderRecord(
 			UUID.randomUUID(),
@@ -77,36 +92,21 @@ public class CancelDetailOrderDomainServiceTest {
 		CancelDetailOrderDomainService service = new CancelDetailOrderDomainService();
 
 		// when & then
-		assertThatThrownBy(() -> service.execute(input))
+		softly.assertThatThrownBy(() -> service.execute(input))
 			.isInstanceOf(OrderException.class);
+
+		softly.assertAll();
 	}
 
-	@Test
-	@DisplayName("이미 제출된 세부주문은 취소 할 수 없다")
-	void throwExceptionIfDetailOrderAlreadySubmitted() {
-		// given
-		DetailOrderRecord detailOrderRecord1 = makeDetailOrderRecord(
-			UUID.randomUUID(),
-			UUID.randomUUID(),
-			1,
-			DetailOrderState.SUBMITTED
+	private static Stream<Arguments> invalidStates() {
+		return Stream.of(
+			Arguments.of(DetailOrderState.SUBMITTED),
+			Arguments.of(DetailOrderState.SHIPPED),
+			Arguments.of(DetailOrderState.DELIVERED),
+			Arguments.of(DetailOrderState.CANCELED),
+			Arguments.of(DetailOrderState.RETURNED),
+			Arguments.of(DetailOrderState.REFUNDED)
 		);
-		DetailOrderRecord detailOrderRecord2 = makeDetailOrderRecord(
-			UUID.randomUUID(),
-			UUID.randomUUID(),
-			1,
-			DetailOrderState.COMPLETED
-		);
-
-		OrderRecord orderRecord = makeOrderRecord(List.of(detailOrderRecord1, detailOrderRecord2));
-
-		Input input = makeDetailCancelInput(orderRecord, detailOrderRecord1);
-
-		CancelDetailOrderDomainService service = new CancelDetailOrderDomainService();
-
-		// when & then
-		assertThatThrownBy(() -> service.execute(input))
-			.isInstanceOf(OrderException.class);
 	}
 
 }

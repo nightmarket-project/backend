@@ -1,6 +1,7 @@
 package store.nightmarket.domain.order.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -13,40 +14,39 @@ import store.nightmarket.domain.order.valueobject.UserId;
 @Getter
 public class OrderRecord extends BaseModel<OrderRecordId> {
 
-	private List<DetailOrderRecord> detailOrderRecordList;
 	private Address address;
 	private LocalDate orderDate;
 	private UserId userId;
+	private List<DetailOrderRecord> detailOrderRecordList;
 
 	public OrderRecord(
 		OrderRecordId id,
-		List<DetailOrderRecord> detailOrderRecordList,
 		Address address,
 		LocalDate orderDate,
-		UserId userId
+		UserId userId,
+		List<DetailOrderRecord> detailOrderRecordList
 	) {
-
 		super(id);
-		this.detailOrderRecordList = detailOrderRecordList;
 		this.address = address;
 		this.orderDate = orderDate;
 		this.userId = userId;
+		this.detailOrderRecordList =
+			detailOrderRecordList != null ? new ArrayList<>(detailOrderRecordList) : new ArrayList<>();
 	}
 
 	public static OrderRecord newInstance(
 		OrderRecordId id,
-		List<DetailOrderRecord> detailOrderRecordList,
 		Address address,
 		LocalDate orderDate,
-		UserId userId
+		UserId userId,
+		List<DetailOrderRecord> detailOrderRecordList
 	) {
-
 		return new OrderRecord(
 			id,
-			detailOrderRecordList,
 			address,
 			orderDate,
-			userId
+			userId,
+			detailOrderRecordList
 		);
 	}
 
@@ -59,12 +59,15 @@ public class OrderRecord extends BaseModel<OrderRecordId> {
 	}
 
 	public void cancelDetailOrder(DetailOrderRecord detailOrderRecord) {
-		DetailOrderRecord detail = detailOrderRecordList.stream()
-			.filter(d -> d.isMatched(detailOrderRecord))
+		detailOrderRecordList.stream()
+			.filter(d -> d.equals(detailOrderRecord))
 			.findFirst()
-			.orElseThrow(() -> new OrderException("Detail order not found"));
-
-		detail.cancel();
+			.ifPresentOrElse(
+				DetailOrderRecord::cancel,
+				() -> {
+					throw new OrderException("Detail order not found");
+				}
+			);
 	}
 
 }
