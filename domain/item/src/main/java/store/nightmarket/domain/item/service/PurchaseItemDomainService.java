@@ -26,11 +26,11 @@ public class PurchaseItemDomainService
         }
 
         List<ItemOptionValidationError> productItemErrors = productItem.findProductItemErrors(buyProductITem);
-        if(productItemErrors.isEmpty()) {
+        if (!productItemErrors.isEmpty()) {
             throw new ProductItemException(buyProductITem.toString());
-        } else {
-            productItem.reduceProductBy(buyProductITem);
         }
+        productItem.reduceProductBy(buyProductITem);
+
 
         return Event.builder()
                 .buyProductItem(buyProductITem)
