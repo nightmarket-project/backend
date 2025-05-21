@@ -9,10 +9,10 @@ import store.nightmarket.itemweb.model.ShoppingBasket;
 
 import java.util.List;
 
-import static store.nightmarket.itemweb.service.dto.addProductToBasketItemWebDomainServiceDto.Event;
-import static store.nightmarket.itemweb.service.dto.addProductToBasketItemWebDomainServiceDto.Input;
+import static store.nightmarket.itemweb.service.dto.AddProductToBasketItemWebDomainServiceDto.Event;
+import static store.nightmarket.itemweb.service.dto.AddProductToBasketItemWebDomainServiceDto.Input;
 
-public class addProductToBasketItemWebDomainService implements BaseDomainService<Input, Event> {
+public class AddProductToBasketItemWebDomainService implements BaseDomainService<Input, Event> {
 
     @Override
     public Event execute(Input input) {

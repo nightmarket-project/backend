@@ -4,9 +4,9 @@ import store.nightmarket.common.domain.service.BaseDomainService;
 import store.nightmarket.domain.item.model.UserBuyProductItem;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.model.ShoppingBasket;
-import store.nightmarket.itemweb.service.dto.removeProductFromBasketItemWebDomainServiceDto.*;
+import store.nightmarket.itemweb.service.dto.RemoveProductFromBasketItemWebDomainServiceDto.*;
 
-public class removeProductFromBasketItemWebDomainService implements BaseDomainService<Input, Event> {
+public class RemoveProductFromBasketItemWebDomainService implements BaseDomainService<Input, Event> {
 
     @Override
     public Event execute(Input input) {

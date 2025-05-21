@@ -15,16 +15,16 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static store.nightmarket.itemweb.service.dto.removeProductFromBasketItemWebDomainServiceDto.Event;
-import static store.nightmarket.itemweb.service.dto.removeProductFromBasketItemWebDomainServiceDto.Input;
+import static store.nightmarket.itemweb.service.dto.RemoveProductFromBasketItemWebDomainServiceDto.Event;
+import static store.nightmarket.itemweb.service.dto.RemoveProductFromBasketItemWebDomainServiceDto.Input;
 
-class removeProductFromBasketItemWebDomainServiceTest {
+class RemoveProductFromBasketItemWebDomainServiceTest {
 
-    private removeProductFromBasketItemWebDomainService service;
+    private RemoveProductFromBasketItemWebDomainService service;
 
     @BeforeEach
     void setUp() {
-        service = new removeProductFromBasketItemWebDomainService();
+        service = new RemoveProductFromBasketItemWebDomainService();
     }
 
     @Test

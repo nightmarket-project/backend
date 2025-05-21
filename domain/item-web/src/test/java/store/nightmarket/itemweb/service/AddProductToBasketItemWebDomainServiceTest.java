@@ -16,17 +16,17 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static store.nightmarket.itemweb.service.dto.addProductToBasketItemWebDomainServiceDto.Event;
-import static store.nightmarket.itemweb.service.dto.addProductToBasketItemWebDomainServiceDto.Input;
+import static store.nightmarket.itemweb.service.dto.AddProductToBasketItemWebDomainServiceDto.Event;
+import static store.nightmarket.itemweb.service.dto.AddProductToBasketItemWebDomainServiceDto.Input;
 
-class addProductToBasketItemWebDomainServiceTest {
+class AddProductToBasketItemWebDomainServiceTest {
 
-    private addProductToBasketItemWebDomainService service;
+    private AddProductToBasketItemWebDomainService service;
     private SoftAssertions softly;
 
     @BeforeEach
     void setUp() {
-        service = new addProductToBasketItemWebDomainService();
+        service = new AddProductToBasketItemWebDomainService();
         softly = new SoftAssertions();
     }
 
