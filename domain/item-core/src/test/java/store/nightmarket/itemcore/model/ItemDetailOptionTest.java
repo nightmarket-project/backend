@@ -81,11 +81,10 @@ class ItemDetailOptionTest {
         detailOption.reduceDetailOptionQuantityBy(userItemDetailOption);
 
         // then
-        Quantity testQuantity = new Quantity(BigDecimal.valueOf(5));
+        ItemDetailOption resultTestDetailOption = createTestDetailOption(detailOptionId, 5);
 
         assertThat(detailOption)
-                .extracting("quantity")
-                .isEqualTo(testQuantity);
+                .isEqualTo(resultTestDetailOption);
     }
 
     @Test

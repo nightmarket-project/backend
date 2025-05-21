@@ -8,11 +8,8 @@ import store.nightmarket.itemcore.exception.ErrorResult;
 import store.nightmarket.itemcore.exception.QuantityException;
 import store.nightmarket.itemcore.fixture.TestOptionFactory;
 import store.nightmarket.itemcore.fixture.TestUserOptionFactory;
-import store.nightmarket.itemcore.valueobject.Quantity;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,7 +45,7 @@ class ItemOptionGroupTest {
         UserItemOptionGroup testUserGroup = createTestUserGroup(5, 5, 5);
 
         // when
-        Optional<List<ErrorResult>> optionGroupErrors = testGroup.findOptionGroupErrors(testUserGroup);
+        List<ErrorResult> optionGroupErrors = testGroup.findOptionGroupErrors(testUserGroup);
 
         // then
         assertThat(optionGroupErrors)
@@ -63,21 +60,17 @@ class ItemOptionGroupTest {
         UserItemOptionGroup testUserGroup = createTestUserGroup(15, 5, 15);
 
         // when
-        Optional<List<ErrorResult>> optionGroupErrors = testGroup.findOptionGroupErrors(testUserGroup);
+        List<ErrorResult> optionGroupErrors = testGroup.findOptionGroupErrors(testUserGroup);
 
         // then
-        optionGroupErrors.ifPresent(
-                errorResults -> {
-                    softly.assertThat(errorResults).isNotEmpty();
-                    softly.assertThat(errorResults).hasSize(2);
+        softly.assertThat(optionGroupErrors).isNotEmpty();
 
-                    List<UserItemOption> userItemOptions = testUserGroup.getUserItemOptions();
-                    softly.assertThat(errorResults.getFirst().optionId()).isEqualTo(
-                            userItemOptions.getFirst().getUserItemDetailOptions().getFirst().getDetailOptionId());
-                    softly.assertThat(errorResults.getLast().optionId()).isEqualTo(
-                            userItemOptions.getLast().getUserItemDetailOptions().getFirst().getDetailOptionId());
-                }
-        );
+        List<UserItemOption> userItemOptions = testUserGroup.getUserItemOptions();
+        softly.assertThat(optionGroupErrors.getFirst().optionId()).isEqualTo(
+                userItemOptions.getFirst().getUserItemDetailOptions().getFirst().getDetailOptionId());
+        softly.assertThat(optionGroupErrors.getLast().optionId()).isEqualTo(
+                userItemOptions.getLast().getUserItemDetailOptions().getFirst().getDetailOptionId());
+
         softly.assertAll();
     }
 

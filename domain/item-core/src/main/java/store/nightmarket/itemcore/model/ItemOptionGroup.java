@@ -3,6 +3,7 @@ package store.nightmarket.itemcore.model;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.itemcore.exception.ErrorResult;
+import store.nightmarket.itemcore.exception.ItemCoreException;
 import store.nightmarket.itemcore.valueobject.ItemOptionGroupId;
 import store.nightmarket.itemcore.valueobject.ItemOptionId;
 
@@ -49,18 +50,19 @@ public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
                 });
     }
 
-    public Optional<List<ErrorResult>> findOptionGroupErrors(UserItemOptionGroup buyOptionGroup) {
+    public List<ErrorResult> findOptionGroupErrors(UserItemOptionGroup buyOptionGroup) {
         List<ErrorResult> errors = new ArrayList<>();
         buyOptionGroup.getUserItemOptions()
                 .forEach(buyProductItemOption -> {
                     ItemOption option = itemOptions.get(buyProductItemOption.getOptionId());
                     if (option != null) {
-                        option.findOptionErrors(buyProductItemOption)
-                                .ifPresent(errors::addAll);
+                        errors.addAll(option.findOptionErrors(buyProductItemOption));
+                    } else {
+                        throw new ItemCoreException("No option found for option id " + buyProductItemOption.getOptionId());
                     }
                 });
 
-        return errors.isEmpty() ? Optional.empty() : Optional.of(errors);
+        return errors;
     }
 
     @Override

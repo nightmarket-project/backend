@@ -15,7 +15,6 @@ import store.nightmarket.itemcore.valueobject.Quantity;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -40,7 +39,7 @@ class ProductItemTest {
                 5, 5, 5, 5, 5, 5);
 
         // when
-        Optional<List<ErrorResult>> productItemErrors = testProductItem.findProductItemErrors(testUserBuyProductItem);
+        List<ErrorResult> productItemErrors = testProductItem.findProductItemErrors(testUserBuyProductItem);
 
         // then
         assertThat(productItemErrors)
@@ -58,25 +57,21 @@ class ProductItemTest {
                 15, 5, 15, 5, 15, 5);
 
         // when
-        Optional<List<ErrorResult>> productItemErrors = testProductItem.findProductItemErrors(testUserBuyProductItem);
+        List<ErrorResult> productItemErrors = testProductItem.findProductItemErrors(testUserBuyProductItem);
 
 
         // then
-        productItemErrors.ifPresent(
-                errorResults -> {
-                    softly.assertThat(errorResults).isNotEmpty();
-                    softly.assertThat(errorResults).hasSize(3);
+        softly.assertThat(productItemErrors).isNotEmpty();
+        softly.assertThat(productItemErrors).hasSize(3);
 
-                    List<UserItemOption> userBasicOptions = testUserBuyProductItem.getBasicOption().getUserItemOptions();
-                    List<UserItemDetailOption> userAdditionalOptions = testUserBuyProductItem.getAdditionalOption().getUserItemDetailOptions();
-                    softly.assertThat(errorResults.getFirst().optionId()).isEqualTo(
-                            userBasicOptions.getFirst().getUserItemDetailOptions().getFirst().getDetailOptionId());
-                    softly.assertThat(errorResults.get(1).optionId()).isEqualTo(
-                            userBasicOptions.getLast().getUserItemDetailOptions().getFirst().getDetailOptionId());
-                    softly.assertThat(errorResults.getLast().optionId()).isEqualTo(
-                            userAdditionalOptions.getFirst().getDetailOptionId());
-                }
-        );
+        List<UserItemOption> userBasicOptions = testUserBuyProductItem.getBasicOption().getUserItemOptions();
+        List<UserItemDetailOption> userAdditionalOptions = testUserBuyProductItem.getAdditionalOption().getUserItemDetailOptions();
+        softly.assertThat(productItemErrors.getFirst().optionId()).isEqualTo(
+                userBasicOptions.getFirst().getUserItemDetailOptions().getFirst().getDetailOptionId());
+        softly.assertThat(productItemErrors.get(1).optionId()).isEqualTo(
+                userBasicOptions.getLast().getUserItemDetailOptions().getFirst().getDetailOptionId());
+        softly.assertThat(productItemErrors.getLast().optionId()).isEqualTo(
+                userAdditionalOptions.getFirst().getDetailOptionId());
 
         softly.assertAll();
     }
@@ -95,6 +90,7 @@ class ProductItemTest {
         testProductItem.reduceProductBy(testUserBuyProductItem);
 
         // then
+
         Quantity quantity = new Quantity(new BigDecimal(5));
         List<ItemOption> basicOptions = testProductItem.getBasicOption().getItemOptions();
         List<ItemDetailOption> colorOption = basicOptions.getFirst().getItemDetailOptions();

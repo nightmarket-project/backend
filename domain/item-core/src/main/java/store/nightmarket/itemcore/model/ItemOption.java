@@ -49,7 +49,7 @@ public class ItemOption extends BaseModel<ItemOptionId> {
                 });
     }
 
-    public Optional<List<ErrorResult>> findOptionErrors(UserItemOption buyUserOption) {
+    public List<ErrorResult> findOptionErrors(UserItemOption buyUserOption) {
         List<ErrorResult> errors = new ArrayList<>();
 
         buyUserOption.getUserItemDetailOptions()
@@ -61,7 +61,7 @@ public class ItemOption extends BaseModel<ItemOptionId> {
                     }
                 });
 
-        return errors.isEmpty() ? Optional.empty() : Optional.of(errors);
+        return errors;
     }
 
     @Override

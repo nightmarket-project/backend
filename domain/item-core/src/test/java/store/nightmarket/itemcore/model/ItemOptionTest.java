@@ -8,17 +8,15 @@ import store.nightmarket.itemcore.exception.ErrorResult;
 import store.nightmarket.itemcore.exception.QuantityException;
 import store.nightmarket.itemcore.fixture.TestOptionFactory;
 import store.nightmarket.itemcore.fixture.TestUserOptionFactory;
-import store.nightmarket.itemcore.valueobject.Quantity;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class ItemOptionTest {
+class
+ItemOptionTest {
 
     private SoftAssertions softly;
     private UUID optionColorId;
@@ -34,14 +32,14 @@ class ItemOptionTest {
     }
 
     @Test
-    @DisplayName("아이템 수량이 요청 수량보다 많을때 Optional empty를 반환한다.")
+    @DisplayName("아이템 수량이 요청 수량보다 많을때 List empty를 반환한다.")
     void shouldReturnOptionalEmptyWhenOptionQuantityIsSufficient() {
         // given
         ItemOption testItemOption = createTestItemOption(10, 10);
         UserItemOption testUserItemOption = createTestUserItemOption(5, 5);
 
         // when
-        Optional<List<ErrorResult>> errors = testItemOption.findOptionErrors(testUserItemOption);
+        List<ErrorResult> errors = testItemOption.findOptionErrors(testUserItemOption);
 
         // then
         assertThat(errors).isEmpty();
@@ -55,20 +53,16 @@ class ItemOptionTest {
         UserItemOption testUserItemOption = createTestUserItemOption(15, 15);
 
         // when
-        Optional<List<ErrorResult>> errors = testItemOption.findOptionErrors(testUserItemOption);
+        List<ErrorResult> errors = testItemOption.findOptionErrors(testUserItemOption);
 
         // then
-        errors.ifPresent(
-                errorResults -> {
-                    softly.assertThat(errorResults).isNotEmpty();
-                    softly.assertThat(errorResults).hasSize(2);
-                    softly.assertThat(errorResults.getFirst().optionId()).isEqualTo(
-                            testUserItemOption.getUserItemDetailOptions().getFirst().getDetailOptionId());
-                    softly.assertThat(errorResults.getLast().optionId()).isEqualTo(
-                            testUserItemOption.getUserItemDetailOptions().getLast().getDetailOptionId());
+        softly.assertThat(errors).isNotEmpty();
+        softly.assertThat(errors).hasSize(2);
+        softly.assertThat(errors.getFirst().optionId()).isEqualTo(
+                testUserItemOption.getUserItemDetailOptions().getFirst().getDetailOptionId());
+        softly.assertThat(errors.getLast().optionId()).isEqualTo(
+                testUserItemOption.getUserItemDetailOptions().getLast().getDetailOptionId());
 
-                }
-        );
         softly.assertAll();
     }
 

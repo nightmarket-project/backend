@@ -56,14 +56,12 @@ public class ProductItem extends BaseModel<ItemId> {
         return internalId();
     }
 
-    public Optional<List<ErrorResult>> findProductItemErrors(UserBuyProductItem buyProductItem) {
+    public List<ErrorResult> findProductItemErrors(UserBuyProductItem buyProductItem) {
         List<ErrorResult> findErrors = new ArrayList<>();
-        basicOption.findOptionGroupErrors(buyProductItem.getBasicOption())
-                .ifPresent(findErrors::addAll);
-        additionalOption.findOptionErrors(buyProductItem.getAdditionalOption())
-                .ifPresent(findErrors::addAll);
+        findErrors.addAll(basicOption.findOptionGroupErrors(buyProductItem.getBasicOption()));
+        findErrors.addAll(additionalOption.findOptionErrors(buyProductItem.getAdditionalOption()));
 
-        return findErrors.isEmpty() ? Optional.empty() : Optional.of(findErrors);
+        return findErrors;
     }
 
     public void reduceProductBy(UserBuyProductItem buyProductItem) {
