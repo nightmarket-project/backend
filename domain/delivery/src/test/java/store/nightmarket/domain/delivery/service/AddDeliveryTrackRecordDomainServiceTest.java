@@ -23,10 +23,12 @@ import store.nightmarket.domain.delivery.state.DetailDeliveryState;
 public class AddDeliveryTrackRecordDomainServiceTest {
 
 	private SoftAssertions softly;
+	private AddDeliveryTrackRecordDomainService service;
 
 	@BeforeEach
 	void setUp() {
 		softly = new SoftAssertions();
+		service = new AddDeliveryTrackRecordDomainService();
 	}
 
 	@ParameterizedTest
@@ -50,8 +52,6 @@ public class AddDeliveryTrackRecordDomainServiceTest {
 		DeliveryRecord deliveryRecord = makeDeliveryRecord(new ArrayList<>(List.of(currentRecord)));
 
 		Input input = makeAddDeliveryTrackInput(deliveryRecord, nextRecord);
-
-		AddDeliveryTrackRecordDomainService service = new AddDeliveryTrackRecordDomainService();
 
 		// when
 		Event event = service.execute(input);
@@ -98,8 +98,6 @@ public class AddDeliveryTrackRecordDomainServiceTest {
 		DeliveryRecord deliveryRecord = makeDeliveryRecord(new ArrayList<>(List.of(currentRecord)));
 
 		Input input = makeAddDeliveryTrackInput(deliveryRecord, nextRecord);
-
-		AddDeliveryTrackRecordDomainService service = new AddDeliveryTrackRecordDomainService();
 
 		// when & then
 		softly.assertThatThrownBy(() -> service.execute(input))
