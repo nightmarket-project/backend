@@ -68,7 +68,7 @@ project(':common') {
 
 //domain layer
 
-def domain = [project(':item-core'), project(":order"), project(":payment"), project(":delivery")]
+def domain = [project(':item-core'), project(":order"), project(":payment"), project(":delivery"), project(':user')]
 
 configure(domain) {
     bootJar {
