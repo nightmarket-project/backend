@@ -4,16 +4,12 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.domain.item.fixture.TestItemFactory;
 import store.nightmarket.common.util.ItemOptionValidationError;
+import store.nightmarket.domain.item.fixture.TestItemFactory;
 import store.nightmarket.itemcore.exception.QuantityException;
-import store.nightmarket.itemcore.model.ItemDetailOption;
-import store.nightmarket.itemcore.model.ItemOption;
 import store.nightmarket.itemcore.model.UserItemDetailOption;
 import store.nightmarket.itemcore.model.UserItemOption;
-import store.nightmarket.itemcore.valueobject.Quantity;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
