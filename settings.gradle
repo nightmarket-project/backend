@@ -1,5 +1,8 @@
 rootProject.name = 'nightmarket'
+
 include 'common'
+
+//domain layer
 include 'item-core'
 project(':item-core').projectDir = file('domain/item-core')
 include 'item'
@@ -12,3 +15,13 @@ include 'delivery'
 project(':delivery').projectDir = file('domain/delivery')
 include 'item-web'
 project(':item-web').projectDir = file('domain/item-web')
+
+//application layer
+include 'app-item'
+project(':app-item').projectDir = file('application/app-item')
+include 'app-order'
+project(':app-order').projectDir = file('application/app-order')
+include 'app-payment'
+project(':app-payment').projectDir = file('application/app-payment')
+include 'app-delivery'
+project(':app-delivery').projectDir = file('application/app-delivery')
