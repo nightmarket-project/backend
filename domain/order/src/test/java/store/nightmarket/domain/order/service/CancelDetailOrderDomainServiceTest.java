@@ -23,10 +23,12 @@ import store.nightmarket.domain.order.status.DetailOrderState;
 public class CancelDetailOrderDomainServiceTest {
 
 	private SoftAssertions softly;
+	private CancelDetailOrderDomainService service;
 
 	@BeforeEach
 	void setUp() {
 		softly = new SoftAssertions();
+		service = new CancelDetailOrderDomainService();
 	}
 
 	@Test
@@ -49,8 +51,6 @@ public class CancelDetailOrderDomainServiceTest {
 		OrderRecord orderRecord = makeOrderRecord(List.of(detailOrderRecord1, detailOrderRecord2));
 
 		Input input = makeDetailCancelInput(orderRecord, detailOrderRecord1);
-
-		CancelDetailOrderDomainService service = new CancelDetailOrderDomainService();
 
 		// when
 		Event event = service.execute(input);
@@ -88,9 +88,7 @@ public class CancelDetailOrderDomainServiceTest {
 		OrderRecord orderRecord = makeOrderRecord(List.of(detailOrderRecord1, detailOrderRecord2));
 
 		Input input = makeDetailCancelInput(orderRecord, detailOrderRecord1);
-
-		CancelDetailOrderDomainService service = new CancelDetailOrderDomainService();
-
+		
 		// when & then
 		softly.assertThatThrownBy(() -> service.execute(input))
 			.isInstanceOf(OrderException.class);

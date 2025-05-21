@@ -23,10 +23,12 @@ import store.nightmarket.domain.order.status.DetailOrderState;
 public class RequestOrderDomainServiceTest {
 
 	private SoftAssertions softly;
+	private RequestOrderDomainService service;
 
 	@BeforeEach
 	void setUp() {
 		softly = new SoftAssertions();
+		service = new RequestOrderDomainService();
 	}
 
 	@Test
@@ -49,8 +51,6 @@ public class RequestOrderDomainServiceTest {
 		OrderRecord orderRecord = makeOrderRecord(List.of(detailOrderRecord1, detailOrderRecord2));
 
 		Input input = makeRequestInput(orderRecord);
-
-		RequestOrderDomainService service = new RequestOrderDomainService();
 
 		// when
 		Event event = service.execute(input);
@@ -79,8 +79,6 @@ public class RequestOrderDomainServiceTest {
 		OrderRecord orderRecord = makeOrderRecord(List.of(detailOrderRecord));
 
 		Input input = makeRequestInput(orderRecord);
-
-		RequestOrderDomainService service = new RequestOrderDomainService();
 
 		// when & then
 		softly.assertThatThrownBy(() -> service.execute(input))
