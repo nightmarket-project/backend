@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: item-web
+
+server:
+  port: 10050

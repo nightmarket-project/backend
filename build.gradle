@@ -37,6 +37,10 @@ subprojects {
     dependencies {
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+        testImplementation 'org.mockito:mockito-core:4.3.1'
+        testImplementation 'org.mockito:mockito-junit-jupiter:4.3.1'
+        testImplementation("org.assertj:assertj-core:3.27.3")
     }
 
     configurations {
@@ -50,7 +54,19 @@ subprojects {
     }
 }
 
-def domain = [project(":item"), project(":order"), project(":payment"), project(":delivery")]
+project(':common') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        compileOnly 'org.springframework.boot:spring-boot-starter'
+    }
+}
+
+def domain = [project(':item-core'), project(":order"), project(":payment"), project(":delivery")]
 
 configure(domain) {
     bootJar {
@@ -70,11 +86,30 @@ configure(domain) {
     }
 }
 
-project(':common') {
+project(':item') {
     bootJar {
         enabled = false
     }
     dependencies {
+        implementation project(':item-core')
+        implementation project(':common')
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        compileOnly 'org.springframework.boot:spring-boot-starter'
+    }
+}
+
+project(':item-web') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':item')
+        implementation project(':item-core')
+        implementation project(':common')
+
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
