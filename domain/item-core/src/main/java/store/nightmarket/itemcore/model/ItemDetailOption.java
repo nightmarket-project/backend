@@ -1,6 +1,5 @@
 package store.nightmarket.itemcore.model;
 
-import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.itemcore.exception.ErrorResult;
 import store.nightmarket.itemcore.valueobject.ItemDetailOptionId;
@@ -53,6 +52,22 @@ public class ItemDetailOption extends BaseModel<ItemDetailOptionId> {
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        ItemDetailOption other = (ItemDetailOption) obj;
+        return Objects.equals(getDetailOptionId(), other.getDetailOptionId())
+                && Objects.equals(name, other.name)
+                && Objects.equals(price, other.price)
+                && Objects.equals(quantity, other.quantity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDetailOptionId(),name, price, quantity);
     }
 
 }

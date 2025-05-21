@@ -1,13 +1,11 @@
 package store.nightmarket.itemweb.fixture;
 
-import store.nightmarket.itemcore.valueobject.ItemId;
 import store.nightmarket.itemcore.valueobject.UserId;
-import store.nightmarket.itemweb.model.ProductPost;
 import store.nightmarket.itemweb.model.Reply;
-import store.nightmarket.itemweb.model.Review;
-import store.nightmarket.itemweb.valueobject.*;
+import store.nightmarket.itemweb.valueobject.Image;
+import store.nightmarket.itemweb.valueobject.PostContent;
+import store.nightmarket.itemweb.valueobject.ReviewId;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -28,15 +26,6 @@ public class TestObjectFactory {
 
     public static Image createImage(String url, int order) {
         return new Image(url, order);
-    }
-
-
-    public static Reply defaultReply() {
-        return Reply.newInstance(
-                new ReviewId(UUID.randomUUID()),
-                "hello",
-                new UserId(UUID.randomUUID())
-        );
     }
 
     public static Image defaultImage() {

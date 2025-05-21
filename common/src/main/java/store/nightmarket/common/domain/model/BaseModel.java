@@ -11,4 +11,5 @@ public abstract class BaseModel<IdType> {
 	protected IdType internalId() {
 		return id;
 	}
+
 }

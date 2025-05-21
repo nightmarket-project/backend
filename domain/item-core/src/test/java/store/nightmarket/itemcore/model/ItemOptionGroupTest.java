@@ -73,11 +73,9 @@ class ItemOptionGroupTest {
 
                     List<UserItemOption> userItemOptions = testUserGroup.getUserItemOptions();
                     softly.assertThat(errorResults.getFirst().optionId()).isEqualTo(
-                            userItemOptions.getFirst()
-                                    .getUserItemDetailOptions().getFirst().getDetailOptionId());
+                            userItemOptions.getFirst().getUserItemDetailOptions().getFirst().getDetailOptionId());
                     softly.assertThat(errorResults.getLast().optionId()).isEqualTo(
-                            userItemOptions.getLast()
-                                    .getUserItemDetailOptions().getFirst().getDetailOptionId());
+                            userItemOptions.getLast().getUserItemDetailOptions().getFirst().getDetailOptionId());
                 }
         );
         softly.assertAll();
@@ -94,21 +92,9 @@ class ItemOptionGroupTest {
         testGroup.reduceOptionGroupQuantityBy(testUserGroup);
 
         // then
-        Quantity quantity = new Quantity(new BigDecimal(5));
-        List<ItemDetailOption> colorOption = testGroup.getItemOptions().getFirst().getItemDetailOptions();
-        List<ItemDetailOption> cpuOption = testGroup.getItemOptions().getLast().getItemDetailOptions();
+        ItemOptionGroup resultTestGroup = createTestGroup(5, 5, 5);
 
-        assertThat(colorOption.getFirst())
-                .extracting("quantity")
-                .isEqualTo(quantity);
-        assertThat(colorOption.getLast())
-                .extracting("quantity")
-                .isEqualTo(quantity);
-        assertThat(cpuOption.getFirst())
-                .extracting("quantity")
-                .isEqualTo(quantity);
-
-        softly.assertAll();
+        assertThat(testGroup).isEqualTo(resultTestGroup);
     }
 
     @Test

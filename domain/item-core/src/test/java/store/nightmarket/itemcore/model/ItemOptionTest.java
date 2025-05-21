@@ -83,14 +83,9 @@ class ItemOptionTest {
         testItemOption.reduceOptionQuantityBy(testUserItemOption);
 
         // then
-        Quantity quantity = new Quantity(new BigDecimal(5));
-        softly.assertThat(testItemOption.getItemDetailOptions().getFirst())
-                .extracting("quantity")
-                .isEqualTo(quantity);
-        softly.assertThat(testItemOption.getItemDetailOptions().getLast())
-                .extracting("quantity")
-                .isEqualTo(quantity);
-        softly.assertAll();
+        ItemOption resultTestItemOption = createTestItemOption(5, 5);
+
+        assertThat(testItemOption).isEqualTo(resultTestItemOption);
     }
 
     @Test

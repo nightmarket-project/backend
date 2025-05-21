@@ -6,16 +6,13 @@ import store.nightmarket.itemcore.exception.ErrorResult;
 import store.nightmarket.itemcore.valueobject.ItemOptionGroupId;
 import store.nightmarket.itemcore.valueobject.ItemOptionId;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+
 public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
 
-    @Getter
     private List<ItemOption> itemOptions;
 
     private ItemOptionGroup(
@@ -34,6 +31,10 @@ public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
                 id,
                 itemOptions
         );
+    }
+
+    public ItemOptionGroupId getOptionGroupId() {
+        return internalId();
     }
 
     // 전체 옵션 그룹의 수량 일괄 차감
@@ -65,6 +66,20 @@ public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
                 });
 
         return errors.isEmpty() ? Optional.empty() : Optional.of(errors);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        ItemOptionGroup other = (ItemOptionGroup) obj;
+        return  Objects.equals(getOptionGroupId(), other.getOptionGroupId())
+                && Objects.equals(itemOptions, other.itemOptions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(itemOptions);
     }
 
 }
