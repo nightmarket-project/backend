@@ -2,15 +2,18 @@ package store.nightmarket.domain.item.service;
 
 import org.springframework.stereotype.Component;
 import store.nightmarket.common.domain.service.BaseDomainService;
+import store.nightmarket.common.util.ItemOptionValidationError;
 import store.nightmarket.domain.item.exception.ProductItemException;
 import store.nightmarket.domain.item.model.ProductItem;
 import store.nightmarket.domain.item.model.UserBuyProductItem;
 
-import static store.nightmarket.domain.item.service.dto.reduceProductQuantityByPurchasingItemDomainServiceDto.Event;
-import static store.nightmarket.domain.item.service.dto.reduceProductQuantityByPurchasingItemDomainServiceDto.Input;
+import java.util.List;
+
+import static store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Event;
+import static store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Input;
 
 @Component
-public class reduceProductQuantityByPurchasingItemDomainService
+public class PurchaseItemDomainService
         implements BaseDomainService<Input, Event> {
 
     @Override

@@ -12,18 +12,18 @@ import store.nightmarket.domain.item.model.UserBuyProductItem;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static store.nightmarket.domain.item.service.dto.reduceProductQuantityByPurchasingItemDomainServiceDto.Event;
-import static store.nightmarket.domain.item.service.dto.reduceProductQuantityByPurchasingItemDomainServiceDto.Input;
+import static store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Event;
+import static store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Input;
 
-class reduceProductQuantityByPurchasingItemDomainServiceTest {
+class PurchaseItemDomainServiceTest {
 
-    private reduceProductQuantityByPurchasingItemDomainService service;
+    private PurchaseItemDomainService service;
     private SoftAssertions softly;
 
     @BeforeEach
     void setUp() {
         softly = new SoftAssertions();
-        service = new reduceProductQuantityByPurchasingItemDomainService();
+        service = new PurchaseItemDomainService();
     }
 
     @Test

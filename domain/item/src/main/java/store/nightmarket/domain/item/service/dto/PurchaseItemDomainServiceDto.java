@@ -5,7 +5,7 @@ import lombok.Getter;
 import store.nightmarket.domain.item.model.ProductItem;
 import store.nightmarket.domain.item.model.UserBuyProductItem;
 
-public class reduceProductQuantityByPurchasingItemDomainServiceDto {
+public class PurchaseItemDomainServiceDto {
 
     @Getter
     @Builder
