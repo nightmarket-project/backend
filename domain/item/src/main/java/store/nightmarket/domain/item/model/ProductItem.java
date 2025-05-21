@@ -11,6 +11,7 @@ import store.nightmarket.itemcore.valueobject.UserId;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 public class ProductItem extends BaseModel<ItemId> {
@@ -66,6 +67,23 @@ public class ProductItem extends BaseModel<ItemId> {
     public void reduceProductBy(UserBuyProductItem buyProductItem) {
         basicOption.reduceOptionGroupQuantityBy(buyProductItem.getBasicOption());
         additionalOption.reduceOptionQuantityBy(buyProductItem.getAdditionalOption());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        ProductItem other = (ProductItem) obj;
+        return Objects.equals(getItemId(), other.getItemId())
+                && Objects.equals(name, other.name)
+                && Objects.equals(basicOption, other.basicOption)
+                && Objects.equals(additionalOption, other.additionalOption)
+                && Objects.equals(seller, other.seller);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getItemId(), name, basicOption, additionalOption, seller);
     }
 
 }

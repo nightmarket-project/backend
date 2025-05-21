@@ -22,6 +22,7 @@ public class TestItemFactory {
     private final UUID cpu8Id;
     private final UUID monitor60hzId;
     private final UUID monitor144hzId;
+    private final UserId userId;
 
     public TestItemFactory() {
         itemId = new ItemId(UUID.randomUUID());
@@ -35,6 +36,7 @@ public class TestItemFactory {
         cpu8Id = UUID.randomUUID();
         monitor60hzId = UUID.randomUUID();
         monitor144hzId = UUID.randomUUID();
+        userId = new UserId(UUID.randomUUID());
     }
 
     public UserBuyProductItem createTestUserBuyProductItem(
@@ -208,7 +210,7 @@ public class TestItemFactory {
                                 )
                         )
                 ),
-                new UserId(UUID.randomUUID())
+                userId
         );
     }
 
@@ -279,7 +281,7 @@ public class TestItemFactory {
                                 )
                         )
                 ),
-                new UserId(UUID.randomUUID())
+                userId
         );
     }
 

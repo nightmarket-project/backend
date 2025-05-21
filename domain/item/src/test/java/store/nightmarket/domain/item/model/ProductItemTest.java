@@ -90,33 +90,11 @@ class ProductItemTest {
         testProductItem.reduceProductBy(testUserBuyProductItem);
 
         // then
+        ProductItem resultTestProductItem = factory.createTestProductItem(
+                5, 5, 5, 5, 5, 5);
 
-        Quantity quantity = new Quantity(new BigDecimal(5));
-        List<ItemOption> basicOptions = testProductItem.getBasicOption().getItemOptions();
-        List<ItemDetailOption> colorOption = basicOptions.getFirst().getItemDetailOptions();
-        List<ItemDetailOption> cpuOption = basicOptions.getLast().getItemDetailOptions();
-        List<ItemDetailOption> additionalOptions = testProductItem.getAdditionalOption().getItemDetailOptions();
-
-        softly.assertThat(colorOption.getFirst())
-                .extracting("quantity")
-                .isEqualTo(quantity);
-        softly.assertThat(colorOption.getLast())
-                .extracting("quantity")
-                .isEqualTo(quantity);
-        softly.assertThat(cpuOption.getFirst())
-                .extracting("quantity")
-                .isEqualTo(quantity);
-        softly.assertThat(cpuOption.getLast())
-                .extracting("quantity")
-                .isEqualTo(quantity);
-        softly.assertThat(additionalOptions.getFirst())
-                .extracting("quantity")
-                .isEqualTo(quantity);
-        softly.assertThat(additionalOptions.getLast())
-                .extracting("quantity")
-                .isEqualTo(quantity);
-
-        softly.assertAll();
+        assertThat(testProductItem)
+                .isEqualTo(resultTestProductItem);
     }
 
     @Test

@@ -25,14 +25,12 @@ public class PurchaseItemDomainService
             throw new ProductItemException("Product item id does not match buy product item id");
         }
 
-        productItem.findProductItemErrors(buyProductITem)
-                .ifPresentOrElse(
-                        errors -> {
-                            throw new ProductItemException(errors.toString());
-                        },
-                        () -> productItem.reduceProductBy(buyProductITem)
-                );
-
+        List<ItemOptionValidationError> productItemErrors = productItem.findProductItemErrors(buyProductITem);
+        if(productItemErrors.isEmpty()) {
+            throw new ProductItemException(buyProductITem.toString());
+        } else {
+            productItem.reduceProductBy(buyProductITem);
+        }
 
         return Event.builder()
                 .buyProductItem(buyProductITem)
