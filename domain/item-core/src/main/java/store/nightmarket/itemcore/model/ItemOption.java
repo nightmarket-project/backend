@@ -13,16 +13,17 @@ import java.util.stream.Collectors;
 public class ItemOption extends BaseModel<ItemOptionId> {
 
     private Name name;
-    private List<ItemDetailOption> itemDetailOptions;
+    private Map<ItemDetailOptionId, ItemDetailOption> itemDetailOptions;
 
     private ItemOption(
             ItemOptionId id,
             Name name,
-            List<ItemDetailOption> itemDetailOptions // 창고 있는 물품
+            List<ItemDetailOption> itemDetailOptionList // 창고 있는 물품
     ) {
         super(id);
         this.name = name;
-        this.itemDetailOptions = itemDetailOptions;
+        this.itemDetailOptions = itemDetailOptionList.stream()
+                .collect(Collectors.toMap(ItemDetailOption::getDetailOptionId, Function.identity()));
     }
 
     public static ItemOption newInstance(
@@ -39,12 +40,9 @@ public class ItemOption extends BaseModel<ItemOptionId> {
 
     //옵션 내 재고(상세 옵션들) 차감
     public void reduceOptionQuantityBy(UserItemOption buyUserOption) {
-        Map<ItemDetailOptionId, ItemDetailOption> itemDetailOptionMap = itemDetailOptions.stream()
-                .collect(Collectors.toMap(ItemDetailOption::getDetailOptionId, Function.identity()));
-
-        buyUserOption.getUserItemDetailOptions()
+       buyUserOption.getUserItemDetailOptions()
                 .forEach(buyDetailOption -> {
-                    ItemDetailOption itemDetailOption = itemDetailOptionMap.get(buyDetailOption.getDetailOptionId());
+                    ItemDetailOption itemDetailOption = itemDetailOptions.get(buyDetailOption.getDetailOptionId());
                     if (itemDetailOption != null) {
                         itemDetailOption.reduceDetailOptionQuantityBy(buyDetailOption);
                     }
@@ -53,12 +51,10 @@ public class ItemOption extends BaseModel<ItemOptionId> {
 
     public Optional<List<ErrorResult>> findOptionErrors(UserItemOption buyUserOption) {
         List<ErrorResult> errors = new ArrayList<>();
-        Map<ItemDetailOptionId, ItemDetailOption> itemDetailOptionsMap = itemDetailOptions.stream()
-                .collect(Collectors.toMap(ItemDetailOption::getDetailOptionId, Function.identity()));
 
         buyUserOption.getUserItemDetailOptions()
                 .forEach(buyDetailOption -> {
-                    ItemDetailOption option = itemDetailOptionsMap.get(buyDetailOption.getDetailOptionId());
+                    ItemDetailOption option = itemDetailOptions.get(buyDetailOption.getDetailOptionId());
                     if (option != null) {
                         option.findDetailOptionError(buyDetailOption)
                                 .ifPresent(errors::add);

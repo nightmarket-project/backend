@@ -13,14 +13,15 @@ import java.util.stream.Collectors;
 
 public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
 
-    private List<ItemOption> itemOptions;
+    private Map<ItemOptionId, ItemOption> itemOptions;
 
     private ItemOptionGroup(
             ItemOptionGroupId id,
-            List<ItemOption> itemOptions
+            List<ItemOption> itemOptionList
     ) {
         super(id);
-        this.itemOptions = itemOptions;
+        this.itemOptions = itemOptionList.stream()
+                .collect(Collectors.toMap(ItemOption::getOptionId, Function.identity()));
     }
 
     public static ItemOptionGroup newInstance(
@@ -39,12 +40,9 @@ public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
 
     // 전체 옵션 그룹의 수량 일괄 차감
     public void reduceOptionGroupQuantityBy(UserItemOptionGroup buyOptionGroup) {
-        Map<ItemOptionId, ItemOption> itemOptionMap = itemOptions.stream()
-                .collect(Collectors.toMap(ItemOption::getOptionId, Function.identity()));
-
         buyOptionGroup.getUserItemOptions()
                 .forEach(buyItemOption -> {
-                    ItemOption option = itemOptionMap.get(buyItemOption.getOptionId());
+                    ItemOption option = itemOptions.get(buyItemOption.getOptionId());
                     if (option != null) {
                         option.reduceOptionQuantityBy(buyItemOption);
                     }
@@ -53,12 +51,9 @@ public class ItemOptionGroup extends BaseModel<ItemOptionGroupId> {
 
     public Optional<List<ErrorResult>> findOptionGroupErrors(UserItemOptionGroup buyOptionGroup) {
         List<ErrorResult> errors = new ArrayList<>();
-        Map<ItemOptionId, ItemOption> itemOptionMap = itemOptions.stream()
-                .collect(Collectors.toMap(ItemOption::getOptionId, Function.identity()));
-
         buyOptionGroup.getUserItemOptions()
                 .forEach(buyProductItemOption -> {
-                    ItemOption option = itemOptionMap.get(buyProductItemOption.getOptionId());
+                    ItemOption option = itemOptions.get(buyProductItemOption.getOptionId());
                     if (option != null) {
                         option.findOptionErrors(buyProductItemOption)
                                 .ifPresent(errors::addAll);
