@@ -66,6 +66,8 @@ project(':common') {
     }
 }
 
+//domain layer
+
 def domain = [project(':item-core'), project(":order"), project(":payment"), project(":delivery")]
 
 configure(domain) {
@@ -78,11 +80,13 @@ configure(domain) {
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        compileOnly 'org.springframework.boot:spring-boot-starter'
+
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.4'
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
         testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.4'
         testImplementation("org.assertj:assertj-core:3.27.3")
-        compileOnly 'org.springframework.boot:spring-boot-starter'
+
     }
 }
 
@@ -114,5 +118,69 @@ project(':item-web') {
         annotationProcessor 'org.projectlombok:lombok'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
         compileOnly 'org.springframework.boot:spring-boot-starter'
+    }
+}
+
+//application layer
+
+def app = [project(':app-item'), project(':app-order'), project(':app-payment'), project(':app-delivery')]
+
+configure(app) {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.4'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
+        testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.4'
+        testImplementation("org.assertj:assertj-core:3.27.3")
+        compileOnly 'org.springframework.boot:spring-boot-starter'
+
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.kafka:spring-kafka'
+        compileOnly 'org.projectlombok:lombok'
+        runtimeOnly 'com.h2database:h2'
+        testImplementation 'org.springframework.kafka:spring-kafka-test'
+    }
+}
+
+project(':app-item') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':item')
+        implementation project(':item-web')
+    }
+}
+
+project(':app-order') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':order')
+    }
+}
+
+project(':app-payment') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':payment')
+    }
+}
+
+project(':app-delivery') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':delivery')
     }
 }
