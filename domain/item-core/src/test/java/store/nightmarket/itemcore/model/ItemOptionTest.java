@@ -4,7 +4,7 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.itemcore.exception.ErrorResult;
+import store.nightmarket.common.util.ItemOptionValidationError;
 import store.nightmarket.itemcore.exception.QuantityException;
 import store.nightmarket.itemcore.fixture.TestOptionFactory;
 import store.nightmarket.itemcore.fixture.TestUserOptionFactory;
@@ -39,7 +39,7 @@ ItemOptionTest {
         UserItemOption testUserItemOption = createTestUserItemOption(5, 5);
 
         // when
-        List<ErrorResult> errors = testItemOption.findOptionErrors(testUserItemOption);
+        List<ItemOptionValidationError> errors = testItemOption.findOptionErrors(testUserItemOption);
 
         // then
         assertThat(errors).isEmpty();
@@ -53,7 +53,7 @@ ItemOptionTest {
         UserItemOption testUserItemOption = createTestUserItemOption(15, 15);
 
         // when
-        List<ErrorResult> errors = testItemOption.findOptionErrors(testUserItemOption);
+        List<ItemOptionValidationError> errors = testItemOption.findOptionErrors(testUserItemOption);
 
         // then
         softly.assertThat(errors).isNotEmpty();

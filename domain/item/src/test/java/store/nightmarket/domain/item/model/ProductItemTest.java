@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.fixture.TestItemFactory;
-import store.nightmarket.itemcore.exception.ErrorResult;
+import store.nightmarket.common.util.ItemOptionValidationError;
 import store.nightmarket.itemcore.exception.QuantityException;
 import store.nightmarket.itemcore.model.ItemDetailOption;
 import store.nightmarket.itemcore.model.ItemOption;
@@ -39,7 +39,7 @@ class ProductItemTest {
                 5, 5, 5, 5, 5, 5);
 
         // when
-        List<ErrorResult> productItemErrors = testProductItem.findProductItemErrors(testUserBuyProductItem);
+        List<ItemOptionValidationError> productItemErrors = testProductItem.findProductItemErrors(testUserBuyProductItem);
 
         // then
         assertThat(productItemErrors)
@@ -57,7 +57,7 @@ class ProductItemTest {
                 15, 5, 15, 5, 15, 5);
 
         // when
-        List<ErrorResult> productItemErrors = testProductItem.findProductItemErrors(testUserBuyProductItem);
+        List<ItemOptionValidationError> productItemErrors = testProductItem.findProductItemErrors(testUserBuyProductItem);
 
 
         // then

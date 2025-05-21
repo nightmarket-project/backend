@@ -2,7 +2,7 @@ package store.nightmarket.domain.item.model;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemcore.exception.ErrorResult;
+import store.nightmarket.common.util.ItemOptionValidationError;
 import store.nightmarket.itemcore.model.ItemOption;
 import store.nightmarket.itemcore.model.ItemOptionGroup;
 import store.nightmarket.itemcore.valueobject.ItemId;
@@ -11,7 +11,6 @@ import store.nightmarket.itemcore.valueobject.UserId;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Getter
 public class ProductItem extends BaseModel<ItemId> {
@@ -56,8 +55,8 @@ public class ProductItem extends BaseModel<ItemId> {
         return internalId();
     }
 
-    public List<ErrorResult> findProductItemErrors(UserBuyProductItem buyProductItem) {
-        List<ErrorResult> findErrors = new ArrayList<>();
+    public List<ItemOptionValidationError> findProductItemErrors(UserBuyProductItem buyProductItem) {
+        List<ItemOptionValidationError> findErrors = new ArrayList<>();
         findErrors.addAll(basicOption.findOptionGroupErrors(buyProductItem.getBasicOption()));
         findErrors.addAll(additionalOption.findOptionErrors(buyProductItem.getAdditionalOption()));
 

@@ -1,7 +1,7 @@
 package store.nightmarket.itemcore.model;
 
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemcore.exception.ErrorResult;
+import store.nightmarket.common.util.ItemOptionValidationError;
 import store.nightmarket.itemcore.valueobject.ItemDetailOptionId;
 import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.Price;
@@ -46,9 +46,9 @@ public class ItemDetailOption extends BaseModel<ItemDetailOptionId> {
         quantity = quantity.subtract(buyDetailOption.getQuantity());
     }
 
-    public Optional<ErrorResult> findDetailOptionError(UserItemDetailOption buyDetailOption) {
+    public Optional<ItemOptionValidationError> findDetailOptionError(UserItemDetailOption buyDetailOption) {
         if (quantity.isLessThan(buyDetailOption.getQuantity())) {
-            return Optional.of(new ErrorResult(getDetailOptionId(), "보유 수량이 요청 수량보다 작다."));
+            return Optional.of(new ItemOptionValidationError(getDetailOptionId(), "보유 수량이 요청 수량보다 작다."));
         }
 
         return Optional.empty();

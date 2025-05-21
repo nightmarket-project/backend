@@ -4,13 +4,11 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.itemcore.exception.ErrorResult;
+import store.nightmarket.common.util.ItemOptionValidationError;
 import store.nightmarket.itemcore.exception.QuantityException;
 import store.nightmarket.itemcore.fixture.TestOptionFactory;
 import store.nightmarket.itemcore.fixture.TestUserOptionFactory;
-import store.nightmarket.itemcore.valueobject.Quantity;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,7 +34,7 @@ class ItemDetailOptionTest {
         UserItemDetailOption userItemDetailOption = createTestUserItemDetailOption(detailOptionId, 10);
 
         // when
-        Optional<ErrorResult> error = detailOption.findDetailOptionError(userItemDetailOption);
+        Optional<ItemOptionValidationError> error = detailOption.findDetailOptionError(userItemDetailOption);
 
         // then
         assertThat(error.isEmpty())
@@ -53,7 +51,7 @@ class ItemDetailOptionTest {
         UserItemDetailOption userItemDetailOption = createTestUserItemDetailOption(detailOptionId, 10);
 
         // when
-        Optional<ErrorResult> error = detailOption.findDetailOptionError(userItemDetailOption);
+        Optional<ItemOptionValidationError> error = detailOption.findDetailOptionError(userItemDetailOption);
 
         // then
         softly.assertThat(error.isEmpty()).isFalse();

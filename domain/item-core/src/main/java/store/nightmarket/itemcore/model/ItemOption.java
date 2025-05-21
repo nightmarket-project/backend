@@ -1,7 +1,7 @@
 package store.nightmarket.itemcore.model;
 
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemcore.exception.ErrorResult;
+import store.nightmarket.common.util.ItemOptionValidationError;
 import store.nightmarket.itemcore.valueobject.ItemDetailOptionId;
 import store.nightmarket.itemcore.valueobject.ItemOptionId;
 import store.nightmarket.itemcore.valueobject.Name;
@@ -49,8 +49,8 @@ public class ItemOption extends BaseModel<ItemOptionId> {
                 });
     }
 
-    public List<ErrorResult> findOptionErrors(UserItemOption buyUserOption) {
-        List<ErrorResult> errors = new ArrayList<>();
+    public List<ItemOptionValidationError> findOptionErrors(UserItemOption buyUserOption) {
+        List<ItemOptionValidationError> errors = new ArrayList<>();
 
         buyUserOption.getUserItemDetailOptions()
                 .forEach(buyDetailOption -> {
