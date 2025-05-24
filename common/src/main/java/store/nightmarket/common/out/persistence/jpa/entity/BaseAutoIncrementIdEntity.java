@@ -1,7 +1,6 @@
 package store.nightmarket.common.out.persistence.jpa.entity;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,7 +30,7 @@ public abstract class BaseAutoIncrementIdEntity implements Persistable<UUID> {
 
 	@Override
 	public boolean isNew() {
-		return Objects.isNull(getId());
+		return createdAt == null;
 	}
 
 }
