@@ -48,4 +48,11 @@ public class DetailPaymentRecord extends BaseModel<DetailPaymentRecordId> {
         this.state = DetailPaymentState.COMPLETED;
     }
 
+    public void rejectDetailPayment() {
+        if(!state.canTransitionTo(DetailPaymentState.REJECTED)) {
+            throw new PaymentException("cannot be able to change state to rejected");
+        }
+        this.state = DetailPaymentState.REJECTED;
+    }
+
 }

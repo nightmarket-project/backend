@@ -42,4 +42,8 @@ public class PaymentRecord extends BaseModel<PaymentRecordId> {
     public void completePay() {
         detailPaymentRecordList.forEach(DetailPaymentRecord::completeDetailPayment);
     }
+
+    public void rejectPay() {
+        detailPaymentRecordList.forEach(DetailPaymentRecord::rejectDetailPayment);
+    }
 }
