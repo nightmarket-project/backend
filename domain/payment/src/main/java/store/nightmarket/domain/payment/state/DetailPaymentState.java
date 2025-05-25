@@ -1,5 +1,8 @@
 package store.nightmarket.domain.payment.state;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 public enum DetailPaymentState {
 
 	NONE,
@@ -8,8 +11,15 @@ public enum DetailPaymentState {
 	REJECTED,
 	CANCELED;
 
-	public boolean isAbleChangeToSubmitted() {
-		return DetailPaymentState.NONE.equals(this);
+	private Set<DetailPaymentState> nextStates;
+
+	static {
+		NONE.nextStates = EnumSet.of(SUBMITTED);
+		SUBMITTED.nextStates = EnumSet.of(COMPLETED, REJECTED, CANCELED);
+	}
+
+	public boolean canTransitionTo(DetailPaymentState target) {
+		return nextStates.contains(target);
 	}
 
 }
