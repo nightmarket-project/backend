@@ -2,6 +2,7 @@ package store.nightmarket.domain.payment.model;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
+import store.nightmarket.domain.payment.exception.PaymentException;
 import store.nightmarket.domain.payment.valueobject.PaymentRecordId;
 import store.nightmarket.domain.payment.valueobject.UserId;
 
@@ -47,7 +48,20 @@ public class PaymentRecord extends BaseModel<PaymentRecordId> {
         detailPaymentRecordList.forEach(DetailPaymentRecord::rejectDetailPayment);
     }
 
-    public void cancelPayment() {
+    public void cancelAllPayment() {
         detailPaymentRecordList.forEach(DetailPaymentRecord::cancelDetailPayment);
     }
+
+    public void cancelDetailPayment(DetailPaymentRecord detailPaymentRecord) {
+        detailPaymentRecordList.stream()
+                .filter(d -> d.equals(detailPaymentRecord))
+                .findFirst()
+                .ifPresentOrElse(
+                        DetailPaymentRecord::cancelDetailPayment,
+                        () -> {
+                            throw new PaymentException("Payment not found");
+                        }
+                );
+    }
+
 }
