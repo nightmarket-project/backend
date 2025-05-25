@@ -46,4 +46,8 @@ public class PaymentRecord extends BaseModel<PaymentRecordId> {
     public void rejectPay() {
         detailPaymentRecordList.forEach(DetailPaymentRecord::rejectDetailPayment);
     }
+
+    public void cancelPayment() {
+        detailPaymentRecordList.forEach(DetailPaymentRecord::cancelDetailPayment);
+    }
 }

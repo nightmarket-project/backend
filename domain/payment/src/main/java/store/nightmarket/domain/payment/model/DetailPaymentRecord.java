@@ -55,4 +55,11 @@ public class DetailPaymentRecord extends BaseModel<DetailPaymentRecordId> {
         this.state = DetailPaymentState.REJECTED;
     }
 
+    public void cancelDetailPayment() {
+        if(!state.canTransitionTo(DetailPaymentState.CANCELED)) {
+            throw new PaymentException("cannot be able to change state to cancelled");
+        }
+        this.state = DetailPaymentState.CANCELED;
+    }
+
 }
