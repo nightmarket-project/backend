@@ -16,23 +16,23 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static store.nightmarket.domain.payment.service.dto.RequestPaymentDomainServiceDto.*;
+import static store.nightmarket.domain.payment.service.dto.CompletePaymentDomainServiceDto.*;
 
-class RequestPaymentDomainServiceTest {
+class CompletePaymentDomainServiceTest {
 
-    private RequestPaymentDomainService service;
+    private CompletePaymentDomainService service;
     private SoftAssertions softly;
 
     @BeforeEach
     void setUp() {
-        service = new RequestPaymentDomainService();
+        service = new CompletePaymentDomainService();
         softly = new SoftAssertions();
     }
 
     @Test
-    @DisplayName("모든 DetailPayment가 NONE 상태일 때 SUBMITTED 상태로 전이되어야 한다")
-    void shouldTransitionAllDetailPaymentsFromNoneToSubmitted() {
-        // given
+    @DisplayName("모든 DetailPayment가 SUBMITTED 상태일 때 COMPLETED 상태로 전이되어야 한다")
+    void shouldTransitionAllDetailPaymentsFromSubmittedToCompleted() {
+        //given
         PaymentRecord testPayment = PaymentTestUtil.createTestPayment(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
@@ -43,7 +43,7 @@ class RequestPaymentDomainServiceTest {
                                         UUID.randomUUID(),
                                         1000
                                 ),
-                                DetailPaymentState.NONE
+                                DetailPaymentState.SUBMITTED
                         ),
                         PaymentTestUtil.createTestDetailPayment(
                                 UUID.randomUUID(),
@@ -51,7 +51,7 @@ class RequestPaymentDomainServiceTest {
                                         UUID.randomUUID(),
                                         2000
                                 ),
-                                DetailPaymentState.NONE
+                                DetailPaymentState.SUBMITTED
                         )
                 )
         );
@@ -60,24 +60,24 @@ class RequestPaymentDomainServiceTest {
                 .paymentRecord(testPayment)
                 .build();
 
-        // when
+        //when
         Event event = service.execute(input);
 
-        // then
+        //then
         PaymentRecord executePaymentRecord = event.getPaymentRecord();
 
         executePaymentRecord.getDetailPaymentRecordList()
                 .forEach(detailPaymentRecord ->
                         softly.assertThat(detailPaymentRecord.getState())
-                                .isEqualTo(DetailPaymentState.SUBMITTED)
+                                .isEqualTo(DetailPaymentState.COMPLETED)
                 );
         softly.assertAll();
     }
 
-    @ParameterizedTest(name = "현재 상태가 {0}일 때 SUBMITTED로 전이 시도 시 예외 발생")
+    @ParameterizedTest(name = "현재 상태가 {0}일 때 COMPLETED 전이 시도 시 예외 발생")
     @MethodSource("invalidTransitions")
-    @DisplayName("유효하지 않은 상태에서 SUBMITTED로 전이 시 PaymentException 발생해야 함")
-    void shouldThrowExceptionWhenTransitionToSubmittedFromInvalidState (DetailPaymentState currentState) {
+    @DisplayName("유효하지 않은 상태에서 COMPLETED로 전이 시 PaymentException 발생해야 함")
+    void shouldThrowExceptionWhenTransitionToCompletedFromInvalidState(DetailPaymentState currentState) {
         // given
         PaymentRecord testPayment = PaymentTestUtil.createTestPayment(
                 UUID.randomUUID(),
@@ -114,12 +114,11 @@ class RequestPaymentDomainServiceTest {
 
     private static Stream<Arguments> invalidTransitions() {
         return Stream.of(
-                Arguments.of(DetailPaymentState.SUBMITTED),
+                Arguments.of(DetailPaymentState.NONE),
                 Arguments.of(DetailPaymentState.REJECTED),
                 Arguments.of(DetailPaymentState.CANCELED),
                 Arguments.of(DetailPaymentState.COMPLETED)
         );
     }
-
 
 }

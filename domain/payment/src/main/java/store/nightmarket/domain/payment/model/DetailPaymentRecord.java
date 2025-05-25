@@ -41,4 +41,11 @@ public class DetailPaymentRecord extends BaseModel<DetailPaymentRecordId> {
         this.state = DetailPaymentState.SUBMITTED;
     }
 
+    public void completeDetailPayment() {
+        if(!state.canTransitionTo(DetailPaymentState.COMPLETED)) {
+            throw new PaymentException("cannot be able to change state to completed");
+        }
+        this.state = DetailPaymentState.COMPLETED;
+    }
+
 }
