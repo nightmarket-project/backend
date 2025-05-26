@@ -15,6 +15,7 @@ public class RequestPaymentDomainServiceDto {
 	}
 
 	@Builder
+	@Getter
 	public static class Event {
 
 		private final PaymentRecord paymentRecord;

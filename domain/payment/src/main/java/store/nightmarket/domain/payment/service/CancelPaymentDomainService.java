@@ -1,19 +1,17 @@
 package store.nightmarket.domain.payment.service;
 
-import org.springframework.stereotype.Component;
 import store.nightmarket.common.domain.service.BaseDomainService;
 import store.nightmarket.domain.payment.model.PaymentRecord;
-import store.nightmarket.domain.payment.service.dto.RequestPaymentDomainServiceDto.*;
+import store.nightmarket.domain.payment.service.dto.CancelPaymentDomainServiceDto.*;
 
-@Component
-public class RequestPaymentDomainService
+public class CancelPaymentDomainService
         implements BaseDomainService<Input, Event> {
 
     @Override
     public Event execute(Input input) {
         PaymentRecord paymentRecord = input.getPaymentRecord();
 
-        paymentRecord.requestPayment();
+        paymentRecord.cancelPayment();
 
         return Event.builder()
                 .paymentRecord(paymentRecord)

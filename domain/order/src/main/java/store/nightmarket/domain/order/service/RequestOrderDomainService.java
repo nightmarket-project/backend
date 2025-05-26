@@ -10,15 +10,15 @@ import store.nightmarket.domain.order.model.OrderRecord;
 @Component
 public class RequestOrderDomainService implements BaseDomainService<Input, Event> {
 
-	@Override
-	public Event execute(Input input) {
-		OrderRecord orderRecord = input.getOrderRecord();
+    @Override
+    public Event execute(Input input) {
+        OrderRecord orderRecord = input.getOrderRecord();
 
-		orderRecord.requestOrder();
+        orderRecord.requestOrder();
 
-		return Event.builder()
-			.orderRecord(orderRecord)
-			.build();
-	}
+        return Event.builder()
+                .orderRecord(orderRecord)
+                .build();
+    }
 
 }
