@@ -13,7 +13,7 @@ public class RequestPaymentDomainService
     public Event execute(Input input) {
         PaymentRecord paymentRecord = input.getPaymentRecord();
 
-        paymentRecord.requestPay();
+        paymentRecord.requestPayment();
 
         return Event.builder()
                 .paymentRecord(paymentRecord)

@@ -11,7 +11,7 @@ public class RejectPaymentDomainService
     public Event execute(Input input) {
         PaymentRecord paymentRecord = input.getPaymentRecord();
 
-        paymentRecord.rejectPay();
+        paymentRecord.rejectPayment();
 
         return Event.builder()
                 .paymentRecord(paymentRecord)

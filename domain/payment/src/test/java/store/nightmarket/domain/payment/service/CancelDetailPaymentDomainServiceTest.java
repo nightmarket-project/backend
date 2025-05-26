@@ -76,8 +76,8 @@ class CancelDetailPaymentDomainServiceTest {
         softly.assertAll();
     }
 
-    @ParameterizedTest(name = "현재 상태가 {0}일 때 CANCELED 전이 시도 시 예외 발생")
     @MethodSource("invalidTransitions")
+    @ParameterizedTest(name = "현재 상태가 {0}일 때 CANCELED 전이 시도 시 예외 발생")
     @DisplayName("유효하지 않은 상태에서 CANCELED로 전이 시 PaymentException 발생해야 함")
     void shouldThrowExceptionWhenTransitionToCanceledFromInvalidState(DetailPaymentState currentState) {
         //given

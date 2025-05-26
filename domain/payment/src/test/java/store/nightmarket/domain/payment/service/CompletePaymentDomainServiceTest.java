@@ -74,8 +74,8 @@ class CompletePaymentDomainServiceTest {
         softly.assertAll();
     }
 
-    @ParameterizedTest(name = "현재 상태가 {0}일 때 COMPLETED 전이 시도 시 예외 발생")
     @MethodSource("invalidTransitions")
+    @ParameterizedTest(name = "현재 상태가 {0}일 때 COMPLETED 전이 시도 시 예외 발생")
     @DisplayName("유효하지 않은 상태에서 COMPLETED로 전이 시 PaymentException 발생해야 함")
     void shouldThrowExceptionWhenTransitionToCompletedFromInvalidState(DetailPaymentState currentState) {
         // given

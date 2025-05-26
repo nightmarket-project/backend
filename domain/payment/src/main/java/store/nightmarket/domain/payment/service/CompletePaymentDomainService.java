@@ -12,7 +12,7 @@ public class CompletePaymentDomainService implements BaseDomainService<Input, Ev
     public Event execute(Input input) {
         PaymentRecord paymentRecord = input.getPaymentRecord();
 
-        paymentRecord.completePay();
+        paymentRecord.completePayment();
 
         return Event.builder()
                 .paymentRecord(paymentRecord)

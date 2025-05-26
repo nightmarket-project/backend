@@ -36,20 +36,20 @@ public class PaymentRecord extends BaseModel<PaymentRecordId> {
         );
     }
 
-    public void requestPay() {
-        detailPaymentRecordList.forEach(DetailPaymentRecord::submitDetailPayment);
+    public void requestPayment() throws PaymentException {
+        detailPaymentRecordList.forEach(DetailPaymentRecord::submit);
     }
 
-    public void completePay() {
-        detailPaymentRecordList.forEach(DetailPaymentRecord::completeDetailPayment);
+    public void completePayment() {
+        detailPaymentRecordList.forEach(DetailPaymentRecord::complete);
     }
 
-    public void rejectPay() {
-        detailPaymentRecordList.forEach(DetailPaymentRecord::rejectDetailPayment);
+    public void rejectPayment() {
+        detailPaymentRecordList.forEach(DetailPaymentRecord::reject);
     }
 
-    public void cancelAllPayment() {
-        detailPaymentRecordList.forEach(DetailPaymentRecord::cancelDetailPayment);
+    public void cancelPayment() {
+        detailPaymentRecordList.forEach(DetailPaymentRecord::cancel);
     }
 
     public void cancelDetailPayment(DetailPaymentRecord detailPaymentRecord) {
@@ -57,7 +57,7 @@ public class PaymentRecord extends BaseModel<PaymentRecordId> {
                 .filter(d -> d.equals(detailPaymentRecord))
                 .findFirst()
                 .ifPresentOrElse(
-                        DetailPaymentRecord::cancelDetailPayment,
+                        DetailPaymentRecord::cancel,
                         () -> {
                             throw new PaymentException("Payment not found");
                         }

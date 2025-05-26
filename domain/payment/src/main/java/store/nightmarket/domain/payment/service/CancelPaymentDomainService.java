@@ -11,7 +11,7 @@ public class CancelPaymentDomainService
     public Event execute(Input input) {
         PaymentRecord paymentRecord = input.getPaymentRecord();
 
-        paymentRecord.cancelAllPayment();
+        paymentRecord.cancelPayment();
 
         return Event.builder()
                 .paymentRecord(paymentRecord)

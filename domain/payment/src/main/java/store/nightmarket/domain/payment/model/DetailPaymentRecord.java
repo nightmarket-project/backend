@@ -34,28 +34,28 @@ public class DetailPaymentRecord extends BaseModel<DetailPaymentRecordId> {
         );
     }
 
-    public void submitDetailPayment() {
+    public void submit() {
         if (!state.canTransitionTo(DetailPaymentState.SUBMITTED)) {
             throw new PaymentException("cannot be able to change state to submitted");
         }
         this.state = DetailPaymentState.SUBMITTED;
     }
 
-    public void completeDetailPayment() {
+    public void complete() {
         if(!state.canTransitionTo(DetailPaymentState.COMPLETED)) {
             throw new PaymentException("cannot be able to change state to completed");
         }
         this.state = DetailPaymentState.COMPLETED;
     }
 
-    public void rejectDetailPayment() {
+    public void reject() {
         if(!state.canTransitionTo(DetailPaymentState.REJECTED)) {
             throw new PaymentException("cannot be able to change state to rejected");
         }
         this.state = DetailPaymentState.REJECTED;
     }
 
-    public void cancelDetailPayment() {
+    public void cancel() {
         if(!state.canTransitionTo(DetailPaymentState.CANCELED)) {
             throw new PaymentException("cannot be able to change state to cancelled");
         }
