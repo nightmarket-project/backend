@@ -1,4 +1,4 @@
-package store.nightmarket.common.out.persistence.jpa.entity.delivery.model;
+package store.nightmarket.persistence.persistdelivery.entity.model;
 
 import java.time.LocalDateTime;
 
@@ -13,9 +13,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import store.nightmarket.common.out.persistence.jpa.entity.BaseAutoIncrementIdEntity;
-import store.nightmarket.common.out.persistence.jpa.entity.delivery.valueobject.DetailDeliveryStateEntity;
-import store.nightmarket.common.out.persistence.jpa.entity.delivery.valueobject.LocationEntity;
+import store.nightmarket.persistence.persistdelivery.entity.BaseAutoIncrementIdEntity;
+import store.nightmarket.persistence.persistdelivery.entity.valueobject.DetailDeliveryStateEntity;
+import store.nightmarket.persistence.persistdelivery.entity.valueobject.LocationEntity;
 
 @Getter
 @Entity

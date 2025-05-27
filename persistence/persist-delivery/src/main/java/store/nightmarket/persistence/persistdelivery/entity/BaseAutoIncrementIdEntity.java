@@ -1,4 +1,4 @@
-package store.nightmarket.common.out.persistence.jpa.entity;
+package store.nightmarket.persistence.persistdelivery.entity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

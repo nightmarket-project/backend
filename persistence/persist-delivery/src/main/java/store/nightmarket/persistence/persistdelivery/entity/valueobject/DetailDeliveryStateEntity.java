@@ -1,4 +1,4 @@
-package store.nightmarket.common.out.persistence.jpa.entity.delivery.valueobject;
+package store.nightmarket.persistence.persistdelivery.entity.valueobject;
 
 public enum DetailDeliveryStateEntity {
 

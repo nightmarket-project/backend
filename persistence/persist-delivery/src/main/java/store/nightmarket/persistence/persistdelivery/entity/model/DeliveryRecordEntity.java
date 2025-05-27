@@ -1,4 +1,4 @@
-package store.nightmarket.common.out.persistence.jpa.entity.delivery.model;
+package store.nightmarket.persistence.persistdelivery.entity.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,8 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import store.nightmarket.common.out.persistence.jpa.entity.BaseAutoIncrementIdEntity;
-import store.nightmarket.common.out.persistence.jpa.entity.delivery.valueobject.AddressEntity;
+import store.nightmarket.persistence.persistdelivery.entity.BaseAutoIncrementIdEntity;
+import store.nightmarket.persistence.persistdelivery.entity.valueobject.AddressEntity;
 
 @Getter
 @Entity

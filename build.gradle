@@ -213,6 +213,7 @@ project(':app-item') {
     dependencies {
         implementation project(':item')
         implementation project(':item-web')
+        implementation project(':persist-item')
     }
 }
 
@@ -222,6 +223,7 @@ project(':app-order') {
     }
     dependencies {
         implementation project(':order')
+        implementation project(':persist-order')
     }
 }
 
@@ -231,6 +233,7 @@ project(':app-payment') {
     }
     dependencies {
         implementation project(':payment')
+        implementation project(':persist-payment')
     }
 }
 
@@ -240,5 +243,6 @@ project(':app-delivery') {
     }
     dependencies {
         implementation project(':delivery')
+        implementation project(':persist-delivery')
     }
 }

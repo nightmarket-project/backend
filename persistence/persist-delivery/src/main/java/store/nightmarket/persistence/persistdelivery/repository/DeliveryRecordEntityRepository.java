@@ -1,10 +1,10 @@
-package store.nightmarket.common.out.persistence.jpa.repository;
+package store.nightmarket.persistence.persistdelivery.repository;
 
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import store.nightmarket.common.out.persistence.jpa.entity.delivery.model.DeliveryRecordEntity;
+import store.nightmarket.persistence.persistdelivery.entity.model.DeliveryRecordEntity;
 
 public interface DeliveryRecordEntityRepository extends JpaRepository<DeliveryRecordEntity, UUID> {
 }
