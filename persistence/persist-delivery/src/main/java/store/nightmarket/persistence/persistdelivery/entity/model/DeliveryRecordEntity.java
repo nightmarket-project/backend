@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -14,7 +13,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import store.nightmarket.persistence.persistdelivery.entity.BaseAutoIncrementIdEntity;
+import store.nightmarket.common.entity.BaseUuidEntity;
 import store.nightmarket.persistence.persistdelivery.entity.valueobject.AddressEntity;
 
 @Getter
@@ -22,15 +21,16 @@ import store.nightmarket.persistence.persistdelivery.entity.valueobject.AddressE
 @Table(name = "delivery_record")
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeliveryRecordEntity extends BaseAutoIncrementIdEntity {
+public class DeliveryRecordEntity extends BaseUuidEntity {
 
 	@Embedded
+	@Column(name = "address", nullable = false)
 	private AddressEntity addressEntity;
 
 	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
 	private UUID userId;
 
-	@OneToMany(mappedBy = "deliveryRecordEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "deliveryRecordEntity", fetch = FetchType.LAZY)
 	private List<DeliveryTrackingRecordEntity> deliveryTrackingRecords = new ArrayList<>();
 
 }

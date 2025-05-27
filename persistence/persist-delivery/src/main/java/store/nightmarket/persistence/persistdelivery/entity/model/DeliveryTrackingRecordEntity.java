@@ -13,25 +13,26 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import store.nightmarket.persistence.persistdelivery.entity.BaseAutoIncrementIdEntity;
-import store.nightmarket.persistence.persistdelivery.entity.valueobject.DetailDeliveryStateEntity;
+import store.nightmarket.common.entity.BaseUuidEntity;
+import store.nightmarket.domain.delivery.state.DetailDeliveryState;
 import store.nightmarket.persistence.persistdelivery.entity.valueobject.LocationEntity;
 
 @Getter
 @Entity
 @Table(name = "delivery_traking_record")
 @NoArgsConstructor
-public class DeliveryTrackingRecordEntity extends BaseAutoIncrementIdEntity {
+public class DeliveryTrackingRecordEntity extends BaseUuidEntity {
 
 	@Column(name = "time", nullable = false)
 	private LocalDateTime time;
 
 	@Embedded
+	@Column(name = "location")
 	private LocationEntity locationEntity;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "state", nullable = false)
-	private DetailDeliveryStateEntity state;
+	private DetailDeliveryState state;
 
 	@Column(name = "content", columnDefinition = "TEXT")
 	private String content;
@@ -43,7 +44,7 @@ public class DeliveryTrackingRecordEntity extends BaseAutoIncrementIdEntity {
 	public DeliveryTrackingRecordEntity(
 		LocalDateTime time,
 		LocationEntity locationEntity,
-		DetailDeliveryStateEntity state,
+		DetailDeliveryState state,
 		String content
 	) {
 		this.time = time;
