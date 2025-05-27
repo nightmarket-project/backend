@@ -1,24 +1,17 @@
-package store.nightmarket.persistence.persistdelivery.entity;
+package store.nightmarket.common.entity;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.domain.Persistable;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 
 @Getter
 @MappedSuperclass
-public abstract class BaseAutoIncrementIdEntity implements Persistable<UUID> {
-
-	@Id
-	@Column(name = "id", columnDefinition = "BINARY(16)")
-	protected UUID id;
+public abstract class BaseEntity {
 
 	@CreationTimestamp
 	@Column(name = "created_at", nullable = false, updatable = false)
@@ -27,10 +20,6 @@ public abstract class BaseAutoIncrementIdEntity implements Persistable<UUID> {
 	@UpdateTimestamp
 	@Column(name = "updated_at", nullable = false)
 	protected LocalDateTime updatedAt;
-
-	@Override
-	public boolean isNew() {
-		return createdAt == null;
-	}
-
+	
 }
+
