@@ -1,7 +1,9 @@
 package store.nightmarket.domain.order.valueobject;
 
+import lombok.Getter;
 import store.nightmarket.domain.order.exception.OrderException;
 
+@Getter
 public class Quantity {
 
 	private final int value;
