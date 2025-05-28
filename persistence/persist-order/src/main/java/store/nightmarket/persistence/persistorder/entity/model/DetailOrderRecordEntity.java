@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -24,6 +26,7 @@ public class DetailOrderRecordEntity extends BaseUuidEntity {
 	@Column(name = "quantity", nullable = false)
 	private QuantityEntity quantity;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "state", nullable = false)
 	private DetailOrderState state;
 
