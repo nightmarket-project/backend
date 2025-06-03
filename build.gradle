@@ -130,15 +130,19 @@ configure(persist) {
     }
     dependencies {
         implementation project(':common')
-
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        
+        // Spring boot
         compileOnly 'org.springframework.boot:spring-boot-starter'
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.4'
+        // Lombok
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
+        // Test
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.4'
         testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.4'
         testImplementation("org.assertj:assertj-core:3.27.3")
     }
@@ -191,21 +195,26 @@ configure(app) {
     dependencies {
         implementation project(':common')
 
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.4'
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
-        testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.4'
-        testImplementation("org.assertj:assertj-core:3.27.3")
-        compileOnly 'org.springframework.boot:spring-boot-starter'
-
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        // Spring Boot
+        implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.kafka:spring-kafka'
-        compileOnly 'org.projectlombok:lombok'
+
+        // Database
         runtimeOnly 'com.h2database:h2'
+
+        // Lombok
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
+        // Test
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation 'org.springframework.kafka:spring-kafka-test'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.4'
+        testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.4'
+        testImplementation 'org.assertj:assertj-core:3.27.3'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
     }
 }
 
