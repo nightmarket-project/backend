@@ -3,12 +3,12 @@ package store.nightmarket.application.appdelivery.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import store.nightmarket.common.out.persistence.jpa.entity.delivery.model.DeliveryRecordEntity;
-import store.nightmarket.common.out.persistence.jpa.entity.delivery.model.DeliveryTrackingRecordEntity;
 import store.nightmarket.domain.delivery.model.DeliveryRecord;
 import store.nightmarket.domain.delivery.model.DeliveryTrackingRecord;
 import store.nightmarket.domain.delivery.valueobject.DeliveryRecordId;
 import store.nightmarket.domain.delivery.valueobject.UserId;
+import store.nightmarket.persistence.persistdelivery.entity.model.DeliveryRecordEntity;
+import store.nightmarket.persistence.persistdelivery.entity.model.DeliveryTrackingRecordEntity;
 
 public class DeliveryMapper {
 

@@ -1,7 +1,7 @@
-package store.nightmarket.application.appdelivery.mapper;
+package store.nightmarket.application.apporder.mapper;
 
-import store.nightmarket.domain.delivery.valueobject.Address;
-import store.nightmarket.persistence.persistdelivery.entity.valueobject.AddressEntity;
+import store.nightmarket.domain.order.valueobject.Address;
+import store.nightmarket.persistence.persistorder.entity.valueobject.AddressEntity;
 
 public class AddressMapper {
 

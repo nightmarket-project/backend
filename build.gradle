@@ -121,6 +121,64 @@ project(':item-web') {
         compileOnly 'org.springframework.boot:spring-boot-starter'
     }
 }
+//persistence layer
+def persist = [project(':persist-delivery'), project(':persist-order'), project(':persist-payment'), project(':persist-item')]
+
+configure(persist) {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':common')
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        compileOnly 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.4'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
+        testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.4'
+        testImplementation("org.assertj:assertj-core:3.27.3")
+    }
+}
+
+project(':persist-delivery') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':delivery')
+    }
+}
+
+project(':persist-order') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':order')
+    }
+}
+
+project(':persist-payment') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':payment')
+    }
+}
+
+project(':persist-item') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':item')
+    }
+}
 
 //application layer
 
@@ -158,6 +216,7 @@ project(':app-item') {
     dependencies {
         implementation project(':item')
         implementation project(':item-web')
+        implementation project(':persist-item')
     }
 }
 
@@ -167,6 +226,7 @@ project(':app-order') {
     }
     dependencies {
         implementation project(':order')
+        implementation project(':persist-order')
     }
 }
 
@@ -176,6 +236,7 @@ project(':app-payment') {
     }
     dependencies {
         implementation project(':payment')
+        implementation project(':persist-payment')
     }
 }
 
@@ -185,5 +246,6 @@ project(':app-delivery') {
     }
     dependencies {
         implementation project(':delivery')
+        implementation project(':persist-delivery')
     }
 }
