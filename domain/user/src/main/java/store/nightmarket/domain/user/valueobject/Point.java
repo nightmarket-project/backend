@@ -1,7 +1,9 @@
 package store.nightmarket.domain.user.valueobject;
 
+import lombok.Getter;
 import store.nightmarket.domain.user.exception.UserException;
 
+@Getter
 public class Point {
 
 	private Long value;
