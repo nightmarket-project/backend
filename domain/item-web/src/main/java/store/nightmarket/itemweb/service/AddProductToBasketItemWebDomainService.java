@@ -2,10 +2,11 @@ package store.nightmarket.itemweb.service;
 
 import store.nightmarket.common.domain.service.BaseDomainService;
 import store.nightmarket.common.util.ItemOptionValidationError;
-import store.nightmarket.domain.item.model.ProductItem;
-import store.nightmarket.domain.item.model.UserBuyProductItem;
+import store.nightmarket.domain.item.model.UserBuyItemGroup;
+import store.nightmarket.itemcore.model.Item;
+import store.nightmarket.itemcore.model.UserItem;
 import store.nightmarket.itemweb.exception.ItemWebException;
-import store.nightmarket.itemweb.model.ShoppingBasket;
+import store.nightmarket.itemcore.model.Cart;
 
 import java.util.List;
 
@@ -16,23 +17,24 @@ public class AddProductToBasketItemWebDomainService implements BaseDomainService
 
     @Override
     public Event execute(Input input) {
-        ProductItem productItem = input.getProductItem();
-        UserBuyProductItem userBuyProductItem = input.getUserBuyProductItem();
-        ShoppingBasket shoppingBasket = input.getShoppingBasket();
+        Item item = input.getItem();
+        UserItem userBuyItem = input.getUserBuyItem();
+        Cart cart = input.getCart();
 
-        if (!productItem.getItemId().equals(userBuyProductItem.getItemId())) {
+        if (!item.getItemId().equals(userBuyItem.getItemId())) {
             throw new ItemWebException("Product item id does not match buy product item id");
         }
 
-        List<ItemOptionValidationError> productItemErrors = productItem.findProductItemErrors(userBuyProductItem);
+        List<ItemOptionValidationError> productItemErrors = itemGroup.findProductItemErrors(
+            userBuyItemGroup);
         if (!productItemErrors.isEmpty()) {
             throw new ItemWebException("Product item does not exist");
         }
-        shoppingBasket.addProductToBasket(userBuyProductItem);
+        cart.addProductToBasket(userBuyItemGroup);
 
 
         return Event.builder()
-                .shoppingBasket(shoppingBasket)
+                .cart(cart)
                 .build();
     }
 

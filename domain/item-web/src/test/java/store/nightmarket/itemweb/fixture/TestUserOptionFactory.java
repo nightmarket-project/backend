@@ -2,9 +2,9 @@ package store.nightmarket.itemweb.fixture;
 
 import store.nightmarket.itemcore.model.UserItemDetailOption;
 import store.nightmarket.itemcore.model.UserItemOption;
-import store.nightmarket.itemcore.model.UserItemOptionGroup;
+import store.nightmarket.itemcore.model.UserItem;
 import store.nightmarket.itemcore.valueobject.ItemDetailOptionId;
-import store.nightmarket.itemcore.valueobject.ItemOptionGroupId;
+import store.nightmarket.itemcore.valueobject.ProductId;
 import store.nightmarket.itemcore.valueobject.ItemOptionId;
 import store.nightmarket.itemcore.valueobject.Quantity;
 
@@ -35,12 +35,12 @@ public class TestUserOptionFactory {
         );
     }
 
-    public static UserItemOptionGroup createUserItemOptionGroup(
+    public static UserItem createUserItemOptionGroup(
             UUID groupId,
             List<UserItemOption> userOptions
     ) {
-        return UserItemOptionGroup.newInstance(
-                new ItemOptionGroupId(groupId),
+        return UserItem.newInstance(
+                new ProductId(groupId),
                 new ArrayList<>(userOptions)
         );
     }

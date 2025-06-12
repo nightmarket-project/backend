@@ -1,16 +1,15 @@
 package store.nightmarket.itemcore.valueobject;
 
+import java.util.UUID;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseId;
 
-import java.util.UUID;
-
 @Getter
-public class ItemDetailOptionId extends BaseId<UUID> {
+public class OptionGroupId extends BaseId<UUID> {
 
     private final UUID id;
 
-    public ItemDetailOptionId(UUID id) {
+    public OptionGroupId(UUID id) {
         this.id = id;
     }
 

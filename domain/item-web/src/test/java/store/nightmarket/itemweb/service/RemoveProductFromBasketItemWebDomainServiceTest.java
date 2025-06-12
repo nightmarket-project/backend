@@ -3,12 +3,12 @@ package store.nightmarket.itemweb.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.domain.item.model.UserBuyProductItem;
+import store.nightmarket.domain.item.model.UserBuyItemGroup;
 import store.nightmarket.itemcore.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.fixture.TestItemFactory;
-import store.nightmarket.itemweb.model.ShoppingBasket;
-import store.nightmarket.itemweb.valueobject.ShoppingBasketId;
+import store.nightmarket.itemcore.model.Cart;
+import store.nightmarket.itemcore.valueobject.CartId;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,22 +32,22 @@ class RemoveProductFromBasketItemWebDomainServiceTest {
     void ShouldRemoveProductFromBasketWhenBasketHaveProduct() {
         // given
         TestItemFactory factory = new TestItemFactory();
-        UserBuyProductItem testUserBuyProductItem = factory.createTestUserBuyProductItem(
+        UserBuyItemGroup testUserBuyItemGroup = factory.createTestUserBuyProductItem(
                 5, 5, 5, 5, 5, 5);
-        ShoppingBasket shoppingBasket = newShoppingBasket();
+        Cart cart = newShoppingBasket();
 
-        shoppingBasket.addProductToBasket(testUserBuyProductItem);
+        cart.addProductToBasket(testUserBuyItemGroup);
         Input input = Input.builder()
-                .userBuyProductItem(testUserBuyProductItem)
-                .shoppingBasket(shoppingBasket)
+                .userBuyItem(testUserBuyItemGroup)
+                .cart(cart)
                 .build();
 
         // when
         Event event = service.execute(input);
 
         // then
-        List<UserBuyProductItem> userBuyProductItems = event.getShoppingBasket().getUserBuyProductItems();
-        assertThat(userBuyProductItems)
+        List<UserBuyItemGroup> userBuyItemGroups = event.getCart().getUserBuyItemGroups();
+        assertThat(userBuyItemGroups)
                 .isEmpty();
     }
 
@@ -55,13 +55,13 @@ class RemoveProductFromBasketItemWebDomainServiceTest {
     @DisplayName("장바구니에 삭제 제품이 없다면 ItemWebException이 발생한다.")
     void shouldThrowItemWebExceptionWhenBasketDontHaveProduct() {
         // given
-        ShoppingBasket shoppingBasket = newShoppingBasket();
+        Cart cart = newShoppingBasket();
         TestItemFactory factory = new TestItemFactory();
-        UserBuyProductItem testUserBuyProductItem = factory.createTestUserBuyProductItem(
+        UserBuyItemGroup testUserBuyItemGroup = factory.createTestUserBuyProductItem(
                 5, 5, 5, 5, 5, 5);
         Input input = Input.builder()
-                .userBuyProductItem(testUserBuyProductItem)
-                .shoppingBasket(shoppingBasket)
+                .userBuyItem(testUserBuyItemGroup)
+                .cart(cart)
                 .build();
 
         // when & then
@@ -69,9 +69,9 @@ class RemoveProductFromBasketItemWebDomainServiceTest {
                 .isInstanceOf(ItemWebException.class);
     }
 
-    private ShoppingBasket newShoppingBasket() {
-        return ShoppingBasket.newInstance(
-                new ShoppingBasketId(UUID.randomUUID()),
+    private Cart newShoppingBasket() {
+        return Cart.newInstance(
+                new CartId(UUID.randomUUID()),
                 new UserId(UUID.randomUUID())
         );
     }

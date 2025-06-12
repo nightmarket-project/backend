@@ -2,7 +2,7 @@ package store.nightmarket.itemweb.fixture;
 
 import store.nightmarket.itemcore.model.ItemDetailOption;
 import store.nightmarket.itemcore.model.ItemOption;
-import store.nightmarket.itemcore.model.ItemOptionGroup;
+import store.nightmarket.itemcore.model.Item;
 import store.nightmarket.itemcore.valueobject.*;
 
 import java.math.BigDecimal;
@@ -38,12 +38,12 @@ public class TestOptionFactory {
         );
     }
 
-    public static ItemOptionGroup createItemOptionGroup(
+    public static Item createItemOptionGroup(
             UUID groupId,
             List<ItemOption> options
     ) {
-        return ItemOptionGroup.newInstance(
-                new ItemOptionGroupId(groupId),
+        return Item.newInstance(
+                new ProductId(groupId),
                 new ArrayList<>(options)
         );
     }

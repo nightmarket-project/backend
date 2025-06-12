@@ -1,7 +1,7 @@
 package store.nightmarket.itemweb.model;
 
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemcore.valueobject.ItemId;
+import store.nightmarket.itemcore.valueobject.ItemGroupId;
 import store.nightmarket.itemweb.valueobject.PostContent;
 import store.nightmarket.itemweb.valueobject.ProductPostId;
 
@@ -9,31 +9,31 @@ import java.util.List;
 
 public class ProductPost extends BaseModel<ProductPostId> {
 
-    private ItemId itemId;
+    private ItemGroupId itemGroupId;
     private PostContent content;
     private List<Review> review;
 
     private ProductPost(
             ProductPostId id,
-            ItemId itemId,
+            ItemGroupId itemGroupId,
             PostContent content,
             List<Review> review
     ) {
         super(id);
-        this.itemId = itemId;
+        this.itemGroupId = itemGroupId;
         this.content = content;
         this.review = review;
     }
 
     public static ProductPost newInstance(
             ProductPostId id,
-            ItemId itemId,
+            ItemGroupId itemGroupId,
             PostContent content,
             List<Review> review
     ) {
         return new ProductPost(
                 id,
-                itemId,
+            itemGroupId,
                 content,
                 review
         );

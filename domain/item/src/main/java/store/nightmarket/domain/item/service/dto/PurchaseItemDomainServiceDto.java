@@ -2,22 +2,26 @@ package store.nightmarket.domain.item.service.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import store.nightmarket.domain.item.model.ProductItem;
-import store.nightmarket.domain.item.model.UserBuyProductItem;
+import store.nightmarket.domain.item.model.ItemGroup;
+import store.nightmarket.itemcore.model.Cart;
 
 public class PurchaseItemDomainServiceDto {
 
-    @Getter
-    @Builder
-    public static class Input {
-        private final ProductItem productItem;
-        private final UserBuyProductItem buyProductItem;
-    }
+  @Getter
+  @Builder
+  public static class Input {
 
-    @Getter
-    @Builder
-    public static class Event {
-        private final UserBuyProductItem buyProductItem;
-    }
+    private final ItemGroup itemGroup;
+    private final Cart cart;
+
+  }
+
+  @Getter
+  @Builder
+  public static class Event {
+
+    private final Cart cart;
+
+  }
 
 }

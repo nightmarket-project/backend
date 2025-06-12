@@ -1,8 +1,8 @@
 package store.nightmarket.domain.item.fixture;
 
-import store.nightmarket.domain.item.model.ProductItem;
-import store.nightmarket.domain.item.model.UserBuyProductItem;
-import store.nightmarket.itemcore.valueobject.ItemId;
+import store.nightmarket.domain.item.model.ItemGroup;
+import store.nightmarket.domain.item.model.UserBuyItemGroup;
+import store.nightmarket.itemcore.valueobject.ItemGroupId;
 import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.UserId;
 
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class TestItemFactory {
 
-    private final ItemId itemId;
+    private final ItemGroupId itemGroupId;
     private final UUID basicOption;
     private final UUID additionalOption;
     private final UUID colorOption;
@@ -25,7 +25,7 @@ public class TestItemFactory {
     private final UserId userId;
 
     public TestItemFactory() {
-        itemId = new ItemId(UUID.randomUUID());
+        itemGroupId = new ItemGroupId(UUID.randomUUID());
         basicOption = UUID.randomUUID();
         additionalOption = UUID.randomUUID();
         colorOption = UUID.randomUUID();
@@ -39,7 +39,7 @@ public class TestItemFactory {
         userId = new UserId(UUID.randomUUID());
     }
 
-    public UserBuyProductItem createTestUserBuyProductItem(
+    public UserBuyItemGroup createTestUserBuyProductItem(
             int blackUserQty,
             int whiteUserQty,
             int cpu4UserQty,
@@ -47,8 +47,8 @@ public class TestItemFactory {
             int monitor60UserQty,
             int monitor144UserQty
     ) {
-        return UserBuyProductItem.newInstance(
-                itemId,
+        return UserBuyItemGroup.newInstance(
+            itemGroupId,
                 TestUserOptionFactory.createUserItemOptionGroup(
                         basicOption,
                         List.of(
@@ -91,7 +91,7 @@ public class TestItemFactory {
         );
     }
 
-    public UserBuyProductItem createTestUserBuyProductItem(
+    public UserBuyItemGroup createTestUserBuyProductItem(
             UUID productId,
             int blackUserQty,
             int whiteUserQty,
@@ -100,8 +100,8 @@ public class TestItemFactory {
             int monitor60UserQty,
             int monitor144UserQty
     ) {
-        return UserBuyProductItem.newInstance(
-                new ItemId(productId),
+        return UserBuyItemGroup.newInstance(
+                new ItemGroupId(productId),
                 TestUserOptionFactory.createUserItemOptionGroup(
                         basicOption,
                         List.of(
@@ -144,7 +144,7 @@ public class TestItemFactory {
         );
     }
 
-    public ProductItem createTestProductItem(
+    public ItemGroup createTestProductItem(
             int blackQty,
             int whiteQty,
             int cpu4Qty,
@@ -152,8 +152,8 @@ public class TestItemFactory {
             int monitor60Qty,
             int monitor144Qty
     ) {
-        return ProductItem.newInstance(
-                itemId,
+        return ItemGroup.newInstance(
+            itemGroupId,
                 new Name("ComputerParts"),
                 TestOptionFactory.createItemOptionGroup(
                         basicOption,
@@ -214,7 +214,7 @@ public class TestItemFactory {
         );
     }
 
-    public ProductItem createTestProductItem(
+    public ItemGroup createTestProductItem(
             UUID productId,
             int blackQty,
             int whiteQty,
@@ -223,8 +223,8 @@ public class TestItemFactory {
             int monitor60Qty,
             int monitor144Qty
     ) {
-        return ProductItem.newInstance(
-                new ItemId(productId),
+        return ItemGroup.newInstance(
+                new ItemGroupId(productId),
                 new Name("ComputerParts"),
                 TestOptionFactory.createItemOptionGroup(
                         basicOption,

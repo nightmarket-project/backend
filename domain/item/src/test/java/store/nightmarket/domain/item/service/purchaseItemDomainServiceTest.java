@@ -6,8 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.exception.ProductItemException;
 import store.nightmarket.domain.item.fixture.TestItemFactory;
-import store.nightmarket.domain.item.model.ProductItem;
-import store.nightmarket.domain.item.model.UserBuyProductItem;
+import store.nightmarket.domain.item.model.ItemGroup;
+import store.nightmarket.domain.item.model.UserBuyItemGroup;
 
 import java.util.UUID;
 
@@ -31,14 +31,14 @@ class PurchaseItemDomainServiceTest {
     void shouldThrowProductExceptionWhenProductIdIsDifferent() {
         // given
         TestItemFactory factory = new TestItemFactory();
-        ProductItem testProductItem = factory.createTestProductItem(
+        ItemGroup testItemGroup = factory.createTestProductItem(
                 UUID.randomUUID(), 10, 10, 10, 10, 10, 10);
-        UserBuyProductItem testUserBuyProductItem = factory.createTestUserBuyProductItem(
+        UserBuyItemGroup testUserBuyItemGroup = factory.createTestUserBuyProductItem(
                 UUID.randomUUID(), 5, 5, 5, 5, 5, 5);
 
         Input input = Input.builder()
-                .productItem(testProductItem)
-                .buyProductItem(testUserBuyProductItem)
+                .itemGroup(testItemGroup)
+                .buyProductItem(testUserBuyItemGroup)
                 .build();
 
         // when & then
@@ -51,28 +51,28 @@ class PurchaseItemDomainServiceTest {
     void shouldReduceProductQuantityWhenProductIsSufficient() {
         // given
         TestItemFactory factory = new TestItemFactory();
-        ProductItem testProductItem = factory.createTestProductItem(
+        ItemGroup testItemGroup = factory.createTestProductItem(
                 10, 10, 10, 10, 10, 10);
-        UserBuyProductItem testUserBuyProductItem = factory.createTestUserBuyProductItem(
+        UserBuyItemGroup testUserBuyItemGroup = factory.createTestUserBuyProductItem(
                 5, 5, 5, 5, 5, 5);
 
         Input input = Input.builder()
-                .productItem(testProductItem)
-                .buyProductItem(testUserBuyProductItem)
+                .itemGroup(testItemGroup)
+                .buyProductItem(testUserBuyItemGroup)
                 .build();
 
         //when
         Event execute = service.execute(input);
 
         //then
-        UserBuyProductItem buyProductItem = execute.getBuyProductItem();
+        UserBuyItemGroup buyProductItem = execute.getBuyProductItem();
 
         softly.assertThat(buyProductItem.getItemId()).isEqualTo(
-                testUserBuyProductItem.getItemId());
-        softly.assertThat(buyProductItem.getBasicOption().getOptionGroupId()).isEqualTo(
-                testUserBuyProductItem.getBasicOption().getOptionGroupId());
+                testUserBuyItemGroup.getItemId());
+        softly.assertThat(buyProductItem.getBasicOption().getItemId()).isEqualTo(
+                testUserBuyItemGroup.getBasicOption().getItemId());
         softly.assertThat(buyProductItem.getAdditionalOption().getOptionId()).isEqualTo(
-                testUserBuyProductItem.getAdditionalOption().getOptionId());
+                testUserBuyItemGroup.getAdditionalOption().getOptionId());
         softly.assertAll();
     }
 
@@ -81,14 +81,14 @@ class PurchaseItemDomainServiceTest {
     void shouldThrowProductItemExceptionWhenProductItemQuantityIsInsufficient() {
         // given
         TestItemFactory factory = new TestItemFactory();
-        ProductItem testProductItem = factory.createTestProductItem(
+        ItemGroup testItemGroup = factory.createTestProductItem(
                 10, 10, 10, 10, 10, 10);
-        UserBuyProductItem testUserBuyProductItem = factory.createTestUserBuyProductItem(
+        UserBuyItemGroup testUserBuyItemGroup = factory.createTestUserBuyProductItem(
                 5, 5, 15, 5, 15, 5);
 
         Input input = Input.builder()
-                .productItem(testProductItem)
-                .buyProductItem(testUserBuyProductItem)
+                .itemGroup(testItemGroup)
+                .buyProductItem(testUserBuyItemGroup)
                 .build();
 
         // when & then
