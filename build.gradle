@@ -90,34 +90,15 @@ configure(domain) {
     }
 }
 
-project(':item') {
+def item = [project(':item-web'), project(":item")]
+
+project(item) {
     bootJar {
         enabled = false
     }
     dependencies {
         implementation project(':item-core')
         implementation project(':common')
-
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-        compileOnly 'org.springframework.boot:spring-boot-starter'
-    }
-}
-
-project(':item-web') {
-    bootJar {
-        enabled = false
-    }
-    dependencies {
-        implementation project(':item')
-        implementation project(':item-core')
-        implementation project(':common')
-
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-        compileOnly 'org.springframework.boot:spring-boot-starter'
     }
 }
 
