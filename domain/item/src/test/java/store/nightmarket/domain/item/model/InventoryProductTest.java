@@ -9,7 +9,7 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.domain.item.fixture.InventoryFactory;
+import store.nightmarket.domain.item.fixture.TestInventoryFactory;
 import store.nightmarket.itemcore.valueobject.Quantity;
 
 class InventoryProductTest {
@@ -25,7 +25,7 @@ class InventoryProductTest {
     @DisplayName("요청 수량보다 많은 수량을 가지고 있을때 Optional empty를 반환한다.")
     void shouldReturnOptionalEmptyWhenQuantityIsSufficient() {
         // given
-        InventoryProduct monitor = InventoryFactory.createInventoryProduct(
+        InventoryProduct monitor = TestInventoryFactory.createInventoryProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "monitor",
@@ -44,7 +44,7 @@ class InventoryProductTest {
     @DisplayName("요청 수량보다 적은 수량을 가지고 있을때 에러 메시지를 반환한다.")
     void shouldReturnErrorMessageWhenQuantityIsInSufficient() {
         // given
-        InventoryProduct monitor = InventoryFactory.createInventoryProduct(
+        InventoryProduct monitor = TestInventoryFactory.createInventoryProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "monitor",
@@ -65,7 +65,7 @@ class InventoryProductTest {
     @DisplayName("상품을 구매하면 재고 수량이 감소한다")
     void shouldDecreaseQuantityWhenProductIsPurchased() {
         // given
-        InventoryProduct monitor = InventoryFactory.createInventoryProduct(
+        InventoryProduct monitor = TestInventoryFactory.createInventoryProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "monitor",

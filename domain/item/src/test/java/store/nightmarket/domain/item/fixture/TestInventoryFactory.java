@@ -2,7 +2,6 @@ package store.nightmarket.domain.item.fixture;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 import store.nightmarket.domain.item.model.Inventory;
 import store.nightmarket.domain.item.model.InventoryProduct;
@@ -13,7 +12,7 @@ import store.nightmarket.itemcore.valueobject.ProductVariantId;
 import store.nightmarket.itemcore.valueobject.Quantity;
 import store.nightmarket.itemcore.valueobject.UserId;
 
-public class InventoryFactory {
+public class TestInventoryFactory {
 
     public static Inventory createInventory(
         UUID inventoryId,

@@ -9,8 +9,8 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.domain.item.fixture.CartFactory;
-import store.nightmarket.domain.item.fixture.InventoryFactory;
+import store.nightmarket.domain.item.fixture.TestCartFactory;
+import store.nightmarket.domain.item.fixture.TestInventoryFactory;
 import store.nightmarket.itemcore.model.Cart;
 import store.nightmarket.itemcore.model.CartProduct;
 import store.nightmarket.itemcore.valueobject.Quantity;
@@ -83,18 +83,18 @@ class InventoryTest {
         int cpuQuantity,
         int ramQuantity
     ) {
-        Inventory inventory = InventoryFactory.createInventory(
+        Inventory inventory = TestInventoryFactory.createInventory(
             UUID.randomUUID(),
             UUID.randomUUID()
         );
-        InventoryProduct cpuInventoryProduct = InventoryFactory.createInventoryProduct(
+        InventoryProduct cpuInventoryProduct = TestInventoryFactory.createInventoryProduct(
             UUID.randomUUID(),
             cpuId,
             "CPU",
             cpuQuantity,
             LocalDate.now()
         );
-        InventoryProduct ramInventoryProduct = InventoryFactory.createInventoryProduct(
+        InventoryProduct ramInventoryProduct = TestInventoryFactory.createInventoryProduct(
             UUID.randomUUID(),
             ramId,
             "RAM",
@@ -112,14 +112,14 @@ class InventoryTest {
         int cpuQuantity,
         int ramQuantity
     ) {
-        Cart cart = CartFactory.createCart();
-        CartProduct cpuCartProduct = CartFactory.createCartProduct(
+        Cart cart = TestCartFactory.createCart();
+        CartProduct cpuCartProduct = TestCartFactory.createCartProduct(
             cpuId,
             "cpu",
             cpuQuantity,
             10000
         );
-        CartProduct ramCartProduct = CartFactory.createCartProduct(
+        CartProduct ramCartProduct = TestCartFactory.createCartProduct(
             ramId,
             "RAM",
             ramQuantity,

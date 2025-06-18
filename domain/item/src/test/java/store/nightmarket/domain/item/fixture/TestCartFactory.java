@@ -12,7 +12,7 @@ import store.nightmarket.itemcore.valueobject.ProductVariantId;
 import store.nightmarket.itemcore.valueobject.Quantity;
 import store.nightmarket.itemcore.valueobject.UserId;
 
-public class CartFactory {
+public class TestCartFactory {
 
     public static Cart createCart() {
         return Cart.newInstance(
