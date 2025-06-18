@@ -14,7 +14,7 @@ import store.nightmarket.itemcore.valueobject.Quantity;
 
 class InventoryProductTest {
 
-    SoftAssertions softly;
+    private SoftAssertions softly;
 
     @BeforeEach
     void setUp() {
@@ -59,6 +59,27 @@ class InventoryProductTest {
         softly.assertThat(quantityErrorMessage).isNotEmpty();
         softly.assertThat(quantityErrorMessage).isEqualTo(
             "Not enough stock: " + monitor.getName().getValue() + "\n");
+    }
+
+    @Test
+    @DisplayName("상품을 구매하면 재고 수량이 감소한다")
+    void shouldDecreaseQuantityWhenProductIsPurchased() {
+        // given
+        InventoryProduct monitor = InventoryFactory.createInventoryProduct(
+            UUID.randomUUID(),
+            UUID.randomUUID(),
+            "monitor",
+            100,
+            LocalDate.now()
+        );
+        Quantity buyQuantity = new Quantity(BigDecimal.valueOf(10));
+
+        // when
+        monitor.purchase(buyQuantity);
+
+        // then
+        assertThat(monitor.getQuantity())
+            .isEqualTo(new Quantity(BigDecimal.valueOf(90)));
     }
 
 }

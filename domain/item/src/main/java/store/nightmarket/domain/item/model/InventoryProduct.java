@@ -5,6 +5,7 @@ import java.util.Optional;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.valueobject.InventoryProductId;
+import store.nightmarket.itemcore.model.CartProduct;
 import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.ProductVariantId;
 import store.nightmarket.itemcore.valueobject.Quantity;
@@ -56,6 +57,10 @@ public class InventoryProduct extends BaseModel<InventoryProductId> {
             return Optional.of("Not enough stock: " + name.getValue() + "\n");
         }
         return Optional.empty();
+    }
+
+    public void purchase(Quantity buyQuantity) {
+        quantity = quantity.subtract(buyQuantity);
     }
 
 }

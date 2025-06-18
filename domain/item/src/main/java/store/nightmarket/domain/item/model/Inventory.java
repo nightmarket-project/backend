@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.exception.InventoryException;
 import store.nightmarket.domain.item.valueobject.InventoryId;
@@ -12,6 +13,7 @@ import store.nightmarket.itemcore.model.Cart;
 import store.nightmarket.itemcore.valueobject.ProductVariantId;
 import store.nightmarket.itemcore.valueobject.UserId;
 
+@Getter
 public class Inventory extends BaseModel<InventoryId> {
 
     UserId seller;
@@ -60,6 +62,17 @@ public class Inventory extends BaseModel<InventoryId> {
             })
             .filter(msg -> !msg.isEmpty())
             .collect(Collectors.joining());
+    }
+
+    public void purchase(Cart cart) {
+        Map<ProductVariantId, InventoryProduct> inventoryMap = inventory.stream()
+            .collect(Collectors.toMap(InventoryProduct::getProductVariantId, Function.identity()));
+
+        cart.getShoppingBasket()
+            .forEach(buyProduct -> {
+                InventoryProduct inventoryProduct = inventoryMap.get(buyProduct.getVariantId());
+                inventoryProduct.purchase(buyProduct.getQuantity());
+            });
     }
 
 }
