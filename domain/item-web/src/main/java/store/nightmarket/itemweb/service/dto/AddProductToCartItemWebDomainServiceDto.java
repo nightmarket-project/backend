@@ -5,7 +5,7 @@ import lombok.Getter;
 import store.nightmarket.itemcore.model.Cart;
 import store.nightmarket.itemcore.model.CartProduct;
 
-public class RemoveProductFromBasketItemWebDomainServiceDto {
+public class AddProductToCartItemWebDomainServiceDto {
 
     @Getter
     @Builder

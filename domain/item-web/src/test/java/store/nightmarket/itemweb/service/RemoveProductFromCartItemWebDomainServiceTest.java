@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.itemcore.model.Cart;
 import store.nightmarket.itemcore.model.CartProduct;
 import store.nightmarket.itemweb.fixture.TestCartFactory;
-import store.nightmarket.itemweb.service.dto.RemoveProductFromBasketItemWebDomainServiceDto.Event;
-import store.nightmarket.itemweb.service.dto.RemoveProductFromBasketItemWebDomainServiceDto.Input;
+import store.nightmarket.itemweb.service.dto.RemoveProductFromCartItemWebDomainServiceDto.Event;
+import store.nightmarket.itemweb.service.dto.RemoveProductFromCartItemWebDomainServiceDto.Input;
 
 class RemoveProductFromCartItemWebDomainServiceTest {
 

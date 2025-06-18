@@ -1,7 +1,7 @@
 package store.nightmarket.itemweb.service;
 
-import static store.nightmarket.itemweb.service.dto.AddProductToBasketItemWebDomainServiceDto.Event;
-import static store.nightmarket.itemweb.service.dto.AddProductToBasketItemWebDomainServiceDto.Input;
+import static store.nightmarket.itemweb.service.dto.AddProductToCartItemWebDomainServiceDto.Event;
+import static store.nightmarket.itemweb.service.dto.AddProductToCartItemWebDomainServiceDto.Input;
 
 import store.nightmarket.common.domain.service.BaseDomainService;
 import store.nightmarket.itemcore.model.Cart;
