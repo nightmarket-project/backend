@@ -68,7 +68,7 @@ project(':common') {
 
 //domain layer
 
-def domain = [project(':item-core'), project(":order"), project(":payment"), project(":delivery"), project(':user')]
+def domain = [project(':item-core'), project(":order"), project(":payment"), project(":delivery"), project(':user'), project(':item-web'), project(':item')]
 
 configure(domain) {
     bootJar {
@@ -90,15 +90,15 @@ configure(domain) {
     }
 }
 
-def item = [project(':item-web'), project(":item")]
+def item = [project(':item-web'), project(':item')]
 
-project(item) {
+configure(item) {
     bootJar {
         enabled = false
     }
     dependencies {
-        implementation project(':item-core')
         implementation project(':common')
+        implementation project(':item-core')
     }
 }
 
