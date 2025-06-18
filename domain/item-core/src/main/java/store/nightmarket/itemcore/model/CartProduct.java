@@ -47,6 +47,10 @@ public class CartProduct extends BaseModel<CartProductId> {
         );
     }
 
+    public void changeQuantity(Quantity quantity) {
+        this.quantity = quantity;
+    }
+
     @Override
     public String toString() {
         return "CartProduct{" +

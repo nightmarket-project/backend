@@ -93,7 +93,7 @@ class CartTest {
             10000
         );
 
-        assertThatThrownBy(()-> cart.remove(ramCartProduct))
+        assertThatThrownBy(() -> cart.remove(ramCartProduct))
             .isInstanceOf(ItemCoreException.class);
     }
 
@@ -148,7 +148,7 @@ class CartTest {
             10000
         );
 
-        assertThatThrownBy(() ->  cart.changeProductQuantity(ramCartProduct, quantity))
+        assertThatThrownBy(() -> cart.changeProductQuantity(ramCartProduct, quantity))
             .isInstanceOf(ItemCoreException.class);
     }
 
@@ -170,7 +170,7 @@ class CartTest {
         // when
         // then
         Quantity quantity = new Quantity(BigDecimal.valueOf(0));
-        assertThatThrownBy(() ->  cart.changeProductQuantity(cpuCartProduct, quantity))
+        assertThatThrownBy(() -> cart.changeProductQuantity(cpuCartProduct, quantity))
             .isInstanceOf(ItemCoreException.class);
     }
 
