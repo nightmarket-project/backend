@@ -1,17 +1,17 @@
-package store.nightmarket.domain.item.service.dto;
+package store.nightmarket.itemweb.service.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import store.nightmarket.domain.item.model.Inventory;
 import store.nightmarket.itemcore.model.Cart;
+import store.nightmarket.itemcore.model.CartProduct;
 
-public class PurchaseItemDomainServiceDto {
+public class AddProductToCartItemWebDomainServiceDto {
 
     @Getter
     @Builder
     public static class Input {
 
-        private final Inventory inventory;
+        private final CartProduct cartProduct;
         private final Cart cart;
 
     }

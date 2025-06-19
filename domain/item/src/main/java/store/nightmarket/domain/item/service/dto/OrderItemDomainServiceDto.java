@@ -5,23 +5,19 @@ import lombok.Getter;
 import store.nightmarket.domain.item.model.Inventory;
 import store.nightmarket.itemcore.model.Cart;
 
-public class PurchaseItemDomainServiceDto {
+public class OrderItemDomainServiceDto {
 
     @Getter
     @Builder
     public static class Input {
-
-        private final Inventory inventory;
-        private final Cart cart;
-
+        private Inventory inventory;
+        private Cart cart;
     }
 
     @Getter
     @Builder
     public static class Event {
-
-        private final Cart cart;
-
+        private Cart cart;
     }
 
 }

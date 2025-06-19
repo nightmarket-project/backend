@@ -69,7 +69,7 @@ project(':common') {
 
 //domain layer
 
-def domain = [project(':item-core'), project(":order"), project(":payment"), project(":delivery"), project(':user')]
+def domain = [project(':item-core'), project(":order"), project(":payment"), project(":delivery"), project(':user'), project(':item-web'), project(':item')]
 
 configure(domain) {
     bootJar {
@@ -91,34 +91,15 @@ configure(domain) {
     }
 }
 
-project(':item') {
+def item = [project(':item-web'), project(':item')]
+
+configure(item) {
     bootJar {
         enabled = false
     }
     dependencies {
-        implementation project(':item-core')
         implementation project(':common')
-
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-        compileOnly 'org.springframework.boot:spring-boot-starter'
-    }
-}
-
-project(':item-web') {
-    bootJar {
-        enabled = false
-    }
-    dependencies {
-        implementation project(':item')
         implementation project(':item-core')
-        implementation project(':common')
-
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-        compileOnly 'org.springframework.boot:spring-boot-starter'
     }
 }
 //persistence layer
