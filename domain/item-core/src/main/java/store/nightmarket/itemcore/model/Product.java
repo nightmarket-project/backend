@@ -1,5 +1,8 @@
 package store.nightmarket.itemcore.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.Price;
@@ -10,30 +13,42 @@ public class Product extends BaseModel<ProductId> {
     private Name name;
     private String description;
     private Price price;
+    private List<OptionGroup> optionGroupList;
+    private List<ProductVariant> productVariantList;
 
     private Product(
         ProductId id,
         Name name,
         String description,
-        Price price
+        Price price,
+        List<OptionGroup> optionGroupList,
+        List<ProductVariant> productVariantList
     ) {
         super(id);
         this.name = name;
         this.description = description;
         this.price = price;
+        this.optionGroupList =
+            optionGroupList != null ? new ArrayList<>(optionGroupList) : new ArrayList<>();
+        this.productVariantList =
+            productVariantList != null ? new ArrayList<>(productVariantList) : new ArrayList<>();
     }
 
     public Product newInstance(
         ProductId id,
         Name name,
         String description,
-        Price price
+        Price price,
+        List<OptionGroup> optionGroupList,
+        List<ProductVariant> productVariantList
     ) {
         return new Product(
             id,
             name,
             description,
-            price
+            price,
+            optionGroupList,
+            productVariantList
         );
     }
 
