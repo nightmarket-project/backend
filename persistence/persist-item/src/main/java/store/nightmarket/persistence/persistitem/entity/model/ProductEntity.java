@@ -4,7 +4,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,10 @@ public class ProductEntity extends BaseUuidEntity {
     @Embedded
     @Column(name = "price")
     private PriceEntity priceEntity;
+
+    @OneToOne
+    @JoinColumn(name = "product_post_id")
+    private ProductPostEntity productPostEntity;
 
     @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
     private List<OptionGroupEntity> optionGroupEntityList = new ArrayList<>();
