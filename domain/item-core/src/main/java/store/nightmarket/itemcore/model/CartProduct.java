@@ -5,7 +5,6 @@ import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.itemcore.valueobject.CartProductId;
 import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.Price;
-import store.nightmarket.itemcore.valueobject.ProductId;
 import store.nightmarket.itemcore.valueobject.ProductVariantId;
 import store.nightmarket.itemcore.valueobject.Quantity;
 

@@ -2,7 +2,6 @@ package store.nightmarket.itemcore.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.Price;
