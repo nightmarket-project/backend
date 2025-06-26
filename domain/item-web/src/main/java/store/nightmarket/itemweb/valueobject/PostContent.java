@@ -29,7 +29,7 @@ public class PostContent {
         if (text.length() > MAX_TEXT_LENGTH) {
             throw new ItemWebException("Text is too long");
         }
-        if (imageList.size() > MAX_IMAGE_SIZE ) {
+        if (imageList.size() > MAX_IMAGE_SIZE) {
             throw new ItemWebException("Image size is too many");
         }
     }

@@ -69,7 +69,7 @@ project(':common') {
 
 //domain layer
 
-def domain = [project(':item-core'), project(":order"), project(":payment"), project(":delivery"), project(':user'), project(':item-web'), project(':item')]
+def domain = [project(':item'), project(":order"), project(":payment"), project(":delivery"), project(':user'), project(':item-web')]
 
 configure(domain) {
     bootJar {
@@ -91,7 +91,7 @@ configure(domain) {
     }
 }
 
-def item = [project(':item-web'), project(':item')]
+def item = [project(':item-web')]
 
 configure(item) {
     bootJar {
@@ -99,7 +99,7 @@ configure(item) {
     }
     dependencies {
         implementation project(':common')
-        implementation project(':item-core')
+        implementation project(':item')
     }
 }
 //persistence layer
@@ -162,6 +162,7 @@ project(':persist-item') {
     }
     dependencies {
         implementation project(':item')
+        implementation project(':item-web')
     }
 }
 

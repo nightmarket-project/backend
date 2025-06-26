@@ -4,20 +4,20 @@ import store.nightmarket.common.domain.service.BaseDomainService;
 import store.nightmarket.domain.item.model.Inventory;
 import store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Event;
 import store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Input;
-import store.nightmarket.itemcore.model.Cart;
+import store.nightmarket.domain.item.model.ShoppingBasket;
 
 public class PurchaseItemDomainService
     implements BaseDomainService<Input, Event> {
 
     @Override
     public Event execute(Input input) {
-        Cart cart = input.getCart();
+        ShoppingBasket shoppingBasket = input.getShoppingBasket();
         Inventory inventory = input.getInventory();
 
-        inventory.purchase(cart);
+        inventory.purchase(shoppingBasket);
 
         return Event.builder()
-            .cart(cart)
+            .shoppingBasket(shoppingBasket)
             .build();
     }
 

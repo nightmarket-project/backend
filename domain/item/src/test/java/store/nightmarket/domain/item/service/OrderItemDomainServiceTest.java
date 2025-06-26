@@ -1,33 +1,32 @@
 package store.nightmarket.domain.item.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.exception.InventoryException;
-import store.nightmarket.domain.item.fixture.TestCartFactory;
-import store.nightmarket.domain.item.fixture.TestInventoryFactory;
+import store.nightmarket.domain.item.fixture.TestItemFactory;
+import store.nightmarket.domain.item.fixture.TestShoppingBasketFactory;
 import store.nightmarket.domain.item.model.Inventory;
-import store.nightmarket.domain.item.model.InventoryProduct;
+import store.nightmarket.domain.item.model.ProductVariant;
+import store.nightmarket.domain.item.model.ShoppingBasketProduct;
+import store.nightmarket.domain.item.model.ShoppingBasket;
 import store.nightmarket.domain.item.service.dto.OrderItemDomainServiceDto.Event;
 import store.nightmarket.domain.item.service.dto.OrderItemDomainServiceDto.Input;
-import store.nightmarket.itemcore.model.Cart;
-import store.nightmarket.itemcore.model.CartProduct;
 
 class OrderItemDomainServiceTest {
 
-    SoftAssertions softly;
     OrderItemDomainService service;
     private UUID cpuId;
     private UUID ramId;
 
     @BeforeEach
     void setUp() {
-        softly = new SoftAssertions();
         service = new OrderItemDomainService();
         cpuId = UUID.randomUUID();
         ramId = UUID.randomUUID();
@@ -38,18 +37,18 @@ class OrderItemDomainServiceTest {
     void shouldReturnCartWhenInventoryQuantityIsSufficient() {
         // given
         Inventory inventory = testInventory(100, 100);
-        Cart cart = testCart(10, 10);
+        ShoppingBasket shoppingBasket = testCart(10, 10);
 
         Input input = Input.builder()
             .inventory(inventory)
-            .cart(cart)
+            .shoppingBasket(shoppingBasket)
             .build();
 
         // when
         Event event = service.execute(input);
 
         // then
-        softly.assertThat(event.getCart()).isEqualTo(cart);
+        assertThat(event.getShoppingBasket()).isEqualTo(shoppingBasket);
     }
 
     @Test
@@ -57,11 +56,11 @@ class OrderItemDomainServiceTest {
     void shouldReturnInventoryExceptionWhenInventoryQuantityIsInsufficient() {
         // given
         Inventory inventory = testInventory(100, 100);
-        Cart cart = testCart(10, 110);
+        ShoppingBasket shoppingBasket = testCart(10, 110);
 
         Input input = Input.builder()
             .inventory(inventory)
-            .cart(cart)
+            .shoppingBasket(shoppingBasket)
             .build();
 
         // when
@@ -74,53 +73,113 @@ class OrderItemDomainServiceTest {
         int cpuQuantity,
         int ramQuantity
     ) {
-        Inventory inventory = TestInventoryFactory.createInventory(
+        Inventory inventory = TestItemFactory.createInventory(
             UUID.randomUUID(),
-            UUID.randomUUID()
-        );
-        InventoryProduct cpuInventoryProduct = TestInventoryFactory.createInventoryProduct(
-            UUID.randomUUID(),
-            cpuId,
-            "CPU",
-            cpuQuantity,
-            LocalDate.now()
-        );
-        InventoryProduct ramInventoryProduct = TestInventoryFactory.createInventoryProduct(
-            UUID.randomUUID(),
-            ramId,
-            "RAM",
-            ramQuantity,
-            LocalDate.now()
+            new ArrayList<>()
         );
 
-        inventory.add(cpuInventoryProduct);
-        inventory.add(ramInventoryProduct);
+        ProductVariant cpuProductVariant = TestItemFactory.createProductVariant(
+            cpuId,
+            UUID.randomUUID(),
+            UUID.randomUUID(),
+            "SKUCode",
+            cpuQuantity,
+            List.of(
+                TestItemFactory.createVariantOptionValue(
+                    UUID.randomUUID(),
+                    cpuId,
+                    TestItemFactory.createOptionGroup(
+                        UUID.randomUUID(),
+                        UUID.randomUUID(),
+                        "core",
+                        1,
+                        List.of(
+                            TestItemFactory.createOptionValue(
+                                UUID.randomUUID(),
+                                UUID.randomUUID(),
+                                "4코어",
+                                10000,
+                                1
+                            )
+                        )
+                    ),
+                    TestItemFactory.createOptionValue(
+                        UUID.randomUUID(),
+                        UUID.randomUUID(),
+                        "4코어",
+                        10000,
+                        1
+                    )
+                )
+            )
+        );
+
+        ProductVariant ramProductVariant = TestItemFactory.createProductVariant(
+            ramId,
+            UUID.randomUUID(),
+            UUID.randomUUID(),
+            "SKUCode",
+            cpuQuantity,
+            List.of(
+                TestItemFactory.createVariantOptionValue(
+                    UUID.randomUUID(),
+                    ramId,
+                    TestItemFactory.createOptionGroup(
+                        UUID.randomUUID(),
+                        UUID.randomUUID(),
+                        "GB",
+                        1,
+                        List.of(
+                            TestItemFactory.createOptionValue(
+                                UUID.randomUUID(),
+                                UUID.randomUUID(),
+                                "4",
+                                10000,
+                                1
+                            )
+                        )
+                    ),
+                    TestItemFactory.createOptionValue(
+                        UUID.randomUUID(),
+                        UUID.randomUUID(),
+                        "4",
+                        10000,
+                        1
+                    )
+                )
+            )
+        );
+
+        inventory.add(cpuProductVariant);
+        inventory.add(ramProductVariant);
 
         return inventory;
     }
 
-    private Cart testCart(
+    private ShoppingBasket testCart(
         int cpuQuantity,
         int ramQuantity
     ) {
-        Cart cart = TestCartFactory.createCart();
-        CartProduct cpuCartProduct = TestCartFactory.createCartProduct(
+        ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
+        ShoppingBasketProduct cpuShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
+            UUID.randomUUID(),
             cpuId,
             "cpu",
             cpuQuantity,
             10000
         );
-        CartProduct ramCartProduct = TestCartFactory.createCartProduct(
+        ShoppingBasketProduct ramShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
+            UUID.randomUUID(),
             ramId,
             "RAM",
             ramQuantity,
             10000
         );
 
-        cart.add(cpuCartProduct);
-        cart.add(ramCartProduct);
+        shoppingBasket.add(cpuShoppingBasketProduct);
+        shoppingBasket.add(ramShoppingBasketProduct);
 
-        return cart;
+        return shoppingBasket;
     }
 
 }

@@ -1,7 +1,5 @@
 package store.nightmarket.itemweb.valueobject;
 
-import store.nightmarket.itemcore.valueobject.Name;
-
 import java.util.Objects;
 
 public class Image {

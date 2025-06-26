@@ -1,6 +1,6 @@
 package store.nightmarket.itemweb.fixture;
 
-import store.nightmarket.itemcore.valueobject.UserId;
+import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.model.Reply;
 import store.nightmarket.itemweb.valueobject.Image;
 import store.nightmarket.itemweb.valueobject.PostContent;

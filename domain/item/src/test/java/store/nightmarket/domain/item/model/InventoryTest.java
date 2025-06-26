@@ -3,17 +3,17 @@ package store.nightmarket.domain.item.model;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.domain.item.fixture.TestCartFactory;
-import store.nightmarket.domain.item.fixture.TestInventoryFactory;
-import store.nightmarket.itemcore.model.Cart;
-import store.nightmarket.itemcore.model.CartProduct;
-import store.nightmarket.itemcore.valueobject.Quantity;
+import store.nightmarket.domain.item.fixture.TestItemFactory;
+import store.nightmarket.domain.item.fixture.TestShoppingBasketFactory;
+import store.nightmarket.domain.item.valueobject.ProductVariantId;
+import store.nightmarket.domain.item.valueobject.Quantity;
 
 class InventoryTest {
 
@@ -33,10 +33,10 @@ class InventoryTest {
     void ShouldReturnEmptyMessageWhenQuantityIsSufficient() {
         // given
         Inventory inventory = testInventory(100, 100);
-        Cart cart = testCart(10, 10);
+        ShoppingBasket shoppingBasket = testCart(10, 10);
 
         // when
-        String errorMessages = inventory.getErrorMessages(cart);
+        String errorMessages = inventory.tryOrdering(shoppingBasket);
 
         // then
         assertThat(errorMessages).isEmpty();
@@ -47,19 +47,18 @@ class InventoryTest {
     void shouldReturnErrorMessagesWhenQuantityIsInsufficient() {
         // given
         Inventory inventory = testInventory(100, 100);
-        Cart cart = testCart(110, 110);
+        ShoppingBasket shoppingBasket = testCart(110, 110);
 
         // when
-        String errorMessages = inventory.getErrorMessages(cart);
+        String errorMessages = inventory.tryOrdering(shoppingBasket);
 
         // then
         softly.assertThat(errorMessages).isNotEmpty();
         softly.assertThat(errorMessages).isEqualTo(
-            """
-                Not enough stock: CPU
-                Not enough stock: RAM
-                """
+            "재고 부족함: CartProduct{name=CPU}\n" +
+                "재고 부족함: CartProduct{name=RAM}"
         );
+        softly.assertAll();
     }
 
     @Test
@@ -67,69 +66,130 @@ class InventoryTest {
     void shouldDecreaseStockQuantitiesWhenCartIsPurchased() {
         // given
         Inventory inventory = testInventory(10, 10);
-        Cart cart = testCart(1, 1);
+        ShoppingBasket shoppingBasket = testCart(1, 1);
 
         // when
-        inventory.purchase(cart);
+        inventory.purchase(shoppingBasket);
 
         // then
-        softly.assertThat(inventory.getInventory().getFirst().getQuantity())
+        softly.assertThat(inventory.getInventory().get(new ProductVariantId(cpuId)).getQuantity())
             .isEqualTo(new Quantity(BigDecimal.valueOf(9)));
-        softly.assertThat(inventory.getInventory().getLast().getQuantity())
+        softly.assertThat(inventory.getInventory().get(new ProductVariantId(ramId)).getQuantity())
             .isEqualTo(new Quantity(BigDecimal.valueOf(9)));
+        softly.assertAll();
     }
 
     private Inventory testInventory(
         int cpuQuantity,
         int ramQuantity
     ) {
-        Inventory inventory = TestInventoryFactory.createInventory(
+        Inventory inventory = TestItemFactory.createInventory(
             UUID.randomUUID(),
-            UUID.randomUUID()
-        );
-        InventoryProduct cpuInventoryProduct = TestInventoryFactory.createInventoryProduct(
-            UUID.randomUUID(),
-            cpuId,
-            "CPU",
-            cpuQuantity,
-            LocalDate.now()
-        );
-        InventoryProduct ramInventoryProduct = TestInventoryFactory.createInventoryProduct(
-            UUID.randomUUID(),
-            ramId,
-            "RAM",
-            ramQuantity,
-            LocalDate.now()
+            new ArrayList<>()
         );
 
-        inventory.add(cpuInventoryProduct);
-        inventory.add(ramInventoryProduct);
+        ProductVariant cpuProductVariant = TestItemFactory.createProductVariant(
+            cpuId,
+            UUID.randomUUID(),
+            UUID.randomUUID(),
+            "SKUCode",
+            cpuQuantity,
+            List.of(
+                TestItemFactory.createVariantOptionValue(
+                    UUID.randomUUID(),
+                    cpuId,
+                    TestItemFactory.createOptionGroup(
+                        UUID.randomUUID(),
+                        UUID.randomUUID(),
+                        "core",
+                        1,
+                        List.of(
+                            TestItemFactory.createOptionValue(
+                                UUID.randomUUID(),
+                                UUID.randomUUID(),
+                                "4코어",
+                                10000,
+                                1
+                            )
+                        )
+                    ),
+                    TestItemFactory.createOptionValue(
+                        UUID.randomUUID(),
+                        UUID.randomUUID(),
+                        "4코어",
+                        10000,
+                        1
+                    )
+                )
+            )
+        );
+
+        ProductVariant ramProductVariant = TestItemFactory.createProductVariant(
+            ramId,
+            UUID.randomUUID(),
+            UUID.randomUUID(),
+            "SKUCode",
+            cpuQuantity,
+            List.of(
+                TestItemFactory.createVariantOptionValue(
+                    UUID.randomUUID(),
+                    ramId,
+                    TestItemFactory.createOptionGroup(
+                        UUID.randomUUID(),
+                        UUID.randomUUID(),
+                        "GB",
+                        1,
+                        List.of(
+                            TestItemFactory.createOptionValue(
+                                UUID.randomUUID(),
+                                UUID.randomUUID(),
+                                "4",
+                                10000,
+                                1
+                            )
+                        )
+                    ),
+                    TestItemFactory.createOptionValue(
+                        UUID.randomUUID(),
+                        UUID.randomUUID(),
+                        "4",
+                        10000,
+                        1
+                    )
+                )
+            )
+        );
+
+        inventory.add(cpuProductVariant);
+        inventory.add(ramProductVariant);
 
         return inventory;
     }
 
-    private Cart testCart(
+    private ShoppingBasket testCart(
         int cpuQuantity,
         int ramQuantity
     ) {
-        Cart cart = TestCartFactory.createCart();
-        CartProduct cpuCartProduct = TestCartFactory.createCartProduct(
+        ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
+        ShoppingBasketProduct cpuShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
+            UUID.randomUUID(),
             cpuId,
-            "cpu",
+            "CPU",
             cpuQuantity,
             10000
         );
-        CartProduct ramCartProduct = TestCartFactory.createCartProduct(
+        ShoppingBasketProduct ramShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
+            UUID.randomUUID(),
             ramId,
             "RAM",
             ramQuantity,
             10000
         );
 
-        cart.add(cpuCartProduct);
-        cart.add(ramCartProduct);
+        shoppingBasket.add(cpuShoppingBasketProduct);
+        shoppingBasket.add(ramShoppingBasketProduct);
 
-        return cart;
+        return shoppingBasket;
     }
 
 }

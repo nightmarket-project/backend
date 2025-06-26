@@ -1,8 +1,6 @@
 package store.nightmarket.domain.item.exception;
 
-import store.nightmarket.common.exception.DomainException;
-
-public class InventoryException extends DomainException {
+public class InventoryException extends ItemCoreException {
 
     public InventoryException() {}
 
