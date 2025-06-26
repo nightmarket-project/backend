@@ -2,7 +2,7 @@ package store.nightmarket.itemweb.model;
 
 import java.util.List;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemcore.valueobject.UserId;
+import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.valueobject.PostContent;
 import store.nightmarket.itemweb.valueobject.Rating;
 import store.nightmarket.itemweb.valueobject.ReviewId;

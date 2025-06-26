@@ -1,9 +1,9 @@
 package store.nightmarket.itemweb.service;
 
 import store.nightmarket.common.domain.service.BaseDomainService;
-import store.nightmarket.itemcore.model.ShoppingBasket;
-import store.nightmarket.itemcore.model.ShoppingBaseketProduct;
-import store.nightmarket.itemcore.valueobject.Quantity;
+import store.nightmarket.domain.item.model.ShoppingBasket;
+import store.nightmarket.domain.item.model.ShoppingBaseketProduct;
+import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.itemweb.service.dto.ChangeProductQuantityToShoppingBasketItemWebDomainServiceDto.Event;
 import store.nightmarket.itemweb.service.dto.ChangeProductQuantityToShoppingBasketItemWebDomainServiceDto.Input;
 

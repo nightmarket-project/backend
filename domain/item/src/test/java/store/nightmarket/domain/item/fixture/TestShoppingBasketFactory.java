@@ -1,4 +1,4 @@
-package store.nightmarket.itemweb.fixture;
+package store.nightmarket.domain.item.fixture;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
