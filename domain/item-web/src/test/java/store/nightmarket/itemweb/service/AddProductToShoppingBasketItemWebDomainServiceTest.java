@@ -3,6 +3,7 @@ package store.nightmarket.itemweb.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.UUID;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,10 +16,12 @@ import store.nightmarket.itemweb.service.dto.AddProductToShoppingBasketItemWebDo
 class AddProductToShoppingBasketItemWebDomainServiceTest {
 
     private AddProductToShoppingBasketItemWebDomainService service;
+    private SoftAssertions softly;
 
     @BeforeEach
     void setUp() {
         service = new AddProductToShoppingBasketItemWebDomainService();
+        softly = new SoftAssertions();
     }
 
     @Test
@@ -43,10 +46,11 @@ class AddProductToShoppingBasketItemWebDomainServiceTest {
         Event event = service.execute(input);
 
         // then
-        assertThat(event.getShoppingBasket().getShoppingBasket())
+        softly.assertThat(event.getShoppingBasket().getShoppingBasket())
             .hasSize(1);
-        assertThat(event.getShoppingBasket().getShoppingBasket())
+        softly.assertThat(event.getShoppingBasket().getShoppingBasket())
             .contains(shoppingBaseketProduct);
+        softly.assertAll();
     }
 
 }

@@ -1,5 +1,6 @@
 package store.nightmarket.domain.item.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.ArrayList;
@@ -21,14 +22,12 @@ import store.nightmarket.domain.item.service.dto.OrderItemDomainServiceDto.Input
 
 class OrderItemDomainServiceTest {
 
-    SoftAssertions softly;
     OrderItemDomainService service;
     private UUID cpuId;
     private UUID ramId;
 
     @BeforeEach
     void setUp() {
-        softly = new SoftAssertions();
         service = new OrderItemDomainService();
         cpuId = UUID.randomUUID();
         ramId = UUID.randomUUID();
@@ -50,7 +49,7 @@ class OrderItemDomainServiceTest {
         Event event = service.execute(input);
 
         // then
-        softly.assertThat(event.getShoppingBasket()).isEqualTo(shoppingBasket);
+        assertThat(event.getShoppingBasket()).isEqualTo(shoppingBasket);
     }
 
     @Test

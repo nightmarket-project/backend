@@ -56,6 +56,7 @@ class PurchaseItemDomainServiceTest {
             .isEqualTo(new Quantity(BigDecimal.valueOf(90)));
         softly.assertThat(inventory.getInventory().get(new ProductVariantId(ramId)).getQuantity())
             .isEqualTo(new Quantity(BigDecimal.valueOf(90)));
+        softly.assertAll();
     }
 
     private Inventory testInventory(

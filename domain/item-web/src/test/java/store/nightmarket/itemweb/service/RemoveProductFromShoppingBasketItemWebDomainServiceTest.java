@@ -3,6 +3,7 @@ package store.nightmarket.itemweb.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.UUID;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import store.nightmarket.itemweb.service.dto.RemoveProductFromShoppingBasketItem
 class RemoveProductFromShoppingBasketItemWebDomainServiceTest {
 
     private RemoveProductFromShoppingBasketItemWebDomainService service;
+    private SoftAssertions softly;
     private UUID cpuCartId;
     private UUID ramCartId;
     private UUID cpuId;
@@ -23,6 +25,7 @@ class RemoveProductFromShoppingBasketItemWebDomainServiceTest {
     @BeforeEach
     void setUp() {
         service = new RemoveProductFromShoppingBasketItemWebDomainService();
+        softly = new SoftAssertions();
         cpuCartId = UUID.randomUUID();
         ramCartId = UUID.randomUUID();
         cpuId = UUID.randomUUID();
@@ -61,10 +64,11 @@ class RemoveProductFromShoppingBasketItemWebDomainServiceTest {
         Event event = service.execute(input);
 
         // then
-        assertThat(event.getShoppingBasket().getShoppingBasket())
+        softly.assertThat(event.getShoppingBasket().getShoppingBasket())
             .doesNotContain(cpuShoppingBaseketProduct);
-        assertThat(event.getShoppingBasket().getShoppingBasket())
+        softly.assertThat(event.getShoppingBasket().getShoppingBasket())
             .contains(ramShoppingBaseketProduct);
+        softly.assertAll();
     }
 
 }
