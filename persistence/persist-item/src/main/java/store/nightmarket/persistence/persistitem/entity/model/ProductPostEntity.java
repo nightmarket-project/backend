@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -20,12 +21,13 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.PostContentE
 @NoArgsConstructor
 public class ProductPostEntity extends BaseUuidEntity {
 
-    @OneToOne(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
-    private ProductEntity productEntity;
-
     @Embedded
     @Column(name = "post_content")
     private PostContentEntity postContent;
+
+    @OneToOne
+    @JoinColumn(name = "product_id")
+    private ProductEntity productEntity;
 
     @OneToMany(mappedBy = "", fetch = FetchType.LAZY)
     private List<ReviewEntity> reviewEntityList = new ArrayList<>();
