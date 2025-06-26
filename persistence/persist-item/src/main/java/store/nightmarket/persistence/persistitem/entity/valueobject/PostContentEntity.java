@@ -1,0 +1,20 @@
+package store.nightmarket.persistence.persistitem.entity.valueobject;
+
+import jakarta.persistence.Embeddable;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+public class PostContentEntity {
+
+    private String text;
+    private List<ImageEntity> imageList;
+
+}
