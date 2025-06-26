@@ -7,14 +7,14 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.domain.item.fixture.TestCartFactory;
+import store.nightmarket.domain.item.fixture.TestShoppingBasketFactory;
 import store.nightmarket.domain.item.fixture.TestInventoryFactory;
 import store.nightmarket.domain.item.model.Inventory;
 import store.nightmarket.domain.item.model.InventoryProduct;
 import store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Event;
 import store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Input;
-import store.nightmarket.itemcore.model.Cart;
-import store.nightmarket.itemcore.model.CartProduct;
+import store.nightmarket.itemcore.model.ShoppingBasket;
+import store.nightmarket.itemcore.model.ShoppingBaseketProduct;
 import store.nightmarket.itemcore.valueobject.Quantity;
 
 class PurchaseItemDomainServiceTest {
@@ -37,11 +37,11 @@ class PurchaseItemDomainServiceTest {
     void shouldReturnCartAndDecreaseInventoryQuantitiesWhenExecuted() {
         // given
         Inventory inventory = testInventory(100, 100);
-        Cart cart = testCart(10, 10);
+        ShoppingBasket shoppingBasket = testCart(10, 10);
 
         Input input = Input.builder()
             .inventory(inventory)
-            .cart(cart)
+            .shoppingBasket(shoppingBasket)
             .build();
 
         // when
@@ -49,7 +49,7 @@ class PurchaseItemDomainServiceTest {
 
         // then
         softly.assertThat(event).isNotNull();
-        softly.assertThat(event.getCart()).isEqualTo(cart);
+        softly.assertThat(event.getShoppingBasket()).isEqualTo(shoppingBasket);
         softly.assertThat(inventory.getInventory().getFirst().getQuantity())
             .isEqualTo(new Quantity(BigDecimal.valueOf(90)));
         softly.assertThat(inventory.getInventory().getLast().getQuantity())
@@ -85,28 +85,28 @@ class PurchaseItemDomainServiceTest {
         return inventory;
     }
 
-    private Cart testCart(
+    private ShoppingBasket testCart(
         int cpuQuantity,
         int ramQuantity
     ) {
-        Cart cart = TestCartFactory.createCart();
-        CartProduct cpuCartProduct = TestCartFactory.createCartProduct(
+        ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
+        ShoppingBaseketProduct cpuShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
             cpuId,
             "cpu",
             cpuQuantity,
             10000
         );
-        CartProduct ramCartProduct = TestCartFactory.createCartProduct(
+        ShoppingBaseketProduct ramShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
             ramId,
             "RAM",
             ramQuantity,
             10000
         );
 
-        cart.add(cpuCartProduct);
-        cart.add(ramCartProduct);
+        shoppingBasket.add(cpuShoppingBaseketProduct);
+        shoppingBasket.add(ramShoppingBaseketProduct);
 
-        return cart;
+        return shoppingBasket;
     }
 
 }

@@ -9,14 +9,14 @@ import store.nightmarket.itemcore.valueobject.ProductVariantId;
 import store.nightmarket.itemcore.valueobject.Quantity;
 
 @Getter
-public class CartProduct extends BaseModel<CartProductId> {
+public class ShoppingBaseketProduct extends BaseModel<CartProductId> {
 
     private ProductVariantId variantId;
     private Name name;
     private Quantity quantity;
     private Price price;
 
-    private CartProduct(
+    private ShoppingBaseketProduct(
         CartProductId id,
         ProductVariantId variantId,
         Name name,
@@ -30,14 +30,14 @@ public class CartProduct extends BaseModel<CartProductId> {
         this.price = price;
     }
 
-    public static CartProduct newInstance(
+    public static ShoppingBaseketProduct newInstance(
         CartProductId id,
         ProductVariantId variantId,
         Name name,
         Quantity quantity,
         Price price
     ) {
-        return new CartProduct(
+        return new ShoppingBaseketProduct(
             id,
             variantId,
             name,

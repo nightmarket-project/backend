@@ -9,14 +9,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.exception.InventoryException;
-import store.nightmarket.domain.item.fixture.TestCartFactory;
+import store.nightmarket.domain.item.fixture.TestShoppingBasketFactory;
 import store.nightmarket.domain.item.fixture.TestInventoryFactory;
 import store.nightmarket.domain.item.model.Inventory;
 import store.nightmarket.domain.item.model.InventoryProduct;
 import store.nightmarket.domain.item.service.dto.OrderItemDomainServiceDto.Event;
 import store.nightmarket.domain.item.service.dto.OrderItemDomainServiceDto.Input;
-import store.nightmarket.itemcore.model.Cart;
-import store.nightmarket.itemcore.model.CartProduct;
+import store.nightmarket.itemcore.model.ShoppingBasket;
+import store.nightmarket.itemcore.model.ShoppingBaseketProduct;
 
 class OrderItemDomainServiceTest {
 
@@ -38,18 +38,18 @@ class OrderItemDomainServiceTest {
     void shouldReturnCartWhenInventoryQuantityIsSufficient() {
         // given
         Inventory inventory = testInventory(100, 100);
-        Cart cart = testCart(10, 10);
+        ShoppingBasket shoppingBasket = testCart(10, 10);
 
         Input input = Input.builder()
             .inventory(inventory)
-            .cart(cart)
+            .shoppingBasket(shoppingBasket)
             .build();
 
         // when
         Event event = service.execute(input);
 
         // then
-        softly.assertThat(event.getCart()).isEqualTo(cart);
+        softly.assertThat(event.getShoppingBasket()).isEqualTo(shoppingBasket);
     }
 
     @Test
@@ -57,11 +57,11 @@ class OrderItemDomainServiceTest {
     void shouldReturnInventoryExceptionWhenInventoryQuantityIsInsufficient() {
         // given
         Inventory inventory = testInventory(100, 100);
-        Cart cart = testCart(10, 110);
+        ShoppingBasket shoppingBasket = testCart(10, 110);
 
         Input input = Input.builder()
             .inventory(inventory)
-            .cart(cart)
+            .shoppingBasket(shoppingBasket)
             .build();
 
         // when
@@ -99,28 +99,28 @@ class OrderItemDomainServiceTest {
         return inventory;
     }
 
-    private Cart testCart(
+    private ShoppingBasket testCart(
         int cpuQuantity,
         int ramQuantity
     ) {
-        Cart cart = TestCartFactory.createCart();
-        CartProduct cpuCartProduct = TestCartFactory.createCartProduct(
+        ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
+        ShoppingBaseketProduct cpuShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
             cpuId,
             "cpu",
             cpuQuantity,
             10000
         );
-        CartProduct ramCartProduct = TestCartFactory.createCartProduct(
+        ShoppingBaseketProduct ramShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
             ramId,
             "RAM",
             ramQuantity,
             10000
         );
 
-        cart.add(cpuCartProduct);
-        cart.add(ramCartProduct);
+        shoppingBasket.add(cpuShoppingBaseketProduct);
+        shoppingBasket.add(ramShoppingBaseketProduct);
 
-        return cart;
+        return shoppingBasket;
     }
 
 }

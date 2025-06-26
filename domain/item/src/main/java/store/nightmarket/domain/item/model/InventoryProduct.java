@@ -5,7 +5,6 @@ import java.util.Optional;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.valueobject.InventoryProductId;
-import store.nightmarket.itemcore.model.CartProduct;
 import store.nightmarket.itemcore.valueobject.Name;
 import store.nightmarket.itemcore.valueobject.ProductVariantId;
 import store.nightmarket.itemcore.valueobject.Quantity;

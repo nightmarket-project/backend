@@ -9,10 +9,10 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.domain.item.fixture.TestCartFactory;
+import store.nightmarket.domain.item.fixture.TestShoppingBasketFactory;
 import store.nightmarket.domain.item.fixture.TestInventoryFactory;
-import store.nightmarket.itemcore.model.Cart;
-import store.nightmarket.itemcore.model.CartProduct;
+import store.nightmarket.itemcore.model.ShoppingBasket;
+import store.nightmarket.itemcore.model.ShoppingBaseketProduct;
 import store.nightmarket.itemcore.valueobject.Quantity;
 
 class InventoryTest {
@@ -33,10 +33,10 @@ class InventoryTest {
     void ShouldReturnEmptyMessageWhenQuantityIsSufficient() {
         // given
         Inventory inventory = testInventory(100, 100);
-        Cart cart = testCart(10, 10);
+        ShoppingBasket shoppingBasket = testCart(10, 10);
 
         // when
-        String errorMessages = inventory.getErrorMessages(cart);
+        String errorMessages = inventory.getErrorMessages(shoppingBasket);
 
         // then
         assertThat(errorMessages).isEmpty();
@@ -47,10 +47,10 @@ class InventoryTest {
     void shouldReturnErrorMessagesWhenQuantityIsInsufficient() {
         // given
         Inventory inventory = testInventory(100, 100);
-        Cart cart = testCart(110, 110);
+        ShoppingBasket shoppingBasket = testCart(110, 110);
 
         // when
-        String errorMessages = inventory.getErrorMessages(cart);
+        String errorMessages = inventory.getErrorMessages(shoppingBasket);
 
         // then
         softly.assertThat(errorMessages).isNotEmpty();
@@ -67,10 +67,10 @@ class InventoryTest {
     void shouldDecreaseStockQuantitiesWhenCartIsPurchased() {
         // given
         Inventory inventory = testInventory(10, 10);
-        Cart cart = testCart(1, 1);
+        ShoppingBasket shoppingBasket = testCart(1, 1);
 
         // when
-        inventory.purchase(cart);
+        inventory.purchase(shoppingBasket);
 
         // then
         softly.assertThat(inventory.getInventory().getFirst().getQuantity())
@@ -108,28 +108,28 @@ class InventoryTest {
         return inventory;
     }
 
-    private Cart testCart(
+    private ShoppingBasket testCart(
         int cpuQuantity,
         int ramQuantity
     ) {
-        Cart cart = TestCartFactory.createCart();
-        CartProduct cpuCartProduct = TestCartFactory.createCartProduct(
+        ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
+        ShoppingBaseketProduct cpuShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
             cpuId,
             "cpu",
             cpuQuantity,
             10000
         );
-        CartProduct ramCartProduct = TestCartFactory.createCartProduct(
+        ShoppingBaseketProduct ramShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
             ramId,
             "RAM",
             ramQuantity,
             10000
         );
 
-        cart.add(cpuCartProduct);
-        cart.add(ramCartProduct);
+        shoppingBasket.add(cpuShoppingBaseketProduct);
+        shoppingBasket.add(ramShoppingBaseketProduct);
 
-        return cart;
+        return shoppingBasket;
     }
 
 }

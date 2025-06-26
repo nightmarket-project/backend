@@ -9,7 +9,7 @@ import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.exception.InventoryException;
 import store.nightmarket.domain.item.valueobject.InventoryId;
-import store.nightmarket.itemcore.model.Cart;
+import store.nightmarket.itemcore.model.ShoppingBasket;
 import store.nightmarket.itemcore.valueobject.ProductVariantId;
 import store.nightmarket.itemcore.valueobject.UserId;
 
@@ -49,11 +49,11 @@ public class Inventory extends BaseModel<InventoryId> {
         inventory.remove(product);
     }
 
-    public String getErrorMessages(Cart cart) {
+    public String getErrorMessages(ShoppingBasket shoppingBasket) {
         Map<ProductVariantId, InventoryProduct> inventoryMap = inventory.stream()
             .collect(Collectors.toMap(InventoryProduct::getProductVariantId, Function.identity()));
 
-        return cart.getShoppingBasket().stream()
+        return shoppingBasket.getShoppingBasket().stream()
             .map(buyProduct -> {
                 InventoryProduct inventoryProduct = inventoryMap.get(buyProduct.getVariantId());
                 return (inventoryProduct == null)
@@ -64,11 +64,11 @@ public class Inventory extends BaseModel<InventoryId> {
             .collect(Collectors.joining());
     }
 
-    public void purchase(Cart cart) {
+    public void purchase(ShoppingBasket shoppingBasket) {
         Map<ProductVariantId, InventoryProduct> inventoryMap = inventory.stream()
             .collect(Collectors.toMap(InventoryProduct::getProductVariantId, Function.identity()));
 
-        cart.getShoppingBasket()
+        shoppingBasket.getShoppingBasket()
             .forEach(buyProduct -> {
                 InventoryProduct inventoryProduct = inventoryMap.get(buyProduct.getVariantId());
                 inventoryProduct.purchase(buyProduct.getQuantity());
