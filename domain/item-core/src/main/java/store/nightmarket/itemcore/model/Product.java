@@ -31,7 +31,7 @@ public class Product extends BaseModel<ProductId> {
         this.productVariantList = productVariantList;
     }
 
-    public Product newInstance(
+    public static Product newInstance(
         ProductId id,
         Name name,
         String description,

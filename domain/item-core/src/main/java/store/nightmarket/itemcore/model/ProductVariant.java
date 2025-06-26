@@ -1,12 +1,14 @@
 package store.nightmarket.itemcore.model;
 
 import java.util.List;
+import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.itemcore.valueobject.ProductId;
 import store.nightmarket.itemcore.valueobject.ProductVariantId;
 import store.nightmarket.itemcore.valueobject.Quantity;
 import store.nightmarket.itemcore.valueobject.UserId;
 
+@Getter
 public class ProductVariant extends BaseModel<ProductVariantId> {
 
     private ProductId productId;
@@ -31,7 +33,7 @@ public class ProductVariant extends BaseModel<ProductVariantId> {
         this.variantOptionValueList = variantOptionValueList;
     }
 
-    public ProductVariant newInstance(
+    public static ProductVariant newInstance(
         ProductVariantId id,
         ProductId productId,
         UserId seller,
@@ -48,5 +50,18 @@ public class ProductVariant extends BaseModel<ProductVariantId> {
             variantOptionValueList
         );
     }
+
+    public ProductVariantId getProductVariantId() {
+        return internalId();
+    }
+
+    public boolean isNotAbleToOrder(Quantity buyQuantity) {
+        return quantity.isLessThan(buyQuantity);
+    }
+
+    public void purchase(Quantity buyQuantity) {
+        quantity = quantity.subtract(buyQuantity);
+    }
+
 
 }

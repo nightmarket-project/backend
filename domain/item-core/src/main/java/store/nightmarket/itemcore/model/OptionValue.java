@@ -26,7 +26,7 @@ public class OptionValue extends BaseModel<OptionValueId> {
         this.order = order;
     }
 
-    public OptionValue newInstance(
+    public static OptionValue newInstance(
         OptionValueId id,
         OptionGroupId groupId,
         String value,

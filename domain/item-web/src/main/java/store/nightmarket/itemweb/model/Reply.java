@@ -12,9 +12,9 @@ public class Reply extends BaseModel<ReviewId> {
     private static int MAX_LENGTH = 255;
 
     private Reply(
-            ReviewId id,
-            String content,
-            UserId author
+        ReviewId id,
+        String content,
+        UserId author
     ) {
         super(id);
         this.content = content;
@@ -23,14 +23,14 @@ public class Reply extends BaseModel<ReviewId> {
     }
 
     public static Reply newInstance(
-            ReviewId id,
-            String content,
-            UserId author
+        ReviewId id,
+        String content,
+        UserId author
     ) {
         return new Reply(
-                id,
-                content,
-                author
+            id,
+            content,
+            author
         );
     }
 

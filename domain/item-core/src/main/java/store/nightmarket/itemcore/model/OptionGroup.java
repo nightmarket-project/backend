@@ -28,7 +28,7 @@ public class OptionGroup extends BaseModel<OptionGroupId> {
         this.optionValueList = optionValueList;
     }
 
-    public OptionGroup newInstance(
+    public static OptionGroup newInstance(
         OptionGroupId id,
         ProductId productId,
         Name name,

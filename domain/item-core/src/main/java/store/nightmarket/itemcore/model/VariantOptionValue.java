@@ -9,32 +9,32 @@ import store.nightmarket.itemcore.valueobject.VariantOptionValueId;
 public class VariantOptionValue extends BaseModel<VariantOptionValueId> {
 
     private ProductVariantId productVariantId;
-    private OptionGroupId optionGroupId;
-    private OptionValueId optionValueId;
+    private OptionGroup optionGroup;
+    private OptionValue optionValue;
 
     private VariantOptionValue(
         VariantOptionValueId id,
         ProductVariantId productVariantId,
-        OptionGroupId optionGroupId,
-        OptionValueId optionValueId
+        OptionGroup optionGroup,
+        OptionValue optionValue
     ) {
         super(id);
         this.productVariantId = productVariantId;
-        this.optionGroupId = optionGroupId;
-        this.optionValueId = optionValueId;
+        this.optionGroup = optionGroup;
+        this.optionValue = optionValue;
     }
 
-    public VariantOptionValue newInstance(
+    public static VariantOptionValue newInstance(
         VariantOptionValueId id,
         ProductVariantId productVariantId,
-        OptionGroupId optionGroupId,
-        OptionValueId optionValueId
+        OptionGroup optionGroup,
+        OptionValue optionValue
     ) {
         return new VariantOptionValue(
             id,
             productVariantId,
-            optionGroupId,
-            optionValueId
+            optionGroup,
+            optionValue
         );
     }
 
