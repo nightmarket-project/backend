@@ -1,6 +1,7 @@
 package store.nightmarket.itemcore.fixture;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.UUID;
 import store.nightmarket.itemcore.model.Cart;
 import store.nightmarket.itemcore.model.CartProduct;
@@ -17,7 +18,8 @@ public class TestCartFactory {
     public static Cart createCart() {
         return Cart.newInstance(
             new CartId(UUID.randomUUID()),
-            new UserId(UUID.randomUUID())
+            new UserId(UUID.randomUUID()),
+            new ArrayList<>()
         );
     }
 

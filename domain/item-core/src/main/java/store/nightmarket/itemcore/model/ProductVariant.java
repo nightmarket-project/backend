@@ -18,8 +18,7 @@ public class ProductVariant extends BaseModel<ProductVariantId> {
     ) {
         super(id);
         this.productId = productId;
-        this.variantOptionValueList =
-            variantOptionValueList != null ? new ArrayList<>(variantOptionValueList) : new ArrayList<>();
+        this.variantOptionValueList = variantOptionValueList;
     }
 
     public ProductVariant newInstance(

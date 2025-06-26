@@ -18,20 +18,23 @@ public class Cart extends BaseModel<CartId> {
 
     private Cart(
         CartId id,
-        UserId userId
+        UserId userId,
+        List<CartProduct> shoppingBasket
     ) {
         super(id);
         this.userId = userId;
-        shoppingBasket = new ArrayList<>();
+        this.shoppingBasket = shoppingBasket;
     }
 
     public static Cart newInstance(
         CartId id,
-        UserId userId
+        UserId userId,
+        List<CartProduct> shoppingBasket
     ) {
         return new Cart(
             id,
-            userId
+            userId,
+            shoppingBasket
         );
     }
 

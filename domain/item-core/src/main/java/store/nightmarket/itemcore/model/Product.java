@@ -27,10 +27,8 @@ public class Product extends BaseModel<ProductId> {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.optionGroupList =
-            optionGroupList != null ? new ArrayList<>(optionGroupList) : new ArrayList<>();
-        this.productVariantList =
-            productVariantList != null ? new ArrayList<>(productVariantList) : new ArrayList<>();
+        this.optionGroupList = optionGroupList;
+        this.productVariantList = productVariantList;
     }
 
     public Product newInstance(
