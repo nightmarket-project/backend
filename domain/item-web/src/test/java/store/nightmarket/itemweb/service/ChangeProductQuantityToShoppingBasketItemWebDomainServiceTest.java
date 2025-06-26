@@ -10,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.exception.ItemCoreException;
 import store.nightmarket.domain.item.model.ShoppingBasket;
-import store.nightmarket.domain.item.model.ShoppingBaseketProduct;
+import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.itemweb.fixture.TestShoppingBasketFactory;
 import store.nightmarket.itemweb.service.dto.ChangeProductQuantityToShoppingBasketItemWebDomainServiceDto.Event;
@@ -30,7 +30,7 @@ class ChangeProductQuantityToShoppingBasketItemWebDomainServiceTest {
     void shouldUpdateProductQuantityInCartWhenServiceIsExecuted() {
         // given
         ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
-        ShoppingBaseketProduct cpuShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct cpuShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "CPU",
@@ -39,11 +39,11 @@ class ChangeProductQuantityToShoppingBasketItemWebDomainServiceTest {
         );
         Quantity quantity = new Quantity(BigDecimal.valueOf(1));
 
-        shoppingBasket.add(cpuShoppingBaseketProduct);
+        shoppingBasket.add(cpuShoppingBasketProduct);
 
         Input input = Input.builder()
             .shoppingBasket(shoppingBasket)
-            .shoppingBaseketProduct(cpuShoppingBaseketProduct)
+            .shoppingBasketProduct(cpuShoppingBasketProduct)
             .quantity(quantity)
             .build();
 
@@ -60,14 +60,14 @@ class ChangeProductQuantityToShoppingBasketItemWebDomainServiceTest {
     void shouldThrowExceptionWhenChangingQuantityOfProductNotInCart()  {
         // given
         ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
-        ShoppingBaseketProduct cpuShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct cpuShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "CPU",
             100,
             10000
         );
-        ShoppingBaseketProduct ramShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct ramShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "RAM",
@@ -76,11 +76,11 @@ class ChangeProductQuantityToShoppingBasketItemWebDomainServiceTest {
         );
         Quantity quantity = new Quantity(BigDecimal.valueOf(1));
 
-        shoppingBasket.add(cpuShoppingBaseketProduct);
+        shoppingBasket.add(cpuShoppingBasketProduct);
 
         Input input = Input.builder()
             .shoppingBasket(shoppingBasket)
-            .shoppingBaseketProduct(ramShoppingBaseketProduct)
+            .shoppingBasketProduct(ramShoppingBasketProduct)
             .quantity(quantity)
             .build();
 
@@ -95,7 +95,7 @@ class ChangeProductQuantityToShoppingBasketItemWebDomainServiceTest {
     void shouldThrowExceptionWhenUpdatingCartProductQuantityToZeroOrLess() {
         // given
         ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
-        ShoppingBaseketProduct cpuShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct cpuShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "CPU",
@@ -104,11 +104,11 @@ class ChangeProductQuantityToShoppingBasketItemWebDomainServiceTest {
         );
         Quantity quantity = new Quantity(BigDecimal.valueOf(0));
 
-        shoppingBasket.add(cpuShoppingBaseketProduct);
+        shoppingBasket.add(cpuShoppingBasketProduct);
 
         Input input = Input.builder()
             .shoppingBasket(shoppingBasket)
-            .shoppingBaseketProduct(cpuShoppingBaseketProduct)
+            .shoppingBasketProduct(cpuShoppingBasketProduct)
             .quantity(quantity)
             .build();
 

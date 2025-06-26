@@ -5,17 +5,17 @@ import static store.nightmarket.itemweb.service.dto.AddProductToShoppingBasketIt
 
 import store.nightmarket.common.domain.service.BaseDomainService;
 import store.nightmarket.domain.item.model.ShoppingBasket;
-import store.nightmarket.domain.item.model.ShoppingBaseketProduct;
+import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 
 public class AddProductToShoppingBasketItemWebDomainService
     implements BaseDomainService<Input, Event> {
 
     @Override
     public Event execute(Input input) {
-        ShoppingBaseketProduct shoppingBaseketProduct = input.getShoppingBaseketProduct();
+        ShoppingBasketProduct shoppingBasketProduct = input.getShoppingBasketProduct();
         ShoppingBasket shoppingBasket = input.getShoppingBasket();
 
-        shoppingBasket.add(shoppingBaseketProduct);
+        shoppingBasket.add(shoppingBasketProduct);
 
         return Event.builder()
             .shoppingBasket(shoppingBasket)

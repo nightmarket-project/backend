@@ -13,12 +13,12 @@ import store.nightmarket.domain.item.valueobject.UserId;
 public class ShoppingBasket extends BaseModel<CartId> {
 
     private UserId userId;
-    private List<ShoppingBaseketProduct> shoppingBasket;
+    private List<ShoppingBasketProduct> shoppingBasket;
 
     private ShoppingBasket(
         CartId id,
         UserId userId,
-        List<ShoppingBaseketProduct> shoppingBasket
+        List<ShoppingBasketProduct> shoppingBasket
     ) {
         super(id);
         this.userId = userId;
@@ -28,7 +28,7 @@ public class ShoppingBasket extends BaseModel<CartId> {
     public static ShoppingBasket newInstance(
         CartId id,
         UserId userId,
-        List<ShoppingBaseketProduct> shoppingBasket
+        List<ShoppingBasketProduct> shoppingBasket
     ) {
         return new ShoppingBasket(
             id,
@@ -37,28 +37,28 @@ public class ShoppingBasket extends BaseModel<CartId> {
         );
     }
 
-    public void add(ShoppingBaseketProduct shoppingBaseketProduct) {
-        shoppingBasket.add(shoppingBaseketProduct);
+    public void add(ShoppingBasketProduct shoppingBasketProduct) {
+        shoppingBasket.add(shoppingBasketProduct);
     }
 
-    public void remove(ShoppingBaseketProduct shoppingBaseketProduct) {
-        if(!shoppingBasket.contains(shoppingBaseketProduct)) {
-            throw new ItemCoreException("상품이 존재하지 않습니다: " + shoppingBaseketProduct.toString());
+    public void remove(ShoppingBasketProduct shoppingBasketProduct) {
+        if(!shoppingBasket.contains(shoppingBasketProduct)) {
+            throw new ItemCoreException("상품이 존재하지 않습니다: " + shoppingBasketProduct.toString());
         }
-        shoppingBasket.remove(shoppingBaseketProduct);
+        shoppingBasket.remove(shoppingBasketProduct);
     }
 
-    public void changeProductQuantity(ShoppingBaseketProduct shoppingBaseketProduct, Quantity quantity) {
-        if(!shoppingBasket.contains(shoppingBaseketProduct)) {
-            throw new ItemCoreException("상품이 존재하지 않습니다: " + shoppingBaseketProduct.toString());
+    public void changeProductQuantity(ShoppingBasketProduct shoppingBasketProduct, Quantity quantity) {
+        if(!shoppingBasket.contains(shoppingBasketProduct)) {
+            throw new ItemCoreException("상품이 존재하지 않습니다: " + shoppingBasketProduct.toString());
         }
 
         if(quantity.isLessThan(new Quantity(BigDecimal.valueOf(1)))) {
-            throw new ItemCoreException("상품을 수량이 1보다 작게 변경할 수 없습니다." + shoppingBaseketProduct.toString());
+            throw new ItemCoreException("상품을 수량이 1보다 작게 변경할 수 없습니다." + shoppingBasketProduct.toString());
         }
 
         shoppingBasket.stream()
-            .filter(product -> product.getVariantId().equals(shoppingBaseketProduct.getVariantId()))
+            .filter(product -> product.getVariantId().equals(shoppingBasketProduct.getVariantId()))
             .findFirst()
             .ifPresent(product->product.changeQuantity(quantity));
     }

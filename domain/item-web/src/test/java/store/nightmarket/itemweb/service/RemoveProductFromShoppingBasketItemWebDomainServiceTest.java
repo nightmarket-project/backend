@@ -5,7 +5,7 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.domain.item.model.ShoppingBaseketProduct;
+import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.model.ShoppingBasket;
 import store.nightmarket.itemweb.fixture.TestShoppingBasketFactory;
 import store.nightmarket.itemweb.service.dto.RemoveProductFromShoppingBasketItemWebDomainServiceDto.Event;
@@ -35,14 +35,14 @@ class RemoveProductFromShoppingBasketItemWebDomainServiceTest {
     void shouldRemoveProductFromCartWhenRemoved() {
         // given
         ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
-        ShoppingBaseketProduct cpuShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct cpuShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             cpuCartId,
             cpuId,
             "CPU",
             100,
             10000
         );
-        ShoppingBaseketProduct ramShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct ramShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             ramCartId,
             ramId,
             "RAM",
@@ -50,12 +50,12 @@ class RemoveProductFromShoppingBasketItemWebDomainServiceTest {
             10000
         );
 
-        shoppingBasket.add(cpuShoppingBaseketProduct);
-        shoppingBasket.add(ramShoppingBaseketProduct);
+        shoppingBasket.add(cpuShoppingBasketProduct);
+        shoppingBasket.add(ramShoppingBasketProduct);
 
         Input input = Input.builder()
             .shoppingBasket(shoppingBasket)
-            .shoppingBaseketProduct(cpuShoppingBaseketProduct)
+            .shoppingBasketProduct(cpuShoppingBasketProduct)
             .build();
 
         // when
@@ -63,9 +63,9 @@ class RemoveProductFromShoppingBasketItemWebDomainServiceTest {
 
         // then
         softly.assertThat(event.getShoppingBasket().getShoppingBasket())
-            .doesNotContain(cpuShoppingBaseketProduct);
+            .doesNotContain(cpuShoppingBasketProduct);
         softly.assertThat(event.getShoppingBasket().getShoppingBasket())
-            .contains(ramShoppingBaseketProduct);
+            .contains(ramShoppingBasketProduct);
         softly.assertAll();
     }
 

@@ -171,14 +171,14 @@ class InventoryTest {
         int ramQuantity
     ) {
         ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
-        ShoppingBaseketProduct cpuShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct cpuShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             cpuId,
             "CPU",
             cpuQuantity,
             10000
         );
-        ShoppingBaseketProduct ramShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct ramShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             ramId,
             "RAM",
@@ -186,8 +186,8 @@ class InventoryTest {
             10000
         );
 
-        shoppingBasket.add(cpuShoppingBaseketProduct);
-        shoppingBasket.add(ramShoppingBaseketProduct);
+        shoppingBasket.add(cpuShoppingBasketProduct);
+        shoppingBasket.add(ramShoppingBasketProduct);
 
         return shoppingBasket;
     }

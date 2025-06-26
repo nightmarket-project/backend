@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.UUID;
 import store.nightmarket.domain.item.model.ShoppingBasket;
-import store.nightmarket.domain.item.model.ShoppingBaseketProduct;
+import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.CartId;
 import store.nightmarket.domain.item.valueobject.CartProductId;
 import store.nightmarket.domain.item.valueobject.Name;
@@ -23,14 +23,14 @@ public class TestShoppingBasketFactory {
         );
     }
 
-    public static ShoppingBaseketProduct createCartProduct(
+    public static ShoppingBasketProduct createCartProduct(
         UUID cartProductId,
         UUID productVariantId,
         String name,
         int quantity,
         int price
     ) {
-        return ShoppingBaseketProduct.newInstance(
+        return ShoppingBasketProduct.newInstance(
             new CartProductId(cartProductId),
             new ProductVariantId(productVariantId),
             new Name(name),

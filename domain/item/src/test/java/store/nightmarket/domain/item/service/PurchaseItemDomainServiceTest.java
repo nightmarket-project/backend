@@ -12,7 +12,7 @@ import store.nightmarket.domain.item.fixture.TestItemFactory;
 import store.nightmarket.domain.item.fixture.TestShoppingBasketFactory;
 import store.nightmarket.domain.item.model.Inventory;
 import store.nightmarket.domain.item.model.ProductVariant;
-import store.nightmarket.domain.item.model.ShoppingBaseketProduct;
+import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.model.ShoppingBasket;
 import store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Event;
 import store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Input;
@@ -151,14 +151,14 @@ class PurchaseItemDomainServiceTest {
         int ramQuantity
     ) {
         ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
-        ShoppingBaseketProduct cpuShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct cpuShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             cpuId,
             "CPU",
             cpuQuantity,
             10000
         );
-        ShoppingBaseketProduct ramShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct ramShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             ramId,
             "RAM",
@@ -166,8 +166,8 @@ class PurchaseItemDomainServiceTest {
             10000
         );
 
-        shoppingBasket.add(cpuShoppingBaseketProduct);
-        shoppingBasket.add(ramShoppingBaseketProduct);
+        shoppingBasket.add(cpuShoppingBasketProduct);
+        shoppingBasket.add(ramShoppingBasketProduct);
 
         return shoppingBasket;
     }

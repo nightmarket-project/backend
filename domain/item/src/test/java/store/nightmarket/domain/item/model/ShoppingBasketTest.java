@@ -18,7 +18,7 @@ class ShoppingBasketTest {
     void shouldAddProductToCartWhenCartProductIsAdded() {
         // given
         ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
-        ShoppingBaseketProduct shoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct shoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "CPU",
@@ -26,13 +26,13 @@ class ShoppingBasketTest {
             10000
         );
         // when
-        shoppingBasket.add(shoppingBaseketProduct);
+        shoppingBasket.add(shoppingBasketProduct);
 
         // then
         assertThat(shoppingBasket.getShoppingBasket())
             .hasSize(1);
         assertThat(shoppingBasket.getShoppingBasket())
-            .containsExactly(shoppingBaseketProduct);
+            .containsExactly(shoppingBasketProduct);
     }
 
     @Test
@@ -40,14 +40,14 @@ class ShoppingBasketTest {
     void shouldRemoveProductFromCartWhenCartProductIsRemoved() {
         // given
         ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
-        ShoppingBaseketProduct cpuShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct cpuShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "CPU",
             100,
             10000
         );
-        ShoppingBaseketProduct ramShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct ramShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "RAM",
@@ -55,17 +55,17 @@ class ShoppingBasketTest {
             10000
         );
 
-        shoppingBasket.add(cpuShoppingBaseketProduct);
-        shoppingBasket.add(ramShoppingBaseketProduct);
+        shoppingBasket.add(cpuShoppingBasketProduct);
+        shoppingBasket.add(ramShoppingBasketProduct);
 
         // when
-        shoppingBasket.remove(ramShoppingBaseketProduct);
+        shoppingBasket.remove(ramShoppingBasketProduct);
 
         // then
         assertThat(shoppingBasket.getShoppingBasket())
-            .contains(cpuShoppingBaseketProduct);
+            .contains(cpuShoppingBasketProduct);
         assertThat(shoppingBasket.getShoppingBasket())
-            .doesNotContain(ramShoppingBaseketProduct);
+            .doesNotContain(ramShoppingBasketProduct);
     }
 
     @Test
@@ -73,7 +73,7 @@ class ShoppingBasketTest {
     void shouldThrowExceptionWhenCartProductIsNotExist() {
         // given
         ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
-        ShoppingBaseketProduct cpuShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct cpuShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "CPU",
@@ -81,11 +81,11 @@ class ShoppingBasketTest {
             10000
         );
 
-        shoppingBasket.add(cpuShoppingBaseketProduct);
+        shoppingBasket.add(cpuShoppingBasketProduct);
 
         // when
         // then
-        ShoppingBaseketProduct ramShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct ramShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "RAM",
@@ -93,7 +93,7 @@ class ShoppingBasketTest {
             10000
         );
 
-        assertThatThrownBy(() -> shoppingBasket.remove(ramShoppingBaseketProduct))
+        assertThatThrownBy(() -> shoppingBasket.remove(ramShoppingBasketProduct))
             .isInstanceOf(ItemCoreException.class);
     }
 
@@ -102,7 +102,7 @@ class ShoppingBasketTest {
     void shouldChangeCartProductQuantityWhenUpdated() {
         // given
         ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
-        ShoppingBaseketProduct cpuShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct cpuShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "CPU",
@@ -110,12 +110,12 @@ class ShoppingBasketTest {
             10000
         );
 
-        shoppingBasket.add(cpuShoppingBaseketProduct);
+        shoppingBasket.add(cpuShoppingBasketProduct);
 
         // when
         Quantity quantity = new Quantity(BigDecimal.valueOf(1));
 
-        shoppingBasket.changeProductQuantity(cpuShoppingBaseketProduct, quantity);
+        shoppingBasket.changeProductQuantity(cpuShoppingBasketProduct, quantity);
 
         // then
         assertThat(shoppingBasket.getShoppingBasket().getFirst().getQuantity())
@@ -127,7 +127,7 @@ class ShoppingBasketTest {
     void shouldThrowExceptionWhenCartISNotExistProduct() {
         // given
         ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
-        ShoppingBaseketProduct cpuShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct cpuShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "CPU",
@@ -135,12 +135,12 @@ class ShoppingBasketTest {
             10000
         );
 
-        shoppingBasket.add(cpuShoppingBaseketProduct);
+        shoppingBasket.add(cpuShoppingBasketProduct);
 
         // when
         // then
         Quantity quantity = new Quantity(BigDecimal.valueOf(1));
-        ShoppingBaseketProduct ramShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct ramShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "RAM",
@@ -148,7 +148,7 @@ class ShoppingBasketTest {
             10000
         );
 
-        assertThatThrownBy(() -> shoppingBasket.changeProductQuantity(ramShoppingBaseketProduct, quantity))
+        assertThatThrownBy(() -> shoppingBasket.changeProductQuantity(ramShoppingBasketProduct, quantity))
             .isInstanceOf(ItemCoreException.class);
     }
 
@@ -157,7 +157,7 @@ class ShoppingBasketTest {
     void shouldThrowExceptionWhenChangingProductQuantityToZeroOrLess() {
         // given
         ShoppingBasket shoppingBasket = TestShoppingBasketFactory.createCart();
-        ShoppingBaseketProduct cpuShoppingBaseketProduct = TestShoppingBasketFactory.createCartProduct(
+        ShoppingBasketProduct cpuShoppingBasketProduct = TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             UUID.randomUUID(),
             "CPU",
@@ -165,12 +165,12 @@ class ShoppingBasketTest {
             10000
         );
 
-        shoppingBasket.add(cpuShoppingBaseketProduct);
+        shoppingBasket.add(cpuShoppingBasketProduct);
 
         // when
         // then
         Quantity quantity = new Quantity(BigDecimal.valueOf(0));
-        assertThatThrownBy(() -> shoppingBasket.changeProductQuantity(cpuShoppingBaseketProduct, quantity))
+        assertThatThrownBy(() -> shoppingBasket.changeProductQuantity(cpuShoppingBasketProduct, quantity))
             .isInstanceOf(ItemCoreException.class);
     }
 
