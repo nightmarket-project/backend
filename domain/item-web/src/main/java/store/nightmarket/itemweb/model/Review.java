@@ -1,17 +1,18 @@
 package store.nightmarket.itemweb.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.valueobject.UserId;
-import store.nightmarket.itemweb.valueobject.PostContent;
+import store.nightmarket.itemweb.exception.ItemWebException;
+import store.nightmarket.itemweb.valueobject.Content;
 import store.nightmarket.itemweb.valueobject.Rating;
 import store.nightmarket.itemweb.valueobject.ReviewId;
 
 public class Review extends BaseModel<ReviewId> {
 
     private UserId author;
-    private PostContent content;
+    private Content content;
     private Rating rating;
     private Reply reply;
     private final LocalDate createdAt;
@@ -20,7 +21,7 @@ public class Review extends BaseModel<ReviewId> {
     private Review(
         ReviewId id,
         UserId author,
-        PostContent content,
+        Content content,
         Rating rating,
         Reply reply
     ) {
@@ -36,7 +37,7 @@ public class Review extends BaseModel<ReviewId> {
     public static Review newInstance(
         ReviewId id,
         UserId author,
-        PostContent content,
+        Content content,
         Rating rating,
         Reply reply
     ) {
@@ -50,5 +51,12 @@ public class Review extends BaseModel<ReviewId> {
     }
 
 
-
+    public void delete(UserId currentUserId) {
+        if(deleted) {
+           throw new ItemWebException("이미 삭제된 댓글입니다.");
+        }
+        if(!currentUserId.equals(author)) {
+            throw new ItemWebException("댓글 작성자만 삭제 가능합니다.");
+        }
+    }
 }
