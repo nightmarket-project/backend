@@ -12,20 +12,20 @@ public class Review extends BaseModel<ReviewId> {
     private UserId author;
     private PostContent content;
     private Rating rating;
-    private List<Reply> replies;
+    private Reply reply;
 
     private Review(
         ReviewId id,
         UserId author,
         PostContent content,
         Rating rating,
-        List<Reply> replies
+        Reply reply
     ) {
         super(id);
         this.author = author;
         this.content = content;
         this.rating = rating;
-        this.replies = replies;
+        this.reply = reply;
     }
 
     public static Review newInstance(
@@ -33,14 +33,14 @@ public class Review extends BaseModel<ReviewId> {
         UserId author,
         PostContent content,
         Rating rating,
-        List<Reply> replies
+        Reply reply
     ) {
         return new Review(
             id,
             author,
             content,
             rating,
-            replies
+            reply
         );
     }
 
