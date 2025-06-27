@@ -17,7 +17,7 @@ class ContentTest {
 
         //when & then
         assertThatThrownBy(
-            () -> TestObjectFactory.createPostContent(blankText)
+            () -> TestObjectFactory.createContent(blankText)
         ).isInstanceOf(ItemWebException.class);
     }
 
@@ -29,7 +29,7 @@ class ContentTest {
 
         //when & then
         assertThatThrownBy(
-            () -> TestObjectFactory.createPostContent(text)
+            () -> TestObjectFactory.createContent(text)
         ).isInstanceOf(ItemWebException.class);
     }
 

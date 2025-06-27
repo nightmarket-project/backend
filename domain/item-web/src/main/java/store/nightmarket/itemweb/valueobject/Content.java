@@ -1,8 +1,10 @@
 package store.nightmarket.itemweb.valueobject;
 
 import java.util.Objects;
+import lombok.Getter;
 import store.nightmarket.itemweb.exception.ItemWebException;
 
+@Getter
 public class Content {
 
     private final static int MAX_TEXT_LENGTH = 255;
@@ -23,6 +25,10 @@ public class Content {
         if (text.length() > MAX_TEXT_LENGTH) {
             throw new ItemWebException("Text is too long");
         }
+    }
+
+    public static Content deleted() {
+        return new Content("삭제된 댓글 입니다.");
     }
 
     @Override

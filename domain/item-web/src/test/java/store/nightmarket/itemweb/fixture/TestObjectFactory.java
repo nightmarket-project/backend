@@ -4,25 +4,48 @@ import java.util.Random;
 import java.util.UUID;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.model.Reply;
+import store.nightmarket.itemweb.model.Review;
 import store.nightmarket.itemweb.valueobject.Content;
 import store.nightmarket.itemweb.valueobject.Image;
+import store.nightmarket.itemweb.valueobject.Rating;
+import store.nightmarket.itemweb.valueobject.ReplyId;
 import store.nightmarket.itemweb.valueobject.ReviewId;
 
 public class TestObjectFactory {
 
-    public static Reply createReply(String content) {
-        return Reply.newInstance(
-            new ReviewId(UUID.randomUUID()),
-            content,
-            new UserId(UUID.randomUUID())
+    public static Review createReview(
+        UUID reviewId,
+        UUID authorId,
+        String content,
+        Image image,
+        int rating
+    ) {
+        return Review.newInstance(
+            new ReviewId(reviewId),
+            new UserId(authorId),
+            new Content(content),
+            image,
+            new Rating(rating)
         );
     }
 
-    public static Content createPostContent(String test) {
+    public static Reply createReply(String content) {
+        return Reply.newInstance(
+            new ReplyId(UUID.randomUUID()),
+            new Content(content),
+            new UserId(UUID.randomUUID()),
+            new ReviewId(UUID.randomUUID())
+        );
+    }
+
+    public static Content createContent(String test) {
         return new Content(test);
     }
 
-    public static Image createImage(String url, int order) {
+    public static Image createImage(
+        String url,
+        int order
+    ) {
         return new Image(url, order);
     }
 
