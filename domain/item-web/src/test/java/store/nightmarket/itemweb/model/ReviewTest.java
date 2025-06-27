@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.fixture.TestObjectFactory;
+import store.nightmarket.itemweb.valueobject.Content;
+import store.nightmarket.itemweb.valueobject.Image;
+import store.nightmarket.itemweb.valueobject.Rating;
 
 class ReviewTest {
 
@@ -43,8 +46,8 @@ class ReviewTest {
     }
 
     @Test
-    @DisplayName("현재 유저 아이디와 작성자 아이디가 다를때 예외가 발생한다.")
-    void shouldThrowExceptionWhenCurrentUserIdIsNotEqualToAuthorId() {
+    @DisplayName("리뷰 작성자가 아닌 사용자가 리뷰를 삭제하려고 하면 예외가 발생한다")
+    void shouldThrowExceptionWhenUserIdIsDifferentFromAuthorIdOnDelete() {
         // given
         UUID authorId = UUID.randomUUID();
         UUID otherUserId = UUID.randomUUID();
@@ -60,6 +63,66 @@ class ReviewTest {
         // then
         assertThatThrownBy(() -> review.delete(new UserId(otherUserId)))
             .isInstanceOf(ItemWebException.class);
+    }
+
+    @Test
+    @DisplayName("리뷰 작성자와 같은 사용자가 리뷰를 수정하려고 하면 예외가 발생한다")
+    void shouldEditReviewWhenCurrentUserIdIsEqualToAuthorId() {
+        // given
+        UUID authorId = UUID.randomUUID();
+        Content content = new Content("bad!");
+        Image image = TestObjectFactory.createImage("aaa");
+        Rating rating = new Rating(0);
+        Review review = TestObjectFactory.createReview(
+            UUID.randomUUID(),
+            authorId,
+            "good!",
+            TestObjectFactory.defaultImage(),
+            5
+        );
+
+        // when
+        review.edit(
+            new UserId(authorId),
+            image,
+            content,
+            rating
+        );
+
+        // then
+        softly.assertThat(review.getContent()).isEqualTo(content);
+        softly.assertThat(review.getRating()).isEqualTo(rating);
+        softly.assertThat(review.getImage()).isEqualTo(image);
+        softly.assertAll();
+    }
+
+    @Test
+    @DisplayName("리뷰 작성자가 아닌 사용자가 리뷰를 수정하려고 하면 예외가 발생한다")
+    void shouldThrowExceptionWhenUserIdIsDifferentFromAuthorIdOnEdit() {
+        // given
+        UUID authorId = UUID.randomUUID();
+        UserId ohterUserId = new UserId(UUID.randomUUID());
+        Content content = new Content("bad!");
+        Image image = TestObjectFactory.createImage("aaa");
+        Rating rating = new Rating(0);
+        Review review = TestObjectFactory.createReview(
+            UUID.randomUUID(),
+            authorId,
+            "good!",
+            TestObjectFactory.defaultImage(),
+            5
+        );
+
+        // when
+        // then
+        assertThatThrownBy(
+            () -> review.edit(
+                ohterUserId,
+                image,
+                content,
+                rating
+            )
+        ).isInstanceOf(ItemWebException.class);
     }
 
 }

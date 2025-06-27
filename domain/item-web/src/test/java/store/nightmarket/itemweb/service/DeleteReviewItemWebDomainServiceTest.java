@@ -1,8 +1,6 @@
 package store.nightmarket.itemweb.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.UUID;
 import org.assertj.core.api.SoftAssertions;
@@ -11,10 +9,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
-import store.nightmarket.itemweb.service.dto.DeleteReviewItemWebDomainServiceDto.Event;
-import store.nightmarket.itemweb.service.dto.DeleteReviewItemWebDomainServiceDto.Input;
 import store.nightmarket.itemweb.fixture.TestObjectFactory;
 import store.nightmarket.itemweb.model.Review;
+import store.nightmarket.itemweb.service.dto.DeleteReviewItemWebDomainServiceDto.Event;
+import store.nightmarket.itemweb.service.dto.DeleteReviewItemWebDomainServiceDto.Input;
 
 class DeleteReviewItemWebDomainServiceTest {
 

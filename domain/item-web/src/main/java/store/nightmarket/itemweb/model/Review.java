@@ -64,4 +64,18 @@ public class Review extends BaseModel<ReviewId> {
         deleted = true;
     }
 
+    public void edit(
+        UserId authorId,
+        Image image,
+        Content content,
+        Rating rating
+    ) {
+        if(!authorId.equals(this.author)) {
+            throw new ItemWebException("댓글 작성자만 수정 가능합니다.");
+        }
+        this.image = image;
+        this.content = content;
+        this.rating = rating;
+    }
+
 }
