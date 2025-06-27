@@ -38,6 +38,20 @@ public class TestObjectFactory {
         );
     }
 
+    public static Reply createReply(
+        UUID replyId,
+        String content,
+        UUID userId,
+        UUID reviewId
+    ) {
+        return Reply.newInstance(
+            new ReplyId(replyId),
+            new Content(content),
+            new UserId(userId),
+            new ReviewId(reviewId)
+        );
+    }
+
     public static Content createContent(String test) {
         return new Content(test);
     }

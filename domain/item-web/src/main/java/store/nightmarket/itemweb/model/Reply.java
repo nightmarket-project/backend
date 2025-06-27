@@ -1,5 +1,7 @@
 package store.nightmarket.itemweb.model;
 
+import java.time.LocalDate;
+import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
@@ -7,11 +9,14 @@ import store.nightmarket.itemweb.valueobject.Content;
 import store.nightmarket.itemweb.valueobject.ReplyId;
 import store.nightmarket.itemweb.valueobject.ReviewId;
 
+@Getter
 public class Reply extends BaseModel<ReplyId> {
 
     private Content content;
     private UserId author;
     private ReviewId reviewId;
+    private final LocalDate createdAt;
+    private boolean deleted;
 
     private Reply(
         ReplyId id,
@@ -23,6 +28,8 @@ public class Reply extends BaseModel<ReplyId> {
         this.content = content;
         this.author = author;
         this.reviewId = reviewId;
+        createdAt = LocalDate.now();
+        deleted = false;
     }
 
     public static Reply newInstance(
@@ -37,6 +44,19 @@ public class Reply extends BaseModel<ReplyId> {
             author,
             reviewId
         );
+    }
+
+
+    public void delete(UserId currentUserId) {
+        if (deleted) {
+            throw new ItemWebException("이미 삭제된 댓글입니다.");
+        }
+        if (!currentUserId.equals(author)) {
+            throw new ItemWebException("댓글 작성자만 삭제 가능합니다.");
+        }
+
+        this.content = Content.deleted();
+        deleted = true;
     }
 
 }
