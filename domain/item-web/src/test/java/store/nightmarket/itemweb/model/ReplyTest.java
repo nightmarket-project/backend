@@ -8,7 +8,11 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.fixture.TestObjectFactory;
+import store.nightmarket.itemweb.valueobject.Content;
+import store.nightmarket.itemweb.valueobject.Image;
+import store.nightmarket.itemweb.valueobject.Rating;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ReplyTest {
@@ -63,6 +67,69 @@ class ReplyTest {
         softly.assertThat(reply.isDeleted()).isTrue();
         softly.assertThat(reply.getContent().getText()).isEqualTo("삭제된 댓글 입니다.");
         softly.assertAll();
+    }
+
+    @Test
+    @DisplayName("대댓글 작성자가 아닌 사용자가 대댓글를 삭제하려고 하면 예외가 발생한다")
+    void shouldThrowExceptionWhenUserIdIsDifferentFromAuthorIdOnDeleteReply() {
+        // given
+        UUID authorId = UUID.randomUUID();
+        UserId otherAuthorId = new UserId(UUID.randomUUID());
+        Reply reply = TestObjectFactory.createReply(
+            UUID.randomUUID(),
+            "good!",
+            authorId,
+            UUID.randomUUID()
+        );
+
+        // when
+        // then
+        assertThatThrownBy(() -> reply.delete(otherAuthorId))
+            .isInstanceOf(ItemWebException.class);
+    }
+
+    @Test
+    @DisplayName("현재 유저 아이디와 작성자 아이디가 같을때 대댓글이 수정된다.")
+    void shouldEditReplyWhenCurrentUserIdIsEqualToAuthorId() {
+        // given
+        UUID authorId = UUID.randomUUID();
+        Content edittingContent = new Content("bad!");
+        Reply reply = TestObjectFactory.createReply(
+            UUID.randomUUID(),
+            "good!",
+            authorId,
+            UUID.randomUUID()
+        );
+
+        // when
+        reply.edit(new UserId(authorId), edittingContent);
+
+        // then
+        assertThat(reply.getContent()).isEqualTo(edittingContent);
+    }
+
+    @Test
+    @DisplayName("리뷰 작성자가 아닌 사용자가 리뷰를 수정하려고 하면 예외가 발생한다")
+    void shouldThrowExceptionWhenUserIdIsDifferentFromAuthorIdOnEditReply() {
+        // given
+        UUID authorId = UUID.randomUUID();
+        UserId otherAuthorId = new UserId(UUID.randomUUID());
+        Content edittingContent = new Content("bad!");
+        Reply reply = TestObjectFactory.createReply(
+            UUID.randomUUID(),
+            "good!",
+            authorId,
+            UUID.randomUUID()
+        );
+
+        // when
+        // then
+        assertThatThrownBy(
+            () ->reply.edit(
+                otherAuthorId,
+                edittingContent
+            )
+        ).isInstanceOf(ItemWebException.class);
     }
 
 }

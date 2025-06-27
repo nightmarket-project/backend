@@ -59,4 +59,15 @@ public class Reply extends BaseModel<ReplyId> {
         deleted = true;
     }
 
+
+    public void edit(
+        UserId userId,
+        Content content
+    ) {
+        if(!userId.equals(author)) {
+            throw new ItemWebException("댓글 작성자만 수정 가능합니다.");
+        }
+        this.content = content;
+    }
+
 }
