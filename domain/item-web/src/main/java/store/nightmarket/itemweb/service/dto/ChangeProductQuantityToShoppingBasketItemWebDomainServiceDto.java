@@ -21,7 +21,9 @@ public class ChangeProductQuantityToShoppingBasketItemWebDomainServiceDto {
     @Getter
     @Builder
     public static class Event {
+
         private final ShoppingBasket shoppingBasket;
+
     }
 
 }

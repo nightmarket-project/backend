@@ -1,47 +1,81 @@
 package store.nightmarket.itemweb.model;
 
-import java.util.List;
+import java.time.LocalDate;
+import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.valueobject.UserId;
-import store.nightmarket.itemweb.valueobject.PostContent;
+import store.nightmarket.itemweb.exception.ItemWebException;
+import store.nightmarket.itemweb.valueobject.Content;
+import store.nightmarket.itemweb.valueobject.Image;
 import store.nightmarket.itemweb.valueobject.Rating;
 import store.nightmarket.itemweb.valueobject.ReviewId;
 
+@Getter
 public class Review extends BaseModel<ReviewId> {
 
     private UserId author;
-    private PostContent content;
+    private Content content;
+    private Image image;
     private Rating rating;
-    private List<Reply> replies;
+    private final LocalDate createdAt;
+    private boolean deleted;
 
     private Review(
         ReviewId id,
         UserId author,
-        PostContent content,
-        Rating rating,
-        List<Reply> replies
+        Content content,
+        Image image,
+        Rating rating
     ) {
         super(id);
         this.author = author;
         this.content = content;
+        this.image = image;
         this.rating = rating;
-        this.replies = replies;
+        this.createdAt = LocalDate.now();
+        deleted = false;
     }
 
     public static Review newInstance(
         ReviewId id,
         UserId author,
-        PostContent content,
-        Rating rating,
-        List<Reply> replies
+        Content content,
+        Image image,
+        Rating rating
     ) {
         return new Review(
             id,
             author,
             content,
-            rating,
-            replies
+            image,
+            rating
         );
+    }
+
+    public void delete(UserId currentUserId) {
+        if (deleted) {
+            throw new ItemWebException("이미 삭제된 댓글입니다.");
+        }
+        if (!currentUserId.equals(author)) {
+            throw new ItemWebException("댓글 작성자만 삭제 가능합니다.");
+        }
+
+        this.content = Content.deleted();
+        deleted = true;
+    }
+
+    public void edit(
+        UserId authorId,
+        Image image,
+        Content content,
+        Rating rating
+    ) {
+        if(!authorId.equals(this.author)) {
+            throw new ItemWebException("댓글 작성자만 수정 가능합니다.");
+        }
+        this.image = image;
+        this.content = content;
+        this.rating = rating;
     }
 
 }
