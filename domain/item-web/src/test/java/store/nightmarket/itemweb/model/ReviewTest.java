@@ -47,7 +47,7 @@ class ReviewTest {
 
     @Test
     @DisplayName("리뷰 작성자가 아닌 사용자가 리뷰를 삭제하려고 하면 예외가 발생한다")
-    void shouldThrowExceptionWhenUserIdIsDifferentFromAuthorIdOnDelete() {
+    void shouldThrowExceptionWhenUserIdIsDifferentFromAuthorIdOnDeleteReview() {
         // given
         UUID authorId = UUID.randomUUID();
         UUID otherUserId = UUID.randomUUID();
@@ -66,7 +66,7 @@ class ReviewTest {
     }
 
     @Test
-    @DisplayName("리뷰 작성자와 같은 사용자가 리뷰를 수정하려고 하면 예외가 발생한다")
+    @DisplayName("현재 유저 아이디와 작성자 아이디가 같을때 리뷰가 수정된다.")
     void shouldEditReviewWhenCurrentUserIdIsEqualToAuthorId() {
         // given
         UUID authorId = UUID.randomUUID();
@@ -98,7 +98,7 @@ class ReviewTest {
 
     @Test
     @DisplayName("리뷰 작성자가 아닌 사용자가 리뷰를 수정하려고 하면 예외가 발생한다")
-    void shouldThrowExceptionWhenUserIdIsDifferentFromAuthorIdOnEdit() {
+    void shouldThrowExceptionWhenUserIdIsDifferentFromAuthorIdOnEditReview() {
         // given
         UUID authorId = UUID.randomUUID();
         UserId ohterUserId = new UserId(UUID.randomUUID());
