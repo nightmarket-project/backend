@@ -1,6 +1,7 @@
 package store.nightmarket.itemweb.model;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.valueobject.PostContent;
@@ -13,6 +14,8 @@ public class Review extends BaseModel<ReviewId> {
     private PostContent content;
     private Rating rating;
     private Reply reply;
+    private final LocalDate createdAt;
+    private boolean deleted;
 
     private Review(
         ReviewId id,
@@ -26,6 +29,8 @@ public class Review extends BaseModel<ReviewId> {
         this.content = content;
         this.rating = rating;
         this.reply = reply;
+        this.createdAt = LocalDate.now();
+        deleted = false;
     }
 
     public static Review newInstance(
@@ -43,5 +48,7 @@ public class Review extends BaseModel<ReviewId> {
             reply
         );
     }
+
+
 
 }
