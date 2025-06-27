@@ -1,5 +1,8 @@
 package store.nightmarket.itemweb.model;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.util.UUID;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,11 +12,6 @@ import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.fixture.TestObjectFactory;
 import store.nightmarket.itemweb.valueobject.Content;
-import store.nightmarket.itemweb.valueobject.Image;
-import store.nightmarket.itemweb.valueobject.Rating;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ReplyTest {
 
@@ -32,7 +30,7 @@ class ReplyTest {
 
         //when & then
         assertThatThrownBy(
-                () -> TestObjectFactory.createReply(replyContent)
+            () -> TestObjectFactory.createReply(replyContent)
         ).isInstanceOf(ItemWebException.class);
     }
 
@@ -44,7 +42,7 @@ class ReplyTest {
 
         //when & then
         assertThatThrownBy(
-                () -> TestObjectFactory.createReply(content)
+            () -> TestObjectFactory.createReply(content)
         ).isInstanceOf(ItemWebException.class);
     }
 
@@ -125,7 +123,7 @@ class ReplyTest {
         // when
         // then
         assertThatThrownBy(
-            () ->reply.edit(
+            () -> reply.edit(
                 otherAuthorId,
                 edittingContent
             )

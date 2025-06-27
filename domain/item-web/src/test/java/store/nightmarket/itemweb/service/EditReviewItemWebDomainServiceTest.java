@@ -1,7 +1,6 @@
 package store.nightmarket.itemweb.service;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.UUID;
 import org.assertj.core.api.SoftAssertions;
@@ -50,6 +49,7 @@ class EditReviewItemWebDomainServiceTest {
             .content(content)
             .image(image)
             .rating(rating)
+            .authorId(new UserId(authorId))
             .build();
 
         // when
@@ -84,6 +84,7 @@ class EditReviewItemWebDomainServiceTest {
             .content(content)
             .image(image)
             .rating(rating)
+            .authorId(ohterUserId)
             .build();
 
         // when

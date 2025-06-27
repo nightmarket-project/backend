@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.UUID;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,12 +18,10 @@ import store.nightmarket.itemweb.valueobject.Content;
 class EditReplyItemWebDomainServiceTest {
 
     private EditReplyItemWebDomainService service;
-    private SoftAssertions softly;
 
     @BeforeEach
     void setUp() {
         service = new EditReplyItemWebDomainService();
-        softly = new SoftAssertions();
     }
 
     @Test
@@ -69,13 +66,13 @@ class EditReplyItemWebDomainServiceTest {
 
         Input input = Input.builder()
             .reply(reply)
-            .userId(new UserId(authorId))
+            .userId(otherAuthorId)
             .content(edittingContent)
             .build();
         // when
         // then
         assertThatThrownBy(
-            () ->service.execute(input)
+            () -> service.execute(input)
         ).isInstanceOf(ItemWebException.class);
     }
 
