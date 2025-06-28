@@ -1,6 +1,7 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,7 +14,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.PostContentEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.ContentEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.ImageEntity;
 
 @Getter
 @Entity
@@ -21,24 +23,29 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.PostContentE
 @NoArgsConstructor
 public class ProductPostEntity extends BaseUuidEntity {
 
-    @Embedded
-    @Column(name = "post_content")
-    private PostContentEntity postContent;
-
     @OneToOne
     @JoinColumn(name = "product_id")
     private ProductEntity productEntity;
 
-    @OneToMany(mappedBy = "", fetch = FetchType.LAZY)
+    @Embedded
+    @Column(name = "post_content")
+    private ContentEntity postContent;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<ImageEntity> imageList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
     private List<ReviewEntity> reviewEntityList = new ArrayList<>();
 
     public ProductPostEntity(
         ProductEntity productEntity,
-        PostContentEntity postContent,
+        ContentEntity postContent,
+        List<ImageEntity> imageList,
         List<ReviewEntity> reviewEntityList
     ) {
         this.productEntity = productEntity;
         this.postContent = postContent;
+        this.imageList = imageList;
         this.reviewEntityList = reviewEntityList;
     }
 
