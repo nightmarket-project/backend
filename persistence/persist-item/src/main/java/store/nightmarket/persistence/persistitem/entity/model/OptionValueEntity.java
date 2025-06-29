@@ -10,6 +10,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
@@ -18,7 +19,7 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
 @Getter
 @Entity
 @Table(name = "option_value")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OptionValueEntity extends BaseUuidEntity {
 
     @Column(name = "value")
@@ -26,30 +27,42 @@ public class OptionValueEntity extends BaseUuidEntity {
 
     @Embedded
     @Column(name = "price")
-    private PriceEntity price;
+    private PriceEntity priceEntity;
 
     @Column(name = "order")
     private int order;
+
+    @OneToMany(mappedBy = "optionValueEntity", fetch = FetchType.LAZY)
+    private List<VariantOptionValueEntity> variantOptionValueEntityList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "option_group_id")
     private OptionGroupEntity optionGroupEntity;
 
-    @OneToMany(mappedBy = "optionValueEntity", fetch = FetchType.LAZY)
-    List<VariantOptionValueEntity> variantOptionValueEntityList = new ArrayList<>();
-
-    public OptionValueEntity(
+    private OptionValueEntity(
         String value,
-        PriceEntity price,
+        PriceEntity priceEntity,
         int order,
-        OptionGroupEntity optionGroupEntity,
         List<VariantOptionValueEntity> variantOptionValueEntityList
     ) {
         this.value = value;
-        this.price = price;
+        this.priceEntity = priceEntity;
         this.order = order;
-        this.optionGroupEntity = optionGroupEntity;
         this.variantOptionValueEntityList = variantOptionValueEntityList;
+    }
+
+    public static OptionValueEntity newInstance(
+        String value,
+        PriceEntity priceEntity,
+        int order,
+        List<VariantOptionValueEntity> variantOptionValueEntityList
+    ) {
+        return new OptionValueEntity(
+            value,
+            priceEntity,
+            order,
+            variantOptionValueEntityList
+        );
     }
 
 }

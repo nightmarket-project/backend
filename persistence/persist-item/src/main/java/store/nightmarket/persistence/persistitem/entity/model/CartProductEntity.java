@@ -10,7 +10,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
@@ -20,33 +20,45 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.QuantityEnti
 @Getter
 @Entity
 @Table(name = "cart_product")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartProductEntity extends BaseUuidEntity {
 
     @Embedded
     @Column(name = "name")
-    private NameEntity name;
+    private NameEntity nameEntity;
 
     @Embedded
     @Column(name = "quantity")
-    private QuantityEntity quantity;
+    private QuantityEntity quantityEntity;
+
+    @OneToMany(mappedBy = "cartProductEntity", fetch = FetchType.LAZY)
+    private List<CartProductVariantEntity> cartProductVariantEntityList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
     private CartEntity cartEntity;
 
-    @OneToMany(mappedBy = "cartProduct", fetch = FetchType.LAZY)
-    private List<ProductVariantCartProductRelationEntity> productVariantCartProductRelationEntityList
-        = new ArrayList<>();
-
-    public CartProductEntity(
-        CartEntity cartEntity,
-        QuantityEntity quantity,
-        NameEntity name
+    private CartProductEntity(
+        NameEntity nameEntity,
+        QuantityEntity quantityEntity,
+        List<CartProductVariantEntity> cartProductVariantEntityList
     ) {
-        this.cartEntity = cartEntity;
-        this.quantity = quantity;
-        this.name = name;
+        this.nameEntity = nameEntity;
+        this.quantityEntity = quantityEntity;
+        this.cartProductVariantEntityList = cartProductVariantEntityList;
     }
+
+    public static CartProductEntity newInstance(
+        NameEntity nameEntity,
+        QuantityEntity quantityEntity,
+        List<CartProductVariantEntity> cartProductVariantEntityList
+    ) {
+        return new CartProductEntity(
+            nameEntity,
+            quantityEntity,
+            cartProductVariantEntityList
+        );
+    }
+
 
 }

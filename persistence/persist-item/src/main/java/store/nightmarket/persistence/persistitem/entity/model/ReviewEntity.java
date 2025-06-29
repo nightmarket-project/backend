@@ -10,6 +10,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.UUID;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
@@ -20,7 +21,7 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity
 @Getter
 @Entity
 @Table(name = "review")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewEntity extends BaseUuidEntity {
 
     @Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
@@ -28,16 +29,16 @@ public class ReviewEntity extends BaseUuidEntity {
 
     @Embedded
     @Column(name = "content")
-    private ContentEntity content;
-
-    @Embedded
-    @Column(name = "image")
-    private ImageEntity image;
+    private ContentEntity contentEntity;
 
     @Embedded
     @Column(name = "rating", nullable = false)
     private RatingEntity ratingEntity;
 
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id")
+    private ImageEntity imageEntity;
 
     @Column(name = "create_date", nullable = false)
     private LocalDate createDate;
@@ -49,26 +50,41 @@ public class ReviewEntity extends BaseUuidEntity {
     @JoinColumn(name = "product_post_id")
     private ProductPostEntity productPostEntity;
 
-    @OneToOne(mappedBy = "reviewEntity", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "reviewEntity", fetch = FetchType.EAGER)
     private ReplyEntity replyEntity;
 
     public ReviewEntity(
         UUID userId,
-        ContentEntity content,
-        ImageEntity image,
+        ContentEntity contentEntity,
         RatingEntity ratingEntity,
+        ImageEntity imageEntity,
         LocalDate createDate,
-        boolean deleted,
-        ProductPostEntity productPostEntity,
-        ReplyEntity replyEntity
+        boolean deleted
     ) {
         this.userId = userId;
-        this.content = content;
-        this.image = image;
+        this.contentEntity = contentEntity;
         this.ratingEntity = ratingEntity;
+        this.imageEntity = imageEntity;
         this.createDate = createDate;
         this.deleted = deleted;
-        this.productPostEntity = productPostEntity;
-        this.replyEntity = replyEntity;
     }
+
+    public static ReviewEntity newInstance(
+        UUID userId,
+        ContentEntity contentEntity,
+        RatingEntity ratingEntity,
+        ImageEntity imageEntity,
+        LocalDate createDate,
+        boolean deleted
+    ) {
+        return new ReviewEntity(
+            userId,
+            contentEntity,
+            ratingEntity,
+            imageEntity,
+            createDate,
+            deleted
+        );
+    }
+
 }

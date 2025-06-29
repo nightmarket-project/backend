@@ -9,27 +9,24 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.UUID;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.itemweb.valueobject.Content;
+import store.nightmarket.persistence.persistitem.entity.valueobject.ContentEntity;
 
 @Getter
 @Entity
 @Table(name = "reply")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReplyEntity extends BaseUuidEntity {
 
     @Embedded
     @Column(name = "content", nullable = false)
-    private Content content;
+    private ContentEntity contentEntity;
 
     @Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
     private UUID userId;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "review_id", nullable = false)
-    private ReviewEntity reviewEntity;
 
     @Column(name = "create_date", nullable = false)
     private LocalDate createdAt;
@@ -37,18 +34,34 @@ public class ReplyEntity extends BaseUuidEntity {
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "review_id", nullable = false)
+    private ReviewEntity reviewEntity;
+
     public ReplyEntity(
-        Content content,
+        ContentEntity contentEntity,
         UUID userId,
-        ReviewEntity reviewEntity,
         LocalDate createdAt,
         boolean deleted
     ) {
-        this.content = content;
+        this.contentEntity = contentEntity;
         this.userId = userId;
-        this.reviewEntity = reviewEntity;
         this.createdAt = createdAt;
         this.deleted = deleted;
+    }
+
+    public static ReplyEntity newInstance(
+        ContentEntity contentEntity,
+        UUID userId,
+        LocalDate createdAt,
+        boolean deleted
+    ) {
+        return new ReplyEntity(
+            contentEntity,
+            userId,
+            createdAt,
+            deleted
+        );
     }
 
 }
