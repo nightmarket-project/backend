@@ -24,8 +24,7 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.ImageEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductPostEntity extends BaseUuidEntity {
 
-    @OneToOne
-    @JoinColumn(name = "product_id")
+    @OneToOne(mappedBy = "productPostEntity")
     private ProductEntity productEntity;
 
     @Embedded

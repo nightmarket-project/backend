@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -33,7 +34,8 @@ public class ProductEntity extends BaseUuidEntity {
     @Column(name = "price")
     private PriceEntity price;
 
-    @OneToOne(mappedBy = "productEntity", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_post_id")
     private ProductPostEntity productPostEntity;
 
     @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
