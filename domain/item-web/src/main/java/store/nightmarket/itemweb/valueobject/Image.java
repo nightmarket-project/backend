@@ -8,7 +8,8 @@ public class Image {
     private final int order;
 
     public Image(
-        String url, int order
+        String url,
+        int order
     ) {
         this.url = url;
         this.order = order;
@@ -27,4 +28,5 @@ public class Image {
     public int hashCode() {
         return Objects.hash(url, order);
     }
+
 }

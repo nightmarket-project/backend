@@ -14,11 +14,11 @@ public class Content {
     public Content(
         String text
     ) {
+        validate(text);
         this.text = text;
-        validate();
     }
 
-    private void validate() {
+    private void validate(String text) {
         if (text.isBlank()) {
             throw new ItemWebException("Text is blank");
         }

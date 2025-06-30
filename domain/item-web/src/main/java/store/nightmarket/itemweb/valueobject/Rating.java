@@ -9,9 +9,16 @@ public class Rating {
     private int value;
 
     public Rating(int value) {
+        validate(value);
         this.value = value;
-        validate();
     }
+
+    private void validate(int value) {
+        if(!(value >= 0 && value <= 5)) {
+            throw new ItemWebException("Rating must be between 0 and 5");
+        }
+    }
+
 
     @Override
     public boolean equals(Object obj) {
@@ -24,12 +31,6 @@ public class Rating {
     @Override
     public int hashCode() {
         return Objects.hashCode(value);
-    }
-
-    private void validate() {
-        if(!(value >= 0 && value <= 5)) {
-            throw new ItemWebException("Rating must be between 0 and 5");
-        }
     }
 
 }
