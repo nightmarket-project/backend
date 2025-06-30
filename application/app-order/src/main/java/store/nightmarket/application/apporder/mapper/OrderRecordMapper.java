@@ -1,7 +1,7 @@
 package store.nightmarket.application.apporder.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import store.nightmarket.domain.order.model.DetailOrderRecord;
 import store.nightmarket.domain.order.model.OrderRecord;
@@ -13,32 +13,33 @@ import store.nightmarket.persistence.persistorder.entity.model.OrderRecordEntity
 public class OrderRecordMapper {
 
 	public static OrderRecord toDomain(OrderRecordEntity entity) {
-		List<DetailOrderRecord> detailOrderRecordList = entity.getDetailOrderRecordList()
-			.stream()
-			.map(DetailOrderRecordMapper::toDomain)
-			.collect(Collectors.toList());
+		List<DetailOrderRecord> domainDetails = DetailOrderRecordMapper
+			.toDomainList(entity.getDetailOrderRecordList());
 
 		return OrderRecord.newInstance(
 			new OrderRecordId(entity.getId()),
 			AddressMapper.toDomain(entity.getAddressEntity()),
 			entity.getOrderDate(),
 			new UserId(entity.getUserId()),
-			detailOrderRecordList
+			domainDetails
 		);
 	}
 
 	public static OrderRecordEntity toEntity(OrderRecord domain) {
-		List<DetailOrderRecordEntity> detailOrderRecordEntities = domain.getDetailOrderRecordList()
-			.stream()
-			.map(DetailOrderRecordMapper::toEntity)
-			.collect(Collectors.toList());
-
-		return new OrderRecordEntity(
+		OrderRecordEntity entity = new OrderRecordEntity(
+			domain.getOrderRecordId().getId(),
 			AddressMapper.toEntity(domain.getAddress()),
 			domain.getOrderDate(),
 			domain.getUserId().getId(),
-			detailOrderRecordEntities
+			new ArrayList<>()
 		);
+
+		List<DetailOrderRecordEntity> entityList = DetailOrderRecordMapper
+			.toEntityList(domain.getDetailOrderRecordList(), entity);
+
+		entity.getDetailOrderRecordList().addAll(entityList);
+
+		return entity;
 	}
 
 }

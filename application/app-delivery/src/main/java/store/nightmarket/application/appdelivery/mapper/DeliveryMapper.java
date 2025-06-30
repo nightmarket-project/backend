@@ -1,7 +1,7 @@
 package store.nightmarket.application.appdelivery.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import store.nightmarket.domain.delivery.model.DeliveryRecord;
 import store.nightmarket.domain.delivery.model.DeliveryTrackingRecord;
@@ -13,10 +13,8 @@ import store.nightmarket.persistence.persistdelivery.entity.model.DeliveryTracki
 public class DeliveryMapper {
 
 	public static DeliveryRecord toDomain(DeliveryRecordEntity entity) {
-		List<DeliveryTrackingRecord> trackingRecords = entity.getDeliveryTrackingRecords()
-			.stream()
-			.map(DeliveryTrackingRecordMapper::toDomain)
-			.collect(Collectors.toList());
+		List<DeliveryTrackingRecord> trackingRecords = DeliveryTrackingRecordMapper
+			.toDomainList(entity.getDeliveryTrackingRecords());
 
 		return DeliveryRecord.newInstance(
 			new DeliveryRecordId(entity.getId()),
@@ -27,16 +25,20 @@ public class DeliveryMapper {
 	}
 
 	public static DeliveryRecordEntity toEntity(DeliveryRecord domain) {
-		List<DeliveryTrackingRecordEntity> trackingEntities = domain.getDeliveryTrackingRecordList()
-			.stream()
-			.map(DeliveryTrackingRecordMapper::toEntity)
-			.collect(Collectors.toList());
 
-		return new DeliveryRecordEntity(
+		DeliveryRecordEntity entity = new DeliveryRecordEntity(
+			domain.getDeliveryRecordId().getId(),
 			AddressMapper.toEntity(domain.getAddress()),
 			domain.getUserId().getId(),
-			trackingEntities
+			new ArrayList<>()
 		);
+
+		List<DeliveryTrackingRecordEntity> entityList = DeliveryTrackingRecordMapper
+			.toEntityList(domain.getDeliveryTrackingRecordList(), entity);
+
+		entity.getDeliveryTrackingRecords().addAll(entityList);
+
+		return entity;
 	}
 
 }

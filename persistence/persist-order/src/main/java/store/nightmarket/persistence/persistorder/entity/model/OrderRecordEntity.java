@@ -11,7 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
@@ -20,8 +20,7 @@ import store.nightmarket.persistence.persistorder.entity.valueobject.AddressEnti
 @Getter
 @Entity
 @Table(name = "order_record")
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderRecordEntity extends BaseUuidEntity {
 
 	@Embedded
@@ -36,5 +35,19 @@ public class OrderRecordEntity extends BaseUuidEntity {
 
 	@OneToMany(mappedBy = "orderRecordEntity", fetch = FetchType.LAZY)
 	private List<DetailOrderRecordEntity> detailOrderRecordList = new ArrayList<>();
+
+	public OrderRecordEntity(
+		UUID id,
+		AddressEntity addressEntity,
+		LocalDate orderDate,
+		UUID userId,
+		List<DetailOrderRecordEntity> detailOrderRecordList
+	) {
+		super(id);
+		this.addressEntity = addressEntity;
+		this.orderDate = orderDate;
+		this.userId = userId;
+		this.detailOrderRecordList = detailOrderRecordList;
+	}
 
 }

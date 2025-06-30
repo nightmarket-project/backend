@@ -10,7 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
@@ -19,8 +19,7 @@ import store.nightmarket.persistence.persistdelivery.entity.valueobject.AddressE
 @Getter
 @Entity
 @Table(name = "delivery_record")
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DeliveryRecordEntity extends BaseUuidEntity {
 
 	@Embedded
@@ -32,5 +31,17 @@ public class DeliveryRecordEntity extends BaseUuidEntity {
 
 	@OneToMany(mappedBy = "deliveryRecordEntity", fetch = FetchType.LAZY)
 	private List<DeliveryTrackingRecordEntity> deliveryTrackingRecords = new ArrayList<>();
+
+	public DeliveryRecordEntity(
+		UUID id,
+		AddressEntity addressEntity,
+		UUID userId,
+		List<DeliveryTrackingRecordEntity> deliveryTrackingRecords
+	) {
+		super(id);
+		this.addressEntity = addressEntity;
+		this.userId = userId;
+		this.deliveryTrackingRecords = deliveryTrackingRecords;
+	}
 
 }
