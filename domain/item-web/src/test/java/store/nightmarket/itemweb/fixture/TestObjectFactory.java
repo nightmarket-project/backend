@@ -57,14 +57,18 @@ public class TestObjectFactory {
     }
 
     public static Image createImage(
-        String url
+        String url,
+        int order
     ) {
-        return new Image(url);
+        return new Image(url, order);
     }
 
     public static Image defaultImage() {
         Random random = new Random();
-        return new Image("https://picsum.photos/" + random.nextInt() + "/" + random.nextInt());
+        return new Image(
+            "https://picsum.photos/" + random.nextInt() + "/" + random.nextInt(),
+            random.nextInt()
+        );
     }
 
 }

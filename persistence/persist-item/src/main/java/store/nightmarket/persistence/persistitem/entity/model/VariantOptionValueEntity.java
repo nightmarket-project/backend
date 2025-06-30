@@ -5,6 +5,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
@@ -12,7 +13,7 @@ import store.nightmarket.common.entity.BaseUuidEntity;
 @Getter
 @Entity
 @Table(name = "variant_option_value")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class VariantOptionValueEntity extends BaseUuidEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,15 +27,5 @@ public class VariantOptionValueEntity extends BaseUuidEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "option_value_id")
     private OptionValueEntity optionValueEntity;
-
-    public VariantOptionValueEntity(
-        ProductVariantEntity productVariantEntity,
-        OptionGroupEntity optionGroupEntity,
-        OptionValueEntity optionValueEntity
-    ) {
-        this.productVariantEntity = productVariantEntity;
-        this.optionGroupEntity = optionGroupEntity;
-        this.optionValueEntity = optionValueEntity;
-    }
 
 }

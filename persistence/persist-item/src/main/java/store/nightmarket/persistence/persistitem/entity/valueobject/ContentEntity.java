@@ -1,7 +1,6 @@
 package store.nightmarket.persistence.persistitem.entity.valueobject;
 
 import jakarta.persistence.Embeddable;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,9 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class PostContentEntity {
+public class ContentEntity {
 
     private String text;
-    private List<ImageEntity> imageList;
 
 }

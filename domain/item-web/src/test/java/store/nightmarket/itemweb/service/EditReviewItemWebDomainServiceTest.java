@@ -34,7 +34,7 @@ class EditReviewItemWebDomainServiceTest {
         // given
         UUID authorId = UUID.randomUUID();
         Content content = new Content("bad!");
-        Image image = TestObjectFactory.createImage("aaa");
+        Image image = TestObjectFactory.createImage("aaa", 1);
         Rating rating = new Rating(0);
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),
@@ -69,7 +69,7 @@ class EditReviewItemWebDomainServiceTest {
         UUID authorId = UUID.randomUUID();
         UserId ohterUserId = new UserId(UUID.randomUUID());
         Content content = new Content("bad!");
-        Image image = TestObjectFactory.createImage("aaa");
+        Image image = TestObjectFactory.createImage("aaa", 1);
         Rating rating = new Rating(0);
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),

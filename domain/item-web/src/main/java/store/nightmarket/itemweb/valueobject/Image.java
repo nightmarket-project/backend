@@ -5,11 +5,13 @@ import java.util.Objects;
 public class Image {
 
     private final String url;
+    private final int order;
 
     public Image(
-        String url
+        String url, int order
     ) {
         this.url = url;
+        this.order = order;
     }
 
     @Override
@@ -18,12 +20,11 @@ public class Image {
             return false;
         }
         Image image = (Image) obj;
-        return Objects.equals(url, image.url);
+        return order == image.order && Objects.equals(url, image.url);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(url);
+        return Objects.hash(url, order);
     }
-
 }
