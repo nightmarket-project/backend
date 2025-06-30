@@ -33,10 +33,6 @@ public class ProductVariantEntity extends BaseUuidEntity {
     @JoinColumn(name = "product_id")
     private ProductEntity productEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "inventory_id")
-    private InventoryEntity inventoryEntity;
-
     private ProductVariantEntity(
         QuantityEntity quantityEntity,
         ProductEntity productEntity,
