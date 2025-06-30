@@ -16,7 +16,7 @@ public class DeliveryTrackingRecord extends BaseModel<DeliveryTrackingRecordId> 
 	private DetailDeliveryState state;
 	private String content;
 
-	public DeliveryTrackingRecord(
+	private DeliveryTrackingRecord(
 		DeliveryTrackingRecordId id,
 		LocalDateTime time,
 		Location location,
@@ -44,6 +44,10 @@ public class DeliveryTrackingRecord extends BaseModel<DeliveryTrackingRecordId> 
 			state,
 			content
 		);
+	}
+
+	public DeliveryTrackingRecordId getDeliveryTrackingRecordId() {
+		return internalId();
 	}
 
 }
