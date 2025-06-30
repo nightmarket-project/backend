@@ -19,7 +19,7 @@ public class OrderRecord extends BaseModel<OrderRecordId> {
 	private UserId userId;
 	private List<DetailOrderRecord> detailOrderRecordList;
 
-	public OrderRecord(
+	private OrderRecord(
 		OrderRecordId id,
 		Address address,
 		LocalDate orderDate,
@@ -48,6 +48,10 @@ public class OrderRecord extends BaseModel<OrderRecordId> {
 			userId,
 			detailOrderRecordList
 		);
+	}
+
+	public OrderRecordId getOrderRecordId() {
+		return internalId();
 	}
 
 	public void requestOrder() {

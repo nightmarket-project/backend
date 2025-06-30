@@ -1,5 +1,7 @@
 package store.nightmarket.persistence.persistorder.entity.model;
 
+import static lombok.AccessLevel.*;
+
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -17,7 +19,7 @@ import store.nightmarket.persistence.persistorder.entity.valueobject.QuantityEnt
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 public class DetailOrderRecordEntity extends BaseUuidEntity {
 
 	@Column(name = "product_id", columnDefinition = "BINARY(16)", nullable = false)
@@ -35,13 +37,17 @@ public class DetailOrderRecordEntity extends BaseUuidEntity {
 	private OrderRecordEntity orderRecordEntity;
 
 	public DetailOrderRecordEntity(
+		UUID id,
 		UUID productId,
 		QuantityEntity quantity,
-		DetailOrderState state
+		DetailOrderState state,
+		OrderRecordEntity orderRecordEntity
 	) {
+		super(id);
 		this.productId = productId;
 		this.quantity = quantity;
 		this.state = state;
+		this.orderRecordEntity = orderRecordEntity;
 	}
 
 }
