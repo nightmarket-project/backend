@@ -10,6 +10,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
@@ -18,7 +19,7 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
 @Getter
 @Entity
 @Table(name = "option_group")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OptionGroupEntity extends BaseUuidEntity {
 
     @Embedded
@@ -28,27 +29,40 @@ public class OptionGroupEntity extends BaseUuidEntity {
     @Column(name = "order")
     private int order;
 
+    @OneToMany(mappedBy = "optionGroupEntity", fetch = FetchType.LAZY)
+    private List<OptionValueEntity> optionValueEntityList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "optionGroupEntity", fetch = FetchType.LAZY)
+    private List<VariantOptionValueEntity> variantOptionValueEntityList = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
-    ProductEntity productEntity;
+    private ProductEntity productEntity;
 
-    @OneToMany(mappedBy = "optionGroupEntity", fetch = FetchType.LAZY)
-    List<OptionValueEntity> optionValueEntityList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "optionGroupEntity", fetch = FetchType.LAZY)
-    List<VariantOptionValueEntity> variantOptionValueEntityList = new ArrayList<>();
-
-    public OptionGroupEntity(
+    private OptionGroupEntity(
         NameEntity nameEntity,
         int order,
-        ProductEntity productEntity,
         List<OptionValueEntity> optionValueEntityList,
         List<VariantOptionValueEntity> variantOptionValueEntityList
     ) {
         this.nameEntity = nameEntity;
         this.order = order;
-        this.productEntity = productEntity;
         this.optionValueEntityList = optionValueEntityList;
         this.variantOptionValueEntityList = variantOptionValueEntityList;
     }
+
+    public static OptionGroupEntity create(
+        NameEntity nameEntity,
+        int order,
+        List<OptionValueEntity> optionValueEntityList,
+        List<VariantOptionValueEntity> variantOptionValueEntityList
+    ) {
+        return new OptionGroupEntity(
+            nameEntity,
+            order,
+            optionValueEntityList,
+            variantOptionValueEntityList
+        );
+    }
+
 }

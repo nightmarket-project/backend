@@ -1,5 +1,6 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -10,36 +11,58 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.PostContentEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.ContentEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.ImageEntity;
 
 @Getter
 @Entity
 @Table(name = "product_post")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductPostEntity extends BaseUuidEntity {
 
-    @Embedded
-    @Column(name = "post_content")
-    private PostContentEntity postContent;
-
-    @OneToOne
-    @JoinColumn(name = "product_id")
+    @OneToOne(mappedBy = "productPostEntity")
     private ProductEntity productEntity;
 
-    @OneToMany(mappedBy = "", fetch = FetchType.LAZY)
+    @Embedded
+    @Column(name = "content")
+    private ContentEntity contentEntity;
+
+    @OneToMany(mappedBy = "productPostEntity", cascade = CascadeType.ALL,
+        fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<ImageEntity> imageEntityList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "productPostEntity", cascade = CascadeType.ALL,
+        fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ReviewEntity> reviewEntityList = new ArrayList<>();
 
-    public ProductPostEntity(
+    private ProductPostEntity(
         ProductEntity productEntity,
-        PostContentEntity postContent,
+        ContentEntity contentEntity,
+        List<ImageEntity> imageEntityList,
         List<ReviewEntity> reviewEntityList
     ) {
         this.productEntity = productEntity;
-        this.postContent = postContent;
+        this.contentEntity = contentEntity;
+        this.imageEntityList = imageEntityList;
         this.reviewEntityList = reviewEntityList;
+    }
+
+    public static ProductPostEntity newInstance(
+        ProductEntity productEntity,
+        ContentEntity postContent,
+        List<ImageEntity> imageEntityList,
+        List<ReviewEntity> reviewEntityList
+    ) {
+        return new ProductPostEntity(
+            productEntity,
+            postContent,
+            imageEntityList,
+            reviewEntityList
+        );
     }
 
 }
