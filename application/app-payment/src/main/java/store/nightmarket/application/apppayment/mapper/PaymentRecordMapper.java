@@ -1,7 +1,7 @@
 package store.nightmarket.application.apppayment.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import store.nightmarket.domain.payment.model.DetailPaymentRecord;
 import store.nightmarket.domain.payment.model.PaymentRecord;
@@ -13,27 +13,29 @@ import store.nightmarket.persistence.persistpayment.entity.model.PaymentRecordEn
 public class PaymentRecordMapper {
 
 	public static PaymentRecord toDomain(PaymentRecordEntity entity) {
-		List<DetailPaymentRecord> detailPaymentRecordList = entity.getDetailPaymentRecordEntityList()
-			.stream()
-			.map(DetailPaymentRecordMapper::toDomain)
-			.collect(Collectors.toList());
+		List<DetailPaymentRecord> detailPaymentRecords = DetailPaymentRecordMapper
+			.toDomainList(entity.getDetailPaymentRecordEntityList());
 
 		return PaymentRecord.newInstance(
 			new PaymentRecordId(entity.getId()),
 			new UserId(entity.getUserId()),
-			detailPaymentRecordList
+			detailPaymentRecords
 		);
 	}
 
 	public static PaymentRecordEntity toEntity(PaymentRecord domain) {
-		List<DetailPaymentRecordEntity> detailPaymentRecordEntities = domain.getDetailPaymentRecordList()
-			.stream()
-			.map(DetailPaymentRecordMapper::toEntity)
-			.collect(Collectors.toList());
-		return new PaymentRecordEntity(
+		PaymentRecordEntity entity = new PaymentRecordEntity(
 			domain.getUserId().getId(),
-			detailPaymentRecordEntities
+			domain.getUserId().getId(),
+			new ArrayList<>()
 		);
+
+		List<DetailPaymentRecordEntity> entityList = DetailPaymentRecordMapper
+			.toEntityList(domain.getDetailPaymentRecordList(), entity);
+
+		entity.getDetailPaymentRecordEntityList().addAll(entityList);
+
+		return entity;
 	}
 
 }
