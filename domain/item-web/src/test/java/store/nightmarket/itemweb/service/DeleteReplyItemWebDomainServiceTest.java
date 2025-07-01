@@ -32,7 +32,7 @@ class DeleteReplyItemWebDomainServiceTest {
         UUID authorId = UUID.randomUUID();
         Reply reply = TestObjectFactory.createReply(
             UUID.randomUUID(),
-            "good!",
+            TestObjectFactory.createReplyContent("good!"),
             authorId,
             UUID.randomUUID()
         );
@@ -46,9 +46,12 @@ class DeleteReplyItemWebDomainServiceTest {
         Event event = service.execute(input);
 
         // then
-        softly.assertThat(event).isNotNull();
-        softly.assertThat(event.getReply().isDeleted()).isTrue();
-        softly.assertThat(event.getReply().getContent().getText()).isEqualTo("삭제된 댓글 입니다.");
+        softly.assertThat(event)
+            .isNotNull();
+        softly.assertThat(event.getReply().isDeleted())
+            .isTrue();
+        softly.assertThat(event.getReply().getReplyContent().getDescription())
+            .isEqualTo("삭제된 댓글입니다.");
         softly.assertAll();
     }
 
@@ -60,7 +63,7 @@ class DeleteReplyItemWebDomainServiceTest {
         UserId otherAuthorId = new UserId(UUID.randomUUID());
         Reply reply = TestObjectFactory.createReply(
             UUID.randomUUID(),
-            "good!",
+            TestObjectFactory.createReplyContent("good!"),
             authorId,
             UUID.randomUUID()
         );

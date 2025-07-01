@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.fixture.TestObjectFactory;
-import store.nightmarket.itemweb.valueobject.Content;
+import store.nightmarket.itemweb.valueobject.ReplyContent;
 
 class ReplyTest {
 
@@ -23,37 +23,13 @@ class ReplyTest {
     }
 
     @Test
-    @DisplayName("Reply content가 blank면 예외 발생")
-    void shouldThrowExceptionWhenReplyContentIsBlank() {
-        //given
-        String replyContent = " ";
-
-        //when & then
-        assertThatThrownBy(
-            () -> TestObjectFactory.createReply(replyContent)
-        ).isInstanceOf(ItemWebException.class);
-    }
-
-    @Test
-    @DisplayName("Reply content의 최대 길이보다 크면 예외 발생")
-    void shouldThrowExceptionWhenReplyContentIsLongerThanMaxLength() {
-        //given
-        String content = "a".repeat(256);
-
-        //when & then
-        assertThatThrownBy(
-            () -> TestObjectFactory.createReply(content)
-        ).isInstanceOf(ItemWebException.class);
-    }
-
-    @Test
     @DisplayName("현재 유저 아이디와 작성자 아이디가 같을때 대댓글이 삭제된다.")
     void shouldDeleteReplyWhenCurrentUserIdIsEqualToAuthorId() {
         // given
         UUID authorId = UUID.randomUUID();
         Reply reply = TestObjectFactory.createReply(
             UUID.randomUUID(),
-            "good!",
+            TestObjectFactory.createReplyContent("good!"),
             authorId,
             UUID.randomUUID()
         );
@@ -63,7 +39,7 @@ class ReplyTest {
 
         // then
         softly.assertThat(reply.isDeleted()).isTrue();
-        softly.assertThat(reply.getContent().getText()).isEqualTo("삭제된 댓글 입니다.");
+        softly.assertThat(reply.getReplyContent().getDescription()).isEqualTo("삭제된 댓글입니다.");
         softly.assertAll();
     }
 
@@ -75,7 +51,7 @@ class ReplyTest {
         UserId otherAuthorId = new UserId(UUID.randomUUID());
         Reply reply = TestObjectFactory.createReply(
             UUID.randomUUID(),
-            "good!",
+            TestObjectFactory.createReplyContent("good!"),
             authorId,
             UUID.randomUUID()
         );
@@ -91,19 +67,19 @@ class ReplyTest {
     void shouldEditReplyWhenCurrentUserIdIsEqualToAuthorId() {
         // given
         UUID authorId = UUID.randomUUID();
-        Content edittingContent = new Content("bad!");
+        ReplyContent editingContent = new ReplyContent("bad!");
         Reply reply = TestObjectFactory.createReply(
             UUID.randomUUID(),
-            "good!",
+            TestObjectFactory.createReplyContent("good!"),
             authorId,
             UUID.randomUUID()
         );
 
         // when
-        reply.edit(new UserId(authorId), edittingContent);
+        reply.edit(new UserId(authorId), editingContent);
 
         // then
-        assertThat(reply.getContent()).isEqualTo(edittingContent);
+        assertThat(reply.getReplyContent()).isEqualTo(editingContent);
     }
 
     @Test
@@ -112,10 +88,10 @@ class ReplyTest {
         // given
         UUID authorId = UUID.randomUUID();
         UserId otherAuthorId = new UserId(UUID.randomUUID());
-        Content edittingContent = new Content("bad!");
+        ReplyContent editingContent = new ReplyContent("bad!");
         Reply reply = TestObjectFactory.createReply(
             UUID.randomUUID(),
-            "good!",
+            TestObjectFactory.createReplyContent("good!"),
             authorId,
             UUID.randomUUID()
         );
@@ -125,7 +101,7 @@ class ReplyTest {
         assertThatThrownBy(
             () -> reply.edit(
                 otherAuthorId,
-                edittingContent
+                editingContent
             )
         ).isInstanceOf(ItemWebException.class);
     }

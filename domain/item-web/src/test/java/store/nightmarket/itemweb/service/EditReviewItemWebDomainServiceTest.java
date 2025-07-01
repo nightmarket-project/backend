@@ -13,9 +13,7 @@ import store.nightmarket.itemweb.fixture.TestObjectFactory;
 import store.nightmarket.itemweb.model.Review;
 import store.nightmarket.itemweb.service.dto.EditReviewItemWebDomainServiceDto.Event;
 import store.nightmarket.itemweb.service.dto.EditReviewItemWebDomainServiceDto.Input;
-import store.nightmarket.itemweb.valueobject.Content;
-import store.nightmarket.itemweb.valueobject.Image;
-import store.nightmarket.itemweb.valueobject.Rating;
+import store.nightmarket.itemweb.valueobject.ReviewContent;
 
 class EditReviewItemWebDomainServiceTest {
 
@@ -33,22 +31,24 @@ class EditReviewItemWebDomainServiceTest {
     void shouldEditReviewWhenUserIdIsEqualToAuthorId() {
         // given
         UUID authorId = UUID.randomUUID();
-        Content content = new Content("bad!");
-        Image image = TestObjectFactory.createImage("aaa", 1);
-        Rating rating = new Rating(0);
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),
             authorId,
-            "good!",
-            TestObjectFactory.defaultImage(),
-            5
+            TestObjectFactory.createReviewContent(
+                "good!",
+                5,
+                TestObjectFactory.defaultImage()
+            )
+        );
+        ReviewContent editReviewContent = TestObjectFactory.createReviewContent(
+            "bad!",
+            0,
+            TestObjectFactory.createImage("aaa", "테스트 사진", 1)
         );
 
         Input input = Input.builder()
             .review(review)
-            .content(content)
-            .image(image)
-            .rating(rating)
+            .reviewContent(editReviewContent)
             .authorId(new UserId(authorId))
             .build();
 
@@ -56,9 +56,8 @@ class EditReviewItemWebDomainServiceTest {
         Event event = service.execute(input);
 
         // then
-        softly.assertThat(event.getReview().getContent()).isEqualTo(content);
-        softly.assertThat(event.getReview().getRating()).isEqualTo(rating);
-        softly.assertThat(event.getReview().getImage()).isEqualTo(image);
+        softly.assertThat(event.getReview().getReviewContent())
+            .isEqualTo(editReviewContent);
         softly.assertAll();
     }
 
@@ -68,22 +67,24 @@ class EditReviewItemWebDomainServiceTest {
         // given
         UUID authorId = UUID.randomUUID();
         UserId ohterUserId = new UserId(UUID.randomUUID());
-        Content content = new Content("bad!");
-        Image image = TestObjectFactory.createImage("aaa", 1);
-        Rating rating = new Rating(0);
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),
             authorId,
-            "good!",
-            TestObjectFactory.defaultImage(),
-            5
+            TestObjectFactory.createReviewContent(
+                "good!",
+                5,
+                TestObjectFactory.defaultImage()
+            )
+        );
+        ReviewContent editReviewContent = TestObjectFactory.createReviewContent(
+            "bad!",
+            0,
+            TestObjectFactory.createImage("aaa", "테스트 사진", 1)
         );
 
         Input input = Input.builder()
             .review(review)
-            .content(content)
-            .image(image)
-            .rating(rating)
+            .reviewContent(editReviewContent)
             .authorId(ohterUserId)
             .build();
 
