@@ -5,14 +5,14 @@ import java.util.Objects;
 public class Image {
 
     private final String url;
-    private final int order;
+    private final int sortNum;
 
     public Image(
         String url,
-        int order
+        int sortNum
     ) {
         this.url = url;
-        this.order = order;
+        this.sortNum = sortNum;
     }
 
     @Override
@@ -21,12 +21,12 @@ public class Image {
             return false;
         }
         Image image = (Image) obj;
-        return order == image.order && Objects.equals(url, image.url);
+        return sortNum == image.sortNum && Objects.equals(url, image.url);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(url, order);
+        return Objects.hash(url, sortNum);
     }
 
 }

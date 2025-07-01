@@ -58,9 +58,12 @@ public class TestObjectFactory {
 
     public static Image createImage(
         String url,
-        int order
+        int sortNum
     ) {
-        return new Image(url, order);
+        return new Image(
+            url,
+            sortNum
+        );
     }
 
     public static Image defaultImage() {
