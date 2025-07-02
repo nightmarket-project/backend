@@ -1,6 +1,6 @@
 package store.nightmarket.domain.item.exception;
 
-public class QuantityException extends ItemCoreException {
+public class QuantityException extends ProductException {
 
     public QuantityException() {}
 

@@ -4,9 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.model.Review;
-import store.nightmarket.itemweb.valueobject.Content;
-import store.nightmarket.itemweb.valueobject.Image;
-import store.nightmarket.itemweb.valueobject.Rating;
+import store.nightmarket.itemweb.valueobject.ReviewContent;
 
 public class EditReviewItemWebDomainServiceDto {
 
@@ -16,9 +14,7 @@ public class EditReviewItemWebDomainServiceDto {
 
         private Review review;
         private UserId authorId;
-        private Content content;
-        private Image image;
-        private Rating rating;
+        private ReviewContent reviewContent;
 
     }
 

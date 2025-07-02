@@ -33,9 +33,11 @@ class DeleteReviewItemWebDomainServiceTest {
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),
             authorId,
-            "good!",
-            TestObjectFactory.defaultImage(),
-            5
+            TestObjectFactory.createReviewContent(
+                "good!",
+                5,
+                TestObjectFactory.defaultImage()
+            )
         );
 
         Input input = Input.builder()
@@ -47,9 +49,12 @@ class DeleteReviewItemWebDomainServiceTest {
         Event event = service.execute(input);
 
         // then
-        softly.assertThat(event).isNotNull();
-        softly.assertThat(event.getReview().isDeleted()).isTrue();
-        softly.assertThat(event.getReview().getContent().getText()).isEqualTo("삭제된 댓글 입니다.");
+        softly.assertThat(event)
+            .isNotNull();
+        softly.assertThat(event.getReview().isDeleted())
+            .isTrue();
+        softly.assertThat(event.getReview().getReviewContent().getDescription())
+            .isEqualTo("삭제된 댓글입니다.");
         softly.assertAll();
     }
 
@@ -62,9 +67,11 @@ class DeleteReviewItemWebDomainServiceTest {
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),
             authorId,
-            "good!",
-            TestObjectFactory.defaultImage(),
-            5
+            TestObjectFactory.createReviewContent(
+                "good!",
+                5,
+                TestObjectFactory.defaultImage()
+            )
         );
 
         Input input = Input.builder()

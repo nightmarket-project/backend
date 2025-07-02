@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.domain.item.exception.ItemCoreException;
+import store.nightmarket.domain.item.exception.ProductException;
 import store.nightmarket.domain.item.fixture.TestShoppingBasketFactory;
 import store.nightmarket.domain.item.valueobject.Quantity;
 
@@ -94,7 +94,7 @@ class ShoppingBasketTest {
         );
 
         assertThatThrownBy(() -> shoppingBasket.remove(ramShoppingBasketProduct))
-            .isInstanceOf(ItemCoreException.class);
+            .isInstanceOf(ProductException.class);
     }
 
     @Test
@@ -149,7 +149,7 @@ class ShoppingBasketTest {
         );
 
         assertThatThrownBy(() -> shoppingBasket.changeProductQuantity(ramShoppingBasketProduct, quantity))
-            .isInstanceOf(ItemCoreException.class);
+            .isInstanceOf(ProductException.class);
     }
 
     @Test
@@ -171,7 +171,7 @@ class ShoppingBasketTest {
         // then
         Quantity quantity = new Quantity(BigDecimal.valueOf(0));
         assertThatThrownBy(() -> shoppingBasket.changeProductQuantity(cpuShoppingBasketProduct, quantity))
-            .isInstanceOf(ItemCoreException.class);
+            .isInstanceOf(ProductException.class);
     }
 
 }

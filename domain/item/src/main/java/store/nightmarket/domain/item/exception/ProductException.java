@@ -2,11 +2,11 @@ package store.nightmarket.domain.item.exception;
 
 import store.nightmarket.common.exception.DomainException;
 
-public class ItemCoreException extends DomainException {
+public class ProductException extends DomainException {
 
-    public ItemCoreException() {}
+    public ProductException() {}
 
-    public ItemCoreException(String message) {
+    public ProductException(String message) {
         super(message);
     }
 

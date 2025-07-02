@@ -13,7 +13,7 @@ import store.nightmarket.itemweb.fixture.TestObjectFactory;
 import store.nightmarket.itemweb.model.Reply;
 import store.nightmarket.itemweb.service.dto.EditReplyItemWebDomainServiceDto.Event;
 import store.nightmarket.itemweb.service.dto.EditReplyItemWebDomainServiceDto.Input;
-import store.nightmarket.itemweb.valueobject.Content;
+import store.nightmarket.itemweb.valueobject.ReplyContent;
 
 class EditReplyItemWebDomainServiceTest {
 
@@ -29,10 +29,10 @@ class EditReplyItemWebDomainServiceTest {
     void shouldEditReplyWhenUserIdIsEqualToReplyAuthorId() {
         // given
         UUID authorId = UUID.randomUUID();
-        Content edittingContent = new Content("bad!");
+        ReplyContent editingContent = TestObjectFactory.createReplyContent("bad!");
         Reply reply = TestObjectFactory.createReply(
             UUID.randomUUID(),
-            "good!",
+            TestObjectFactory.createReplyContent("good!"),
             authorId,
             UUID.randomUUID()
         );
@@ -40,14 +40,14 @@ class EditReplyItemWebDomainServiceTest {
         Input input = Input.builder()
             .reply(reply)
             .userId(new UserId(authorId))
-            .content(edittingContent)
+            .replyContent(editingContent)
             .build();
 
         // when
         Event event = service.execute(input);
 
         // then
-        assertThat(event.getReply().getContent()).isEqualTo(edittingContent);
+        assertThat(event.getReply().getReplyContent()).isEqualTo(editingContent);
     }
 
     @Test
@@ -56,10 +56,10 @@ class EditReplyItemWebDomainServiceTest {
         // given
         UUID authorId = UUID.randomUUID();
         UserId otherAuthorId = new UserId(UUID.randomUUID());
-        Content edittingContent = new Content("bad!");
+        ReplyContent editingContent = TestObjectFactory.createReplyContent("bad!");
         Reply reply = TestObjectFactory.createReply(
             UUID.randomUUID(),
-            "good!",
+            TestObjectFactory.createReplyContent("good!"),
             authorId,
             UUID.randomUUID()
         );
@@ -67,7 +67,7 @@ class EditReplyItemWebDomainServiceTest {
         Input input = Input.builder()
             .reply(reply)
             .userId(otherAuthorId)
-            .content(edittingContent)
+            .replyContent(editingContent)
             .build();
         // when
         // then

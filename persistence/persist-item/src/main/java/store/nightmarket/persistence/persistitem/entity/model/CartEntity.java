@@ -42,4 +42,5 @@ public class CartEntity extends BaseUuidEntity {
             cartProductEntityList
         );
     }
+
 }

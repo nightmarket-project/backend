@@ -4,14 +4,18 @@ import java.util.Objects;
 
 public class Image {
 
-    private final String url;
-    private final int order;
+    private String url;
+    private String altText;
+    private int sortNum;
 
     public Image(
-        String url, int order
+        String url,
+        String altText,
+        int sortNum
     ) {
         this.url = url;
-        this.order = order;
+        this.altText = altText;
+        this.sortNum = sortNum;
     }
 
     @Override
@@ -20,11 +24,13 @@ public class Image {
             return false;
         }
         Image image = (Image) obj;
-        return order == image.order && Objects.equals(url, image.url);
+        return sortNum == image.sortNum && Objects.equals(url, image.url)
+            && Objects.equals(altText, image.altText);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(url, order);
+        return Objects.hash(url, altText, sortNum);
     }
+
 }

@@ -5,7 +5,7 @@ import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.model.Reply;
 import store.nightmarket.itemweb.service.dto.EditReplyItemWebDomainServiceDto.Event;
 import store.nightmarket.itemweb.service.dto.EditReplyItemWebDomainServiceDto.Input;
-import store.nightmarket.itemweb.valueobject.Content;
+import store.nightmarket.itemweb.valueobject.ReplyContent;
 
 public class EditReplyItemWebDomainService
     implements BaseDomainService<Input, Event> {
@@ -14,9 +14,9 @@ public class EditReplyItemWebDomainService
     public Event execute(Input input) {
         Reply reply = input.getReply();
         UserId userId = input.getUserId();
-        Content content = input.getContent();
+        ReplyContent replyContent = input.getReplyContent();
 
-        reply.edit(userId, content);
+        reply.edit(userId, replyContent);
 
         return Event.builder()
             .reply(reply)

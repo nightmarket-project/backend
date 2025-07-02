@@ -5,28 +5,28 @@ import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
-import store.nightmarket.itemweb.valueobject.Content;
+import store.nightmarket.itemweb.valueobject.ReplyContent;
 import store.nightmarket.itemweb.valueobject.ReplyId;
 import store.nightmarket.itemweb.valueobject.ReviewId;
 
 @Getter
 public class Reply extends BaseModel<ReplyId> {
 
-    private Content content;
-    private UserId author;
+    private ReplyContent replyContent;
+    private UserId authorId;
     private ReviewId reviewId;
     private final LocalDate createdAt;
     private boolean deleted;
 
     private Reply(
         ReplyId id,
-        Content content,
-        UserId author,
+        ReplyContent replyContent,
+        UserId authorId,
         ReviewId reviewId
     ) {
         super(id);
-        this.content = content;
-        this.author = author;
+        this.replyContent = replyContent;
+        this.authorId = authorId;
         this.reviewId = reviewId;
         createdAt = LocalDate.now();
         deleted = false;
@@ -34,14 +34,14 @@ public class Reply extends BaseModel<ReplyId> {
 
     public static Reply newInstance(
         ReplyId id,
-        Content content,
-        UserId author,
+        ReplyContent replyContent,
+        UserId authorId,
         ReviewId reviewId
     ) {
         return new Reply(
             id,
-            content,
-            author,
+            replyContent,
+            authorId,
             reviewId
         );
     }
@@ -51,23 +51,23 @@ public class Reply extends BaseModel<ReplyId> {
         if (deleted) {
             throw new ItemWebException("이미 삭제된 댓글입니다.");
         }
-        if (!currentUserId.equals(author)) {
+        if (!currentUserId.equals(authorId)) {
             throw new ItemWebException("댓글 작성자만 삭제 가능합니다.");
         }
 
-        this.content = Content.deleted();
+        this.replyContent = ReplyContent.deleted();
         deleted = true;
     }
 
 
     public void edit(
         UserId userId,
-        Content content
+        ReplyContent editContent
     ) {
-        if(!userId.equals(author)) {
+        if (!userId.equals(authorId)) {
             throw new ItemWebException("댓글 작성자만 수정 가능합니다.");
         }
-        this.content = content;
+        this.replyContent = editContent;
     }
 
 }
