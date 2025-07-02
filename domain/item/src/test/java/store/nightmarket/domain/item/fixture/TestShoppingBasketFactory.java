@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 import store.nightmarket.domain.item.model.ShoppingBasket;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
-import store.nightmarket.domain.item.valueobject.CartId;
-import store.nightmarket.domain.item.valueobject.CartProductId;
+import store.nightmarket.domain.item.valueobject.ShoppingBasketId;
+import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
 import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
 import store.nightmarket.domain.item.valueobject.ProductVariantId;
@@ -17,7 +17,7 @@ public class TestShoppingBasketFactory {
 
     public static ShoppingBasket createCart() {
         return ShoppingBasket.newInstance(
-            new CartId(UUID.randomUUID()),
+            new ShoppingBasketId(UUID.randomUUID()),
             new UserId(UUID.randomUUID()),
             new ArrayList<>()
         );
@@ -31,7 +31,7 @@ public class TestShoppingBasketFactory {
         int price
     ) {
         return ShoppingBasketProduct.newInstance(
-            new CartProductId(cartProductId),
+            new ShoppingBasketProductId(cartProductId),
             new ProductVariantId(productVariantId),
             new Name(name),
             new Quantity(BigDecimal.valueOf(quantity)),

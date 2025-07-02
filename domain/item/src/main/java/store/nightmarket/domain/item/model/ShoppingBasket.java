@@ -5,18 +5,18 @@ import java.util.List;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.exception.ProductException;
-import store.nightmarket.domain.item.valueobject.CartId;
+import store.nightmarket.domain.item.valueobject.ShoppingBasketId;
 import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.domain.item.valueobject.UserId;
 
 @Getter
-public class ShoppingBasket extends BaseModel<CartId> {
+public class ShoppingBasket extends BaseModel<ShoppingBasketId> {
 
     private UserId userId;
     private List<ShoppingBasketProduct> shoppingBasket;
 
     private ShoppingBasket(
-        CartId id,
+        ShoppingBasketId id,
         UserId userId,
         List<ShoppingBasketProduct> shoppingBasket
     ) {
@@ -26,7 +26,7 @@ public class ShoppingBasket extends BaseModel<CartId> {
     }
 
     public static ShoppingBasket newInstance(
-        CartId id,
+        ShoppingBasketId id,
         UserId userId,
         List<ShoppingBasketProduct> shoppingBasket
     ) {

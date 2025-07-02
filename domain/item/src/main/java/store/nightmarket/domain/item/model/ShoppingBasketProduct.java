@@ -2,14 +2,14 @@ package store.nightmarket.domain.item.model;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.domain.item.valueobject.CartProductId;
+import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
 import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
 import store.nightmarket.domain.item.valueobject.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
 
 @Getter
-public class ShoppingBasketProduct extends BaseModel<CartProductId> {
+public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
 
     private ProductVariantId variantId;
     private Name name;
@@ -17,7 +17,7 @@ public class ShoppingBasketProduct extends BaseModel<CartProductId> {
     private Price price;
 
     private ShoppingBasketProduct(
-        CartProductId id,
+        ShoppingBasketProductId id,
         ProductVariantId variantId,
         Name name,
         Quantity quantity,
@@ -31,7 +31,7 @@ public class ShoppingBasketProduct extends BaseModel<CartProductId> {
     }
 
     public static ShoppingBasketProduct newInstance(
-        CartProductId id,
+        ShoppingBasketProductId id,
         ProductVariantId variantId,
         Name name,
         Quantity quantity,

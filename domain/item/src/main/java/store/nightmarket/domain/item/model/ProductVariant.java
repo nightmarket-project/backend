@@ -68,4 +68,8 @@ public class ProductVariant extends BaseModel<ProductVariantId> {
             shoppingBasketProduct.getVariantId());
     }
 
+    public void restoreQuantity(ShoppingBasketProduct shoppingBasketProduct) {
+        quantity = quantity.add(shoppingBasketProduct.getQuantity());
+    }
+
 }

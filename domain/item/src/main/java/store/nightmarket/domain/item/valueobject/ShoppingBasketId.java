@@ -1,15 +1,16 @@
 package store.nightmarket.domain.item.valueobject;
 
-import java.util.UUID;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseId;
 
+import java.util.UUID;
+
 @Getter
-public class CartProductId extends BaseId<UUID> {
+public class ShoppingBasketId extends BaseId<UUID> {
 
-    private final UUID id;
+    private UUID id;
 
-    public CartProductId(UUID id) {
+    public ShoppingBasketId(UUID id) {
         this.id = id;
     }
 
