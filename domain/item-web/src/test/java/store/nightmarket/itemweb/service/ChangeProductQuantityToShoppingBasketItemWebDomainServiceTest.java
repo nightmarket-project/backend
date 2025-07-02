@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.nightmarket.domain.item.exception.ItemCoreException;
+import store.nightmarket.domain.item.exception.ProductException;
 import store.nightmarket.domain.item.model.ShoppingBasket;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.Quantity;
@@ -87,7 +87,7 @@ class ChangeProductQuantityToShoppingBasketItemWebDomainServiceTest {
         // when
         // then
         assertThatThrownBy(() -> service.execute(input))
-            .isInstanceOf(ItemCoreException.class);
+            .isInstanceOf(ProductException.class);
     }
 
     @Test
@@ -115,7 +115,7 @@ class ChangeProductQuantityToShoppingBasketItemWebDomainServiceTest {
         // when
         // then
         assertThatThrownBy(() -> service.execute(input))
-            .isInstanceOf(ItemCoreException.class);
+            .isInstanceOf(ProductException.class);
     }
 
 }

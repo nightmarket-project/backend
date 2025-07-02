@@ -3,12 +3,10 @@ package store.nightmarket.domain.item.fixture;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
-import store.nightmarket.domain.item.model.Inventory;
 import store.nightmarket.domain.item.model.OptionGroup;
 import store.nightmarket.domain.item.model.OptionValue;
 import store.nightmarket.domain.item.model.ProductVariant;
 import store.nightmarket.domain.item.model.VariantOptionValue;
-import store.nightmarket.domain.item.valueobject.InventoryId;
 import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.OptionGroupId;
 import store.nightmarket.domain.item.valueobject.OptionValueId;
@@ -20,16 +18,6 @@ import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.domain.item.valueobject.VariantOptionValueId;
 
 public class TestItemFactory {
-
-    public static Inventory createInventory(
-        UUID inventoryId,
-        List<ProductVariant> inventory
-    ) {
-        return Inventory.newInstance(
-            new InventoryId(inventoryId),
-            inventory
-        );
-    }
 
     public static ProductVariant createProductVariant(
         UUID productVariantId,
@@ -71,11 +59,11 @@ public class TestItemFactory {
         List<OptionValue> optionValueList
     ) {
         return OptionGroup.newInstance(
-          new OptionGroupId(optionGroupId),
-          new ProductId(productId),
-          new Name(name),
-          order,
-          optionValueList
+            new OptionGroupId(optionGroupId),
+            new ProductId(productId),
+            new Name(name),
+            order,
+            optionValueList
         );
     }
 

@@ -1,6 +1,6 @@
 package store.nightmarket.domain.item.exception;
 
-public class NameException extends ItemCoreException {
+public class NameException extends ProductException {
 
     public NameException() {}
 

@@ -55,13 +55,17 @@ public class ProductVariant extends BaseModel<ProductVariantId> {
         return internalId();
     }
 
-    public boolean isNotAbleToOrder(Quantity buyQuantity) {
-        return quantity.isLessThan(buyQuantity);
+    public boolean isNotAbleToOrder(ShoppingBasketProduct shoppingBasketProduct) {
+        return quantity.isLessThan(shoppingBasketProduct.getQuantity());
     }
 
-    public void purchase(Quantity buyQuantity) {
-        quantity = quantity.subtract(buyQuantity);
+    public void purchase(ShoppingBasketProduct shoppingBasketProduct) {
+        quantity = quantity.subtract(shoppingBasketProduct.getQuantity());
     }
 
+    public boolean isNotSameAsProduct(ShoppingBasketProduct shoppingBasketProduct) {
+        return !getProductVariantId().equals(
+            shoppingBasketProduct.getVariantId());
+    }
 
 }

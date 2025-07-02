@@ -1,23 +1,31 @@
 package store.nightmarket.domain.item.service;
 
 import store.nightmarket.common.domain.service.BaseDomainService;
-import store.nightmarket.domain.item.model.Inventory;
+import store.nightmarket.domain.item.exception.ProductException;
+import store.nightmarket.domain.item.model.ProductVariant;
+import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Event;
 import store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Input;
-import store.nightmarket.domain.item.model.ShoppingBasket;
+import store.nightmarket.domain.item.valueobject.Quantity;
 
 public class PurchaseItemDomainService
     implements BaseDomainService<Input, Event> {
 
     @Override
     public Event execute(Input input) {
-        ShoppingBasket shoppingBasket = input.getShoppingBasket();
-        Inventory inventory = input.getInventory();
+        ProductVariant productVariant = input.getProductVariant();
+        ShoppingBasketProduct shoppingBasketProduct = input.getShoppingBasketProduct();
 
-        inventory.purchase(shoppingBasket);
+        if(productVariant.isNotSameAsProduct(shoppingBasketProduct)) {
+            throw new ProductException("Product variant is not same as shopping basket product");
+        }
+        if (productVariant.isNotAbleToOrder(shoppingBasketProduct)) {
+            throw new ProductException("Product is not available to purchase");
+        }
+        productVariant.purchase(shoppingBasketProduct);
 
         return Event.builder()
-            .shoppingBasket(shoppingBasket)
+            .shoppingBasketProduct(shoppingBasketProduct)
             .build();
     }
 
