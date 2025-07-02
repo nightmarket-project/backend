@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.exception.ProductException;
+import store.nightmarket.domain.item.exception.QuantityException;
 import store.nightmarket.domain.item.fixture.TestItemFactory;
 import store.nightmarket.domain.item.fixture.TestShoppingBasketFactory;
 import store.nightmarket.domain.item.model.ProductVariant;
@@ -73,7 +74,7 @@ class PurchaseItemDomainServiceTest {
         // when
         // then
         assertThatThrownBy(() -> service.execute(input))
-            .isInstanceOf(ProductException.class);
+            .isInstanceOf(QuantityException.class);
     }
 
     @Test

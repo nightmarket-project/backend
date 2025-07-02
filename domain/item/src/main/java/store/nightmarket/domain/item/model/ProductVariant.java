@@ -55,7 +55,7 @@ public class ProductVariant extends BaseModel<ProductVariantId> {
         return internalId();
     }
 
-    public boolean isNotAbleToOrder(ShoppingBasketProduct shoppingBasketProduct) {
+    public boolean isNotAbleToPurchase(ShoppingBasketProduct shoppingBasketProduct) {
         return quantity.isLessThan(shoppingBasketProduct.getQuantity());
     }
 
