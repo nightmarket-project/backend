@@ -6,23 +6,22 @@ import lombok.Getter;
 import store.nightmarket.domain.item.model.ProductVariant;
 import store.nightmarket.domain.item.model.ShoppingBasket;
 
-public class PurchaseManyProductItemDomainServiceDto {
+public class RestoreItemDomainServiceDto {
 
     @Getter
     @Builder
     public static class Input {
 
-        List<ProductVariant> purchaseProductList;
-        ShoppingBasket shoppingBasket;
+        private List<ProductVariant> productVariantList;
+        private ShoppingBasket shoppingBasket;
 
     }
-
 
     @Getter
     @Builder
     public static class Event {
 
-        ShoppingBasket shoppingBasket;
+        private List<ProductVariant> productVariantList;
 
     }
 

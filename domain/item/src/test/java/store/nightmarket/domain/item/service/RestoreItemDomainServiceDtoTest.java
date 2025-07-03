@@ -10,96 +10,77 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.exception.ProductException;
-import store.nightmarket.domain.item.exception.QuantityException;
 import store.nightmarket.domain.item.fixture.TestItemFactory;
 import store.nightmarket.domain.item.fixture.TestShoppingBasketFactory;
 import store.nightmarket.domain.item.model.ProductVariant;
 import store.nightmarket.domain.item.model.ShoppingBasket;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
-import store.nightmarket.domain.item.service.dto.PurchaseManyProductItemDomainServiceDto.Event;
-import store.nightmarket.domain.item.service.dto.PurchaseManyProductItemDomainServiceDto.Input;
+import store.nightmarket.domain.item.service.dto.RestoreItemDomainServiceDto.Event;
+import store.nightmarket.domain.item.service.dto.RestoreItemDomainServiceDto.Input;
 import store.nightmarket.domain.item.valueobject.Quantity;
 
-class PurchaseManyProductItemDomainServiceTest {
+class RestoreItemDomainServiceDtoTest {
 
-    private PurchaseManyProductItemDomainService service;
+    private RestoreItemDomainServiceDto service;
     private SoftAssertions softly;
 
     @BeforeEach
     void setUp() {
-        service = new PurchaseManyProductItemDomainService();
+        service = new RestoreItemDomainServiceDto();
         softly = new SoftAssertions();
     }
 
     @Test
-    @DisplayName("서비스 실행 시 장바구니를 포함한 이벤트가 반환되고, 재고 수량이 차감된다")
-    void shouldReturnEventWithBasketAndDecreaseProductQuantityWhenExecuted() {
+    @DisplayName("서비스 실행시 장바구니 상품 구매 취소 리스트가 반환하고 재고가 복구된다.")
+    void shouldReturnEventWithProductVariantListAndIncreaseProductQuantityWhenExecuted() {
         // given
         UUID cpuId = UUID.randomUUID();
         UUID ramId = UUID.randomUUID();
         ProductVariant cpuProductVariant = testCPUProductVariant(cpuId, 200);
         ProductVariant ramProductVariant = testRAMProductVariant(ramId, 200);
-        List<ProductVariant> purchaseProductList = List.of(cpuProductVariant, ramProductVariant);
+        List<ProductVariant> cancelProductList = List.of(cpuProductVariant, ramProductVariant);
         ShoppingBasket shoppingBasket = testShoppingBasketProduct(cpuId, 20, ramId, 10);
 
         Input input = Input.builder()
-            .purchaseProductList(purchaseProductList)
+            .productVariantList(cancelProductList)
             .shoppingBasket(shoppingBasket)
             .build();
+
         // when
         Event event = service.execute(input);
 
         // then
-        Quantity expectedCpuQuantity = new Quantity(BigDecimal.valueOf(180));
-        Quantity expectedRamQuantity = new Quantity(BigDecimal.valueOf(190));
+        Quantity expectedCpuQuantity = new Quantity(BigDecimal.valueOf(220));
+        Quantity expectedRamQuantity = new Quantity(BigDecimal.valueOf(210));
 
-        softly.assertThat(event)
-            .isNotNull();
-        softly.assertThat(cpuProductVariant.getQuantity())
+        softly.assertThat(event).isNotNull();
+        softly.assertThat(event.getProductVariantList())
+            .hasSize(2);
+        softly.assertThat(event.getProductVariantList().get(0))
+            .isEqualTo(cpuProductVariant);
+        softly.assertThat(event.getProductVariantList().get(0).getQuantity())
             .isEqualTo(expectedCpuQuantity);
-        softly.assertThat(ramProductVariant.getQuantity())
+        softly.assertThat(event.getProductVariantList().get(1))
+            .isEqualTo(ramProductVariant);
+        softly.assertThat(event.getProductVariantList().get(1).getQuantity())
             .isEqualTo(expectedRamQuantity);
-        softly.assertThat(event.getShoppingBasket())
-            .isEqualTo(shoppingBasket);
         softly.assertAll();
     }
 
     @Test
-    @DisplayName("구매 상품 수량이 충분치 않을때 예외를 던진다.")
-    void shouldThrowExceptionWhenPurchaseProductQuantityIsInsufficient() {
-        // given
-        UUID cpuId = UUID.randomUUID();
-        UUID ramId = UUID.randomUUID();
-        ProductVariant cpuProductVariant = testCPUProductVariant(cpuId, 100);
-        ProductVariant ramProductVariant = testRAMProductVariant(ramId, 100);
-        List<ProductVariant> purchaseProductList = List.of(cpuProductVariant, ramProductVariant);
-        ShoppingBasket shoppingBasket = testShoppingBasketProduct(cpuId, 101, ramId, 1);
-
-        Input input = Input.builder()
-            .purchaseProductList(purchaseProductList)
-            .shoppingBasket(shoppingBasket)
-            .build();
-
-        // when
-        // then
-        assertThatThrownBy(() -> service.execute(input))
-            .isInstanceOf(QuantityException.class);
-    }
-
-    @Test
-    @DisplayName("상품 아이디가 다를때 예외를 발생한다.")
-    void shouldThrowExceptionWhenProductVariantIdIsDifferent() {
+    @DisplayName("서비스 실행시 상품 아이디가 다를때 예외를 발생한다.")
+    void shouldThrowExceptionWhenServiceExecutedAndProductVariantIsDifferent() {
         // given
         UUID cpuId = UUID.randomUUID();
         UUID ramId = UUID.randomUUID();
         UUID unavailableProductId = UUID.randomUUID();
-        ProductVariant cpuProductVariant = testCPUProductVariant(cpuId, 10);
-        ProductVariant ramProductVariant = testRAMProductVariant(ramId, 10);
-        List<ProductVariant> purchaseProductList = List.of(cpuProductVariant, ramProductVariant);
-        ShoppingBasket shoppingBasket = testShoppingBasketProduct(cpuId, 2, unavailableProductId, 3);
+        ProductVariant cpuProductVariant = testCPUProductVariant(cpuId, 200);
+        ProductVariant ramProductVariant = testRAMProductVariant(ramId, 200);
+        List<ProductVariant> cancelProductList = List.of(cpuProductVariant, ramProductVariant);
+        ShoppingBasket shoppingBasket = testShoppingBasketProduct(cpuId, 20, unavailableProductId, 10);
 
         Input input = Input.builder()
-            .purchaseProductList(purchaseProductList)
+            .productVariantList(cancelProductList)
             .shoppingBasket(shoppingBasket)
             .build();
 
@@ -109,18 +90,17 @@ class PurchaseManyProductItemDomainServiceTest {
             .isInstanceOf(ProductException.class);
     }
 
-
     @Test
-    @DisplayName("구매 가능한 제품 목록이 비어있을때 예외를 던진다.")
-    void shouldThrowExceptionWhenPurchaseProductListIsEmpty() {
+    @DisplayName("복구 가능한 제품 목록이 비어있을때 예외를 던진다.")
+    void shouldThrowExceptionWhenCancelProductListIsEmpty() {
         // given
         UUID cpuId = UUID.randomUUID();
         UUID ramId = UUID.randomUUID();
-        List<ProductVariant> purchaseProductList = List.of();
-        ShoppingBasket shoppingBasket = testShoppingBasketProduct(cpuId, 101, ramId, 1);
+        List<ProductVariant> cancelProductList = List.of();
+        ShoppingBasket shoppingBasket = testShoppingBasketProduct(cpuId, 20, ramId, 10);
 
         Input input = Input.builder()
-            .purchaseProductList(purchaseProductList)
+            .productVariantList(cancelProductList)
             .shoppingBasket(shoppingBasket)
             .build();
 
@@ -176,6 +156,7 @@ class PurchaseManyProductItemDomainServiceTest {
             )
         );
     }
+
     private ProductVariant testRAMProductVariant(
         UUID ramId,
         int ramQuantity

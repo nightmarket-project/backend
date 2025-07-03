@@ -8,12 +8,11 @@ import store.nightmarket.common.domain.service.BaseDomainService;
 import store.nightmarket.domain.item.exception.ProductException;
 import store.nightmarket.domain.item.model.ProductVariant;
 import store.nightmarket.domain.item.model.ShoppingBasket;
-import store.nightmarket.domain.item.service.dto.CancelManyPurchaseProductItemDomainServiceDto.Input;
-import store.nightmarket.domain.item.service.dto.CancelManyPurchaseProductItemDomainServiceDto.Event;
+import store.nightmarket.domain.item.service.dto.RestoreItemDomainServiceDto.Event;
+import store.nightmarket.domain.item.service.dto.RestoreItemDomainServiceDto.Input;
 import store.nightmarket.domain.item.valueobject.ProductVariantId;
-import store.nightmarket.domain.item.valueobject.Quantity;
 
-public class CancelManyPurchaseProductItemDomainServiceDto
+public class RestoreItemDomainServiceDto
     implements BaseDomainService<Input, Event> {
 
     @Override
@@ -21,7 +20,7 @@ public class CancelManyPurchaseProductItemDomainServiceDto
         List<ProductVariant> cancelProductList = input.getProductVariantList();
         ShoppingBasket shoppingBasket = input.getShoppingBasket();
 
-        if(cancelProductList.isEmpty()) {
+        if (cancelProductList.isEmpty()) {
             throw new ProductException("No product found");
         }
         Map<ProductVariantId, ProductVariant> cancelProductMap = cancelProductList.stream()
