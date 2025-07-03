@@ -6,46 +6,41 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import store.nightmarket.common.domain.service.BaseDomainService;
 import store.nightmarket.domain.item.exception.ProductException;
-import store.nightmarket.domain.item.exception.QuantityException;
 import store.nightmarket.domain.item.model.ProductVariant;
 import store.nightmarket.domain.item.model.ShoppingBasket;
-import store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Event;
-import store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Input;
+import store.nightmarket.domain.item.service.dto.RestoreItemDomainServiceDto.Event;
+import store.nightmarket.domain.item.service.dto.RestoreItemDomainServiceDto.Input;
 import store.nightmarket.domain.item.valueobject.ProductVariantId;
 
-public class PurchaseItemDomainService
+public class RestoreItemDomainServiceDto
     implements BaseDomainService<Input, Event> {
 
     @Override
     public Event execute(Input input) {
-        List<ProductVariant> purchaseProductList = input.getPurchaseProductList();
+        List<ProductVariant> cancelProductList = input.getProductVariantList();
         ShoppingBasket shoppingBasket = input.getShoppingBasket();
 
-        if (purchaseProductList.isEmpty()) {
+        if (cancelProductList.isEmpty()) {
             throw new ProductException("No product found");
         }
-        Map<ProductVariantId, ProductVariant> purchaseProductMap = purchaseProductList.stream()
+        Map<ProductVariantId, ProductVariant> cancelProductMap = cancelProductList.stream()
             .collect(Collectors.toMap(ProductVariant::getProductVariantId, Function.identity()));
 
         shoppingBasket.getShoppingBasket()
             .forEach(shoppingBasketProduct -> {
                 ProductVariantId productVariantId = shoppingBasketProduct.getVariantId();
-                if (!purchaseProductMap.containsKey(productVariantId)) {
+                if (!cancelProductMap.containsKey(productVariantId)) {
                     throw new ProductException(
                         "Product variant is not same as shopping basket product: "
                             + shoppingBasketProduct.getName());
                 }
 
-                ProductVariant purchaseProduct = purchaseProductMap.get(productVariantId);
-                if (purchaseProduct.isNotAbleToPurchase(shoppingBasketProduct)) {
-                    throw new QuantityException("Product is not available to purchase: "
-                        + shoppingBasketProduct.getName());
-                }
-                purchaseProduct.purchase(shoppingBasketProduct);
+                ProductVariant productVariant = cancelProductMap.get(productVariantId);
+                productVariant.restoreQuantity(shoppingBasketProduct);
             });
 
         return Event.builder()
-            .shoppingBasket(shoppingBasket)
+            .productVariantList(cancelProductList)
             .build();
     }
 
