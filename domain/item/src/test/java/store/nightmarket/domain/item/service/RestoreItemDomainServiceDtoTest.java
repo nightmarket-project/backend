@@ -13,7 +13,6 @@ import store.nightmarket.domain.item.exception.ProductException;
 import store.nightmarket.domain.item.fixture.TestItemFactory;
 import store.nightmarket.domain.item.fixture.TestShoppingBasketFactory;
 import store.nightmarket.domain.item.model.ProductVariant;
-import store.nightmarket.domain.item.model.ShoppingBasket;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.service.dto.RestoreItemDomainServiceDto.Event;
 import store.nightmarket.domain.item.service.dto.RestoreItemDomainServiceDto.Input;
@@ -31,39 +30,35 @@ class RestoreItemDomainServiceDtoTest {
     }
 
     @Test
-    @DisplayName("서비스 실행시 장바구니 상품 구매 취소 리스트가 반환하고 재고가 복구된다.")
-    void shouldReturnEventWithProductVariantListAndIncreaseProductQuantityWhenExecuted() {
+    @DisplayName("서비스 실행시 구매 취소 상품이 반환하고 재고가 복구된다.")
+    void shouldReturnEventWithProductVariantAndIncreaseProductQuantityWhenExecuted() {
         // given
-        UUID cpuId = UUID.randomUUID();
-        UUID ramId = UUID.randomUUID();
-        ProductVariant cpuProductVariant = testCPUProductVariant(cpuId, 200);
-        ProductVariant ramProductVariant = testRAMProductVariant(ramId, 200);
-        List<ProductVariant> cancelProductList = List.of(cpuProductVariant, ramProductVariant);
-        ShoppingBasket shoppingBasket = testShoppingBasketProduct(cpuId, 20, ramId, 10);
+        UUID productVariantId = UUID.randomUUID();
+        ProductVariant productVariant = testProductVariant(
+            productVariantId,
+            200
+        );
+        ShoppingBasketProduct shoppingBasketProduct = testShoppingBasketProduct(
+            productVariantId,
+            20
+        );
 
         Input input = Input.builder()
-            .productVariantList(cancelProductList)
-            .shoppingBasket(shoppingBasket)
+            .productVariant(productVariant)
+            .shoppingBasketProduct(shoppingBasketProduct)
             .build();
 
         // when
         Event event = service.execute(input);
 
         // then
-        Quantity expectedCpuQuantity = new Quantity(BigDecimal.valueOf(220));
-        Quantity expectedRamQuantity = new Quantity(BigDecimal.valueOf(210));
+        Quantity expectedQuantity = new Quantity(BigDecimal.valueOf(220));
 
         softly.assertThat(event).isNotNull();
-        softly.assertThat(event.getProductVariantList())
-            .hasSize(2);
-        softly.assertThat(event.getProductVariantList().get(0))
-            .isEqualTo(cpuProductVariant);
-        softly.assertThat(event.getProductVariantList().get(0).getQuantity())
-            .isEqualTo(expectedCpuQuantity);
-        softly.assertThat(event.getProductVariantList().get(1))
-            .isEqualTo(ramProductVariant);
-        softly.assertThat(event.getProductVariantList().get(1).getQuantity())
-            .isEqualTo(expectedRamQuantity);
+        softly.assertThat(event.getProductVariant())
+            .isEqualTo(productVariant);
+        softly.assertThat(event.getProductVariant().getQuantity())
+            .isEqualTo(expectedQuantity);
         softly.assertAll();
     }
 
@@ -71,17 +66,20 @@ class RestoreItemDomainServiceDtoTest {
     @DisplayName("서비스 실행시 상품 아이디가 다를때 예외를 발생한다.")
     void shouldThrowExceptionWhenServiceExecutedAndProductVariantIsDifferent() {
         // given
-        UUID cpuId = UUID.randomUUID();
-        UUID ramId = UUID.randomUUID();
-        UUID unavailableProductId = UUID.randomUUID();
-        ProductVariant cpuProductVariant = testCPUProductVariant(cpuId, 200);
-        ProductVariant ramProductVariant = testRAMProductVariant(ramId, 200);
-        List<ProductVariant> cancelProductList = List.of(cpuProductVariant, ramProductVariant);
-        ShoppingBasket shoppingBasket = testShoppingBasketProduct(cpuId, 20, unavailableProductId, 10);
+        UUID productVariantId = UUID.randomUUID();
+        UUID otherProductVariantId = UUID.randomUUID();
+        ProductVariant productVariant = testProductVariant(
+            productVariantId,
+            20
+        );
+        ShoppingBasketProduct shoppingBasketProduct = testShoppingBasketProduct(
+            otherProductVariantId,
+            2
+        );
 
         Input input = Input.builder()
-            .productVariantList(cancelProductList)
-            .shoppingBasket(shoppingBasket)
+            .productVariant(productVariant)
+            .shoppingBasketProduct(shoppingBasketProduct)
             .build();
 
         // when
@@ -90,29 +88,9 @@ class RestoreItemDomainServiceDtoTest {
             .isInstanceOf(ProductException.class);
     }
 
-    @Test
-    @DisplayName("복구 가능한 제품 목록이 비어있을때 예외를 던진다.")
-    void shouldThrowExceptionWhenCancelProductListIsEmpty() {
-        // given
-        UUID cpuId = UUID.randomUUID();
-        UUID ramId = UUID.randomUUID();
-        List<ProductVariant> cancelProductList = List.of();
-        ShoppingBasket shoppingBasket = testShoppingBasketProduct(cpuId, 20, ramId, 10);
-
-        Input input = Input.builder()
-            .productVariantList(cancelProductList)
-            .shoppingBasket(shoppingBasket)
-            .build();
-
-        // when
-        // then
-        assertThatThrownBy(() -> service.execute(input))
-            .isInstanceOf(ProductException.class);
-    }
-
-    private ProductVariant testCPUProductVariant(
-        UUID cpuId,
-        int cpuQuantity
+    private ProductVariant testProductVariant(
+        UUID productVariantId,
+        int productQuantity
     ) {
         UUID productId = UUID.randomUUID();
         UUID sellerId = UUID.randomUUID();
@@ -121,25 +99,25 @@ class RestoreItemDomainServiceDtoTest {
         UUID optionValueId = UUID.randomUUID();
 
         return TestItemFactory.createProductVariant(
-            cpuId,
+            productVariantId,
             productId,
             sellerId,
             "SKUCode",
-            cpuQuantity,
+            productQuantity,
             List.of(
                 TestItemFactory.createVariantOptionValue(
                     variantOptionValueId,
-                    cpuId,
+                    productVariantId,
                     TestItemFactory.createOptionGroup(
                         optionGroupId,
                         productId,
-                        "core",
+                        "옵션그룹1",
                         1,
                         List.of(
                             TestItemFactory.createOptionValue(
                                 optionValueId,
                                 optionGroupId,
-                                "4코어",
+                                "옵션 값1",
                                 10000,
                                 1
                             )
@@ -148,7 +126,7 @@ class RestoreItemDomainServiceDtoTest {
                     TestItemFactory.createOptionValue(
                         optionValueId,
                         optionGroupId,
-                        "4코어",
+                        "옵션 값1",
                         10000,
                         1
                     )
@@ -157,79 +135,17 @@ class RestoreItemDomainServiceDtoTest {
         );
     }
 
-    private ProductVariant testRAMProductVariant(
-        UUID ramId,
-        int ramQuantity
+    private ShoppingBasketProduct testShoppingBasketProduct(
+        UUID productVariantId,
+        int productQuantity
     ) {
-        UUID productId = UUID.randomUUID();
-        UUID sellerId = UUID.randomUUID();
-        UUID variantOptionValueId = UUID.randomUUID();
-        UUID optionGroupId = UUID.randomUUID();
-        UUID optionValueId = UUID.randomUUID();
-
-        return TestItemFactory.createProductVariant(
-            ramId,
-            productId,
-            sellerId,
-            "SKUCode",
-            ramQuantity,
-            List.of(
-                TestItemFactory.createVariantOptionValue(
-                    variantOptionValueId,
-                    ramId,
-                    TestItemFactory.createOptionGroup(
-                        optionGroupId,
-                        productId,
-                        "GB",
-                        1,
-                        List.of(
-                            TestItemFactory.createOptionValue(
-                                optionValueId,
-                                optionGroupId,
-                                "8",
-                                20000,
-                                1
-                            )
-                        )
-                    ),
-                    TestItemFactory.createOptionValue(
-                        optionValueId,
-                        optionGroupId,
-                        "8",
-                        20000,
-                        1
-                    )
-                )
-            )
-        );
-    }
-
-    private ShoppingBasket testShoppingBasketProduct(
-        UUID cpuId,
-        int cpuQuantity,
-        UUID ramId,
-        int ramQuantity
-    ) {
-        ShoppingBasket cart = TestShoppingBasketFactory.createCart();
-        ShoppingBasketProduct cpu = TestShoppingBasketFactory.createCartProduct(
+        return TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
-            cpuId,
-            "CPU",
-            cpuQuantity,
-            10000
+            productVariantId,
+            "상품이름",
+            10000,
+            productQuantity
         );
-        ShoppingBasketProduct ram = TestShoppingBasketFactory.createCartProduct(
-            UUID.randomUUID(),
-            ramId,
-            "CPU",
-            ramQuantity,
-            10000
-        );
-
-        cart.add(cpu);
-        cart.add(ram);
-
-        return cart;
     }
 
 }
