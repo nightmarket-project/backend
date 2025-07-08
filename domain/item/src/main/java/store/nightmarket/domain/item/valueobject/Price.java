@@ -32,6 +32,10 @@ public class Price {
         return new Price(amount.subtract(other.amount));
     }
 
+    public Price multiplyQuantity(Quantity quantity) {
+        return new Price(amount.multiply(quantity.value()));
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(amount);

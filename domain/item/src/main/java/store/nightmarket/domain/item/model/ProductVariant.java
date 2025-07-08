@@ -3,6 +3,7 @@ package store.nightmarket.domain.item.model;
 import java.util.List;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
+import store.nightmarket.domain.item.exception.QuantityException;
 import store.nightmarket.domain.item.valueobject.ProductId;
 import store.nightmarket.domain.item.valueobject.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
@@ -55,21 +56,23 @@ public class ProductVariant extends BaseModel<ProductVariantId> {
         return internalId();
     }
 
-    public boolean isNotAbleToPurchase(ShoppingBasketProduct shoppingBasketProduct) {
-        return quantity.isLessThan(shoppingBasketProduct.getQuantity());
+    private boolean isNotAbleToPurchase(Quantity purchaseQuantity) {
+        return quantity.isLessThan(purchaseQuantity);
     }
 
-    public void purchase(ShoppingBasketProduct shoppingBasketProduct) {
-        quantity = quantity.subtract(shoppingBasketProduct.getQuantity());
+    public boolean isNotSameAsProduct(ProductVariantId purchaseProductId) {
+        return !getProductVariantId().equals(purchaseProductId);
     }
 
-    public boolean isNotSameAsProduct(ShoppingBasketProduct shoppingBasketProduct) {
-        return !getProductVariantId().equals(
-            shoppingBasketProduct.getVariantId());
+    public void purchase(Quantity purchaseQuantity) {
+        if (this.isNotAbleToPurchase(purchaseQuantity)) {
+            throw new QuantityException("구매 불가 상품입니다.");
+        }
+        quantity = quantity.subtract(purchaseQuantity);
     }
 
-    public void restoreQuantity(ShoppingBasketProduct shoppingBasketProduct) {
-        quantity = quantity.add(shoppingBasketProduct.getQuantity());
+    public void restoreQuantity(Quantity restoreQuantity) {
+        quantity = quantity.add(restoreQuantity);
     }
 
 }
