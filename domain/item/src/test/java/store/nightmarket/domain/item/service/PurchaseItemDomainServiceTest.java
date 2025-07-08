@@ -14,7 +14,6 @@ import store.nightmarket.domain.item.exception.QuantityException;
 import store.nightmarket.domain.item.fixture.TestItemFactory;
 import store.nightmarket.domain.item.fixture.TestShoppingBasketFactory;
 import store.nightmarket.domain.item.model.ProductVariant;
-import store.nightmarket.domain.item.model.ShoppingBasket;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Event;
 import store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Input;
@@ -32,35 +31,36 @@ class PurchaseItemDomainServiceTest {
     }
 
     @Test
-    @DisplayName("서비스 실행 시 장바구니를 포함한 이벤트가 반환되고, 재고 수량이 차감된다")
-    void shouldReturnEventWithBasketAndDecreaseProductQuantityWhenServiceExecuted() {
+    @DisplayName("서비스 실행 시 장바구니 상품를 포함한 이벤트가 반환되고, 재고 수량이 차감된다")
+    void shouldReturnEventWithBasketProductAndDecreaseProductQuantityWhenServiceExecuted() {
         // given
-        UUID cpuId = UUID.randomUUID();
-        UUID ramId = UUID.randomUUID();
-        ProductVariant cpuProductVariant = testCPUProductVariant(cpuId, 200);
-        ProductVariant ramProductVariant = testRAMProductVariant(ramId, 200);
-        List<ProductVariant> purchaseProductList = List.of(cpuProductVariant, ramProductVariant);
-        ShoppingBasket shoppingBasket = testShoppingBasketProduct(cpuId, 20, ramId, 10);
+        UUID productVariantId = UUID.randomUUID();
+        ProductVariant productVariant = testProductVariant(
+            productVariantId,
+            200
+        );
+        ShoppingBasketProduct shoppingBasketProduct = testShoppingBasketProduct(
+            productVariantId,
+            20
+        );
 
         Input input = Input.builder()
-            .purchaseProductList(purchaseProductList)
-            .shoppingBasket(shoppingBasket)
+            .productVariant(productVariant)
+            .shoppingBasketProduct(shoppingBasketProduct)
             .build();
+
         // when
         Event event = service.execute(input);
 
         // then
         Quantity expectedCpuQuantity = new Quantity(BigDecimal.valueOf(180));
-        Quantity expectedRamQuantity = new Quantity(BigDecimal.valueOf(190));
 
         softly.assertThat(event)
             .isNotNull();
-        softly.assertThat(cpuProductVariant.getQuantity())
+        softly.assertThat(productVariant.getQuantity())
             .isEqualTo(expectedCpuQuantity);
-        softly.assertThat(ramProductVariant.getQuantity())
-            .isEqualTo(expectedRamQuantity);
-        softly.assertThat(event.getShoppingBasket())
-            .isEqualTo(shoppingBasket);
+        softly.assertThat(event.getProductVariant())
+            .isEqualTo(productVariant);
         softly.assertAll();
     }
 
@@ -68,16 +68,19 @@ class PurchaseItemDomainServiceTest {
     @DisplayName("구매 상품 수량이 충분치 않을때 예외를 던진다.")
     void shouldThrowQuantityExceptionWhenPurchaseProductQuantityIsInsufficient() {
         // given
-        UUID cpuId = UUID.randomUUID();
-        UUID ramId = UUID.randomUUID();
-        ProductVariant cpuProductVariant = testCPUProductVariant(cpuId, 100);
-        ProductVariant ramProductVariant = testRAMProductVariant(ramId, 100);
-        List<ProductVariant> purchaseProductList = List.of(cpuProductVariant, ramProductVariant);
-        ShoppingBasket shoppingBasket = testShoppingBasketProduct(cpuId, 101, ramId, 1);
+        UUID productVariantId = UUID.randomUUID();
+        ProductVariant productVariant = testProductVariant(
+            productVariantId,
+            100
+        );
+        ShoppingBasketProduct shoppingBasketProduct = testShoppingBasketProduct(
+            productVariantId,
+            220
+        );
 
         Input input = Input.builder()
-            .purchaseProductList(purchaseProductList)
-            .shoppingBasket(shoppingBasket)
+            .productVariant(productVariant)
+            .shoppingBasketProduct(shoppingBasketProduct)
             .build();
 
         // when
@@ -90,17 +93,20 @@ class PurchaseItemDomainServiceTest {
     @DisplayName("상품 아이디가 다를때 예외를 발생한다.")
     void shouldThrowProductExceptionWhenProductVariantIdIsDifferent() {
         // given
-        UUID cpuId = UUID.randomUUID();
-        UUID ramId = UUID.randomUUID();
-        UUID unavailableProductId = UUID.randomUUID();
-        ProductVariant cpuProductVariant = testCPUProductVariant(cpuId, 10);
-        ProductVariant ramProductVariant = testRAMProductVariant(ramId, 10);
-        List<ProductVariant> purchaseProductList = List.of(cpuProductVariant, ramProductVariant);
-        ShoppingBasket shoppingBasket = testShoppingBasketProduct(cpuId, 2, unavailableProductId, 3);
+        UUID productVariantId = UUID.randomUUID();
+        UUID otherProductVariantId = UUID.randomUUID();
+        ProductVariant cpuProductVariant = testProductVariant(
+            productVariantId,
+            100
+        );
+        ShoppingBasketProduct shoppingBasketProduct = testShoppingBasketProduct(
+            otherProductVariantId,
+            20
+        );
 
         Input input = Input.builder()
-            .purchaseProductList(purchaseProductList)
-            .shoppingBasket(shoppingBasket)
+            .productVariant(cpuProductVariant)
+            .shoppingBasketProduct(shoppingBasketProduct)
             .build();
 
         // when
@@ -109,30 +115,9 @@ class PurchaseItemDomainServiceTest {
             .isInstanceOf(ProductException.class);
     }
 
-
-    @Test
-    @DisplayName("구매 가능한 제품 목록이 비어있을때 예외를 던진다.")
-    void shouldThrowProductExceptionWhenPurchaseProductListIsEmpty() {
-        // given
-        UUID cpuId = UUID.randomUUID();
-        UUID ramId = UUID.randomUUID();
-        List<ProductVariant> purchaseProductList = List.of();
-        ShoppingBasket shoppingBasket = testShoppingBasketProduct(cpuId, 101, ramId, 1);
-
-        Input input = Input.builder()
-            .purchaseProductList(purchaseProductList)
-            .shoppingBasket(shoppingBasket)
-            .build();
-
-        // when
-        // then
-        assertThatThrownBy(() -> service.execute(input))
-            .isInstanceOf(ProductException.class);
-    }
-
-    private ProductVariant testCPUProductVariant(
-        UUID cpuId,
-        int cpuQuantity
+    private ProductVariant testProductVariant(
+        UUID productVariantId,
+        int productQuantity
     ) {
         UUID productId = UUID.randomUUID();
         UUID sellerId = UUID.randomUUID();
@@ -141,25 +126,25 @@ class PurchaseItemDomainServiceTest {
         UUID optionValueId = UUID.randomUUID();
 
         return TestItemFactory.createProductVariant(
-            cpuId,
+            productVariantId,
             productId,
             sellerId,
             "SKUCode",
-            cpuQuantity,
+            productQuantity,
             List.of(
                 TestItemFactory.createVariantOptionValue(
                     variantOptionValueId,
-                    cpuId,
+                    productVariantId,
                     TestItemFactory.createOptionGroup(
                         optionGroupId,
                         productId,
-                        "core",
+                        "옵션그룹1",
                         1,
                         List.of(
                             TestItemFactory.createOptionValue(
                                 optionValueId,
                                 optionGroupId,
-                                "4코어",
+                                "옵션 값1",
                                 10000,
                                 1
                             )
@@ -168,7 +153,7 @@ class PurchaseItemDomainServiceTest {
                     TestItemFactory.createOptionValue(
                         optionValueId,
                         optionGroupId,
-                        "4코어",
+                        "옵션 값1",
                         10000,
                         1
                     )
@@ -176,79 +161,18 @@ class PurchaseItemDomainServiceTest {
             )
         );
     }
-    private ProductVariant testRAMProductVariant(
-        UUID ramId,
-        int ramQuantity
+
+    private ShoppingBasketProduct testShoppingBasketProduct(
+        UUID productVariantId,
+        int productQuantity
     ) {
-        UUID productId = UUID.randomUUID();
-        UUID sellerId = UUID.randomUUID();
-        UUID variantOptionValueId = UUID.randomUUID();
-        UUID optionGroupId = UUID.randomUUID();
-        UUID optionValueId = UUID.randomUUID();
-
-        return TestItemFactory.createProductVariant(
-            ramId,
-            productId,
-            sellerId,
-            "SKUCode",
-            ramQuantity,
-            List.of(
-                TestItemFactory.createVariantOptionValue(
-                    variantOptionValueId,
-                    ramId,
-                    TestItemFactory.createOptionGroup(
-                        optionGroupId,
-                        productId,
-                        "GB",
-                        1,
-                        List.of(
-                            TestItemFactory.createOptionValue(
-                                optionValueId,
-                                optionGroupId,
-                                "8",
-                                20000,
-                                1
-                            )
-                        )
-                    ),
-                    TestItemFactory.createOptionValue(
-                        optionValueId,
-                        optionGroupId,
-                        "8",
-                        20000,
-                        1
-                    )
-                )
-            )
-        );
-    }
-
-    private ShoppingBasket testShoppingBasketProduct(
-        UUID cpuId,
-        int cpuQuantity,
-        UUID ramId,
-        int ramQuantity
-    ) {
-        ShoppingBasket cart = TestShoppingBasketFactory.createCart();
-        ShoppingBasketProduct cpu = TestShoppingBasketFactory.createCartProduct(
+        return TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
-            cpuId,
-            "CPU",
-            cpuQuantity,
-            10000
+            productVariantId,
+            "상품이름",
+            10000,
+            productQuantity
         );
-        ShoppingBasketProduct ram = TestShoppingBasketFactory.createCartProduct(
-            UUID.randomUUID(),
-            ramId,
-            "CPU",
-            ramQuantity,
-            10000
-        );
-
-        cart.add(cpu);
-        cart.add(ram);
-
-        return cart;
     }
 
 }
