@@ -5,6 +5,7 @@ import static lombok.AccessLevel.*;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -25,6 +26,7 @@ public class DetailOrderRecordEntity extends BaseUuidEntity {
 	@Column(name = "product_id", columnDefinition = "BINARY(16)", nullable = false)
 	private UUID productId;
 
+	@Embedded
 	@Column(name = "quantity", nullable = false)
 	private QuantityEntity quantity;
 
