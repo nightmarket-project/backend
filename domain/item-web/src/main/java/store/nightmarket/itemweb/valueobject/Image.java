@@ -1,33 +1,36 @@
 package store.nightmarket.itemweb.valueobject;
 
-import store.nightmarket.itemcore.valueobject.Name;
-
 import java.util.Objects;
 
 public class Image {
 
-    private final String url;
-    private final int order;
+    private String url;
+    private String altText;
+    private int sortNum;
 
     public Image(
-            String url,
-            int order
+        String url,
+        String altText,
+        int sortNum
     ) {
         this.url = url;
-        this.order = order;
+        this.altText = altText;
+        this.sortNum = sortNum;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Image other = (Image) obj;
-        return Objects.equals(url, other.url) && order == other.order;
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Image image = (Image) obj;
+        return sortNum == image.sortNum && Objects.equals(url, image.url)
+            && Objects.equals(altText, image.altText);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(url);
+        return Objects.hash(url, altText, sortNum);
     }
 
 }

@@ -17,7 +17,7 @@ public class DetailOrderRecord extends BaseModel<DetailOrderRecordId> {
 	private Quantity quantity;
 	private DetailOrderState state;
 
-	public DetailOrderRecord(
+	private DetailOrderRecord(
 		DetailOrderRecordId id,
 		ProductId productId,
 		Quantity quantity,
@@ -41,6 +41,10 @@ public class DetailOrderRecord extends BaseModel<DetailOrderRecordId> {
 			quantity,
 			state
 		);
+	}
+
+	public DetailOrderRecordId getDetailOrderRecordId() {
+		return internalId();
 	}
 
 	public void submit() {

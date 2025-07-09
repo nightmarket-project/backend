@@ -1,23 +1,29 @@
 package store.nightmarket.domain.item.service.dto;
 
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
-import store.nightmarket.domain.item.model.ProductItem;
-import store.nightmarket.domain.item.model.UserBuyProductItem;
+import store.nightmarket.domain.item.model.ProductVariant;
+import store.nightmarket.domain.item.model.ShoppingBasket;
 
 public class PurchaseItemDomainServiceDto {
 
     @Getter
     @Builder
     public static class Input {
-        private final ProductItem productItem;
-        private final UserBuyProductItem buyProductItem;
+
+        List<ProductVariant> purchaseProductList;
+        ShoppingBasket shoppingBasket;
+
     }
+
 
     @Getter
     @Builder
     public static class Event {
-        private final UserBuyProductItem buyProductItem;
+
+        ShoppingBasket shoppingBasket;
+
     }
 
 }

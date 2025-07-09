@@ -1,41 +1,42 @@
 package store.nightmarket.itemweb.model;
 
+import java.util.List;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemcore.valueobject.ItemId;
+import store.nightmarket.domain.item.valueobject.ProductId;
 import store.nightmarket.itemweb.valueobject.PostContent;
 import store.nightmarket.itemweb.valueobject.ProductPostId;
 
-import java.util.List;
-
 public class ProductPost extends BaseModel<ProductPostId> {
 
-    private ItemId itemId;
-    private PostContent content;
+    private ProductId productId;
+    private PostContent postContent;
     private List<Review> review;
+    private boolean deleted;
 
     private ProductPost(
-            ProductPostId id,
-            ItemId itemId,
-            PostContent content,
-            List<Review> review
+        ProductPostId id,
+        ProductId productId,
+        PostContent postContent,
+        List<Review> review
     ) {
         super(id);
-        this.itemId = itemId;
-        this.content = content;
+        this.productId = productId;
+        this.postContent = postContent;
         this.review = review;
+        this.deleted = false;
     }
 
     public static ProductPost newInstance(
-            ProductPostId id,
-            ItemId itemId,
-            PostContent content,
-            List<Review> review
+        ProductPostId id,
+        ProductId productId,
+        PostContent postContent,
+        List<Review> review
     ) {
         return new ProductPost(
-                id,
-                itemId,
-                content,
-                review
+            id,
+            productId,
+            postContent,
+            review
         );
     }
 

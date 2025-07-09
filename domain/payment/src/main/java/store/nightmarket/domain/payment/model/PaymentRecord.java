@@ -2,10 +2,13 @@ package store.nightmarket.domain.payment.model;
 
 import java.util.List;
 
+import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
+import store.nightmarket.domain.payment.exception.PaymentException;
 import store.nightmarket.domain.payment.valueobject.PaymentRecordId;
 import store.nightmarket.domain.payment.valueobject.UserId;
 
+@Getter
 public class PaymentRecord extends BaseModel<PaymentRecordId> {
 
 	private UserId userId;
@@ -14,8 +17,8 @@ public class PaymentRecord extends BaseModel<PaymentRecordId> {
 	private PaymentRecord(
 		PaymentRecordId id,
 		UserId userId,
-		List<DetailPaymentRecord> detailPaymentRecordList) {
-
+		List<DetailPaymentRecord> detailPaymentRecordList
+	) {
 		super(id);
 		this.userId = userId;
 		this.detailPaymentRecordList = detailPaymentRecordList;
@@ -33,9 +36,36 @@ public class PaymentRecord extends BaseModel<PaymentRecordId> {
 		);
 	}
 
-	public void requestPay() {
-		detailPaymentRecordList.forEach(detailPaymentRecord ->
-			detailPaymentRecord.requestPay());
+	public PaymentRecordId getPaymentRecordId() {
+		return internalId();
+	}
+
+	public void requestPayment() throws PaymentException {
+		detailPaymentRecordList.forEach(DetailPaymentRecord::submit);
+	}
+
+	public void completePayment() {
+		detailPaymentRecordList.forEach(DetailPaymentRecord::complete);
+	}
+
+	public void rejectPayment() {
+		detailPaymentRecordList.forEach(DetailPaymentRecord::reject);
+	}
+
+	public void cancelPayment() {
+		detailPaymentRecordList.forEach(DetailPaymentRecord::cancel);
+	}
+
+	public void cancelDetailPayment(DetailPaymentRecord detailPaymentRecord) {
+		detailPaymentRecordList.stream()
+			.filter(d -> d.equals(detailPaymentRecord))
+			.findFirst()
+			.ifPresentOrElse(
+				DetailPaymentRecord::cancel,
+				() -> {
+					throw new PaymentException("Payment not found");
+				}
+			);
 	}
 
 }

@@ -1,40 +1,52 @@
 package store.nightmarket.domain.item.service;
 
-import org.springframework.stereotype.Component;
-import store.nightmarket.common.domain.service.BaseDomainService;
-import store.nightmarket.common.util.ItemOptionValidationError;
-import store.nightmarket.domain.item.exception.ProductItemException;
-import store.nightmarket.domain.item.model.ProductItem;
-import store.nightmarket.domain.item.model.UserBuyProductItem;
-
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import store.nightmarket.common.domain.service.BaseDomainService;
+import store.nightmarket.domain.item.exception.ProductException;
+import store.nightmarket.domain.item.exception.QuantityException;
+import store.nightmarket.domain.item.model.ProductVariant;
+import store.nightmarket.domain.item.model.ShoppingBasket;
+import store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Event;
+import store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Input;
+import store.nightmarket.domain.item.valueobject.ProductVariantId;
 
-import static store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Event;
-import static store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Input;
-
-@Component
 public class PurchaseItemDomainService
-        implements BaseDomainService<Input, Event> {
+    implements BaseDomainService<Input, Event> {
 
     @Override
     public Event execute(Input input) {
-        ProductItem productItem = input.getProductItem();
-        UserBuyProductItem buyProductITem = input.getBuyProductItem();
+        List<ProductVariant> purchaseProductList = input.getPurchaseProductList();
+        ShoppingBasket shoppingBasket = input.getShoppingBasket();
 
-        if (!productItem.getItemId().equals(buyProductITem.getItemId())) {
-            throw new ProductItemException("Product item id does not match buy product item id");
+        if (purchaseProductList.isEmpty()) {
+            throw new ProductException("No product found");
         }
+        Map<ProductVariantId, ProductVariant> purchaseProductMap = purchaseProductList.stream()
+            .collect(Collectors.toMap(ProductVariant::getProductVariantId, Function.identity()));
 
-        List<ItemOptionValidationError> productItemErrors = productItem.findProductItemErrors(buyProductITem);
-        if (!productItemErrors.isEmpty()) {
-            throw new ProductItemException(buyProductITem.toString());
-        }
-        productItem.reduceProductBy(buyProductITem);
+        shoppingBasket.getShoppingBasket()
+            .forEach(shoppingBasketProduct -> {
+                ProductVariantId productVariantId = shoppingBasketProduct.getVariantId();
+                if (!purchaseProductMap.containsKey(productVariantId)) {
+                    throw new ProductException(
+                        "Product variant is not same as shopping basket product: "
+                            + shoppingBasketProduct.getName());
+                }
 
+                ProductVariant purchaseProduct = purchaseProductMap.get(productVariantId);
+                if (purchaseProduct.isNotAbleToPurchase(shoppingBasketProduct)) {
+                    throw new QuantityException("Product is not available to purchase: "
+                        + shoppingBasketProduct.getName());
+                }
+                purchaseProduct.purchase(shoppingBasketProduct);
+            });
 
         return Event.builder()
-                .buyProductItem(buyProductITem)
-                .build();
+            .shoppingBasket(shoppingBasket)
+            .build();
     }
 
 }

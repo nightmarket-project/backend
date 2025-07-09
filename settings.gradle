@@ -3,8 +3,6 @@ rootProject.name = 'nightmarket'
 include 'common'
 
 //domain layer
-include 'item-core'
-project(':item-core').projectDir = file('domain/item-core')
 include 'item'
 project(':item').projectDir = file('domain/item')
 include 'order'
@@ -17,6 +15,17 @@ include 'item-web'
 project(':item-web').projectDir = file('domain/item-web')
 include 'user'
 project(':user').projectDir = file('domain/user')
+
+//persistence layer
+include 'persist-delivery'
+project(':persist-delivery').projectDir = file('persistence/persist-delivery')
+include 'persist-order'
+project(':persist-order').projectDir = file('persistence/persist-order')
+include 'persist-payment'
+project(':persist-payment').projectDir = file('persistence/persist-payment')
+include 'persist-item'
+project(':persist-item').projectDir = file('persistence/persist-item')
+
 
 //application layer
 include 'app-item'

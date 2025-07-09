@@ -63,12 +63,13 @@ project(':common') {
         annotationProcessor 'org.projectlombok:lombok'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
         compileOnly 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     }
 }
 
 //domain layer
 
-def domain = [project(':item-core'), project(":order"), project(":payment"), project(":delivery"), project(':user')]
+def domain = [project(':item'), project(":order"), project(":payment"), project(":delivery"), project(':user'), project(':item-web')]
 
 configure(domain) {
     bootJar {
@@ -90,34 +91,78 @@ configure(domain) {
     }
 }
 
-project(':item') {
+def item = [project(':item-web')]
+
+configure(item) {
     bootJar {
         enabled = false
     }
     dependencies {
-        implementation project(':item-core')
         implementation project(':common')
+        implementation project(':item')
+    }
+}
+//persistence layer
+def persist = [project(':persist-delivery'), project(':persist-order'), project(':persist-payment'), project(':persist-item')]
 
+configure(persist) {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':common')
+        
+        // Spring boot
+        compileOnly 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+        // Lombok
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
+
+        // Test
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-        compileOnly 'org.springframework.boot:spring-boot-starter'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.4'
+        testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.4'
+        testImplementation("org.assertj:assertj-core:3.27.3")
     }
 }
 
-project(':item-web') {
+project(':persist-delivery') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':delivery')
+    }
+}
+
+project(':persist-order') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':order')
+    }
+}
+
+project(':persist-payment') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':payment')
+    }
+}
+
+project(':persist-item') {
     bootJar {
         enabled = false
     }
     dependencies {
         implementation project(':item')
-        implementation project(':item-core')
-        implementation project(':common')
-
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-        compileOnly 'org.springframework.boot:spring-boot-starter'
+        implementation project(':item-web')
     }
 }
 
@@ -130,21 +175,28 @@ configure(app) {
         enabled = false
     }
     dependencies {
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.4'
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
-        testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.4'
-        testImplementation("org.assertj:assertj-core:3.27.3")
-        compileOnly 'org.springframework.boot:spring-boot-starter'
+        implementation project(':common')
 
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        // Spring Boot
+        implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.kafka:spring-kafka'
-        compileOnly 'org.projectlombok:lombok'
+
+        // Database
         runtimeOnly 'com.h2database:h2'
+
+        // Lombok
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
+        // Test
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation 'org.springframework.kafka:spring-kafka-test'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.4'
+        testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.4'
+        testImplementation 'org.assertj:assertj-core:3.27.3'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
     }
 }
 
@@ -155,6 +207,7 @@ project(':app-item') {
     dependencies {
         implementation project(':item')
         implementation project(':item-web')
+        implementation project(':persist-item')
     }
 }
 
@@ -164,6 +217,7 @@ project(':app-order') {
     }
     dependencies {
         implementation project(':order')
+        implementation project(':persist-order')
     }
 }
 
@@ -173,6 +227,7 @@ project(':app-payment') {
     }
     dependencies {
         implementation project(':payment')
+        implementation project(':persist-payment')
     }
 }
 
@@ -182,5 +237,6 @@ project(':app-delivery') {
     }
     dependencies {
         implementation project(':delivery')
+        implementation project(':persist-delivery')
     }
 }

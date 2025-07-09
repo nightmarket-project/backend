@@ -18,7 +18,7 @@ public class DeliveryRecord extends BaseModel<DeliveryRecordId> {
 	private UserId userId;
 	private List<DeliveryTrackingRecord> deliveryTrackingRecordList;
 
-	public DeliveryRecord(
+	private DeliveryRecord(
 		DeliveryRecordId id,
 		Address address,
 		UserId userId,
@@ -43,6 +43,10 @@ public class DeliveryRecord extends BaseModel<DeliveryRecordId> {
 			userId,
 			deliveryTrackingRecordList
 		);
+	}
+
+	public DeliveryRecordId getDeliveryRecordId() {
+		return internalId();
 	}
 
 	public DeliveryTrackingRecord getLatestRecord() {

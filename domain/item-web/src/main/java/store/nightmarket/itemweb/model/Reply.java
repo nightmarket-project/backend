@@ -1,46 +1,73 @@
 package store.nightmarket.itemweb.model;
 
+import java.time.LocalDate;
+import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemcore.valueobject.UserId;
+import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
+import store.nightmarket.itemweb.valueobject.ReplyContent;
+import store.nightmarket.itemweb.valueobject.ReplyId;
 import store.nightmarket.itemweb.valueobject.ReviewId;
 
-public class Reply extends BaseModel<ReviewId> {
+@Getter
+public class Reply extends BaseModel<ReplyId> {
 
-    private String content;
-    private UserId author;
-    private static int MAX_LENGTH = 255;
+    private ReplyContent replyContent;
+    private UserId authorId;
+    private ReviewId reviewId;
+    private final LocalDate createdAt;
+    private boolean deleted;
 
     private Reply(
-            ReviewId id,
-            String content,
-            UserId author
+        ReplyId id,
+        ReplyContent replyContent,
+        UserId authorId,
+        ReviewId reviewId
     ) {
         super(id);
-        this.content = content;
-        this.author = author;
-        validateContent();
+        this.replyContent = replyContent;
+        this.authorId = authorId;
+        this.reviewId = reviewId;
+        createdAt = LocalDate.now();
+        deleted = false;
     }
 
     public static Reply newInstance(
-            ReviewId id,
-            String content,
-            UserId author
+        ReplyId id,
+        ReplyContent replyContent,
+        UserId authorId,
+        ReviewId reviewId
     ) {
         return new Reply(
-                id,
-                content,
-                author
+            id,
+            replyContent,
+            authorId,
+            reviewId
         );
     }
 
-    void validateContent() {
-        if (content.isBlank()) {
-            throw new ItemWebException("The content is blank");
+
+    public void delete(UserId currentUserId) {
+        if (deleted) {
+            throw new ItemWebException("이미 삭제된 댓글입니다.");
         }
-        if (content.length() > MAX_LENGTH) {
-            throw new ItemWebException("The content is too long");
+        if (!currentUserId.equals(authorId)) {
+            throw new ItemWebException("댓글 작성자만 삭제 가능합니다.");
         }
+
+        this.replyContent = ReplyContent.deleted();
+        deleted = true;
+    }
+
+
+    public void edit(
+        UserId userId,
+        ReplyContent editContent
+    ) {
+        if (!userId.equals(authorId)) {
+            throw new ItemWebException("댓글 작성자만 수정 가능합니다.");
+        }
+        this.replyContent = editContent;
     }
 
 }

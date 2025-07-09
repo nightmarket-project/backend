@@ -1,0 +1,24 @@
+package store.nightmarket.itemweb.service;
+
+import store.nightmarket.common.domain.service.BaseDomainService;
+import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.itemweb.model.Review;
+import store.nightmarket.itemweb.service.dto.DeleteReviewItemWebDomainServiceDto.Event;
+import store.nightmarket.itemweb.service.dto.DeleteReviewItemWebDomainServiceDto.Input;
+
+public class DeleteReviewItemWebDomainService
+    implements BaseDomainService<Input, Event> {
+
+    @Override
+    public Event execute(Input input) {
+        Review review = input.getReview();
+        UserId currentUserId = input.getUserId();
+
+        review.delete(currentUserId);
+
+        return Event.builder()
+            .review(review)
+            .build();
+    }
+
+}

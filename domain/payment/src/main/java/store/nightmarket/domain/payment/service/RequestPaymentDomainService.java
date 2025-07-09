@@ -1,25 +1,23 @@
 package store.nightmarket.domain.payment.service;
 
-import static store.nightmarket.domain.payment.service.dto.RequestPaymentDomainServiceDto.*;
-
 import org.springframework.stereotype.Component;
-
 import store.nightmarket.common.domain.service.BaseDomainService;
 import store.nightmarket.domain.payment.model.PaymentRecord;
+import store.nightmarket.domain.payment.service.dto.RequestPaymentDomainServiceDto.*;
 
 @Component
 public class RequestPaymentDomainService
-	implements BaseDomainService<Input, Event> {
+        implements BaseDomainService<Input, Event> {
 
-	@Override
-	public Event execute(Input input) {
-		PaymentRecord paymentRecord = input.getPaymentRecord();
+    @Override
+    public Event execute(Input input) {
+        PaymentRecord paymentRecord = input.getPaymentRecord();
 
-		paymentRecord.requestPay();
+        paymentRecord.requestPayment();
 
-		return Event.builder()
-			.paymentRecord(paymentRecord)
-			.build();
-	}
+        return Event.builder()
+                .paymentRecord(paymentRecord)
+                .build();
+    }
 
 }
