@@ -16,7 +16,7 @@ public class User extends BaseModel<UserId> {
 	private Account account;
 	private Password password;
 	private Point point;
-	private UserRole role;
+	private final UserRole role;
 
 	private User(
 		UserId id,
