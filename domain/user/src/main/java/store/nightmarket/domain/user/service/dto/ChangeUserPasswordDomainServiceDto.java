@@ -22,4 +22,5 @@ public class ChangeUserPasswordDomainServiceDto {
 		private final User user;
 
 	}
+
 }
