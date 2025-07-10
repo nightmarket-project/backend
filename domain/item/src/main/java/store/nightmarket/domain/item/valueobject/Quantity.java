@@ -1,10 +1,8 @@
 package store.nightmarket.domain.item.valueobject;
 
-import lombok.Getter;
-import store.nightmarket.domain.item.exception.QuantityException;
-
 import java.math.BigDecimal;
 import java.util.Objects;
+import store.nightmarket.domain.item.exception.QuantityException;
 
 public record Quantity(BigDecimal value) {
 
