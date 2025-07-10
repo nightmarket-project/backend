@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.fixture.TestObjectFactory;
-import store.nightmarket.itemweb.valueobject.ReplyContent;
+import store.nightmarket.itemweb.valueobject.CommentText;
 
 class ReplyTest {
 
@@ -29,7 +29,7 @@ class ReplyTest {
         UUID authorId = UUID.randomUUID();
         Reply reply = TestObjectFactory.createReply(
             UUID.randomUUID(),
-            TestObjectFactory.createReplyContent("good!"),
+            "good!",
             authorId,
             UUID.randomUUID()
         );
@@ -39,7 +39,7 @@ class ReplyTest {
 
         // then
         softly.assertThat(reply.isDeleted()).isTrue();
-        softly.assertThat(reply.getReplyContent().getDescription()).isEqualTo("삭제된 댓글입니다.");
+        softly.assertThat(reply.getCommentText().value()).isEqualTo("삭제된 댓글입니다.");
         softly.assertAll();
     }
 
@@ -51,7 +51,7 @@ class ReplyTest {
         UserId otherAuthorId = new UserId(UUID.randomUUID());
         Reply reply = TestObjectFactory.createReply(
             UUID.randomUUID(),
-            TestObjectFactory.createReplyContent("good!"),
+            "good!",
             authorId,
             UUID.randomUUID()
         );
@@ -67,19 +67,19 @@ class ReplyTest {
     void shouldEditReplyWhenCurrentUserIdIsEqualToAuthorId() {
         // given
         UUID authorId = UUID.randomUUID();
-        ReplyContent editingContent = new ReplyContent("bad!");
+        CommentText editingText = new CommentText("bad!");
         Reply reply = TestObjectFactory.createReply(
             UUID.randomUUID(),
-            TestObjectFactory.createReplyContent("good!"),
+            "good!",
             authorId,
             UUID.randomUUID()
         );
 
         // when
-        reply.edit(new UserId(authorId), editingContent);
+        reply.edit(new UserId(authorId), editingText);
 
         // then
-        assertThat(reply.getReplyContent()).isEqualTo(editingContent);
+        assertThat(reply.getCommentText()).isEqualTo(editingText);
     }
 
     @Test
@@ -88,10 +88,10 @@ class ReplyTest {
         // given
         UUID authorId = UUID.randomUUID();
         UserId otherAuthorId = new UserId(UUID.randomUUID());
-        ReplyContent editingContent = new ReplyContent("bad!");
+        CommentText editingText = new CommentText("bad!");
         Reply reply = TestObjectFactory.createReply(
             UUID.randomUUID(),
-            TestObjectFactory.createReplyContent("good!"),
+            "good!",
             authorId,
             UUID.randomUUID()
         );
@@ -101,7 +101,7 @@ class ReplyTest {
         assertThatThrownBy(
             () -> reply.edit(
                 otherAuthorId,
-                editingContent
+                editingText
             )
         ).isInstanceOf(ItemWebException.class);
     }
