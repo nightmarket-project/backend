@@ -14,9 +14,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.ContentEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.ImageEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.CommentText;
+import store.nightmarket.persistence.persistitem.entity.valueobject.Rating;
 
 @Getter
 @Entity
@@ -28,13 +27,12 @@ public class ReviewEntity extends BaseUuidEntity {
     private UUID userId;
 
     @Embedded
-    @Column(name = "content")
-    private ContentEntity contentEntity;
+    @Column(name = "text")
+    private CommentText commentText;
 
     @Embedded
     @Column(name = "rating", nullable = false)
-    private RatingEntity ratingEntity;
-
+    private Rating rating;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
@@ -55,35 +53,43 @@ public class ReviewEntity extends BaseUuidEntity {
 
     public ReviewEntity(
         UUID userId,
-        ContentEntity contentEntity,
-        RatingEntity ratingEntity,
+        CommentText commentText,
+        Rating rating,
         ImageEntity imageEntity,
         LocalDate createDate,
-        boolean deleted
+        boolean deleted,
+        ProductPostEntity productPostEntity,
+        ReplyEntity replyEntity
     ) {
         this.userId = userId;
-        this.contentEntity = contentEntity;
-        this.ratingEntity = ratingEntity;
+        this.commentText = commentText;
+        this.rating = rating;
         this.imageEntity = imageEntity;
         this.createDate = createDate;
         this.deleted = deleted;
+        this.productPostEntity = productPostEntity;
+        this.replyEntity = replyEntity;
     }
 
     public static ReviewEntity newInstance(
         UUID userId,
-        ContentEntity contentEntity,
-        RatingEntity ratingEntity,
+        CommentText commentText,
+        Rating rating,
         ImageEntity imageEntity,
         LocalDate createDate,
-        boolean deleted
+        boolean deleted,
+        ProductPostEntity productPostEntity,
+        ReplyEntity replyEntity
     ) {
         return new ReviewEntity(
             userId,
-            contentEntity,
-            ratingEntity,
+            commentText,
+            rating,
             imageEntity,
             createDate,
-            deleted
+            deleted,
+            productPostEntity,
+            replyEntity
         );
     }
 
