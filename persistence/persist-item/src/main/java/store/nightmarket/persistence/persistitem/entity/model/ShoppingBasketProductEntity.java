@@ -6,10 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,9 +16,9 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.QuantityEnti
 
 @Getter
 @Entity
-@Table(name = "cart_product")
+@Table(name = "shopping_basket_product")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CartProductEntity extends BaseUuidEntity {
+public class ShoppingBasketProductEntity extends BaseUuidEntity {
 
     @Embedded
     @Column(name = "name")
@@ -31,34 +28,32 @@ public class CartProductEntity extends BaseUuidEntity {
     @Column(name = "quantity")
     private QuantityEntity quantityEntity;
 
-    @OneToMany(mappedBy = "cartProductEntity", fetch = FetchType.LAZY)
-    private List<CartProductVariantEntity> cartProductVariantEntityList = new ArrayList<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id")
-    private CartEntity cartEntity;
+    @JoinColumn(name = "product_variant")
+    private ProductVariantEntity productVariantEntity;
 
-    private CartProductEntity(
+    //추후 UserEntity 매핑 예정
+
+    private ShoppingBasketProductEntity(
         NameEntity nameEntity,
         QuantityEntity quantityEntity,
-        List<CartProductVariantEntity> cartProductVariantEntityList
+        ProductVariantEntity productVariantEntity
     ) {
         this.nameEntity = nameEntity;
         this.quantityEntity = quantityEntity;
-        this.cartProductVariantEntityList = cartProductVariantEntityList;
+        this.productVariantEntity = productVariantEntity;
     }
 
-    public static CartProductEntity newInstance(
+    public static ShoppingBasketProductEntity newInstance(
         NameEntity nameEntity,
         QuantityEntity quantityEntity,
-        List<CartProductVariantEntity> cartProductVariantEntityList
+        ProductVariantEntity productVariantEntity
     ) {
-        return new CartProductEntity(
+        return new ShoppingBasketProductEntity(
             nameEntity,
             quantityEntity,
-            cartProductVariantEntityList
+            productVariantEntity
         );
     }
-
 
 }

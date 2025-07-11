@@ -29,6 +29,9 @@ public class ProductVariantEntity extends BaseUuidEntity {
     @OneToMany(mappedBy = "productVariantEntity", fetch = FetchType.LAZY)
     private List<VariantOptionValueEntity> variantOptionValueEntityList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "productVariantEntity", fetch = FetchType.LAZY)
+    private List<ShoppingBasketProductEntity> shoppingBasketProductEntityList = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private ProductEntity productEntity;
@@ -36,22 +39,26 @@ public class ProductVariantEntity extends BaseUuidEntity {
     private ProductVariantEntity(
         QuantityEntity quantityEntity,
         ProductEntity productEntity,
-        List<VariantOptionValueEntity> variantOptionValueEntityList
+        List<VariantOptionValueEntity> variantOptionValueEntityList,
+        List<ShoppingBasketProductEntity> shoppingBasketProductEntityList
     ) {
         this.quantityEntity = quantityEntity;
         this.productEntity = productEntity;
         this.variantOptionValueEntityList = variantOptionValueEntityList;
+        this.shoppingBasketProductEntityList = shoppingBasketProductEntityList;
     }
 
     public static ProductVariantEntity newInstance(
         QuantityEntity quantityEntity,
         ProductEntity productEntity,
-        List<VariantOptionValueEntity> variantOptionValueEntityList
+        List<VariantOptionValueEntity> variantOptionValueEntityList,
+        List<ShoppingBasketProductEntity> shoppingBasketProductEntityList
     ) {
         return new ProductVariantEntity(
             quantityEntity,
             productEntity,
-            variantOptionValueEntityList
+            variantOptionValueEntityList,
+            shoppingBasketProductEntityList
         );
     }
 
