@@ -1,10 +1,8 @@
 package store.nightmarket.itemweb.model;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.state.ImageType;
 import store.nightmarket.itemweb.valueobject.ImageId;
@@ -23,42 +21,42 @@ public class Image extends BaseModel<ImageId> {
     private final static int ReviewMaxWidth = 75;
     private final static int ReviewMaxHeight = 75;
 
-    private final String originalFilename;
+    private final String originalFileName;
     private final String imageUrl;
     private final String altText;
     private final Long fileSize;
     private final Integer width;
     private final Integer height;
     private int displayOrder;
-
     private final ImageType imageType;
-    private final LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private final UserId createBy;
-    private UserId updateBy;
+
 
     private Image(
         ImageId id,
-        String originalFilename,
+        String originalFileName,
         String imageUrl,
         String altText,
         Long fileSize,
         Integer width,
         Integer height,
         int displayOrder,
-        ImageType imageType,
-        UserId userId
+        ImageType imageType
     ) {
         super(id);
         if (ImageType.REVIEW == imageType) {
             validateReviewImage(
+                imageUrl,
                 fileSize,
                 width,
                 height
             );
-        } else {
+        }
+        if (ImageType.MAIN == imageType
+            || ImageType.DETAIL == imageType
+            || ImageType.THUMBNAIL == imageType
+        ) {
             validatePostImage(
-                originalFilename,
+                originalFileName,
                 imageUrl,
                 altText,
                 fileSize,
@@ -67,7 +65,7 @@ public class Image extends BaseModel<ImageId> {
             );
         }
 
-        this.originalFilename = originalFilename;
+        this.originalFileName = originalFileName;
         this.imageUrl = imageUrl;
         this.altText = altText;
         this.fileSize = fileSize;
@@ -75,35 +73,29 @@ public class Image extends BaseModel<ImageId> {
         this.height = height;
         this.displayOrder = displayOrder;
         this.imageType = imageType;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-        this.createBy = userId;
-        this.updateBy = userId;
     }
 
     public static Image newInstance(
         ImageId id,
-        String originalFilename,
+        String originalFileName,
         String imageUrl,
         String altText,
         Long fileSize,
         Integer width,
         Integer height,
         int displayOrder,
-        ImageType imageType,
-        UserId userId
+        ImageType imageType
     ) {
         return new Image(
             id,
-            originalFilename,
+            originalFileName,
             imageUrl,
             altText,
             fileSize,
             width,
             height,
             displayOrder,
-            imageType,
-            userId
+            imageType
         );
     }
 
@@ -145,10 +137,17 @@ public class Image extends BaseModel<ImageId> {
     }
 
     private void validateReviewImage(
+        String imageUrl,
         Long fileSize,
         Integer width,
         Integer height
     ) {
+        if (imageUrl.isBlank()) {
+            throw new ItemWebException("ImageUrl is Blank");
+        }
+        if (imageUrl.length() > MaxUrlLength) {
+            throw new ItemWebException("ImageUrl exceeds MaxUrlLength");
+        }
         if (fileSize > ReviewMaxFileSize) {
             throw new ItemWebException("FileSize exceeds ReviewMaxFileSize");
         }
@@ -160,11 +159,6 @@ public class Image extends BaseModel<ImageId> {
         }
     }
 
-    public void updateImageFile(UserId userId) {
-        updatedAt = LocalDateTime.now();
-        updateBy = userId;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj == null || getClass() != obj.getClass()) {
@@ -172,22 +166,18 @@ public class Image extends BaseModel<ImageId> {
         }
         Image image = (Image) obj;
         return displayOrder == image.displayOrder
-            && Objects.equals(originalFilename, image.originalFilename)
+            && Objects.equals(originalFileName, image.originalFileName)
             && Objects.equals(imageUrl, image.imageUrl)
             && Objects.equals(altText, image.altText)
             && Objects.equals(fileSize, image.fileSize)
             && Objects.equals(width, image.width)
             && Objects.equals(height, image.height)
-            && imageType == image.imageType
-            && Objects.equals(createdAt, image.createdAt)
-            && Objects.equals(updatedAt, image.updatedAt)
-            && Objects.equals(createBy, image.createBy)
-            && Objects.equals(updateBy, image.updateBy);
+            && imageType == image.imageType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(originalFilename, imageUrl, altText, fileSize, width, height,
-            displayOrder, imageType, createdAt, updatedAt, createBy, updateBy);
+        return Objects.hash(originalFileName, imageUrl, altText, fileSize,
+            width, height, displayOrder, imageType);
     }
 }
