@@ -5,25 +5,32 @@ import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
-import store.nightmarket.itemweb.valueobject.ReviewContent;
+import store.nightmarket.itemweb.valueobject.CommentText;
+import store.nightmarket.itemweb.valueobject.Rating;
 import store.nightmarket.itemweb.valueobject.ReviewId;
 
 @Getter
 public class Review extends BaseModel<ReviewId> {
 
-    private UserId author;
-    private ReviewContent reviewContent;
+    private final UserId author;
+    private CommentText commentText;
+    private Image image;
+    private Rating rating;
     private final LocalDate createdAt;
     private boolean deleted;
 
     private Review(
         ReviewId id,
         UserId author,
-        ReviewContent reviewContent
+        CommentText commentText,
+        Image image,
+        Rating rating
     ) {
         super(id);
         this.author = author;
-        this.reviewContent = reviewContent;
+        this.commentText = commentText;
+        this.image = image;
+        this.rating = rating;
         this.createdAt = LocalDate.now();
         deleted = false;
     }
@@ -31,12 +38,16 @@ public class Review extends BaseModel<ReviewId> {
     public static Review newInstance(
         ReviewId id,
         UserId author,
-        ReviewContent reviewContent
+        CommentText commentText,
+        Image image,
+        Rating rating
     ) {
         return new Review(
             id,
             author,
-            reviewContent
+            commentText,
+            image,
+            rating
         );
     }
 
@@ -48,18 +59,23 @@ public class Review extends BaseModel<ReviewId> {
             throw new ItemWebException("댓글 작성자만 삭제 가능합니다.");
         }
 
-        this.reviewContent = ReviewContent.deleted();
+        this.commentText = CommentText.deleted();
         deleted = true;
     }
 
     public void edit(
         UserId authorId,
-        ReviewContent editContent
+        CommentText editContent,
+        Rating editRating,
+        Image editImage
     ) {
         if (!authorId.equals(this.author)) {
             throw new ItemWebException("댓글 작성자만 수정 가능합니다.");
         }
-        this.reviewContent = editContent;
+
+        this.commentText = (editContent == null) ? commentText : editContent;
+        this.rating = (editRating == null) ? rating : editRating;
+        this.image = (editImage == null) ? image : editImage;
     }
 
 }

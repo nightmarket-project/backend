@@ -8,7 +8,7 @@ import store.nightmarket.domain.item.valueobject.ProductId;
 
 public class OptionGroup extends BaseModel<OptionGroupId> {
 
-    private ProductId productId;
+    private final ProductId productId;
     private Name name;
     private int order;
     private List<OptionValue> optionValueList;

@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.fixture.TestObjectFactory;
-import store.nightmarket.itemweb.valueobject.Image;
-import store.nightmarket.itemweb.valueobject.ReviewContent;
+import store.nightmarket.itemweb.valueobject.CommentText;
+import store.nightmarket.itemweb.valueobject.Rating;
 
 class ReviewTest {
 
@@ -31,11 +31,12 @@ class ReviewTest {
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),
             authorId,
-            TestObjectFactory.createReviewContent(
-                "good!",
-                5,
-                TestObjectFactory.defaultImage()
-            )
+            "good!",
+            TestObjectFactory.defaultImage(
+                UUID.randomUUID(),
+                UUID.randomUUID()
+            ),
+            5
         );
 
         // when
@@ -43,7 +44,7 @@ class ReviewTest {
 
         // then
         softly.assertThat(review.isDeleted()).isTrue();
-        softly.assertThat(review.getReviewContent().getDescription()).isEqualTo("삭제된 댓글입니다.");
+        softly.assertThat(review.getCommentText().value()).isEqualTo("삭제된 댓글입니다.");
         softly.assertAll();
     }
 
@@ -57,11 +58,12 @@ class ReviewTest {
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),
             authorId,
-            TestObjectFactory.createReviewContent(
-                "good!",
-                5,
-                TestObjectFactory.defaultImage()
-            )
+            "good!",
+            TestObjectFactory.defaultImage(
+                UUID.randomUUID(),
+                authorId
+            ),
+            5
         );
 
         // when
@@ -75,33 +77,32 @@ class ReviewTest {
     void shouldEditReviewWhenCurrentUserIdIsEqualToAuthorId() {
         // given
         UUID authorId = UUID.randomUUID();
-        Image image = TestObjectFactory.createImage("aaa", "테스트 사진", 1);
+        Image image = TestObjectFactory.defaultImage(
+            UUID.randomUUID(),
+            authorId
+        );
 
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),
             authorId,
-            TestObjectFactory.createReviewContent(
-                "good!",
-                5,
-                image
-            )
+            "good!",
+            image,
+            5
         );
 
         // when
-        ReviewContent editReviewContent = TestObjectFactory.createReviewContent(
-            "bad!",
-            1,
-            TestObjectFactory.defaultImage()
-        );
-
         review.edit(
             new UserId(authorId),
-            editReviewContent
+            new CommentText("bad!"),
+            new Rating(1),
+            image
         );
 
         // then
-        softly.assertThat(review.getReviewContent())
-            .isEqualTo(editReviewContent);
+        softly.assertThat(review.getCommentText().value())
+            .isEqualTo("bad!");
+        softly.assertThat(review.getRating())
+            .isEqualTo(new Rating(1));
         softly.assertAll();
     }
 
@@ -110,31 +111,29 @@ class ReviewTest {
     void shouldThrowExceptionWhenUserIdIsDifferentFromAuthorIdOnEditReview() {
         // given
         UUID authorId = UUID.randomUUID();
-        Image image = TestObjectFactory.createImage("aaa", "테스트 사진", 1);
+        Image image = TestObjectFactory.defaultImage(
+            UUID.randomUUID(),
+            authorId
+        );
 
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),
             authorId,
-            TestObjectFactory.createReviewContent(
-                "good!",
-                5,
-                image
-            )
+            "good!",
+            image,
+            5
         );
 
         // when
         // then
         UserId otherUserId = new UserId(UUID.randomUUID());
-        ReviewContent editReviewContent = TestObjectFactory.createReviewContent(
-            "bad!",
-            1,
-            TestObjectFactory.defaultImage()
-        );
 
         assertThatThrownBy(
             () -> review.edit(
                 otherUserId,
-                editReviewContent
+                new CommentText("bad!"),
+                new Rating(1),
+                image
             )
         ).isInstanceOf(ItemWebException.class);
     }
