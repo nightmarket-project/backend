@@ -9,11 +9,13 @@ import store.nightmarket.domain.item.valueobject.Price;
 import store.nightmarket.domain.item.valueobject.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
+import store.nightmarket.domain.item.valueobject.UserId;
 
 @Getter
 public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
 
     private final ProductVariantId variantId;
+    private final UserId userId;
     private final Name name;
     private final Price unitPrice;
     private Quantity quantity;
@@ -21,22 +23,24 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
     private ShoppingBasketProduct(
         ShoppingBasketProductId id,
         ProductVariantId variantId,
+        UserId userId,
         Name name,
         Price unitPrice,
         Quantity quantity
     ) {
         super(id);
+        validateQuantity(quantity);
         this.variantId = variantId;
+        this.userId = userId;
         this.name = name;
         this.unitPrice = unitPrice;
-
-        validateQuantity(quantity);
         this.quantity = quantity;
     }
 
     public static ShoppingBasketProduct newInstance(
         ShoppingBasketProductId id,
         ProductVariantId variantId,
+        UserId userId,
         Name name,
         Price unitPrice,
         Quantity quantity
@@ -44,6 +48,7 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
         return new ShoppingBasketProduct(
             id,
             variantId,
+            userId,
             name,
             unitPrice,
             quantity
@@ -56,20 +61,19 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
         }
     }
 
-    public void changeQuantity(Quantity quantity) {
-        validateQuantity(quantity);
-        this.quantity = quantity;
-    }
-
-    public void increaseQuantity(Quantity quantity) {
-        if (quantity.isLessThan(new Quantity(BigDecimal.ONE))) {
-            throw new ProductException("0보다 작거나 같은 값은 수량 증가가 불가합니다.");
-        }
-        this.quantity = this.quantity.add(quantity);
-    }
-
     public Price getTotalPrice() {
         return unitPrice.multiplyQuantity(quantity);
+    }
+
+    public void changeQuantity(
+        UserId userId,
+        Quantity quantity
+    ) {
+        if (!this.userId.equals(userId)) {
+            throw new ProductException("UserId is not the same");
+        }
+        validateQuantity(quantity);
+        this.quantity = quantity;
     }
 
     @Override
@@ -78,5 +82,4 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
             "name=" + name.getValue() +
             '}';
     }
-
 }

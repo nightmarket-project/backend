@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.Quantity;
+import store.nightmarket.domain.item.valueobject.UserId;
 
 public class ChangeShoppingBasketProductQuantityItemWebDomainServiceDto {
 
@@ -12,6 +13,7 @@ public class ChangeShoppingBasketProductQuantityItemWebDomainServiceDto {
     public static class Input {
 
         private final ShoppingBasketProduct shoppingBasketProduct;
+        private final UserId userId;
         private final Quantity quantity;
 
     }

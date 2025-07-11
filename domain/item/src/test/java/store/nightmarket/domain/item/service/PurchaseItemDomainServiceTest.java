@@ -169,6 +169,7 @@ class PurchaseItemDomainServiceTest {
         return TestShoppingBasketFactory.createCartProduct(
             UUID.randomUUID(),
             productVariantId,
+            UUID.randomUUID(),
             "상품이름",
             10000,
             productQuantity
