@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.model.Reply;
-import store.nightmarket.itemweb.valueobject.ReplyContent;
+import store.nightmarket.itemweb.valueobject.CommentText;
 
 public class EditReplyItemWebDomainServiceDto {
 
@@ -14,7 +14,7 @@ public class EditReplyItemWebDomainServiceDto {
 
         private Reply reply;
         private UserId userId;
-        private ReplyContent replyContent;
+        private CommentText commentText;
 
     }
 

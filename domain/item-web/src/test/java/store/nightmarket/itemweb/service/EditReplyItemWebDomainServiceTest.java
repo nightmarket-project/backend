@@ -13,7 +13,7 @@ import store.nightmarket.itemweb.fixture.TestObjectFactory;
 import store.nightmarket.itemweb.model.Reply;
 import store.nightmarket.itemweb.service.dto.EditReplyItemWebDomainServiceDto.Event;
 import store.nightmarket.itemweb.service.dto.EditReplyItemWebDomainServiceDto.Input;
-import store.nightmarket.itemweb.valueobject.ReplyContent;
+import store.nightmarket.itemweb.valueobject.CommentText;
 
 class EditReplyItemWebDomainServiceTest {
 
@@ -29,10 +29,10 @@ class EditReplyItemWebDomainServiceTest {
     void shouldEditReplyWhenUserIdIsEqualToReplyAuthorId() {
         // given
         UUID authorId = UUID.randomUUID();
-        ReplyContent editingContent = TestObjectFactory.createReplyContent("bad!");
+        CommentText editingText = new CommentText("bad!");
         Reply reply = TestObjectFactory.createReply(
             UUID.randomUUID(),
-            TestObjectFactory.createReplyContent("good!"),
+            "good!",
             authorId,
             UUID.randomUUID()
         );
@@ -40,14 +40,15 @@ class EditReplyItemWebDomainServiceTest {
         Input input = Input.builder()
             .reply(reply)
             .userId(new UserId(authorId))
-            .replyContent(editingContent)
+            .commentText(editingText)
             .build();
 
         // when
         Event event = service.execute(input);
 
         // then
-        assertThat(event.getReply().getReplyContent()).isEqualTo(editingContent);
+        assertThat(event.getReply().getCommentText())
+            .isEqualTo(editingText);
     }
 
     @Test
@@ -56,10 +57,10 @@ class EditReplyItemWebDomainServiceTest {
         // given
         UUID authorId = UUID.randomUUID();
         UserId otherAuthorId = new UserId(UUID.randomUUID());
-        ReplyContent editingContent = TestObjectFactory.createReplyContent("bad!");
+        CommentText editingText = new CommentText("bad!");
         Reply reply = TestObjectFactory.createReply(
             UUID.randomUUID(),
-            TestObjectFactory.createReplyContent("good!"),
+            "good!",
             authorId,
             UUID.randomUUID()
         );
@@ -67,8 +68,9 @@ class EditReplyItemWebDomainServiceTest {
         Input input = Input.builder()
             .reply(reply)
             .userId(otherAuthorId)
-            .replyContent(editingContent)
+            .commentText(editingText)
             .build();
+
         // when
         // then
         assertThatThrownBy(

@@ -1,18 +1,15 @@
 package store.nightmarket.domain.item.valueobject;
 
-import store.nightmarket.domain.item.exception.QuantityException;
-
 import java.math.BigDecimal;
 import java.util.Objects;
+import store.nightmarket.domain.item.exception.QuantityException;
 
-public class Quantity {
+public record Quantity(BigDecimal value) {
 
     private static final BigDecimal MAX_QUANTITY = BigDecimal.valueOf(Integer.MAX_VALUE);
-    private final BigDecimal value;
 
-    public Quantity(BigDecimal value) {
+    public Quantity {
         validate(value);
-        this.value = value;
     }
 
     private void validate(BigDecimal value) {
@@ -45,14 +42,13 @@ public class Quantity {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(value);
-    }
-
-    @Override
     public boolean equals(Object obj) {
-        if(this == obj) return true;
-        if(obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
         Quantity other = (Quantity) obj;
         return Objects.equals(value, other.value);
     }

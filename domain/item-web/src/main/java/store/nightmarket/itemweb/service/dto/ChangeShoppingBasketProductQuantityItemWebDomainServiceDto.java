@@ -2,18 +2,18 @@ package store.nightmarket.itemweb.service.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import store.nightmarket.domain.item.model.ShoppingBasket;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.Quantity;
+import store.nightmarket.domain.item.valueobject.UserId;
 
-public class ChangeProductQuantityToShoppingBasketItemWebDomainServiceDto {
+public class ChangeShoppingBasketProductQuantityItemWebDomainServiceDto {
 
     @Getter
     @Builder
     public static class Input {
 
-        private final ShoppingBasket shoppingBasket;
         private final ShoppingBasketProduct shoppingBasketProduct;
+        private final UserId userId;
         private final Quantity quantity;
 
     }
@@ -22,7 +22,7 @@ public class ChangeProductQuantityToShoppingBasketItemWebDomainServiceDto {
     @Builder
     public static class Event {
 
-        private final ShoppingBasket shoppingBasket;
+        private final ShoppingBasketProduct shoppingBasketProduct;
 
     }
 
