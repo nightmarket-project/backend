@@ -13,8 +13,8 @@ import store.nightmarket.domain.item.valueobject.UserId;
 public class ProductVariant extends BaseModel<ProductVariantId> {
 
     private final ProductId productId;
-    private UserId seller;
-    private String SKUCode;
+    private final UserId seller;
+    private final String SKUCode;
     private Quantity quantity;
     private List<VariantOptionValue> variantOptionValueList;
 

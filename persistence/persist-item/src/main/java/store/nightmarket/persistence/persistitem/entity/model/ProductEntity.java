@@ -14,8 +14,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.Name;
+import store.nightmarket.persistence.persistitem.entity.valueobject.Price;
 
 @Getter
 @Entity
@@ -25,14 +25,14 @@ public class ProductEntity extends BaseUuidEntity {
 
     @Embedded
     @Column(name = "name")
-    private NameEntity nameEntity;
+    private Name name;
 
     @Column(name = "description")
     private String description;
 
     @Embedded
     @Column(name = "price")
-    private PriceEntity price;
+    private Price price;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_post_id")
@@ -45,32 +45,32 @@ public class ProductEntity extends BaseUuidEntity {
     private List<ProductVariantEntity> productVariantEntityList = new ArrayList<>();
 
     private ProductEntity(
-        NameEntity nameEntity,
+        Name name,
         String description,
-        PriceEntity priceEntity,
+        Price price,
         ProductPostEntity productPostEntity,
         List<OptionGroupEntity> optionGroupEntityList,
         List<ProductVariantEntity> productVariantEntityList
     ) {
-        this.nameEntity = nameEntity;
+        this.name = name;
         this.description = description;
-        this.price = priceEntity;
+        this.price = price;
         this.productPostEntity = productPostEntity;
         this.optionGroupEntityList = optionGroupEntityList;
         this.productVariantEntityList = productVariantEntityList;
     }
 
     public static ProductEntity newInstance(
-        NameEntity nameEntity,
+        Name name,
         String description,
-        PriceEntity priceEntity,
+        Price price,
         ProductPostEntity productPostEntity,
         List<OptionGroupEntity> optionGroupEntityList,
         List<ProductVariantEntity> productVariantEntityList
     ) {
-        return new ProductEntity(nameEntity,
+        return new ProductEntity(name,
             description,
-            priceEntity,
+            price,
             productPostEntity,
             optionGroupEntityList,
             productVariantEntityList

@@ -14,7 +14,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.Name;
 
 @Getter
 @Entity
@@ -24,7 +24,7 @@ public class OptionGroupEntity extends BaseUuidEntity {
 
     @Embedded
     @Column(name = "name")
-    private NameEntity nameEntity;
+    private Name name;
 
     @Column(name = "order")
     private int order;
@@ -40,28 +40,32 @@ public class OptionGroupEntity extends BaseUuidEntity {
     private ProductEntity productEntity;
 
     private OptionGroupEntity(
-        NameEntity nameEntity,
+        Name name,
         int order,
         List<OptionValueEntity> optionValueEntityList,
-        List<VariantOptionValueEntity> variantOptionValueEntityList
+        List<VariantOptionValueEntity> variantOptionValueEntityList,
+        ProductEntity productEntity
     ) {
-        this.nameEntity = nameEntity;
+        this.name = name;
         this.order = order;
         this.optionValueEntityList = optionValueEntityList;
         this.variantOptionValueEntityList = variantOptionValueEntityList;
+        this.productEntity = productEntity;
     }
 
     public static OptionGroupEntity create(
-        NameEntity nameEntity,
+        Name name,
         int order,
         List<OptionValueEntity> optionValueEntityList,
-        List<VariantOptionValueEntity> variantOptionValueEntityList
+        List<VariantOptionValueEntity> variantOptionValueEntityList,
+        ProductEntity productEntity
     ) {
         return new OptionGroupEntity(
-            nameEntity,
+            name,
             order,
             optionValueEntityList,
-            variantOptionValueEntityList
+            variantOptionValueEntityList,
+            productEntity
         );
     }
 
