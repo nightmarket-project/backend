@@ -53,7 +53,7 @@ public class OptionGroupEntity extends BaseUuidEntity {
         this.productEntity = productEntity;
     }
 
-    public static OptionGroupEntity create(
+    public static OptionGroupEntity newInstance(
         Name name,
         int order,
         List<OptionValueEntity> optionValueEntityList,
