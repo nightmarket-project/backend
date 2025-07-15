@@ -4,8 +4,8 @@ import store.nightmarket.common.domain.service.BaseDomainService;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.domain.item.valueobject.UserId;
-import store.nightmarket.itemweb.service.dto.ChangeShoppingBasketProductQuantityItemWebDomainServiceDto.Event;
-import store.nightmarket.itemweb.service.dto.ChangeShoppingBasketProductQuantityItemWebDomainServiceDto.Input;
+import store.nightmarket.itemweb.service.dto.SetShoppingBasketProductQuantityItemWebDomainServiceDto.Event;
+import store.nightmarket.itemweb.service.dto.SetShoppingBasketProductQuantityItemWebDomainServiceDto.Input;
 
 public class SetShoppingBasketProductQuantityItemWebDomainService
     implements BaseDomainService<Input, Event> {

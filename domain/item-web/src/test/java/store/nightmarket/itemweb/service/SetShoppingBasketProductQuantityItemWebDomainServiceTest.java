@@ -13,8 +13,8 @@ import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.fixture.TestShoppingBasketFactory;
-import store.nightmarket.itemweb.service.dto.ChangeShoppingBasketProductQuantityItemWebDomainServiceDto.Event;
-import store.nightmarket.itemweb.service.dto.ChangeShoppingBasketProductQuantityItemWebDomainServiceDto.Input;
+import store.nightmarket.itemweb.service.dto.SetShoppingBasketProductQuantityItemWebDomainServiceDto.Event;
+import store.nightmarket.itemweb.service.dto.SetShoppingBasketProductQuantityItemWebDomainServiceDto.Input;
 
 class SetShoppingBasketProductQuantityItemWebDomainServiceTest {
 
