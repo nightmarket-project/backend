@@ -47,27 +47,20 @@ public class TestObjectFactory {
 
     public static Image createImage(
         UUID imageId,
-        String originalFilename,
         String imageUrl,
         String altText,
         Long fileSize,
-        Integer width,
-        Integer height,
         int displayOrder,
         ImageType imageType,
         UUID userId
     ) {
         return Image.newInstance(
             new ImageId(imageId),
-            originalFilename,
             imageUrl,
             altText,
             fileSize,
-            width,
-            height,
             displayOrder,
-            imageType,
-            new UserId(userId)
+            imageType
         );
     }
 
@@ -78,15 +71,11 @@ public class TestObjectFactory {
         Random random = new Random();
         return Image.newInstance(
             new ImageId(imageId),
-            "기본 사진",
             "https://picsum.photos/" + random.nextInt() + "/" + random.nextInt(),
             "배경 사진",
             10000L,
             50,
-            50,
-            1,
-            ImageType.MAIN,
-            new UserId(userId)
+            ImageType.MAIN
         );
     }
 
