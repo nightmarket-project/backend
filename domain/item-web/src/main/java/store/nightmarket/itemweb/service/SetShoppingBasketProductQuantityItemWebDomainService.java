@@ -7,7 +7,7 @@ import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.service.dto.ChangeShoppingBasketProductQuantityItemWebDomainServiceDto.Event;
 import store.nightmarket.itemweb.service.dto.ChangeShoppingBasketProductQuantityItemWebDomainServiceDto.Input;
 
-public class ChangeShoppingBasketProductQuantityItemWebDomainService
+public class SetShoppingBasketProductQuantityItemWebDomainService
     implements BaseDomainService<Input, Event> {
 
     @Override
