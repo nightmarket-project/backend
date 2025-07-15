@@ -106,7 +106,6 @@ class RestoreItemDomainServiceDtoTest {
             productQuantity,
             List.of(
                 TestItemFactory.createVariantOptionValue(
-                    variantOptionValueId,
                     productVariantId,
                     TestItemFactory.createOptionGroup(
                         optionGroupId,
@@ -116,7 +115,6 @@ class RestoreItemDomainServiceDtoTest {
                         List.of(
                             TestItemFactory.createOptionValue(
                                 optionValueId,
-                                optionGroupId,
                                 "옵션 값1",
                                 10000,
                                 1
@@ -125,7 +123,6 @@ class RestoreItemDomainServiceDtoTest {
                     ),
                     TestItemFactory.createOptionValue(
                         optionValueId,
-                        optionGroupId,
                         "옵션 값1",
                         10000,
                         1

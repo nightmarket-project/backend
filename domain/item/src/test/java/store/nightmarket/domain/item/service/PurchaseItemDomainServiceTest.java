@@ -133,7 +133,6 @@ class PurchaseItemDomainServiceTest {
             productQuantity,
             List.of(
                 TestItemFactory.createVariantOptionValue(
-                    variantOptionValueId,
                     productVariantId,
                     TestItemFactory.createOptionGroup(
                         optionGroupId,
@@ -143,7 +142,6 @@ class PurchaseItemDomainServiceTest {
                         List.of(
                             TestItemFactory.createOptionValue(
                                 optionValueId,
-                                optionGroupId,
                                 "옵션 값1",
                                 10000,
                                 1
@@ -152,7 +150,6 @@ class PurchaseItemDomainServiceTest {
                     ),
                     TestItemFactory.createOptionValue(
                         optionValueId,
-                        optionGroupId,
                         "옵션 값1",
                         10000,
                         1

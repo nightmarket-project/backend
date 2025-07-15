@@ -92,7 +92,6 @@ class ProductVariantTest {
             List.of(
                 TestItemFactory.createVariantOptionValue(
                     variantOptionValueId,
-                    cpuId,
                     TestItemFactory.createOptionGroup(
                         optionGroupId,
                         productId,
@@ -101,7 +100,6 @@ class ProductVariantTest {
                         List.of(
                             TestItemFactory.createOptionValue(
                                 optionValueId,
-                                optionGroupId,
                                 "4코어",
                                 20000,
                                 1
@@ -110,7 +108,6 @@ class ProductVariantTest {
                     ),
                     TestItemFactory.createOptionValue(
                         optionValueId,
-                        optionGroupId,
                         "4코어",
                         20000,
                         1

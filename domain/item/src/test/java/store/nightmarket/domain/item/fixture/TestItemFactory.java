@@ -39,13 +39,11 @@ public class TestItemFactory {
 
     public static VariantOptionValue createVariantOptionValue(
         UUID variantOptionValueId,
-        UUID ProductVariantId,
         OptionGroup optionGroup,
         OptionValue optionValue
     ) {
         return VariantOptionValue.newInstance(
             new VariantOptionValueId(variantOptionValueId),
-            new ProductVariantId(ProductVariantId),
             optionGroup,
             optionValue
         );
@@ -69,14 +67,12 @@ public class TestItemFactory {
 
     public static OptionValue createOptionValue(
         UUID optionValueId,
-        UUID optionGroupId,
         String value,
         int price,
         int order
     ) {
         return OptionValue.newInstance(
             new OptionValueId(optionValueId),
-            new OptionGroupId(optionGroupId),
             value,
             new Price(BigDecimal.valueOf(price)),
             order
