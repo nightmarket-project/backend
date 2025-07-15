@@ -42,29 +42,21 @@ public class OptionGroupEntity extends BaseUuidEntity {
     private OptionGroupEntity(
         Name name,
         int order,
-        List<OptionValueEntity> optionValueEntityList,
-        List<VariantOptionValueEntity> variantOptionValueEntityList,
         ProductEntity productEntity
     ) {
         this.name = name;
         this.order = order;
-        this.optionValueEntityList = optionValueEntityList;
-        this.variantOptionValueEntityList = variantOptionValueEntityList;
         this.productEntity = productEntity;
     }
 
     public static OptionGroupEntity newInstance(
         Name name,
         int order,
-        List<OptionValueEntity> optionValueEntityList,
-        List<VariantOptionValueEntity> variantOptionValueEntityList,
         ProductEntity productEntity
     ) {
         return new OptionGroupEntity(
             name,
             order,
-            optionValueEntityList,
-            variantOptionValueEntityList,
             productEntity
         );
     }

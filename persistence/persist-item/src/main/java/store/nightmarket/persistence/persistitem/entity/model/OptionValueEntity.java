@@ -43,13 +43,11 @@ public class OptionValueEntity extends BaseUuidEntity {
         String value,
         Price price,
         int order,
-        List<VariantOptionValueEntity> variantOptionValueEntityList,
         OptionGroupEntity optionGroupEntity
     ) {
         this.value = value;
         this.price = price;
         this.order = order;
-        this.variantOptionValueEntityList = variantOptionValueEntityList;
         this.optionGroupEntity = optionGroupEntity;
     }
 
@@ -64,7 +62,6 @@ public class OptionValueEntity extends BaseUuidEntity {
             value,
             price,
             order,
-            variantOptionValueEntityList,
             optionGroupEntity
         );
     }

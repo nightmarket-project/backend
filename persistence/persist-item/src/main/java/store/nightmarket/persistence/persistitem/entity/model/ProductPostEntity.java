@@ -39,29 +39,21 @@ public class ProductPostEntity extends BaseUuidEntity {
     private ProductPostEntity(
         ProductEntity productEntity,
         Rating rating,
-        List<ImageEntity> imageEntityList,
-        List<ReviewEntity> reviewEntityList,
         boolean deleted
     ) {
         this.productEntity = productEntity;
         this.rating = rating;
-        this.imageEntityList = imageEntityList;
-        this.reviewEntityList = reviewEntityList;
         this.deleted = deleted;
     }
 
     public static ProductPostEntity newInstance(
         ProductEntity productEntity,
         Rating rating,
-        List<ImageEntity> imageEntityList,
-        List<ReviewEntity> reviewEntityList,
         boolean deleted
     ) {
         return new ProductPostEntity(
             productEntity,
             rating,
-            imageEntityList,
-            reviewEntityList,
             deleted
         );
     }

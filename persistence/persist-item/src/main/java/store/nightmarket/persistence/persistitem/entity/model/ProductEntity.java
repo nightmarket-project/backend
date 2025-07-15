@@ -48,32 +48,24 @@ public class ProductEntity extends BaseUuidEntity {
         Name name,
         String description,
         Price price,
-        ProductPostEntity productPostEntity,
-        List<OptionGroupEntity> optionGroupEntityList,
-        List<ProductVariantEntity> productVariantEntityList
+        ProductPostEntity productPostEntity
     ) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.productPostEntity = productPostEntity;
-        this.optionGroupEntityList = optionGroupEntityList;
-        this.productVariantEntityList = productVariantEntityList;
     }
 
     public static ProductEntity newInstance(
         Name name,
         String description,
         Price price,
-        ProductPostEntity productPostEntity,
-        List<OptionGroupEntity> optionGroupEntityList,
-        List<ProductVariantEntity> productVariantEntityList
+        ProductPostEntity productPostEntity
     ) {
         return new ProductEntity(name,
             description,
             price,
-            productPostEntity,
-            optionGroupEntityList,
-            productVariantEntityList
+            productPostEntity
         );
     }
 
