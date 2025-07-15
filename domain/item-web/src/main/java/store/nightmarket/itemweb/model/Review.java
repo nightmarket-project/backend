@@ -59,7 +59,7 @@ public class Review extends BaseModel<ReviewId> {
             throw new ItemWebException("댓글 작성자만 삭제 가능합니다.");
         }
 
-        this.commentText = CommentText.deleted();
+        this.commentText = CommentText.createDeletedComment();
         deleted = true;
     }
 

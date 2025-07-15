@@ -32,10 +32,7 @@ class ReviewTest {
             UUID.randomUUID(),
             authorId,
             "good!",
-            TestObjectFactory.defaultImage(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-            ),
+            TestObjectFactory.defaultImage(UUID.randomUUID()),
             5
         );
 
@@ -44,7 +41,7 @@ class ReviewTest {
 
         // then
         softly.assertThat(review.isDeleted()).isTrue();
-        softly.assertThat(review.getCommentText().value()).isEqualTo("삭제된 댓글입니다.");
+        softly.assertThat(review.getCommentText().getValue()).isEqualTo("삭제된 댓글입니다.");
         softly.assertAll();
     }
 
@@ -59,10 +56,7 @@ class ReviewTest {
             UUID.randomUUID(),
             authorId,
             "good!",
-            TestObjectFactory.defaultImage(
-                UUID.randomUUID(),
-                authorId
-            ),
+            TestObjectFactory.defaultImage(UUID.randomUUID()),
             5
         );
 
@@ -77,10 +71,7 @@ class ReviewTest {
     void shouldEditReviewWhenCurrentUserIdIsEqualToAuthorId() {
         // given
         UUID authorId = UUID.randomUUID();
-        Image image = TestObjectFactory.defaultImage(
-            UUID.randomUUID(),
-            authorId
-        );
+        Image image = TestObjectFactory.defaultImage(UUID.randomUUID());
 
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),
@@ -99,7 +90,7 @@ class ReviewTest {
         );
 
         // then
-        softly.assertThat(review.getCommentText().value())
+        softly.assertThat(review.getCommentText().getValue())
             .isEqualTo("bad!");
         softly.assertThat(review.getRating())
             .isEqualTo(new Rating(1));
@@ -111,10 +102,7 @@ class ReviewTest {
     void shouldThrowExceptionWhenUserIdIsDifferentFromAuthorIdOnEditReview() {
         // given
         UUID authorId = UUID.randomUUID();
-        Image image = TestObjectFactory.defaultImage(
-            UUID.randomUUID(),
-            authorId
-        );
+        Image image = TestObjectFactory.defaultImage(UUID.randomUUID());
 
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),

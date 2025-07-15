@@ -64,10 +64,7 @@ public class TestObjectFactory {
         );
     }
 
-    public static Image defaultImage(
-        UUID imageId,
-        UUID userId
-    ) {
+    public static Image defaultImage(UUID imageId) {
         Random random = new Random();
         return Image.newInstance(
             new ImageId(imageId),

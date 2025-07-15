@@ -34,10 +34,7 @@ class DeleteReviewItemWebDomainServiceTest {
             UUID.randomUUID(),
             authorId,
             "good!",
-            TestObjectFactory.defaultImage(
-                UUID.randomUUID(),
-                authorId
-            ),
+            TestObjectFactory.defaultImage(UUID.randomUUID()),
             5
         );
 
@@ -54,7 +51,7 @@ class DeleteReviewItemWebDomainServiceTest {
             .isNotNull();
         softly.assertThat(event.getReview().isDeleted())
             .isTrue();
-        softly.assertThat(event.getReview().getCommentText().value())
+        softly.assertThat(event.getReview().getCommentText().getValue())
             .isEqualTo("삭제된 댓글입니다.");
         softly.assertAll();
     }
@@ -69,10 +66,7 @@ class DeleteReviewItemWebDomainServiceTest {
             UUID.randomUUID(),
             authorId,
             "good!",
-            TestObjectFactory.defaultImage(
-                UUID.randomUUID(),
-                authorId
-            ),
+            TestObjectFactory.defaultImage(UUID.randomUUID()),
             5
         );
 

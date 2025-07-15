@@ -1,14 +1,29 @@
 package store.nightmarket.itemweb.valueobject;
 
 import java.util.Objects;
+import lombok.Getter;
 import store.nightmarket.itemweb.exception.ItemWebException;
 
-public record CommentText(String value) {
+@Getter
+public class CommentText {
 
     private static final int MAX_DESCRIPTION_LENGTH = 200;
 
-    public CommentText {
+    private final String value;
+    private final boolean deleted;
+
+    public CommentText(String value) {
         validate(value);
+        this.value = value;
+        this.deleted = false;
+    }
+
+    private CommentText(
+        String value,
+        boolean deleted
+    ) {
+        this.value = value;
+        this.deleted = deleted;
     }
 
     private void validate(String value) {
@@ -17,8 +32,8 @@ public record CommentText(String value) {
         }
     }
 
-    public static CommentText deleted() {
-        return new CommentText("삭제된 댓글입니다.");
+    public static CommentText createDeletedComment() {
+        return new CommentText("삭제된 댓글입니다.", true);
     }
 
     @Override

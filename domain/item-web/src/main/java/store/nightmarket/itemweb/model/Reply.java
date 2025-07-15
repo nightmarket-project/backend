@@ -55,7 +55,7 @@ public class Reply extends BaseModel<ReplyId> {
             throw new ItemWebException("댓글 작성자만 삭제 가능합니다.");
         }
 
-        commentText = CommentText.deleted();
+        commentText = CommentText.createDeletedComment();
         deleted = true;
     }
 

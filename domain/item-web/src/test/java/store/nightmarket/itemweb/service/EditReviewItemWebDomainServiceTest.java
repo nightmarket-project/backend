@@ -33,10 +33,7 @@ class EditReviewItemWebDomainServiceTest {
     void shouldEditReviewWhenUserIdIsEqualToAuthorId() {
         // given
         UUID authorId = UUID.randomUUID();
-        Image image = TestObjectFactory.defaultImage(
-            UUID.randomUUID(),
-            authorId
-        );
+        Image image = TestObjectFactory.defaultImage(UUID.randomUUID());
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),
             authorId,
@@ -74,10 +71,7 @@ class EditReviewItemWebDomainServiceTest {
         // given
         UUID authorId = UUID.randomUUID();
         UserId ohterUserId = new UserId(UUID.randomUUID());
-        Image image = TestObjectFactory.defaultImage(
-            UUID.randomUUID(),
-            authorId
-        );
+        Image image = TestObjectFactory.defaultImage(UUID.randomUUID());
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),
             authorId,
