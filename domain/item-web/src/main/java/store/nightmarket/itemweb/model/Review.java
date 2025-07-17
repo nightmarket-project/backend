@@ -6,12 +6,14 @@ import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.valueobject.CommentText;
+import store.nightmarket.itemweb.valueobject.ProductPostId;
 import store.nightmarket.itemweb.valueobject.Rating;
 import store.nightmarket.itemweb.valueobject.ReviewId;
 
 @Getter
 public class Review extends BaseModel<ReviewId> {
 
+    private final ProductPostId postId;
     private final UserId author;
     private CommentText commentText;
     private Image image;
@@ -21,12 +23,14 @@ public class Review extends BaseModel<ReviewId> {
 
     private Review(
         ReviewId id,
+        ProductPostId postId,
         UserId author,
         CommentText commentText,
         Image image,
         Rating rating
     ) {
         super(id);
+        this.postId = postId;
         this.author = author;
         this.commentText = commentText;
         this.image = image;
@@ -37,6 +41,7 @@ public class Review extends BaseModel<ReviewId> {
 
     public static Review newInstance(
         ReviewId id,
+        ProductPostId postId,
         UserId author,
         CommentText commentText,
         Image image,
@@ -44,6 +49,7 @@ public class Review extends BaseModel<ReviewId> {
     ) {
         return new Review(
             id,
+            postId,
             author,
             commentText,
             image,
@@ -59,7 +65,7 @@ public class Review extends BaseModel<ReviewId> {
             throw new ItemWebException("댓글 작성자만 삭제 가능합니다.");
         }
 
-        this.commentText = CommentText.deleted();
+        this.commentText = CommentText.createDeletedComment();
         deleted = true;
     }
 

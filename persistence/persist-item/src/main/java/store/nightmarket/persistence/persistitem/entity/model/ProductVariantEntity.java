@@ -47,33 +47,25 @@ public class ProductVariantEntity extends BaseUuidEntity {
         UUID userId,
         String SKUCode,
         Quantity quantity,
-        ProductEntity productEntity,
-        List<VariantOptionValueEntity> variantOptionValueEntityList,
-        List<ShoppingBasketProductEntity> shoppingBasketProductEntityList
+        ProductEntity productEntity
     ) {
         this.userId = userId;
         this.SKUCode = SKUCode;
         this.quantity = quantity;
         this.productEntity = productEntity;
-        this.variantOptionValueEntityList = variantOptionValueEntityList;
-        this.shoppingBasketProductEntityList = shoppingBasketProductEntityList;
     }
 
     public static ProductVariantEntity newInstance(
         UUID userId,
         String SKUCode,
         Quantity quantity,
-        ProductEntity productEntity,
-        List<VariantOptionValueEntity> variantOptionValueEntityList,
-        List<ShoppingBasketProductEntity> shoppingBasketProductEntityList
+        ProductEntity productEntity
     ) {
         return new ProductVariantEntity(
             userId,
             SKUCode,
             quantity,
-            productEntity,
-            variantOptionValueEntityList,
-            shoppingBasketProductEntityList
+            productEntity
         );
     }
 

@@ -22,9 +22,6 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.ImageType;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ImageEntity extends BaseUuidEntity {
 
-    @Column(name = "original_file_name", nullable = false)
-    private String originalFileName;
-
     @Column(name = "url", nullable = false)
     private String url;
 
@@ -33,12 +30,6 @@ public class ImageEntity extends BaseUuidEntity {
 
     @Column(name = "file_size", nullable = false)
     private Long fileSize;
-
-    @Column(name = "width", nullable = false)
-    private Integer width;
-
-    @Column(name = "height", nullable = false)
-    private Integer height;
 
     @Column(name = "display_order", nullable = false)
     private int displayOrder;
@@ -56,24 +47,18 @@ public class ImageEntity extends BaseUuidEntity {
 
     private ImageEntity(
         UUID id,
-        String originalFileName,
         String url,
         String altText,
         Long fileSize,
-        Integer width,
-        Integer height,
         int displayOrder,
         ImageType type,
         ReviewEntity reviewEntity,
         ProductPostEntity productPostEntity
     ) {
         super(id);
-        this.originalFileName = originalFileName;
         this.url = url;
         this.altText = altText;
         this.fileSize = fileSize;
-        this.width = width;
-        this.height = height;
         this.displayOrder = displayOrder;
         this.type = type;
         this.reviewEntity = reviewEntity;
@@ -82,12 +67,9 @@ public class ImageEntity extends BaseUuidEntity {
 
     public static ImageEntity newInstance(
         UUID id,
-        String originalFileName,
         String url,
         String altText,
         Long fileSize,
-        Integer width,
-        Integer height,
         int displayOrder,
         ImageType type,
         ReviewEntity reviewEntity,
@@ -95,12 +77,9 @@ public class ImageEntity extends BaseUuidEntity {
     ) {
         return new ImageEntity(
             id,
-            originalFileName,
             url,
             altText,
             fileSize,
-            width,
-            height,
             displayOrder,
             type,
             reviewEntity,

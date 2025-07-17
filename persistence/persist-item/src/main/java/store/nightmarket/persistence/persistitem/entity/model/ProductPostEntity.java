@@ -1,7 +1,7 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
@@ -13,7 +13,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.CommentText;
+import store.nightmarket.persistence.persistitem.entity.valueobject.Rating;
 
 @Getter
 @Entity
@@ -24,12 +24,13 @@ public class ProductPostEntity extends BaseUuidEntity {
     @OneToOne(mappedBy = "productPostEntity")
     private ProductEntity productEntity;
 
-    @OneToMany(mappedBy = "productPostEntity", cascade = CascadeType.ALL,
-        fetch = FetchType.LAZY, orphanRemoval = true)
+    @Embedded
+    private Rating rating;
+
+    @OneToMany(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
     private List<ImageEntity> imageEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "productPostEntity", cascade = CascadeType.ALL,
-        fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
     private List<ReviewEntity> reviewEntityList = new ArrayList<>();
 
     @Column(name = "deleted", nullable = false)
@@ -37,27 +38,22 @@ public class ProductPostEntity extends BaseUuidEntity {
 
     private ProductPostEntity(
         ProductEntity productEntity,
-        List<ImageEntity> imageEntityList,
-        List<ReviewEntity> reviewEntityList,
+        Rating rating,
         boolean deleted
     ) {
         this.productEntity = productEntity;
-        this.imageEntityList = imageEntityList;
-        this.reviewEntityList = reviewEntityList;
+        this.rating = rating;
         this.deleted = deleted;
     }
 
     public static ProductPostEntity newInstance(
         ProductEntity productEntity,
-        CommentText postContent,
-        List<ImageEntity> imageEntityList,
-        List<ReviewEntity> reviewEntityList,
+        Rating rating,
         boolean deleted
     ) {
         return new ProductPostEntity(
             productEntity,
-            imageEntityList,
-            reviewEntityList,
+            rating,
             deleted
         );
     }

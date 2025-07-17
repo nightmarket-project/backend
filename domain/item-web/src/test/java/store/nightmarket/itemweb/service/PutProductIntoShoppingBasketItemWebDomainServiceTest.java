@@ -13,17 +13,17 @@ import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.fixture.TestShoppingBasketFactory;
-import store.nightmarket.itemweb.service.dto.ChangeShoppingBasketProductQuantityItemWebDomainServiceDto.Event;
-import store.nightmarket.itemweb.service.dto.ChangeShoppingBasketProductQuantityItemWebDomainServiceDto.Input;
+import store.nightmarket.itemweb.service.dto.PutProductIntoShoppingBasketItemWebDomainServiceDto.Event;
+import store.nightmarket.itemweb.service.dto.PutProductIntoShoppingBasketItemWebDomainServiceDto.Input;
 
-class ChangeShoppingBasketProductQuantityItemWebDomainServiceTest {
+class PutProductIntoShoppingBasketItemWebDomainServiceTest {
 
-    private ChangeShoppingBasketProductQuantityItemWebDomainService service;
+    private PutProductIntoShoppingBasketItemWebDomainService service;
     private SoftAssertions softly;
 
     @BeforeEach
     void setUp() {
-        service = new ChangeShoppingBasketProductQuantityItemWebDomainService();
+        service = new PutProductIntoShoppingBasketItemWebDomainService();
         softly = new SoftAssertions();
     }
 

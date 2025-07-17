@@ -3,7 +3,6 @@ package store.nightmarket.domain.item.service;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -94,44 +93,13 @@ class RestoreItemDomainServiceDtoTest {
     ) {
         UUID productId = UUID.randomUUID();
         UUID sellerId = UUID.randomUUID();
-        UUID variantOptionValueId = UUID.randomUUID();
-        UUID optionGroupId = UUID.randomUUID();
-        UUID optionValueId = UUID.randomUUID();
 
         return TestItemFactory.createProductVariant(
             productVariantId,
             productId,
             sellerId,
             "SKUCode",
-            productQuantity,
-            List.of(
-                TestItemFactory.createVariantOptionValue(
-                    variantOptionValueId,
-                    productVariantId,
-                    TestItemFactory.createOptionGroup(
-                        optionGroupId,
-                        productId,
-                        "옵션그룹1",
-                        1,
-                        List.of(
-                            TestItemFactory.createOptionValue(
-                                optionValueId,
-                                optionGroupId,
-                                "옵션 값1",
-                                10000,
-                                1
-                            )
-                        )
-                    ),
-                    TestItemFactory.createOptionValue(
-                        optionValueId,
-                        optionGroupId,
-                        "옵션 값1",
-                        10000,
-                        1
-                    )
-                )
-            )
+            productQuantity
         );
     }
 

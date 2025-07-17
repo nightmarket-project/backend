@@ -50,7 +50,7 @@ class DeleteReplyItemWebDomainServiceTest {
             .isNotNull();
         softly.assertThat(event.getReply().isDeleted())
             .isTrue();
-        softly.assertThat(event.getReply().getCommentText().value())
+        softly.assertThat(event.getReply().getCommentText().getValue())
             .isEqualTo("삭제된 댓글입니다.");
         softly.assertAll();
     }

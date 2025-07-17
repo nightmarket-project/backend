@@ -38,8 +38,9 @@ class ReplyTest {
         reply.delete(new UserId(authorId));
 
         // then
-        softly.assertThat(reply.isDeleted()).isTrue();
-        softly.assertThat(reply.getCommentText().value()).isEqualTo("삭제된 댓글입니다.");
+        softly.assertThat(reply.isDeleted())
+            .isTrue();
+        softly.assertThat(reply.getCommentText().getValue()).isEqualTo("삭제된 댓글입니다.");
         softly.assertAll();
     }
 
