@@ -6,7 +6,7 @@ import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.domain.item.valueobject.UserId;
 
-public class SetShoppingBasketProductQuantityItemWebDomainServiceDto {
+public class PutProductIntoShoppingBasketItemWebDomainServiceDto {
 
     @Getter
     @Builder

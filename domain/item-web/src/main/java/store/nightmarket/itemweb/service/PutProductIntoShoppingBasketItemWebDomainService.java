@@ -4,10 +4,10 @@ import store.nightmarket.common.domain.service.BaseDomainService;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.domain.item.valueobject.UserId;
-import store.nightmarket.itemweb.service.dto.SetShoppingBasketProductQuantityItemWebDomainServiceDto.Event;
-import store.nightmarket.itemweb.service.dto.SetShoppingBasketProductQuantityItemWebDomainServiceDto.Input;
+import store.nightmarket.itemweb.service.dto.PutProductIntoShoppingBasketItemWebDomainServiceDto.Event;
+import store.nightmarket.itemweb.service.dto.PutProductIntoShoppingBasketItemWebDomainServiceDto.Input;
 
-public class SetShoppingBasketProductQuantityItemWebDomainService
+public class PutProductIntoShoppingBasketItemWebDomainService
     implements BaseDomainService<Input, Event> {
 
     @Override
