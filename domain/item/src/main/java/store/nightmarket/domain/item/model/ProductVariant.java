@@ -1,6 +1,5 @@
 package store.nightmarket.domain.item.model;
 
-import java.util.List;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.exception.QuantityException;
@@ -16,22 +15,19 @@ public class ProductVariant extends BaseModel<ProductVariantId> {
     private final UserId seller;
     private final String SKUCode;
     private Quantity quantity;
-    private List<VariantOptionValue> variantOptionValueList;
 
     private ProductVariant(
         ProductVariantId id,
         ProductId productId,
         UserId seller,
         String SKUCode,
-        Quantity quantity,
-        List<VariantOptionValue> variantOptionValueList
+        Quantity quantity
     ) {
         super(id);
         this.productId = productId;
         this.seller = seller;
         this.SKUCode = SKUCode;
         this.quantity = quantity;
-        this.variantOptionValueList = variantOptionValueList;
     }
 
     public static ProductVariant newInstance(
@@ -39,16 +35,14 @@ public class ProductVariant extends BaseModel<ProductVariantId> {
         ProductId productId,
         UserId seller,
         String SKUCode,
-        Quantity quantity,
-        List<VariantOptionValue> variantOptionValueList
+        Quantity quantity
     ) {
         return new ProductVariant(
             id,
             productId,
             seller,
             SKUCode,
-            quantity,
-            variantOptionValueList
+            quantity
         );
     }
 

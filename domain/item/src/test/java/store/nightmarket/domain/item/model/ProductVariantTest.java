@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,7 @@ class ProductVariantTest {
 
     @Test
     @DisplayName("재고 수량이 구매할 수량보다 많을때 수량이 감소한다.")
-    void df() {
+    void shouldReduceQuantityWhenProductVariantIsBiggerThanBuyQuantity() {
         // given
         ProductVariant cpuProductVariant = testCPUProductVariant(UUID.randomUUID(), 100);
         Quantity purchaseQuantity = new Quantity(BigDecimal.valueOf(20));
@@ -79,41 +78,13 @@ class ProductVariantTest {
     ) {
         UUID productId = UUID.randomUUID();
         UUID sellerId = UUID.randomUUID();
-        UUID variantOptionValueId = UUID.randomUUID();
-        UUID optionGroupId = UUID.randomUUID();
-        UUID optionValueId = UUID.randomUUID();
 
         return TestItemFactory.createProductVariant(
             cpuId,
             productId,
             sellerId,
             "SKUCode",
-            cpuQuantity,
-            List.of(
-                TestItemFactory.createVariantOptionValue(
-                    variantOptionValueId,
-                    TestItemFactory.createOptionGroup(
-                        optionGroupId,
-                        productId,
-                        "core",
-                        1,
-                        List.of(
-                            TestItemFactory.createOptionValue(
-                                optionValueId,
-                                "4코어",
-                                20000,
-                                1
-                            )
-                        )
-                    ),
-                    TestItemFactory.createOptionValue(
-                        optionValueId,
-                        "4코어",
-                        20000,
-                        1
-                    )
-                )
-            )
+            cpuQuantity
         );
     }
 
