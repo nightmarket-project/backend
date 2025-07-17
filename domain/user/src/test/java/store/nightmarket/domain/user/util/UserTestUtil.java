@@ -4,10 +4,8 @@ import java.util.UUID;
 
 import store.nightmarket.domain.user.model.User;
 import store.nightmarket.domain.user.service.dto.ChangeUserNameDomainServiceDto;
-import store.nightmarket.domain.user.service.dto.ChangeUserPasswordDomainServiceDto;
-import store.nightmarket.domain.user.valueobject.Account;
+import store.nightmarket.domain.user.valueobject.AuthProvider;
 import store.nightmarket.domain.user.valueobject.Name;
-import store.nightmarket.domain.user.valueobject.Password;
 import store.nightmarket.domain.user.valueobject.Point;
 import store.nightmarket.domain.user.valueobject.UserId;
 import store.nightmarket.domain.user.valueobject.UserRole;
@@ -15,20 +13,24 @@ import store.nightmarket.domain.user.valueobject.UserRole;
 public class UserTestUtil {
 
 	public static User makeUser(
-		UUID userId,
+		UUID id,
 		String name,
-		String account,
-		String password,
+		String email,
+		String imageUrl,
 		Long point,
-		UserRole role
+		UserRole role,
+		AuthProvider authProvider,
+		String providerId
 	) {
 		return User.newInstance(
-			new UserId(userId),
+			new UserId(id),
 			new Name(name),
-			new Account(account),
-			new Password(password),
+			email,
+			imageUrl,
 			new Point(point),
-			role
+			role,
+			authProvider,
+			providerId
 		);
 	}
 
@@ -36,13 +38,6 @@ public class UserTestUtil {
 		return ChangeUserNameDomainServiceDto.Input.builder()
 			.user(user)
 			.name(name)
-			.build();
-	}
-
-	public static ChangeUserPasswordDomainServiceDto.Input makeChangeUserPasswordInput(User user, String password) {
-		return ChangeUserPasswordDomainServiceDto.Input.builder()
-			.user(user)
-			.password(password)
 			.build();
 	}
 
