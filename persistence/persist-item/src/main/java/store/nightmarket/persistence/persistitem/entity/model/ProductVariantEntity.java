@@ -44,11 +44,13 @@ public class ProductVariantEntity extends BaseUuidEntity {
     private ProductEntity productEntity;
 
     private ProductVariantEntity(
+        UUID id,
         UUID userId,
         String SKUCode,
         Quantity quantity,
         ProductEntity productEntity
     ) {
+        super(id);
         this.userId = userId;
         this.SKUCode = SKUCode;
         this.quantity = quantity;
@@ -56,12 +58,14 @@ public class ProductVariantEntity extends BaseUuidEntity {
     }
 
     public static ProductVariantEntity newInstance(
+        UUID id,
         UUID userId,
         String SKUCode,
         Quantity quantity,
         ProductEntity productEntity
     ) {
         return new ProductVariantEntity(
+            id,
             userId,
             SKUCode,
             quantity,

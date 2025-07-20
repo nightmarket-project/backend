@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class Rating {
 
-    private int value;
+    private float value;
 
 }

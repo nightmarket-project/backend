@@ -7,6 +7,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,21 +36,25 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
     //추후 UserEntity 매핑 예정
 
     private ShoppingBasketProductEntity(
+        UUID id,
         Name name,
         Quantity quantity,
         ProductVariantEntity productVariantEntity
     ) {
+        super(id);
         this.name = name;
         this.quantity = quantity;
         this.productVariantEntity = productVariantEntity;
     }
 
     public static ShoppingBasketProductEntity newInstance(
+        UUID id,
         Name name,
         Quantity quantity,
         ProductVariantEntity productVariantEntity
     ) {
         return new ShoppingBasketProductEntity(
+            id,
             name,
             quantity,
             productVariantEntity

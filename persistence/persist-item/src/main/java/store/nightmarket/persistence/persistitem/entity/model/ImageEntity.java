@@ -14,7 +14,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.ImageType;
+import store.nightmarket.itemweb.state.ImageType;
 
 @Getter
 @Entity
@@ -38,11 +38,12 @@ public class ImageEntity extends BaseUuidEntity {
     @Column(name = "type", nullable = false)
     private ImageType type;
 
-    @OneToOne(mappedBy = "imageEntity")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "review_id")
     private ReviewEntity reviewEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_post")
+    @JoinColumn(name = "product_post_id")
     private ProductPostEntity productPostEntity;
 
     private ImageEntity(

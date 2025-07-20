@@ -10,6 +10,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,11 +41,13 @@ public class OptionValueEntity extends BaseUuidEntity {
     private OptionGroupEntity optionGroupEntity;
 
     private OptionValueEntity(
+        UUID id,
         String value,
         Price price,
         int order,
         OptionGroupEntity optionGroupEntity
     ) {
+        super(id);
         this.value = value;
         this.price = price;
         this.order = order;
@@ -52,13 +55,14 @@ public class OptionValueEntity extends BaseUuidEntity {
     }
 
     public static OptionValueEntity newInstance(
+        UUID id,
         String value,
         Price price,
         int order,
-        List<VariantOptionValueEntity> variantOptionValueEntityList,
         OptionGroupEntity optionGroupEntity
     ) {
         return new OptionValueEntity(
+            id,
             value,
             price,
             order,

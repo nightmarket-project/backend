@@ -10,6 +10,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,21 +41,25 @@ public class OptionGroupEntity extends BaseUuidEntity {
     private ProductEntity productEntity;
 
     private OptionGroupEntity(
+        UUID id,
         Name name,
         int order,
         ProductEntity productEntity
     ) {
+        super(id);
         this.name = name;
         this.order = order;
         this.productEntity = productEntity;
     }
 
     public static OptionGroupEntity newInstance(
+        UUID id,
         Name name,
         int order,
         ProductEntity productEntity
     ) {
         return new OptionGroupEntity(
+            id,
             name,
             order,
             productEntity

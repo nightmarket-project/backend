@@ -34,8 +34,7 @@ public class ReviewEntity extends BaseUuidEntity {
     @Column(name = "rating", nullable = false)
     private Rating rating;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id")
+    @OneToOne(mappedBy = "reviewEntity")
     private ImageEntity imageEntity;
 
     @Column(name = "create_date", nullable = false)
@@ -48,48 +47,44 @@ public class ReviewEntity extends BaseUuidEntity {
     @JoinColumn(name = "product_post_id")
     private ProductPostEntity productPostEntity;
 
-    @OneToOne(mappedBy = "reviewEntity", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "reviewEntity")
     private ReplyEntity replyEntity;
 
     public ReviewEntity(
+        UUID id,
         UUID userId,
         CommentText commentText,
         Rating rating,
-        ImageEntity imageEntity,
         LocalDate createDate,
         boolean deleted,
-        ProductPostEntity productPostEntity,
-        ReplyEntity replyEntity
+        ProductPostEntity productPostEntity
     ) {
+        super(id);
         this.userId = userId;
         this.commentText = commentText;
         this.rating = rating;
-        this.imageEntity = imageEntity;
         this.createDate = createDate;
         this.deleted = deleted;
         this.productPostEntity = productPostEntity;
-        this.replyEntity = replyEntity;
     }
 
     public static ReviewEntity newInstance(
+        UUID id,
         UUID userId,
         CommentText commentText,
         Rating rating,
-        ImageEntity imageEntity,
         LocalDate createDate,
         boolean deleted,
-        ProductPostEntity productPostEntity,
-        ReplyEntity replyEntity
+        ProductPostEntity productPostEntity
     ) {
         return new ReviewEntity(
+            id,
             userId,
             commentText,
             rating,
-            imageEntity,
             createDate,
             deleted,
-            productPostEntity,
-            replyEntity
+            productPostEntity
         );
     }
 

@@ -10,6 +10,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,11 +46,13 @@ public class ProductEntity extends BaseUuidEntity {
     private List<ProductVariantEntity> productVariantEntityList = new ArrayList<>();
 
     private ProductEntity(
+        UUID id,
         Name name,
         String description,
         Price price,
         ProductPostEntity productPostEntity
     ) {
+        super(id);
         this.name = name;
         this.description = description;
         this.price = price;
@@ -57,12 +60,15 @@ public class ProductEntity extends BaseUuidEntity {
     }
 
     public static ProductEntity newInstance(
+        UUID id,
         Name name,
         String description,
         Price price,
         ProductPostEntity productPostEntity
     ) {
-        return new ProductEntity(name,
+        return new ProductEntity(
+            id,
+            name,
             description,
             price,
             productPostEntity

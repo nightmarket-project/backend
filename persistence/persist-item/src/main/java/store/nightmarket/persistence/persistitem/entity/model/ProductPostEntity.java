@@ -9,6 +9,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,22 +38,22 @@ public class ProductPostEntity extends BaseUuidEntity {
     private boolean deleted;
 
     private ProductPostEntity(
-        ProductEntity productEntity,
+        UUID id,
         Rating rating,
         boolean deleted
     ) {
-        this.productEntity = productEntity;
+        super(id);
         this.rating = rating;
         this.deleted = deleted;
     }
 
     public static ProductPostEntity newInstance(
-        ProductEntity productEntity,
+        UUID id,
         Rating rating,
         boolean deleted
     ) {
         return new ProductPostEntity(
-            productEntity,
+            id,
             rating,
             deleted
         );
