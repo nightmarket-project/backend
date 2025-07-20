@@ -84,4 +84,8 @@ public class Review extends BaseModel<ReviewId> {
         this.image = (editImage == null) ? image : editImage;
     }
 
+    public ReviewId getReviewId() {
+        return internalId();
+    }
+
 }

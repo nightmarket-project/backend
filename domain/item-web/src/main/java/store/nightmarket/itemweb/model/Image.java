@@ -74,6 +74,10 @@ public class Image extends BaseModel<ImageId> {
         );
     }
 
+    public ImageId getImageId() {
+        return internalId();
+    }
+
     private void validatePostImage(
         String imageUrl,
         String altText,
@@ -134,5 +138,5 @@ public class Image extends BaseModel<ImageId> {
             imageType
         );
     }
-    
+
 }

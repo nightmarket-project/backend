@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class Name {
 
-    private String name;
+    private String value;
 
 }
