@@ -18,10 +18,11 @@ public class CommentText {
         this.deleted = false;
     }
 
-    private CommentText(
+    public CommentText(
         String value,
         boolean deleted
     ) {
+        validate(value);
         this.value = value;
         this.deleted = deleted;
     }
