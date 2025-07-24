@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import store.nightmarket.domain.user.model.User;
 import store.nightmarket.domain.user.service.dto.ChangeUserNameDomainServiceDto;
+import store.nightmarket.domain.user.service.dto.ChangeUserRoleDomainServiceDto;
 import store.nightmarket.domain.user.valueobject.AuthProvider;
 import store.nightmarket.domain.user.valueobject.Name;
 import store.nightmarket.domain.user.valueobject.Point;
@@ -38,6 +39,13 @@ public class UserTestUtil {
 		return ChangeUserNameDomainServiceDto.Input.builder()
 			.user(user)
 			.name(name)
+			.build();
+	}
+
+	public static ChangeUserRoleDomainServiceDto.Input makeChangeUserRoleInput(User user, String role) {
+		return ChangeUserRoleDomainServiceDto.Input.builder()
+			.user(user)
+			.role(role)
 			.build();
 	}
 

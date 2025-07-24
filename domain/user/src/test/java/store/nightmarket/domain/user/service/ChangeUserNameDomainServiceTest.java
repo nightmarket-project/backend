@@ -34,7 +34,7 @@ class ChangeUserNameDomainServiceTest {
 			"example@google.com",
 			"imageUrl1@example.com",
 			10000L,
-			UserRole.BUYER,
+			UserRole.ROLE_BUYER,
 			AuthProvider.GOOGLE,
 			"google1"
 		);
@@ -60,7 +60,7 @@ class ChangeUserNameDomainServiceTest {
 			"example@google.com",
 			"imageUrl1@example.com",
 			10000L,
-			UserRole.BUYER,
+			UserRole.ROLE_BUYER,
 			AuthProvider.GOOGLE,
 			"google1"
 		);
@@ -86,7 +86,7 @@ class ChangeUserNameDomainServiceTest {
 			"example@google.com",
 			"imageUrl1@example.com",
 			10000L,
-			UserRole.BUYER,
+			UserRole.ROLE_BUYER,
 			AuthProvider.GOOGLE,
 			"google1"
 		);
@@ -112,7 +112,7 @@ class ChangeUserNameDomainServiceTest {
 			"example@google.com",
 			"imageUrl1@example.com",
 			10000L,
-			UserRole.BUYER,
+			UserRole.ROLE_BUYER,
 			AuthProvider.GOOGLE,
 			"google1"
 		);

@@ -1,17 +1,29 @@
 package store.nightmarket.domain.user.valueobject;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
 public enum UserRole {
 
-	ADMIN("ROLE_ADMIN", "관리자"),
-	BUYER("ROLE_BUYER", "구매자"),
-	SELLER("ROLE_SELLER", "판매자");
+	ROLE_NONE,
+	ROLE_ADMIN,
+	ROLE_BUYER,
+	ROLE_SELLER;
 
-	private final String key;
-	private final String title;
+	private Set<UserRole> canTransitionRole;
+
+	static {
+		ROLE_NONE.canTransitionRole = EnumSet.of(ROLE_BUYER, ROLE_SELLER);
+		ROLE_ADMIN.canTransitionRole = EnumSet.noneOf(UserRole.class);
+		ROLE_BUYER.canTransitionRole = EnumSet.noneOf(UserRole.class);
+		ROLE_SELLER.canTransitionRole = EnumSet.noneOf(UserRole.class);
+	}
+
+	public boolean canTransitionTo(UserRole target) {
+		return canTransitionRole.contains(target);
+	}
 
 }
