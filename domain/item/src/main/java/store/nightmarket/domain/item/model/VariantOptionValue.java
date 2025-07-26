@@ -2,6 +2,8 @@ package store.nightmarket.domain.item.model;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
+import store.nightmarket.domain.item.valueobject.OptionGroupId;
+import store.nightmarket.domain.item.valueobject.OptionValueId;
 import store.nightmarket.domain.item.valueobject.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.VariantOptionValueId;
 
@@ -9,32 +11,32 @@ import store.nightmarket.domain.item.valueobject.VariantOptionValueId;
 public class VariantOptionValue extends BaseModel<VariantOptionValueId> {
 
     private final ProductVariantId productVariantId;
-    private final OptionGroup optionGroup;
-    private final OptionValue optionValue;
+    private final OptionGroupId optionGroupId;
+    private final OptionValueId optionValueId;
 
     private VariantOptionValue(
         VariantOptionValueId id,
         ProductVariantId productVariantId,
-        OptionGroup optionGroup,
-        OptionValue optionValue
+        OptionGroupId optionGroupId,
+        OptionValueId optionValueId
     ) {
         super(id);
         this.productVariantId = productVariantId;
-        this.optionGroup = optionGroup;
-        this.optionValue = optionValue;
+        this.optionGroupId = optionGroupId;
+        this.optionValueId = optionValueId;
     }
 
     public static VariantOptionValue newInstance(
         VariantOptionValueId id,
         ProductVariantId productVariantId,
-        OptionGroup optionGroup,
-        OptionValue optionValue
+        OptionGroupId optionGroupId,
+        OptionValueId optionValueId
     ) {
         return new VariantOptionValue(
             id,
             productVariantId,
-            optionGroup,
-            optionValue
+            optionGroupId,
+            optionValueId
         );
     }
 
