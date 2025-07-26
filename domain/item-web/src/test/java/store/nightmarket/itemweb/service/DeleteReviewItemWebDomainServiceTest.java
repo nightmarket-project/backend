@@ -32,6 +32,7 @@ class DeleteReviewItemWebDomainServiceTest {
         UUID authorId = UUID.randomUUID();
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),
+            UUID.randomUUID(),
             authorId,
             "good!",
             TestObjectFactory.defaultImage(UUID.randomUUID()),
@@ -63,6 +64,7 @@ class DeleteReviewItemWebDomainServiceTest {
         UUID authorId = UUID.randomUUID();
         UUID otherPersonId = UUID.randomUUID();
         Review review = TestObjectFactory.createReview(
+            UUID.randomUUID(),
             UUID.randomUUID(),
             authorId,
             "good!",

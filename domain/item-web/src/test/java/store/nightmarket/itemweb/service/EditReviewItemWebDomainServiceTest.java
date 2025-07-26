@@ -36,6 +36,7 @@ class EditReviewItemWebDomainServiceTest {
         Image image = TestObjectFactory.defaultImage(UUID.randomUUID());
         Review review = TestObjectFactory.createReview(
             UUID.randomUUID(),
+            UUID.randomUUID(),
             authorId,
             "good!",
             image,
@@ -73,6 +74,7 @@ class EditReviewItemWebDomainServiceTest {
         UserId ohterUserId = new UserId(UUID.randomUUID());
         Image image = TestObjectFactory.defaultImage(UUID.randomUUID());
         Review review = TestObjectFactory.createReview(
+            UUID.randomUUID(),
             UUID.randomUUID(),
             authorId,
             "good!",

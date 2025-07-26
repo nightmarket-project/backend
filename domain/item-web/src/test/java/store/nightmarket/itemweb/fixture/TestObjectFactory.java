@@ -9,6 +9,7 @@ import store.nightmarket.itemweb.model.Review;
 import store.nightmarket.itemweb.state.ImageType;
 import store.nightmarket.itemweb.valueobject.CommentText;
 import store.nightmarket.itemweb.valueobject.ImageId;
+import store.nightmarket.itemweb.valueobject.ProductPostId;
 import store.nightmarket.itemweb.valueobject.Rating;
 import store.nightmarket.itemweb.valueobject.ReplyId;
 import store.nightmarket.itemweb.valueobject.ReviewId;
@@ -17,6 +18,7 @@ public class TestObjectFactory {
 
     public static Review createReview(
         UUID reviewId,
+        UUID productPostId,
         UUID authorId,
         String commentText,
         Image image,
@@ -24,6 +26,7 @@ public class TestObjectFactory {
     ) {
         return Review.newInstance(
             new ReviewId(reviewId),
+            new ProductPostId(productPostId),
             new UserId(authorId),
             new CommentText(commentText),
             image,
@@ -49,7 +52,6 @@ public class TestObjectFactory {
         UUID imageId,
         String imageUrl,
         String altText,
-        Long fileSize,
         int displayOrder,
         ImageType imageType,
         UUID userId
@@ -58,7 +60,6 @@ public class TestObjectFactory {
             new ImageId(imageId),
             imageUrl,
             altText,
-            fileSize,
             displayOrder,
             imageType
         );
@@ -70,7 +71,6 @@ public class TestObjectFactory {
             new ImageId(imageId),
             "https://picsum.photos/" + random.nextInt() + "/" + random.nextInt(),
             "배경 사진",
-            10000L,
             50,
             ImageType.MAIN
         );
