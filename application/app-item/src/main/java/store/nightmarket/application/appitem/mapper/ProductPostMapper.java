@@ -2,7 +2,9 @@ package store.nightmarket.application.appitem.mapper;
 
 import store.nightmarket.itemweb.model.ProductPost;
 import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.itemweb.valueobject.Rating;
 import store.nightmarket.persistence.persistitem.entity.model.ProductPostEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity;
 
 public class ProductPostMapper {
 
@@ -10,7 +12,7 @@ public class ProductPostMapper {
         return ProductPost.newInstance(
             new ProductPostId(entity.getId()),
             ProductMapper.toDomain(entity.getProductEntity()),
-            RatingMapper.toDomain(entity.getRatingEntity()),
+            new Rating(entity.getRatingEntity().getValue()),
             ImageMapper.toDomainList(entity.getImageEntityList())
         );
     }
@@ -18,7 +20,7 @@ public class ProductPostMapper {
     public static ProductPostEntity toEntity(ProductPost domain) {
         return ProductPostEntity.newInstance(
             domain.getProductPostId().getId(),
-            RatingMapper.toEntity(domain.getRating()),
+            new RatingEntity(domain.getRating().value()),
             domain.isDeleted()
         );
     }

@@ -3,9 +3,11 @@ package store.nightmarket.application.appitem.mapper;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.model.Review;
 import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.itemweb.valueobject.Rating;
 import store.nightmarket.itemweb.valueobject.ReviewId;
 import store.nightmarket.persistence.persistitem.entity.model.ProductPostEntity;
 import store.nightmarket.persistence.persistitem.entity.model.ReviewEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity;
 
 public class ReviewMapper {
 
@@ -16,7 +18,7 @@ public class ReviewMapper {
             new UserId(entity.getUserId()),
             CommentTextMapper.toDomain(entity.getCommentTextEntity()),
             ImageMapper.toDomain(entity.getImageEntity()),
-            RatingMapper.toDomain(entity.getRatingEntity())
+            new Rating(entity.getRatingEntity().getValue())
         );
     }
 
@@ -28,7 +30,7 @@ public class ReviewMapper {
             domain.getReviewId().getId(),
             domain.getAuthor().getId(),
             CommentTextMapper.toEntity(domain.getCommentText()),
-            RatingMapper.toEntity(domain.getRating()),
+            new RatingEntity(domain.getRating().value()),
             domain.getCreatedAt(),
             domain.isDeleted(),
             productPostEntity
