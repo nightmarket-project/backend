@@ -1,7 +1,5 @@
 package store.nightmarket.application.appitem.mapper;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import store.nightmarket.itemweb.model.Image;
 import store.nightmarket.itemweb.valueobject.ImageId;
 import store.nightmarket.persistence.persistitem.entity.model.ImageEntity;
@@ -34,22 +32,6 @@ public class ImageMapper {
             reviewEntity,
             productPostEntity
         );
-    }
-
-    public static List<Image> toDomainList(List<ImageEntity> entityList) {
-        return entityList.stream()
-            .map(ImageMapper::toDomain)
-            .collect(Collectors.toList());
-    }
-
-    public static List<ImageEntity> toEntityList(
-        List<Image> domainList,
-        ReviewEntity reviewEntity,
-        ProductPostEntity productPostEntity
-    ) {
-        return domainList.stream()
-            .map(domain -> toEntity(domain, reviewEntity, productPostEntity))
-            .collect(Collectors.toList());
     }
 
 }
