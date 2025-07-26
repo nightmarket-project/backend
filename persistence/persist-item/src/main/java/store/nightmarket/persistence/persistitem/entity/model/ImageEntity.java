@@ -28,9 +28,6 @@ public class ImageEntity extends BaseUuidEntity {
     @Column(name = "alt_text", nullable = false)
     private String altText;
 
-    @Column(name = "file_size", nullable = false)
-    private Long fileSize;
-
     @Column(name = "display_order", nullable = false)
     private int displayOrder;
 
@@ -50,7 +47,6 @@ public class ImageEntity extends BaseUuidEntity {
         UUID id,
         String url,
         String altText,
-        Long fileSize,
         int displayOrder,
         ImageType type,
         ReviewEntity reviewEntity,
@@ -59,7 +55,6 @@ public class ImageEntity extends BaseUuidEntity {
         super(id);
         this.url = url;
         this.altText = altText;
-        this.fileSize = fileSize;
         this.displayOrder = displayOrder;
         this.type = type;
         this.reviewEntity = reviewEntity;
@@ -70,7 +65,6 @@ public class ImageEntity extends BaseUuidEntity {
         UUID id,
         String url,
         String altText,
-        Long fileSize,
         int displayOrder,
         ImageType type,
         ReviewEntity reviewEntity,
@@ -80,7 +74,6 @@ public class ImageEntity extends BaseUuidEntity {
             id,
             url,
             altText,
-            fileSize,
             displayOrder,
             type,
             reviewEntity,

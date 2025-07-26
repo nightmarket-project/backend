@@ -15,7 +15,6 @@ public class ImageMapper {
             new ImageId(entity.getId()),
             entity.getUrl(),
             entity.getAltText(),
-            entity.getFileSize(),
             entity.getDisplayOrder(),
             entity.getType()
         );
@@ -30,7 +29,6 @@ public class ImageMapper {
             domain.getImageId().getId(),
             domain.getImageUrl(),
             domain.getAltText(),
-            domain.getFileSize(),
             domain.getDisplayOrder(),
             domain.getImageType(),
             reviewEntity,

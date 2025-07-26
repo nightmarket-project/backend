@@ -12,12 +12,9 @@ public class Image extends BaseModel<ImageId> {
 
     private final static int MaxUrlLength = 1000;
     private final static int MaxAltTextLength = 1000;
-    private final static int PostMaxFileSize = 20 * 1024 * 1024;
-    private final static int ReviewMaxFileSize = 5 * 1024 * 1024;
 
     private final String imageUrl;
     private final String altText;
-    private final Long fileSize;
     private int displayOrder;
     private final ImageType imageType;
 
@@ -26,15 +23,13 @@ public class Image extends BaseModel<ImageId> {
         ImageId id,
         String imageUrl,
         String altText,
-        Long fileSize,
         int displayOrder,
         ImageType imageType
     ) {
         super(id);
         if (ImageType.REVIEW == imageType) {
             validateReviewImage(
-                imageUrl,
-                fileSize
+                imageUrl
             );
         }
         if (ImageType.MAIN == imageType
@@ -43,15 +38,12 @@ public class Image extends BaseModel<ImageId> {
         ) {
             validatePostImage(
                 imageUrl,
-                altText,
-                fileSize
+                altText
             );
         }
 
         this.imageUrl = imageUrl;
         this.altText = altText;
-        this.fileSize = fileSize;
-
         this.displayOrder = displayOrder;
         this.imageType = imageType;
     }
@@ -60,7 +52,6 @@ public class Image extends BaseModel<ImageId> {
         ImageId id,
         String imageUrl,
         String altText,
-        Long fileSize,
         int displayOrder,
         ImageType imageType
     ) {
@@ -68,7 +59,6 @@ public class Image extends BaseModel<ImageId> {
             id,
             imageUrl,
             altText,
-            fileSize,
             displayOrder,
             imageType
         );
@@ -80,8 +70,7 @@ public class Image extends BaseModel<ImageId> {
 
     private void validatePostImage(
         String imageUrl,
-        String altText,
-        Long fileSize
+        String altText
     ) {
         if (imageUrl.isBlank()) {
             throw new ItemWebException("ImageUrl is Blank");
@@ -95,23 +84,16 @@ public class Image extends BaseModel<ImageId> {
         if (altText.length() > MaxAltTextLength) {
             throw new ItemWebException("AltText exceeds MaxAltTextLength");
         }
-        if (fileSize > PostMaxFileSize) {
-            throw new ItemWebException("FileSize exceeds MaxFileSize");
-        }
     }
 
     private void validateReviewImage(
-        String imageUrl,
-        Long fileSize
+        String imageUrl
     ) {
         if (imageUrl.isBlank()) {
             throw new ItemWebException("ImageUrl is Blank");
         }
         if (imageUrl.length() > MaxUrlLength) {
             throw new ItemWebException("ImageUrl exceeds MaxUrlLength");
-        }
-        if (fileSize > ReviewMaxFileSize) {
-            throw new ItemWebException("FileSize exceeds ReviewMaxFileSize");
         }
     }
 
@@ -124,7 +106,6 @@ public class Image extends BaseModel<ImageId> {
         return displayOrder == image.displayOrder
             && Objects.equals(imageUrl, image.imageUrl)
             && Objects.equals(altText, image.altText)
-            && Objects.equals(fileSize, image.fileSize)
             && imageType == image.imageType;
     }
 
@@ -133,7 +114,6 @@ public class Image extends BaseModel<ImageId> {
         return Objects.hash(
             imageUrl,
             altText,
-            fileSize,
             displayOrder,
             imageType
         );
