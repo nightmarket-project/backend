@@ -1,10 +1,12 @@
 package store.nightmarket.application.appitem.mapper;
 
 import store.nightmarket.domain.item.model.OptionGroup;
+import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.OptionGroupId;
 import store.nightmarket.domain.item.valueobject.ProductId;
 import store.nightmarket.persistence.persistitem.entity.model.OptionGroupEntity;
 import store.nightmarket.persistence.persistitem.entity.model.ProductEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
 
 public class OptionGroupMapper {
 
@@ -12,7 +14,7 @@ public class OptionGroupMapper {
         return OptionGroup.newInstance(
             new OptionGroupId(entity.getId()),
             new ProductId(entity.getProductEntity().getId()),
-            NameMapper.toDomain(entity.getNameEntity()),
+            new Name(entity.getNameEntity().getValue()),
             entity.getOrder()
         );
     }
@@ -23,7 +25,7 @@ public class OptionGroupMapper {
     ) {
         return OptionGroupEntity.newInstance(
             domain.getOptionGroupId().getId(),
-            NameMapper.toEntity(domain.getName()),
+            new NameEntity(domain.getName().getValue()),
             domain.getOrder(),
             productEntity
         );

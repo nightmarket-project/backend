@@ -1,16 +1,18 @@
 package store.nightmarket.application.appitem.mapper;
 
 import store.nightmarket.domain.item.model.Product;
+import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.ProductId;
 import store.nightmarket.persistence.persistitem.entity.model.ProductEntity;
 import store.nightmarket.persistence.persistitem.entity.model.ProductPostEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
 
 public class ProductMapper {
 
     public static Product toDomain(ProductEntity entity) {
         return Product.newInstance(
             new ProductId(entity.getId()),
-            NameMapper.toDomain(entity.getNameEntity()),
+            new Name(entity.getNameEntity().getValue()),
             entity.getDescription(),
             PriceMapper.toDomain(entity.getPriceEntity())
         );
@@ -22,7 +24,7 @@ public class ProductMapper {
     ) {
         return ProductEntity.newInstance(
             domain.getProductId().getId(),
-            NameMapper.toEntity(domain.getName()),
+            new NameEntity(domain.getName().getValue()),
             domain.getDescription(),
             PriceMapper.toEntity(domain.getPrice()),
             productPostEntity
