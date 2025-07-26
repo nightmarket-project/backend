@@ -12,7 +12,7 @@ public class ReplyMapper {
     public static Reply toDomain(ReplyEntity entity) {
         return Reply.newInstance(
             new ReplyId(entity.getId()),
-            CommentTextMapper.toDomain(entity.getCommentText()),
+            CommentTextMapper.toDomain(entity.getCommentTextEntity()),
             new UserId(entity.getUserId()),
             new ReviewId(entity.getReviewEntity().getId())
         );

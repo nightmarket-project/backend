@@ -12,8 +12,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.Name;
-import store.nightmarket.persistence.persistitem.entity.valueobject.Quantity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.QuantityEntity;
 
 @Getter
 @Entity
@@ -23,11 +23,11 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 
     @Embedded
     @Column(name = "name")
-    private Name name;
+    private NameEntity nameEntity;
 
     @Embedded
     @Column(name = "quantity")
-    private Quantity quantity;
+    private QuantityEntity quantityEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_variant")
@@ -37,26 +37,26 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 
     private ShoppingBasketProductEntity(
         UUID id,
-        Name name,
-        Quantity quantity,
+        NameEntity nameEntity,
+        QuantityEntity quantityEntity,
         ProductVariantEntity productVariantEntity
     ) {
         super(id);
-        this.name = name;
-        this.quantity = quantity;
+        this.nameEntity = nameEntity;
+        this.quantityEntity = quantityEntity;
         this.productVariantEntity = productVariantEntity;
     }
 
     public static ShoppingBasketProductEntity newInstance(
         UUID id,
-        Name name,
-        Quantity quantity,
+        NameEntity nameEntity,
+        QuantityEntity quantityEntity,
         ProductVariantEntity productVariantEntity
     ) {
         return new ShoppingBasketProductEntity(
             id,
-            name,
-            quantity,
+            nameEntity,
+            quantityEntity,
             productVariantEntity
         );
     }

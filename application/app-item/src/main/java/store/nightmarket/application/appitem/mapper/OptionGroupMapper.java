@@ -12,7 +12,7 @@ public class OptionGroupMapper {
         return OptionGroup.newInstance(
             new OptionGroupId(entity.getId()),
             new ProductId(entity.getProductEntity().getId()),
-            NameMapper.toDomain(entity.getName()),
+            NameMapper.toDomain(entity.getNameEntity()),
             entity.getOrder()
         );
     }

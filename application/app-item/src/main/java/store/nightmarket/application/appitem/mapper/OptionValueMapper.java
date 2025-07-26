@@ -13,7 +13,7 @@ public class OptionValueMapper {
             new OptionValueId(entity.getId()),
             new OptionGroupId(entity.getOptionGroupEntity().getId()),
             entity.getValue(),
-            PriceMapper.toDomain(entity.getPrice()),
+            PriceMapper.toDomain(entity.getPriceEntity()),
             entity.getOrder()
         );
     }

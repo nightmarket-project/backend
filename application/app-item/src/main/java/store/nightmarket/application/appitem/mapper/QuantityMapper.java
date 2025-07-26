@@ -1,15 +1,16 @@
 package store.nightmarket.application.appitem.mapper;
 
-import store.nightmarket.persistence.persistitem.entity.valueobject.Quantity;
+import store.nightmarket.domain.item.valueobject.Quantity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.QuantityEntity;
 
 public class QuantityMapper {
 
-    public static store.nightmarket.domain.item.valueobject.Quantity toDomain(Quantity entity) {
-        return new store.nightmarket.domain.item.valueobject.Quantity(entity.getValue());
+    public static Quantity toDomain(QuantityEntity entity) {
+        return new Quantity(entity.getValue());
     }
 
-    public static Quantity toEntity(store.nightmarket.domain.item.valueobject.Quantity domain) {
-        return new Quantity(domain.value());
+    public static QuantityEntity toEntity(Quantity domain) {
+        return new QuantityEntity(domain.value());
     }
 
 }

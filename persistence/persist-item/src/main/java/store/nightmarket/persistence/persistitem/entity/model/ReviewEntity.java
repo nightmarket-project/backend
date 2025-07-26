@@ -14,8 +14,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.CommentText;
-import store.nightmarket.persistence.persistitem.entity.valueobject.Rating;
+import store.nightmarket.persistence.persistitem.entity.valueobject.CommentTextEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity;
 
 @Getter
 @Entity
@@ -28,11 +28,11 @@ public class ReviewEntity extends BaseUuidEntity {
 
     @Embedded
     @Column(name = "text")
-    private CommentText commentText;
+    private CommentTextEntity commentTextEntity;
 
     @Embedded
     @Column(name = "rating", nullable = false)
-    private Rating rating;
+    private RatingEntity ratingEntity;
 
     @OneToOne(mappedBy = "reviewEntity")
     private ImageEntity imageEntity;
@@ -53,16 +53,16 @@ public class ReviewEntity extends BaseUuidEntity {
     public ReviewEntity(
         UUID id,
         UUID userId,
-        CommentText commentText,
-        Rating rating,
+        CommentTextEntity commentTextEntity,
+        RatingEntity ratingEntity,
         LocalDate createDate,
         boolean deleted,
         ProductPostEntity productPostEntity
     ) {
         super(id);
         this.userId = userId;
-        this.commentText = commentText;
-        this.rating = rating;
+        this.commentTextEntity = commentTextEntity;
+        this.ratingEntity = ratingEntity;
         this.createDate = createDate;
         this.deleted = deleted;
         this.productPostEntity = productPostEntity;
@@ -71,8 +71,8 @@ public class ReviewEntity extends BaseUuidEntity {
     public static ReviewEntity newInstance(
         UUID id,
         UUID userId,
-        CommentText commentText,
-        Rating rating,
+        CommentTextEntity commentTextEntity,
+        RatingEntity ratingEntity,
         LocalDate createDate,
         boolean deleted,
         ProductPostEntity productPostEntity
@@ -80,8 +80,8 @@ public class ReviewEntity extends BaseUuidEntity {
         return new ReviewEntity(
             id,
             userId,
-            commentText,
-            rating,
+            commentTextEntity,
+            ratingEntity,
             createDate,
             deleted,
             productPostEntity

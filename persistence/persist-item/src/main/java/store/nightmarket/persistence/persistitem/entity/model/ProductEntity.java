@@ -15,8 +15,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.Name;
-import store.nightmarket.persistence.persistitem.entity.valueobject.Price;
+import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
 
 @Getter
 @Entity
@@ -26,14 +26,14 @@ public class ProductEntity extends BaseUuidEntity {
 
     @Embedded
     @Column(name = "name")
-    private Name name;
+    private NameEntity nameEntity;
 
     @Column(name = "description")
     private String description;
 
     @Embedded
     @Column(name = "price")
-    private Price price;
+    private PriceEntity priceEntity;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_post_id")
@@ -47,30 +47,30 @@ public class ProductEntity extends BaseUuidEntity {
 
     private ProductEntity(
         UUID id,
-        Name name,
+        NameEntity nameEntity,
         String description,
-        Price price,
+        PriceEntity priceEntity,
         ProductPostEntity productPostEntity
     ) {
         super(id);
-        this.name = name;
+        this.nameEntity = nameEntity;
         this.description = description;
-        this.price = price;
+        this.priceEntity = priceEntity;
         this.productPostEntity = productPostEntity;
     }
 
     public static ProductEntity newInstance(
         UUID id,
-        Name name,
+        NameEntity nameEntity,
         String description,
-        Price price,
+        PriceEntity priceEntity,
         ProductPostEntity productPostEntity
     ) {
         return new ProductEntity(
             id,
-            name,
+            nameEntity,
             description,
-            price,
+            priceEntity,
             productPostEntity
         );
     }

@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class CommentText {
+public class RatingEntity {
 
-    private String value;
-    private boolean deleted;
+    private float value;
 
 }

@@ -15,7 +15,7 @@ public class ProductVariantMapper {
             new ProductId(entity.getProductEntity().getId()),
             new UserId(entity.getUserId()),
             entity.getSKUCode(),
-            QuantityMapper.toDomain(entity.getQuantity())
+            QuantityMapper.toDomain(entity.getQuantityEntity())
         );
     }
 

@@ -14,9 +14,9 @@ public class ReviewMapper {
             new ReviewId(entity.getId()),
             new ProductPostId(entity.getProductPostEntity().getId()),
             new UserId(entity.getUserId()),
-            CommentTextMapper.toDomain(entity.getCommentText()),
+            CommentTextMapper.toDomain(entity.getCommentTextEntity()),
             ImageMapper.toDomain(entity.getImageEntity()),
-            RatingMapper.toDomain(entity.getRating())
+            RatingMapper.toDomain(entity.getRatingEntity())
         );
     }
 

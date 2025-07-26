@@ -15,7 +15,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.Quantity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.QuantityEntity;
 
 @Getter
 @Entity
@@ -31,7 +31,7 @@ public class ProductVariantEntity extends BaseUuidEntity {
 
     @Embedded
     @Column(name = "quantity")
-    private Quantity quantity;
+    private QuantityEntity quantityEntity;
 
     @OneToMany(mappedBy = "productVariantEntity", fetch = FetchType.LAZY)
     private List<VariantOptionValueEntity> variantOptionValueEntityList = new ArrayList<>();
@@ -47,13 +47,13 @@ public class ProductVariantEntity extends BaseUuidEntity {
         UUID id,
         UUID userId,
         String SKUCode,
-        Quantity quantity,
+        QuantityEntity quantityEntity,
         ProductEntity productEntity
     ) {
         super(id);
         this.userId = userId;
         this.SKUCode = SKUCode;
-        this.quantity = quantity;
+        this.quantityEntity = quantityEntity;
         this.productEntity = productEntity;
     }
 
@@ -61,14 +61,14 @@ public class ProductVariantEntity extends BaseUuidEntity {
         UUID id,
         UUID userId,
         String SKUCode,
-        Quantity quantity,
+        QuantityEntity quantityEntity,
         ProductEntity productEntity
     ) {
         return new ProductVariantEntity(
             id,
             userId,
             SKUCode,
-            quantity,
+            quantityEntity,
             productEntity
         );
     }

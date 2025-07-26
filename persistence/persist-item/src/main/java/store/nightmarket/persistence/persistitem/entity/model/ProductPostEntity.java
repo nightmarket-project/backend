@@ -14,7 +14,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.Rating;
+import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity;
 
 @Getter
 @Entity
@@ -26,7 +26,7 @@ public class ProductPostEntity extends BaseUuidEntity {
     private ProductEntity productEntity;
 
     @Embedded
-    private Rating rating;
+    private RatingEntity ratingEntity;
 
     @OneToMany(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
     private List<ImageEntity> imageEntityList = new ArrayList<>();
@@ -39,22 +39,22 @@ public class ProductPostEntity extends BaseUuidEntity {
 
     private ProductPostEntity(
         UUID id,
-        Rating rating,
+        RatingEntity ratingEntity,
         boolean deleted
     ) {
         super(id);
-        this.rating = rating;
+        this.ratingEntity = ratingEntity;
         this.deleted = deleted;
     }
 
     public static ProductPostEntity newInstance(
         UUID id,
-        Rating rating,
+        RatingEntity ratingEntity,
         boolean deleted
     ) {
         return new ProductPostEntity(
             id,
-            rating,
+            ratingEntity,
             deleted
         );
     }

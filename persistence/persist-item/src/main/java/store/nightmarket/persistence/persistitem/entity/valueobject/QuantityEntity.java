@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Price {
+public class QuantityEntity {
 
-    private BigDecimal amount;
+    private BigDecimal value;
 
 }

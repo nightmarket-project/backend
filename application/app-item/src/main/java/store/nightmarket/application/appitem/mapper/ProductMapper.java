@@ -10,9 +10,9 @@ public class ProductMapper {
     public static Product toDomain(ProductEntity entity) {
         return Product.newInstance(
             new ProductId(entity.getId()),
-            NameMapper.toDomain(entity.getName()),
+            NameMapper.toDomain(entity.getNameEntity()),
             entity.getDescription(),
-            PriceMapper.toDomain(entity.getPrice())
+            PriceMapper.toDomain(entity.getPriceEntity())
         );
     }
 

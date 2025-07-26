@@ -10,7 +10,7 @@ public class ProductPostMapper {
         return ProductPost.newInstance(
             new ProductPostId(entity.getId()),
             ProductMapper.toDomain(entity.getProductEntity()),
-            RatingMapper.toDomain(entity.getRating()),
+            RatingMapper.toDomain(entity.getRatingEntity()),
             ImageMapper.toDomainList(entity.getImageEntityList())
         );
     }
