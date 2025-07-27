@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: app-user
+  profiles:
+    include: oauth, h2, redis
