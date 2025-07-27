@@ -19,7 +19,7 @@ import store.nightmarket.persistence.persistuser.entity.valueobject.PointEntity;
 
 @Getter
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity extends BaseUuidEntity {
 
