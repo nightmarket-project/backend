@@ -2,7 +2,6 @@ package store.nightmarket.domain.user.model;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.domain.user.exception.UserException;
 import store.nightmarket.domain.user.valueobject.AuthProvider;
 import store.nightmarket.domain.user.valueobject.Name;
 import store.nightmarket.domain.user.valueobject.Point;
@@ -71,9 +70,6 @@ public class User extends BaseModel<UserId> {
 	}
 
 	public void changeRole(UserRole role) {
-		if (!this.role.canTransitionTo(role)) {
-			throw new UserException("cannot change role to " + role);
-		}
 		this.role = role;
 	}
 
