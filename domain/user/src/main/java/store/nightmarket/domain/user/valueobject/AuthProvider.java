@@ -1,8 +1,12 @@
 package store.nightmarket.domain.user.valueobject;
 
+import lombok.Getter;
+
+@Getter
 public enum AuthProvider {
 
-	LOCAL,      // 일반 회원가입
-	GOOGLE,     // 구글 OAuth2
-	// 향후 추가 가능
+	GOOGLE,
+	NAVER,
+	KAKAO;
+
 }
