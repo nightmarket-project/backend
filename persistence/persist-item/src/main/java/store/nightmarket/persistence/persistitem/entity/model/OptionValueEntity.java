@@ -6,10 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -32,9 +29,6 @@ public class OptionValueEntity extends BaseUuidEntity {
 
     @Column(name = "order")
     private int order;
-
-    @OneToMany(mappedBy = "optionValueEntity", fetch = FetchType.LAZY)
-    private List<VariantOptionValueEntity> variantOptionValueEntityList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "option_group_id")
