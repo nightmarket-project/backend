@@ -36,9 +36,6 @@ public class ProductVariantEntity extends BaseUuidEntity {
     @OneToMany(mappedBy = "productVariantEntity", fetch = FetchType.LAZY)
     private List<VariantOptionValueEntity> variantOptionValueEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "productVariantEntity", fetch = FetchType.LAZY)
-    private List<ShoppingBasketProductEntity> shoppingBasketProductEntityList = new ArrayList<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private ProductEntity productEntity;
