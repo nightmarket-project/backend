@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -22,7 +23,8 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductPostEntity extends BaseUuidEntity {
 
-    @OneToOne(mappedBy = "productPostEntity")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     private ProductEntity productEntity;
 
     @Embedded
