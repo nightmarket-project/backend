@@ -1,12 +1,13 @@
 package store.nightmarket.domain.user.valueobject;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import lombok.Getter;
 import store.nightmarket.domain.user.exception.UserException;
 
 @Getter
-public class Name {
+public class Name implements Serializable {
 
 	private final String value;
 

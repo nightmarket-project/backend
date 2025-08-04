@@ -1,10 +1,12 @@
 package store.nightmarket.domain.user.valueobject;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import store.nightmarket.domain.user.exception.UserException;
 
 @Getter
-public class Point {
+public class Point implements Serializable {
 
 	private Long value;
 

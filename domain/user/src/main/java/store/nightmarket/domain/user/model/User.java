@@ -1,5 +1,7 @@
 package store.nightmarket.domain.user.model;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.user.valueobject.AuthProvider;
@@ -9,7 +11,7 @@ import store.nightmarket.domain.user.valueobject.UserId;
 import store.nightmarket.domain.user.valueobject.UserRole;
 
 @Getter
-public class User extends BaseModel<UserId> {
+public class User extends BaseModel<UserId> implements Serializable {
 
 	private Name name;
 	private String email;
