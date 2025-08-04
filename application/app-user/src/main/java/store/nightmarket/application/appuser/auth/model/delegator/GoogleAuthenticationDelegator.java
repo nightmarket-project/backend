@@ -28,7 +28,7 @@ public class GoogleAuthenticationDelegator implements OAuthDelegator {
 
 		session.removeAttribute("session_state");
 
-		GoogleOAuthAuthenticationToken token = new GoogleOAuthAuthenticationToken(authorizationCode, state);
+		GoogleOAuthAuthenticationToken token = new GoogleOAuthAuthenticationToken(authorizationCode);
 
 		return authenticationManager.authenticate(token);
 

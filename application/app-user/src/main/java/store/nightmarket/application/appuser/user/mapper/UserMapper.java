@@ -48,7 +48,7 @@ public class UserMapper {
 			dto.getEmail(),
 			dto.getPicture(),
 			new Point(0L),
-			UserRole.ROLE_NONE,
+			UserRole.ROLE_BUYER,
 			AuthProvider.GOOGLE,
 			dto.getSub()
 		);
