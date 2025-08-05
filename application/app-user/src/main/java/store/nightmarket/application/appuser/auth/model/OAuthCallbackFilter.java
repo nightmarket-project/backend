@@ -18,12 +18,12 @@ public class OAuthCallbackFilter extends AbstractAuthenticationProcessingFilter 
 
 	private final Map<String, OAuthStrategy> oAuthStrategyMap;
 
-	public OAuthCallbackFilter(List<OAuthStrategy> delegatorList) {
+	public OAuthCallbackFilter(List<OAuthStrategy> strategyList) {
 		super(new AntPathRequestMatcher("/login/oauth2/code/**", "GET"));
-		this.oAuthStrategyMap = delegatorList.stream()
+		this.oAuthStrategyMap = strategyList.stream()
 			.collect(Collectors.toMap(
 				OAuthStrategy::getProviderName,
-				delegator -> delegator
+				strategy -> strategy
 			));
 	}
 
