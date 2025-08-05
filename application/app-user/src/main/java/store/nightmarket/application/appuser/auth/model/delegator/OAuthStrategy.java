@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public interface OAuthDelegator {
+public interface OAuthStrategy {
 
 	Authentication delegate(HttpServletRequest request, AuthenticationManager authenticationManager);
 

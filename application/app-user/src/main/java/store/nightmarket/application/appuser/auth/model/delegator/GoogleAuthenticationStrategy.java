@@ -8,9 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import store.nightmarket.application.appuser.auth.exception.OAuthException;
 import store.nightmarket.application.appuser.auth.model.GoogleOAuthAuthenticationToken;
+import store.nightmarket.domain.user.valueobject.AuthProvider;
 
 @Component
-public class GoogleAuthenticationDelegator implements OAuthDelegator {
+public class GoogleAuthenticationStrategy implements OAuthStrategy {
 
 	@Override
 	public Authentication delegate(HttpServletRequest request, AuthenticationManager authenticationManager) {
@@ -36,7 +37,7 @@ public class GoogleAuthenticationDelegator implements OAuthDelegator {
 
 	@Override
 	public String getProviderName() {
-		return "google";
+		return AuthProvider.GOOGLE.name();
 	}
 
 }

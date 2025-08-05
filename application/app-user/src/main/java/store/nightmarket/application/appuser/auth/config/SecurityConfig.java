@@ -20,14 +20,14 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appuser.auth.model.OAuthAuthenticationSuccessHandler;
 import store.nightmarket.application.appuser.auth.model.OAuthCallbackFilter;
-import store.nightmarket.application.appuser.auth.model.delegator.GoogleAuthenticationDelegator;
+import store.nightmarket.application.appuser.auth.model.delegator.GoogleAuthenticationStrategy;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private final GoogleAuthenticationDelegator googleDelegator;
+	private final GoogleAuthenticationStrategy googleAuthenticationStrategy;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -83,7 +83,7 @@ public class SecurityConfig {
 
 	@Bean
 	public OAuthCallbackFilter callBackFilter(AuthenticationManager authenticationManager) throws Exception {
-		OAuthCallbackFilter oAuthCallbackFilter = new OAuthCallbackFilter(List.of(googleDelegator));
+		OAuthCallbackFilter oAuthCallbackFilter = new OAuthCallbackFilter(List.of(googleAuthenticationStrategy));
 		oAuthCallbackFilter.setAuthenticationManager(authenticationManager);
 		oAuthCallbackFilter.setAuthenticationSuccessHandler(successHandler());
 		return oAuthCallbackFilter;
