@@ -10,5 +10,6 @@ public class MockOAuthRequest {
 	private String email;
 	private String name;
 	private String provider; // "google", "apple" 등
-	
+	private String role;
+
 }

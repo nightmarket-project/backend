@@ -75,24 +75,22 @@ public class TestController {
 	@GetMapping("/session")
 	public ResponseEntity<?> testSession(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
-		Object securityContext = session != null
-			? session.getAttribute("SPRING_SECURITY_CONTEXT")
-			: null;
+		Object securityContext = session != null ? session.getAttribute("SPRING_SECURITY_CONTEXT") : null;
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-		log.info("Session ID: {}", session != null ? session.getId() : "null");
-		log.info("SPRING_SECURITY_CONTEXT in session: {}", securityContext);
-		log.info("Authentication from SecurityContextHolder: {}", authentication);
-		log.info("Authorities: {}", authentication != null ? authentication.getAuthorities() : "null");
+		Map<String, Object> response = new HashMap<>();
+		response.put("sessionId", session != null ? session.getId() : "null");
+		response.put("SPRING_SECURITY_CONTEXT in session", securityContext);
+		response.put("Authentication from SecurityContextHolder", authentication);
+		response.put("Authorities", authentication != null ? authentication.getAuthorities() : "null");
 
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/auth-check")
 	public ResponseEntity<?> check() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println("Authorities: " + auth.getAuthorities());
 		return ResponseEntity.ok(auth.getAuthorities());
 	}
 
@@ -106,7 +104,7 @@ public class TestController {
 					request.getEmail(),
 					"image.url",
 					new Point(0L),
-					UserRole.ROLE_BUYER,
+					UserRole.valueOf(request.getRole()),
 					AuthProvider.valueOf(request.getProvider()),
 					"test_" + System.currentTimeMillis()
 				);
@@ -120,10 +118,6 @@ public class TestController {
 			null,
 			Collections.singleton(new SimpleGrantedAuthority(user.getRole().name()))
 		);
-	}
-
-	private static class SessionUser {
-
 	}
 
 }
