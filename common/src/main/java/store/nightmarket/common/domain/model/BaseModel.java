@@ -4,7 +4,7 @@ public abstract class BaseModel<IdType> {
 
 	private IdType id;
 
-	public BaseModel() {
+	protected BaseModel() {
 	}
 
 	public BaseModel(IdType id) {

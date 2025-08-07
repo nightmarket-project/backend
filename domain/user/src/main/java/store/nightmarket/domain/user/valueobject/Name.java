@@ -1,15 +1,17 @@
 package store.nightmarket.domain.user.valueobject;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import lombok.Getter;
 import store.nightmarket.domain.user.exception.UserException;
 
 @Getter
-public class Name implements Serializable {
+public class Name {
 
-	private final String value;
+	private String value;
+
+	protected Name() {
+	}
 
 	public Name(String value) {
 		validate(value);

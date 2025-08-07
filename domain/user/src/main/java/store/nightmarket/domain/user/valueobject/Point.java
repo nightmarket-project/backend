@@ -1,14 +1,15 @@
 package store.nightmarket.domain.user.valueobject;
 
-import java.io.Serializable;
-
 import lombok.Getter;
 import store.nightmarket.domain.user.exception.UserException;
 
 @Getter
-public class Point implements Serializable {
+public class Point {
 
 	private Long value;
+
+	protected Point() {
+	}
 
 	public Point(Long value) {
 		validate(value);

@@ -6,6 +6,9 @@ public abstract class BaseId<Type> {
 
 	public abstract Type getId();
 
+	protected BaseId() {
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(getId());
@@ -13,9 +16,11 @@ public abstract class BaseId<Type> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
-		BaseId<?> other = (BaseId<?>) obj;
+		if (this == obj)
+			return true;
+		if (obj == null || getClass() != obj.getClass())
+			return false;
+		BaseId<?> other = (BaseId<?>)obj;
 		return Objects.equals(getId(), other.getId());
 	}
 
