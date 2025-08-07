@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
@@ -35,6 +36,7 @@ public class SecurityConfig {
 		AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
 
 		http
+			.requestCache(RequestCacheConfigurer::disable)
 			.csrf(csrf -> csrf
 				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 				.ignoringRequestMatchers("/api/v1/test/**")
@@ -73,7 +75,7 @@ public class SecurityConfig {
 				.requestMatchers("/login/oauth2/code/**").permitAll()
 				.requestMatchers("/api/v1/test/login").permitAll()
 				.requestMatchers("/api/v1/test/check").permitAll()
-				.requestMatchers("/api/v1/test/session").hasRole("BUYER")
+				.requestMatchers("/api/v1/test/session").hasAnyRole("BUYER", "ADMIN")
 				.requestMatchers("/h2-console/**").permitAll()
 				.anyRequest().authenticated()
 			);

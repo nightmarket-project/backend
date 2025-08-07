@@ -33,7 +33,7 @@ public class OAuthCallbackFilter extends AbstractAuthenticationProcessingFilter 
 
 		String provider = extractProviderFromUri(request.getRequestURI());
 
-		OAuthStrategy oAuthStrategy = oAuthStrategyMap.get(provider);
+		OAuthStrategy oAuthStrategy = oAuthStrategyMap.get(provider.toUpperCase());
 
 		if (oAuthStrategy == null) {
 			throw new OAuthException("Unsupported OAuth provider: " + provider);
