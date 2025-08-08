@@ -16,19 +16,22 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appuser.auth.model.OAuthAuthenticationSuccessHandler;
 import store.nightmarket.application.appuser.auth.model.OAuthCallbackFilter;
-import store.nightmarket.application.appuser.auth.model.strategy.GoogleAuthenticationStrategy;
+import store.nightmarket.application.appuser.auth.model.strategy.GoogleAuthenticationGenerator;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private final GoogleAuthenticationStrategy googleAuthenticationStrategy;
+	private final GoogleAuthenticationGenerator googleAuthenticationGenerator;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -40,13 +43,15 @@ public class SecurityConfig {
 			.csrf(csrf -> csrf
 				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 				.ignoringRequestMatchers("/api/v1/test/**")
+				.ignoringRequestMatchers("/api/v1/auth/**")
 			)
 			.cors(AbstractHttpConfigurer::disable)
 			.httpBasic(AbstractHttpConfigurer::disable)
 			.formLogin(AbstractHttpConfigurer::disable)
 			.logout(AbstractHttpConfigurer::disable)
 			.headers(c -> c.frameOptions(
-				HeadersConfigurer.FrameOptionsConfig::disable).disable())
+				HeadersConfigurer.FrameOptionsConfig::disable).disable()
+			)
 			.sessionManagement(session -> {
 				session
 					.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
@@ -59,8 +64,12 @@ public class SecurityConfig {
 					.sessionFixation().changeSessionId()
 					.invalidSessionUrl("/login?invalid");
 			})
+			.securityContext(context -> context
+				.requireExplicitSave(false) //true는 수동
+				.securityContextRepository(securityContextRepository())
+			)
 			.logout(logout -> logout
-				.logoutUrl("/api/v1/auth/logout")
+				.logoutRequestMatcher(new AntPathRequestMatcher("/api/v1/auth/logout", "GET"))
 				.logoutSuccessUrl("http://localhost:3000/?logout=success")
 				.invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID")
@@ -84,8 +93,8 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public OAuthCallbackFilter callBackFilter(AuthenticationManager authenticationManager) throws Exception {
-		OAuthCallbackFilter oAuthCallbackFilter = new OAuthCallbackFilter(List.of(googleAuthenticationStrategy));
+	public OAuthCallbackFilter callBackFilter(AuthenticationManager authenticationManager) {
+		OAuthCallbackFilter oAuthCallbackFilter = new OAuthCallbackFilter(List.of(googleAuthenticationGenerator));
 		oAuthCallbackFilter.setAuthenticationManager(authenticationManager);
 		oAuthCallbackFilter.setAuthenticationSuccessHandler(successHandler());
 		return oAuthCallbackFilter;
@@ -105,6 +114,11 @@ public class SecurityConfig {
 	@Bean
 	public SessionRegistry sessionRegistry() {
 		return new SessionRegistryImpl();
+	}
+
+	@Bean
+	public SecurityContextRepository securityContextRepository() {
+		return new HttpSessionSecurityContextRepository();
 	}
 
 }
