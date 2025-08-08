@@ -1,6 +1,5 @@
 package store.nightmarket.application.appuser.auth.model.strategy;
 
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -11,15 +10,14 @@ import store.nightmarket.application.appuser.auth.model.GoogleOAuthAuthenticatio
 import store.nightmarket.domain.user.valueobject.AuthProvider;
 
 @Component
-public class GoogleAuthenticationStrategy implements OAuthStrategy {
+public class GoogleAuthenticationGenerator implements OAuthGenerator {
 
 	@Override
-	public Authentication delegate(HttpServletRequest request, AuthenticationManager authenticationManager) {
+	public Authentication generate(HttpServletRequest request) {
 
 		String authorizationCode = request.getParameter("code");
 		String state = request.getParameter("state");
 
-		// 세션에 담긴 state로 검증
 		HttpSession session = request.getSession();
 		String sessionState = (String)session.getAttribute("session_state");
 
@@ -29,10 +27,7 @@ public class GoogleAuthenticationStrategy implements OAuthStrategy {
 
 		session.removeAttribute("session_state");
 
-		GoogleOAuthAuthenticationToken token = new GoogleOAuthAuthenticationToken(authorizationCode);
-
-		return authenticationManager.authenticate(token);
-
+		return new GoogleOAuthAuthenticationToken(authorizationCode);
 	}
 
 	@Override
