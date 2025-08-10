@@ -31,6 +31,7 @@ import store.nightmarket.application.appuser.auth.model.strategy.GoogleAuthentic
 public class SecurityConfig {
 
 	private final GoogleAuthenticationGenerator googleAuthenticationGenerator;
+	private final CorsConfig corsConfig;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,7 +44,7 @@ public class SecurityConfig {
 				.ignoringRequestMatchers("/api/v1/test/**")
 				.ignoringRequestMatchers("/api/v1/auth/**")
 			)
-			.cors(AbstractHttpConfigurer::disable)
+			.cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
 			.httpBasic(AbstractHttpConfigurer::disable)
 			.formLogin(AbstractHttpConfigurer::disable)
 			.logout(AbstractHttpConfigurer::disable)
