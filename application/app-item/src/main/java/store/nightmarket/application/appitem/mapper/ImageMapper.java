@@ -8,30 +8,30 @@ import store.nightmarket.persistence.persistitem.entity.model.ReviewEntity;
 
 public class ImageMapper {
 
-    public static Image toDomain(ImageEntity entity) {
-        return Image.newInstance(
-            new ImageId(entity.getId()),
-            entity.getUrl(),
-            entity.getAltText(),
-            entity.getDisplayOrder(),
-            entity.getType()
-        );
-    }
+	public static Image toDomain(ImageEntity entity) {
+		return Image.newInstance(
+			new ImageId(entity.getId()),
+			entity.getUrl(),
+			entity.getAltText(),
+			entity.getDisplayOrder(),
+			entity.getType()
+		);
+	}
 
-    public static ImageEntity toEntity(
-        Image domain,
-        ReviewEntity reviewEntity,
-        ProductPostEntity productPostEntity
-    ) {
-        return ImageEntity.newInstance(
-            domain.getImageId().getId(),
-            domain.getImageUrl(),
-            domain.getAltText(),
-            domain.getDisplayOrder(),
-            domain.getImageType(),
-            reviewEntity,
-            productPostEntity
-        );
-    }
+	public static ImageEntity toEntity(
+		Image domain,
+		ReviewEntity reviewEntity,
+		ProductPostEntity productPostEntity
+	) {
+		return ImageEntity.newInstance(
+			domain.getImageId().getId(),
+			domain.getImageUrl(),
+			domain.getAltText(),
+			domain.getDisplayOrder(),
+			domain.getImageType(),
+			reviewEntity,
+			productPostEntity
+		);
+	}
 
 }

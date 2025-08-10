@@ -18,4 +18,5 @@ public class CommentTextMapper {
             domain.isDeleted()
         );
     }
+
 }
