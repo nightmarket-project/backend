@@ -4,7 +4,7 @@ import org.springframework.security.core.Authentication;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public interface OAuthGenerator {
+public interface AuthenticationGenerator {
 
 	Authentication generate(HttpServletRequest request);
 

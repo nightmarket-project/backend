@@ -10,7 +10,7 @@ import store.nightmarket.application.appuser.auth.model.GoogleOAuthAuthenticatio
 import store.nightmarket.domain.user.valueobject.AuthProvider;
 
 @Component
-public class GoogleAuthenticationGenerator implements OAuthGenerator {
+public class GoogleAuthenticationGenerator implements AuthenticationGenerator {
 
 	@Override
 	public Authentication generate(HttpServletRequest request) {

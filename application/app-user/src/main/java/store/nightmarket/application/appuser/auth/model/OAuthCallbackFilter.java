@@ -12,17 +12,17 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import store.nightmarket.application.appuser.auth.exception.OAuthException;
-import store.nightmarket.application.appuser.auth.model.strategy.OAuthGenerator;
+import store.nightmarket.application.appuser.auth.model.strategy.AuthenticationGenerator;
 
 public class OAuthCallbackFilter extends AbstractAuthenticationProcessingFilter {
 
-	private final Map<String, OAuthGenerator> oAuthGeneratorMap;
+	private final Map<String, AuthenticationGenerator> generatorMap;
 
-	public OAuthCallbackFilter(List<OAuthGenerator> generatorList) {
+	public OAuthCallbackFilter(List<AuthenticationGenerator> generatorList) {
 		super(new AntPathRequestMatcher("/login/oauth2/code/**", "GET"));
-		this.oAuthGeneratorMap = generatorList.stream()
+		this.generatorMap = generatorList.stream()
 			.collect(Collectors.toMap(
-				OAuthGenerator::getProviderName,
+				AuthenticationGenerator::getProviderName,
 				generator -> generator
 			));
 	}
@@ -33,13 +33,13 @@ public class OAuthCallbackFilter extends AbstractAuthenticationProcessingFilter 
 
 		String provider = extractProviderFromUri(request.getRequestURI());
 
-		OAuthGenerator oAuthGenerator = oAuthGeneratorMap.get(provider.toUpperCase());
+		AuthenticationGenerator authenticationGenerator = generatorMap.get(provider.toUpperCase());
 
-		if (oAuthGenerator == null) {
+		if (authenticationGenerator == null) {
 			throw new OAuthException("Unsupported OAuth provider: " + provider);
 		}
 
-		Authentication authentication = oAuthGenerator.generate(request);
+		Authentication authentication = authenticationGenerator.generate(request);
 
 		return this.getAuthenticationManager().authenticate(authentication);
 	}
