@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
-import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
@@ -27,7 +26,7 @@ import store.nightmarket.application.appuser.auth.model.OAuthCallbackFilter;
 import store.nightmarket.application.appuser.auth.model.strategy.GoogleAuthenticationGenerator;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -39,7 +38,6 @@ public class SecurityConfig {
 		AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
 
 		http
-			.requestCache(RequestCacheConfigurer::disable)
 			.csrf(csrf -> csrf
 				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 				.ignoringRequestMatchers("/api/v1/test/**")
