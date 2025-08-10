@@ -103,7 +103,7 @@ configure(item) {
     }
 }
 //persistence layer
-def persist = [project(':persist-delivery'), project(':persist-order'), project(':persist-payment'), project(':persist-item')]
+def persist = [project(':persist-delivery'), project(':persist-order'), project(':persist-payment'), project(':persist-item'), project(':persist-user')]
 
 configure(persist) {
     bootJar {
@@ -111,7 +111,7 @@ configure(persist) {
     }
     dependencies {
         implementation project(':common')
-        
+
         // Spring boot
         compileOnly 'org.springframework.boot:spring-boot-starter'
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -166,9 +166,18 @@ project(':persist-item') {
     }
 }
 
+project(':persist-user') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':user')
+    }
+}
+
 //application layer
 
-def app = [project(':app-item'), project(':app-order'), project(':app-payment'), project(':app-delivery')]
+def app = [project(':app-item'), project(':app-order'), project(':app-payment'), project(':app-delivery'), project(':app-user')]
 
 configure(app) {
     bootJar {
@@ -238,5 +247,26 @@ project(':app-delivery') {
     dependencies {
         implementation project(':delivery')
         implementation project(':persist-delivery')
+    }
+}
+
+project(':app-user') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':user')
+        implementation project(':persist-user')
+
+        //Spring Security
+        implementation "org.springframework.boot:spring-boot-starter-security"
+
+        //Oauth
+        implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+        //JWT
+        implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+        runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+        runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
     }
 }

@@ -25,6 +25,8 @@ include 'persist-payment'
 project(':persist-payment').projectDir = file('persistence/persist-payment')
 include 'persist-item'
 project(':persist-item').projectDir = file('persistence/persist-item')
+include 'persist-user'
+project(':persist-user').projectDir = file('persistence/persist-user')
 
 
 //application layer
@@ -36,3 +38,5 @@ include 'app-payment'
 project(':app-payment').projectDir = file('application/app-payment')
 include 'app-delivery'
 project(':app-delivery').projectDir = file('application/app-delivery')
+include 'app-user'
+project(':app-user').projectDir = file('application/app-user')

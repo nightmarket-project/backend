@@ -3,10 +3,10 @@ package store.nightmarket.domain.user.valueobject;
 import lombok.Getter;
 
 @Getter
-public enum UserRole {
+public enum AuthProvider {
 
-	ROLE_ADMIN,
-	ROLE_BUYER,
-	ROLE_SELLER;
+	GOOGLE,
+	NAVER,
+	KAKAO;
 
 }

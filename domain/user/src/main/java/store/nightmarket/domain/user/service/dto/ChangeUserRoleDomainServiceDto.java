@@ -4,14 +4,14 @@ import lombok.Builder;
 import lombok.Getter;
 import store.nightmarket.domain.user.model.User;
 
-public class ChangeUserPasswordDomainServiceDto {
+public class ChangeUserRoleDomainServiceDto {
 
 	@Getter
 	@Builder
 	public static class Input {
 
 		private final User user;
-		private final String password;
+		private final String role;
 
 	}
 

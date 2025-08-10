@@ -1,4 +1,4 @@
-package store.nightmarket.persistence.persistorder.entity.valueobject;
+package store.nightmarket.persistence.persistuser.entity.valueobject;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @EqualsAndHashCode
-public class QuantityEntity {
+public class NameEntity {
 
-	private int value;
+	private String name;
 
 }

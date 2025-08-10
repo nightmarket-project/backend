@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import store.nightmarket.domain.user.exception.UserException;
 import store.nightmarket.domain.user.model.User;
+import store.nightmarket.domain.user.valueobject.AuthProvider;
 import store.nightmarket.domain.user.valueobject.UserRole;
 
 class ChangeUserNameDomainServiceTest {
@@ -31,9 +32,11 @@ class ChangeUserNameDomainServiceTest {
 			UUID.randomUUID(),
 			"사용자1",
 			"example@google.com",
-			"1234",
+			"imageUrl1@example.com",
 			10000L,
-			UserRole.BUYER
+			UserRole.ROLE_BUYER,
+			AuthProvider.GOOGLE,
+			"google1"
 		);
 
 		String newName = "사용자2";
@@ -55,9 +58,11 @@ class ChangeUserNameDomainServiceTest {
 			UUID.randomUUID(),
 			"사용자1",
 			"example@google.com",
-			"1234",
+			"imageUrl1@example.com",
 			10000L,
-			UserRole.BUYER
+			UserRole.ROLE_BUYER,
+			AuthProvider.GOOGLE,
+			"google1"
 		);
 
 		String newName = null;
@@ -79,9 +84,11 @@ class ChangeUserNameDomainServiceTest {
 			UUID.randomUUID(),
 			"사용자1",
 			"example@google.com",
-			"1234",
+			"imageUrl1@example.com",
 			10000L,
-			UserRole.BUYER
+			UserRole.ROLE_BUYER,
+			AuthProvider.GOOGLE,
+			"google1"
 		);
 
 		String newName = "";
@@ -103,9 +110,11 @@ class ChangeUserNameDomainServiceTest {
 			UUID.randomUUID(),
 			"사용자1",
 			"example@google.com",
-			"1234",
+			"imageUrl1@example.com",
 			10000L,
-			UserRole.BUYER
+			UserRole.ROLE_BUYER,
+			AuthProvider.GOOGLE,
+			"google1"
 		);
 
 		String newName = "aaaaaaaabbbbbbbbccccccccddddddddeeeeeeeeffffffffgggggggghhhhhhhhiiiiiiiiii";
