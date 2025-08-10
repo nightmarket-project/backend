@@ -5,7 +5,6 @@ import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,36 +30,29 @@ public class ProductEntity extends BaseUuidEntity {
 	@Column(name = "price")
 	private PriceEntity priceEntity;
 
-	@OneToOne(mappedBy = "productEntity")
-	private ProductPostEntity productPostEntity;
-
 	private ProductEntity(
 		UUID id,
 		NameEntity nameEntity,
 		String description,
-		PriceEntity priceEntity,
-		ProductPostEntity productPostEntity
+		PriceEntity priceEntity
 	) {
 		super(id);
 		this.nameEntity = nameEntity;
 		this.description = description;
 		this.priceEntity = priceEntity;
-		this.productPostEntity = productPostEntity;
 	}
 
 	public static ProductEntity newInstance(
 		UUID id,
 		NameEntity nameEntity,
 		String description,
-		PriceEntity priceEntity,
-		ProductPostEntity productPostEntity
+		PriceEntity priceEntity
 	) {
 		return new ProductEntity(
 			id,
 			nameEntity,
 			description,
-			priceEntity,
-			productPostEntity
+			priceEntity
 		);
 	}
 
