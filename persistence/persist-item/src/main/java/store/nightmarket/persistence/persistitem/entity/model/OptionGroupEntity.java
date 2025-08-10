@@ -22,6 +22,9 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OptionGroupEntity extends BaseUuidEntity {
 
+	@Column(name = "product_id", columnDefinition = "BINARY(16)", nullable = false)
+	private UUID productId;
+
 	@Embedded
 	@Column(name = "name")
 	private NameEntity nameEntity;
@@ -34,21 +37,25 @@ public class OptionGroupEntity extends BaseUuidEntity {
 
 	private OptionGroupEntity(
 		UUID id,
+		UUID productId,
 		NameEntity nameEntity,
 		int order
 	) {
 		super(id);
+		this.productId = productId;
 		this.nameEntity = nameEntity;
 		this.order = order;
 	}
 
 	public static OptionGroupEntity newInstance(
 		UUID id,
+		UUID productId,
 		NameEntity nameEntity,
 		int order
 	) {
 		return new OptionGroupEntity(
 			id,
+			productId,
 			nameEntity,
 			order
 		);
