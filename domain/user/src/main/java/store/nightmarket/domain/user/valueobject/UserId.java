@@ -8,7 +8,10 @@ import store.nightmarket.common.domain.model.BaseId;
 @Getter
 public class UserId extends BaseId<UUID> {
 
-	private final UUID id;
+	private UUID id;
+
+	protected UserId() {
+	}
 
 	public UserId(UUID id) {
 		this.id = id;

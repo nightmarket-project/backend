@@ -8,6 +8,9 @@ public class Point {
 
 	private Long value;
 
+	protected Point() {
+	}
+
 	public Point(Long value) {
 		validate(value);
 		this.value = value;

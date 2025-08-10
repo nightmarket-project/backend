@@ -8,7 +8,10 @@ import store.nightmarket.domain.user.exception.UserException;
 @Getter
 public class Name {
 
-	private final String value;
+	private String value;
+
+	protected Name() {
+	}
 
 	public Name(String value) {
 		validate(value);

@@ -16,8 +16,11 @@ public class User extends BaseModel<UserId> {
 	private String imageUrl;
 	private Point point;
 	private UserRole role;
-	private final AuthProvider authProvider;
-	private final String providerId;
+	private AuthProvider authProvider;
+	private String providerId;
+
+	protected User() {
+	}
 
 	private User(
 		UserId id,
