@@ -5,9 +5,10 @@ import java.util.UUID;
 
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.model.Image;
-import store.nightmarket.itemweb.model.ImageManager;
+import store.nightmarket.itemweb.model.ProductPostImageManager;
 import store.nightmarket.itemweb.model.Reply;
 import store.nightmarket.itemweb.model.Review;
+import store.nightmarket.itemweb.model.ReviewImageManager;
 import store.nightmarket.itemweb.state.ImageType;
 import store.nightmarket.itemweb.valueobject.CommentText;
 import store.nightmarket.itemweb.valueobject.ImageId;
@@ -24,7 +25,7 @@ public class TestObjectFactory {
 		UUID productPostId,
 		UUID authorId,
 		String commentText,
-		ImageManager imageManager,
+		ReviewImageManager reviewImageManager,
 		int rating
 	) {
 		return Review.newInstance(
@@ -32,7 +33,7 @@ public class TestObjectFactory {
 			new ProductPostId(productPostId),
 			new UserId(authorId),
 			new CommentText(commentText),
-			imageManager,
+			reviewImageManager,
 			new Rating(rating)
 		);
 	}
@@ -72,17 +73,35 @@ public class TestObjectFactory {
 		);
 	}
 
-	public static ImageManager createImageManager(
+	public static ReviewImageManager createReviewImageManager(
 		UUID imageManagerId,
 		UUID imageId,
 		int displayOrder,
-		ImageType imageType
+		ImageType imageType,
+		UUID reviewId
 	) {
-		return ImageManager.newInstance(
+		return ReviewImageManager.newInstance(
 			new ImageManagerId(imageManagerId),
 			new ImageId(imageId),
 			displayOrder,
-			imageType
+			imageType,
+			new ReviewId(reviewId)
+		);
+	}
+
+	public static ProductPostImageManager createProductPostImageManager(
+		UUID imageManagerId,
+		UUID imageId,
+		int displayOrder,
+		ImageType imageType,
+		UUID productPostId
+	) {
+		return ProductPostImageManager.newInstance(
+			new ImageManagerId(imageManagerId),
+			new ImageId(imageId),
+			displayOrder,
+			imageType,
+			new ProductPostId(productPostId)
 		);
 	}
 

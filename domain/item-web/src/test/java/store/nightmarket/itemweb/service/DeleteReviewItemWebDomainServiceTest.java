@@ -32,17 +32,19 @@ class DeleteReviewItemWebDomainServiceTest {
 	@DisplayName("서비스 실행 시 리뷰를 삭제 처리하고 내용은 '삭제된 댓글 입니다.'로 변경한다")
 	void shouldSoftDeleteReviewAndMaskContentWhenExecuted() {
 		// given
+		UUID reviewId = UUID.randomUUID();
 		UUID authorId = UUID.randomUUID();
 		Review review = TestObjectFactory.createReview(
-			UUID.randomUUID(),
+			reviewId,
 			UUID.randomUUID(),
 			authorId,
 			"good!",
-			TestObjectFactory.createImageManager(
+			TestObjectFactory.createReviewImageManager(
 				UUID.randomUUID(),
 				UUID.randomUUID(),
 				1,
-				ImageType.MAIN
+				ImageType.MAIN,
+				reviewId
 			),
 			5
 		);
@@ -69,18 +71,20 @@ class DeleteReviewItemWebDomainServiceTest {
 	@DisplayName("요청한 사용자 ID가 리뷰 작성자와 다르면 예외가 발생한다")
 	void shouldThrowExceptionWhenUserIdDoesNotMatchAuthorId() {
 		// given
+		UUID reviewId = UUID.randomUUID();
 		UUID authorId = UUID.randomUUID();
 		UUID otherPersonId = UUID.randomUUID();
 		Review review = TestObjectFactory.createReview(
-			UUID.randomUUID(),
+			reviewId,
 			UUID.randomUUID(),
 			authorId,
 			"good!",
-			TestObjectFactory.createImageManager(
+			TestObjectFactory.createReviewImageManager(
 				UUID.randomUUID(),
 				UUID.randomUUID(),
 				1,
-				ImageType.MAIN
+				ImageType.MAIN,
+				reviewId
 			),
 			5
 		);

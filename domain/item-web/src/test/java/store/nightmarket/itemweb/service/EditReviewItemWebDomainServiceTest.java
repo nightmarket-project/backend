@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.fixture.TestObjectFactory;
-import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.model.Review;
+import store.nightmarket.itemweb.model.ReviewImageManager;
 import store.nightmarket.itemweb.service.dto.EditReviewItemWebDomainServiceDto.Event;
 import store.nightmarket.itemweb.service.dto.EditReviewItemWebDomainServiceDto.Input;
 import store.nightmarket.itemweb.state.ImageType;
@@ -35,19 +35,21 @@ class EditReviewItemWebDomainServiceTest {
 	@DisplayName("리뷰 작성자와 요청한 사용자 ID가 같으면 리뷰가 수정된다")
 	void shouldEditReviewWhenUserIdIsEqualToAuthorId() {
 		// given
+		UUID reviewId = UUID.randomUUID();
 		UUID authorId = UUID.randomUUID();
-		ImageManager imageManager = TestObjectFactory.createImageManager(
+		ReviewImageManager reviewImageManager = TestObjectFactory.createReviewImageManager(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
 			1,
-			ImageType.MAIN
+			ImageType.MAIN,
+			reviewId
 		);
 		Review review = TestObjectFactory.createReview(
-			UUID.randomUUID(),
+			reviewId,
 			UUID.randomUUID(),
 			authorId,
 			"good!",
-			imageManager,
+			reviewImageManager,
 			5
 		);
 		CommentText editText = new CommentText("bad");
@@ -58,7 +60,7 @@ class EditReviewItemWebDomainServiceTest {
 			.authorId(new UserId(authorId))
 			.commentText(editText)
 			.rating(editRating)
-			.imageManager(imageManager)
+			.imageManager(reviewImageManager)
 			.build();
 
 		// when
@@ -69,8 +71,8 @@ class EditReviewItemWebDomainServiceTest {
 			.isEqualTo(editText);
 		softly.assertThat(event.getReview().getRating())
 			.isEqualTo(editRating);
-		softly.assertThat(event.getReview().getImageManager())
-			.isEqualTo(imageManager);
+		softly.assertThat(event.getReview().getReviewImageManager())
+			.isEqualTo(reviewImageManager);
 		softly.assertAll();
 	}
 
@@ -78,20 +80,22 @@ class EditReviewItemWebDomainServiceTest {
 	@DisplayName("리뷰 작성자와 요청한 사용자 ID가 다르면 예외가 발생한다")
 	void shouldThrowExceptionWhenUserIdIsDifferentFromAuthorId() {
 		// given
+		UUID reviewId = UUID.randomUUID();
 		UUID authorId = UUID.randomUUID();
 		UserId ohterUserId = new UserId(UUID.randomUUID());
-		ImageManager imageManager = TestObjectFactory.createImageManager(
+		ReviewImageManager reviewImageManager = TestObjectFactory.createReviewImageManager(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
 			1,
-			ImageType.MAIN
+			ImageType.MAIN,
+			reviewId
 		);
 		Review review = TestObjectFactory.createReview(
-			UUID.randomUUID(),
+			reviewId,
 			UUID.randomUUID(),
 			authorId,
 			"good!",
-			imageManager,
+			reviewImageManager,
 			5
 		);
 
@@ -103,7 +107,7 @@ class EditReviewItemWebDomainServiceTest {
 			.authorId(ohterUserId)
 			.commentText(editText)
 			.rating(editRating)
-			.imageManager(imageManager)
+			.imageManager(reviewImageManager)
 			.build();
 
 		// when

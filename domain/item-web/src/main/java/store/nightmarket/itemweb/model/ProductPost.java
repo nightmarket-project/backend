@@ -13,7 +13,7 @@ import store.nightmarket.itemweb.valueobject.Rating;
 public class ProductPost extends BaseModel<ProductPostId> {
 
 	private final Product product;
-	private List<ImageManager> imageManagerList;
+	private List<ProductPostImageManager> productPostImageManagerList;
 	private Rating rating;
 	private boolean deleted;
 
@@ -21,11 +21,11 @@ public class ProductPost extends BaseModel<ProductPostId> {
 		ProductPostId id,
 		Product product,
 		Rating rating,
-		List<ImageManager> imageManagerList
+		List<ProductPostImageManager> productPostImageManagerList
 	) {
 		super(id);
 		this.product = product;
-		this.imageManagerList = new ArrayList<>(imageManagerList);
+		this.productPostImageManagerList = new ArrayList<>(productPostImageManagerList);
 		this.rating = rating;
 		this.deleted = false;
 	}
@@ -34,13 +34,13 @@ public class ProductPost extends BaseModel<ProductPostId> {
 		ProductPostId id,
 		Product product,
 		Rating rating,
-		List<ImageManager> imageManagerList
+		List<ProductPostImageManager> productPostImageManagerList
 	) {
 		return new ProductPost(
 			id,
 			product,
 			rating,
-			imageManagerList
+			productPostImageManagerList
 		);
 	}
 

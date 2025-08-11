@@ -3,8 +3,8 @@ package store.nightmarket.itemweb.service.dto;
 import lombok.Builder;
 import lombok.Getter;
 import store.nightmarket.domain.item.valueobject.UserId;
-import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.model.Review;
+import store.nightmarket.itemweb.model.ReviewImageManager;
 import store.nightmarket.itemweb.valueobject.CommentText;
 import store.nightmarket.itemweb.valueobject.Rating;
 
@@ -18,7 +18,7 @@ public class EditReviewItemWebDomainServiceDto {
 		private UserId authorId;
 		private CommentText commentText;
 		private Rating rating;
-		private ImageManager imageManager;
+		private ReviewImageManager imageManager;
 
 	}
 

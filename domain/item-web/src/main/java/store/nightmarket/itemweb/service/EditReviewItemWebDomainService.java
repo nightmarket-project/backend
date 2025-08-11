@@ -2,8 +2,8 @@ package store.nightmarket.itemweb.service;
 
 import store.nightmarket.common.domain.service.BaseDomainService;
 import store.nightmarket.domain.item.valueobject.UserId;
-import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.model.Review;
+import store.nightmarket.itemweb.model.ReviewImageManager;
 import store.nightmarket.itemweb.service.dto.EditReviewItemWebDomainServiceDto.Event;
 import store.nightmarket.itemweb.service.dto.EditReviewItemWebDomainServiceDto.Input;
 import store.nightmarket.itemweb.valueobject.CommentText;
@@ -18,13 +18,13 @@ public class EditReviewItemWebDomainService
 		UserId authorId = input.getAuthorId();
 		CommentText commentText = input.getCommentText();
 		Rating rating = input.getRating();
-		ImageManager imageManager = input.getImageManager();
+		ReviewImageManager reviewImageManager = input.getImageManager();
 
 		review.edit(
 			authorId,
 			commentText,
 			rating,
-			imageManager
+			reviewImageManager
 		);
 
 		return Event.builder()

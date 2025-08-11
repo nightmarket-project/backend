@@ -29,18 +29,20 @@ class ReviewTest {
 	@DisplayName("현재 유저 아이디와 작성자 아이디가 같을때 리뷰가 삭제된다.")
 	void shouldDeleteReviewWhenCurrentUserIdIsEqualToAuthorId() {
 		// given
+		UUID reviewId = UUID.randomUUID();
 		UUID authorId = UUID.randomUUID();
 
 		Review review = TestObjectFactory.createReview(
-			UUID.randomUUID(),
+			reviewId,
 			UUID.randomUUID(),
 			authorId,
 			"good!",
-			TestObjectFactory.createImageManager(
+			TestObjectFactory.createReviewImageManager(
 				UUID.randomUUID(),
 				UUID.randomUUID(),
 				1,
-				ImageType.MAIN
+				ImageType.MAIN,
+				reviewId
 			),
 			5
 		);
@@ -58,19 +60,21 @@ class ReviewTest {
 	@DisplayName("리뷰 작성자가 아닌 사용자가 리뷰를 삭제하려고 하면 예외가 발생한다")
 	void shouldThrowExceptionWhenUserIdIsDifferentFromAuthorIdOnDeleteReview() {
 		// given
+		UUID reviewId = UUID.randomUUID();
 		UUID authorId = UUID.randomUUID();
 		UUID otherUserId = UUID.randomUUID();
 
 		Review review = TestObjectFactory.createReview(
-			UUID.randomUUID(),
+			reviewId,
 			UUID.randomUUID(),
 			authorId,
 			"good!",
-			TestObjectFactory.createImageManager(
+			TestObjectFactory.createReviewImageManager(
 				UUID.randomUUID(),
 				UUID.randomUUID(),
 				10,
-				ImageType.MAIN
+				ImageType.MAIN,
+				reviewId
 			),
 			5
 		);
@@ -85,20 +89,21 @@ class ReviewTest {
 	@DisplayName("현재 유저 아이디와 작성자 아이디가 같을때 리뷰가 수정된다.")
 	void shouldEditReviewWhenCurrentUserIdIsEqualToAuthorId() {
 		// given
+		UUID reviewId = UUID.randomUUID();
 		UUID authorId = UUID.randomUUID();
-		ImageManager imageManager = TestObjectFactory.createImageManager(
+		ReviewImageManager reviewImageManager = TestObjectFactory.createReviewImageManager(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
 			10,
-			ImageType.MAIN
+			ImageType.MAIN,
+			reviewId
 		);
-
 		Review review = TestObjectFactory.createReview(
-			UUID.randomUUID(),
+			reviewId,
 			UUID.randomUUID(),
 			authorId,
 			"good!",
-			imageManager,
+			reviewImageManager,
 			5
 		);
 
@@ -107,7 +112,7 @@ class ReviewTest {
 			new UserId(authorId),
 			new CommentText("bad!"),
 			new Rating(1),
-			imageManager
+			reviewImageManager
 		);
 
 		// then
@@ -122,19 +127,21 @@ class ReviewTest {
 	@DisplayName("리뷰 작성자가 아닌 사용자가 리뷰를 수정하려고 하면 예외가 발생한다")
 	void shouldThrowExceptionWhenUserIdIsDifferentFromAuthorIdOnEditReview() {
 		// given
+		UUID reviewId = UUID.randomUUID();
 		UUID authorId = UUID.randomUUID();
-		ImageManager imageManager = TestObjectFactory.createImageManager(
+		ReviewImageManager reviewImageManager = TestObjectFactory.createReviewImageManager(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
 			10,
-			ImageType.MAIN
+			ImageType.MAIN,
+			reviewId
 		);
 		Review review = TestObjectFactory.createReview(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
 			authorId,
 			"good!",
-			imageManager,
+			reviewImageManager,
 			5
 		);
 
@@ -147,7 +154,7 @@ class ReviewTest {
 				otherUserId,
 				new CommentText("bad!"),
 				new Rating(1),
-				imageManager
+				reviewImageManager
 			)
 		).isInstanceOf(ItemWebException.class);
 	}

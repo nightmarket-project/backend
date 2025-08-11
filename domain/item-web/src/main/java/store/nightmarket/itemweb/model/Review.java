@@ -17,7 +17,7 @@ public class Review extends BaseModel<ReviewId> {
 	private final ProductPostId postId;
 	private final UserId author;
 	private CommentText commentText;
-	private ImageManager imageManager;
+	private ReviewImageManager reviewImageManager;
 	private Rating rating;
 	private final LocalDate createdAt;
 	private boolean deleted;
@@ -27,14 +27,14 @@ public class Review extends BaseModel<ReviewId> {
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
-		ImageManager imageManager,
+		ReviewImageManager reviewImageManager,
 		Rating rating
 	) {
 		super(id);
 		this.postId = postId;
 		this.author = author;
 		this.commentText = commentText;
-		this.imageManager = imageManager;
+		this.reviewImageManager = reviewImageManager;
 		this.rating = rating;
 		this.createdAt = LocalDate.now();
 		deleted = false;
@@ -45,7 +45,7 @@ public class Review extends BaseModel<ReviewId> {
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
-		ImageManager imageManager,
+		ReviewImageManager reviewImageManager,
 		Rating rating
 	) {
 		return new Review(
@@ -53,7 +53,7 @@ public class Review extends BaseModel<ReviewId> {
 			postId,
 			author,
 			commentText,
-			imageManager,
+			reviewImageManager,
 			rating
 		);
 	}
@@ -74,7 +74,7 @@ public class Review extends BaseModel<ReviewId> {
 		UserId authorId,
 		CommentText editContent,
 		Rating editRating,
-		ImageManager editImage
+		ReviewImageManager editImage
 	) {
 		if (!authorId.equals(this.author)) {
 			throw new ItemWebException("댓글 작성자만 수정 가능합니다.");
@@ -82,7 +82,7 @@ public class Review extends BaseModel<ReviewId> {
 
 		this.commentText = (editContent == null) ? commentText : editContent;
 		this.rating = (editRating == null) ? rating : editRating;
-		this.imageManager = (editImage == null) ? imageManager : editImage;
+		this.reviewImageManager = (editImage == null) ? reviewImageManager : editImage;
 	}
 
 	public ReviewId getReviewId() {
