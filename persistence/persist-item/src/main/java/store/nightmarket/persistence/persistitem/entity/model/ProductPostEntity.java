@@ -32,7 +32,7 @@ public class ProductPostEntity extends BaseUuidEntity {
 	private RatingEntity ratingEntity;
 
 	@OneToMany(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
-	private List<ImageEntity> imageEntityList = new ArrayList<>();
+	private List<ImageManagerEntity> imageManagerEntityList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
 	private List<ReviewEntity> reviewEntityList = new ArrayList<>();

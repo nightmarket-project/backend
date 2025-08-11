@@ -1,5 +1,8 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
+import java.time.LocalDate;
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -8,8 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
-import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,69 +24,69 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewEntity extends BaseUuidEntity {
 
-    @Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
-    private UUID userId;
+	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
+	private UUID userId;
 
-    @Embedded
-    @Column(name = "text")
-    private CommentTextEntity commentTextEntity;
+	@Embedded
+	@Column(name = "text")
+	private CommentTextEntity commentTextEntity;
 
-    @Embedded
-    @Column(name = "rating", nullable = false)
-    private RatingEntity ratingEntity;
+	@Embedded
+	@Column(name = "rating", nullable = false)
+	private RatingEntity ratingEntity;
 
-    @OneToOne(mappedBy = "reviewEntity")
-    private ImageEntity imageEntity;
+	@OneToOne(mappedBy = "reviewEntity")
+	private ImageManagerEntity imageManagerEntity;
 
-    @Column(name = "create_date", nullable = false)
-    private LocalDate createDate;
+	@Column(name = "create_date", nullable = false)
+	private LocalDate createDate;
 
-    @Column(name = "deleted", nullable = false)
-    private boolean deleted;
+	@Column(name = "deleted", nullable = false)
+	private boolean deleted;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_post_id")
-    private ProductPostEntity productPostEntity;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_post_id")
+	private ProductPostEntity productPostEntity;
 
-    @OneToOne(mappedBy = "reviewEntity")
-    private ReplyEntity replyEntity;
+	@OneToOne(mappedBy = "reviewEntity")
+	private ReplyEntity replyEntity;
 
-    public ReviewEntity(
-        UUID id,
-        UUID userId,
-        CommentTextEntity commentTextEntity,
-        RatingEntity ratingEntity,
-        LocalDate createDate,
-        boolean deleted,
-        ProductPostEntity productPostEntity
-    ) {
-        super(id);
-        this.userId = userId;
-        this.commentTextEntity = commentTextEntity;
-        this.ratingEntity = ratingEntity;
-        this.createDate = createDate;
-        this.deleted = deleted;
-        this.productPostEntity = productPostEntity;
-    }
+	public ReviewEntity(
+		UUID id,
+		UUID userId,
+		CommentTextEntity commentTextEntity,
+		RatingEntity ratingEntity,
+		LocalDate createDate,
+		boolean deleted,
+		ProductPostEntity productPostEntity
+	) {
+		super(id);
+		this.userId = userId;
+		this.commentTextEntity = commentTextEntity;
+		this.ratingEntity = ratingEntity;
+		this.createDate = createDate;
+		this.deleted = deleted;
+		this.productPostEntity = productPostEntity;
+	}
 
-    public static ReviewEntity newInstance(
-        UUID id,
-        UUID userId,
-        CommentTextEntity commentTextEntity,
-        RatingEntity ratingEntity,
-        LocalDate createDate,
-        boolean deleted,
-        ProductPostEntity productPostEntity
-    ) {
-        return new ReviewEntity(
-            id,
-            userId,
-            commentTextEntity,
-            ratingEntity,
-            createDate,
-            deleted,
-            productPostEntity
-        );
-    }
+	public static ReviewEntity newInstance(
+		UUID id,
+		UUID userId,
+		CommentTextEntity commentTextEntity,
+		RatingEntity ratingEntity,
+		LocalDate createDate,
+		boolean deleted,
+		ProductPostEntity productPostEntity
+	) {
+		return new ReviewEntity(
+			id,
+			userId,
+			commentTextEntity,
+			ratingEntity,
+			createDate,
+			deleted,
+			productPostEntity
+		);
+	}
 
 }
