@@ -25,7 +25,7 @@ public abstract class ImageManagerEntity extends BaseUuidEntity {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "type", nullable = false)
-	private ImageType type;
+	private ImageType imageType;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "image_id")
@@ -34,13 +34,13 @@ public abstract class ImageManagerEntity extends BaseUuidEntity {
 	protected ImageManagerEntity(
 		UUID id,
 		int displayOrder,
-		ImageType type,
+		ImageType imageType,
 		ImageEntity imageEntity
 	) {
 		super(id);
 		this.displayOrder = displayOrder;
-		this.type = type;
+		this.imageType = imageType;
 		this.imageEntity = imageEntity;
 	}
-	
+
 }
