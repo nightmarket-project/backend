@@ -1,20 +1,14 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.ImageType;
 
 @Getter
 @Entity
@@ -22,69 +16,32 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.ImageType;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ImageEntity extends BaseUuidEntity {
 
-    @Column(name = "url", nullable = false)
-    private String url;
+	@Column(name = "url", nullable = false)
+	private String url;
 
-    @Column(name = "alt_text", nullable = false)
-    private String altText;
+	@Column(name = "alt_text", nullable = false)
+	private String altText;
 
-    @Column(name = "file_size", nullable = false)
-    private Long fileSize;
+	private ImageEntity(
+		UUID id,
+		String url,
+		String altText
+	) {
+		super(id);
+		this.url = url;
+		this.altText = altText;
+	}
 
-    @Column(name = "display_order", nullable = false)
-    private int displayOrder;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private ImageType type;
-
-    @OneToOne(mappedBy = "imageEntity")
-    private ReviewEntity reviewEntity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_post")
-    private ProductPostEntity productPostEntity;
-
-    private ImageEntity(
-        UUID id,
-        String url,
-        String altText,
-        Long fileSize,
-        int displayOrder,
-        ImageType type,
-        ReviewEntity reviewEntity,
-        ProductPostEntity productPostEntity
-    ) {
-        super(id);
-        this.url = url;
-        this.altText = altText;
-        this.fileSize = fileSize;
-        this.displayOrder = displayOrder;
-        this.type = type;
-        this.reviewEntity = reviewEntity;
-        this.productPostEntity = productPostEntity;
-    }
-
-    public static ImageEntity newInstance(
-        UUID id,
-        String url,
-        String altText,
-        Long fileSize,
-        int displayOrder,
-        ImageType type,
-        ReviewEntity reviewEntity,
-        ProductPostEntity productPostEntity
-    ) {
-        return new ImageEntity(
-            id,
-            url,
-            altText,
-            fileSize,
-            displayOrder,
-            type,
-            reviewEntity,
-            productPostEntity
-        );
-    }
+	public static ImageEntity newInstance(
+		UUID id,
+		String url,
+		String altText
+	) {
+		return new ImageEntity(
+			id,
+			url,
+			altText
+		);
+	}
 
 }

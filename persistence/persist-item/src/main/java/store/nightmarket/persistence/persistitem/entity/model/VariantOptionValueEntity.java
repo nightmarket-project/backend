@@ -5,6 +5,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,5 +28,31 @@ public class VariantOptionValueEntity extends BaseUuidEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "option_value_id")
     private OptionValueEntity optionValueEntity;
+
+    private VariantOptionValueEntity(
+        UUID id,
+        ProductVariantEntity productVariantEntity,
+        OptionGroupEntity optionGroupEntity,
+        OptionValueEntity optionValueEntity
+    ) {
+        super(id);
+        this.productVariantEntity = productVariantEntity;
+        this.optionGroupEntity = optionGroupEntity;
+        this.optionValueEntity = optionValueEntity;
+    }
+
+    public static VariantOptionValueEntity newInstance(
+        UUID id,
+        ProductVariantEntity productVariantEntity,
+        OptionGroupEntity optionGroupEntity,
+        OptionValueEntity optionValueEntity
+    ) {
+        return new VariantOptionValueEntity(
+            id,
+            productVariantEntity,
+            optionGroupEntity,
+            optionValueEntity
+        );
+    }
 
 }

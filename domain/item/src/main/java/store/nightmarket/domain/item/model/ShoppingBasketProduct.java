@@ -55,10 +55,8 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
         );
     }
 
-    private void validateQuantity(Quantity quantity) {
-        if (quantity.isLessThan(new Quantity(BigDecimal.valueOf(1)))) {
-            throw new ProductException("수량이 1보다 크거나 같아야 합니다");
-        }
+    public ShoppingBasketProductId getShoppingBasketProductId() {
+        return internalId();
     }
 
     public Price getTotalPrice() {
@@ -76,10 +74,17 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
         this.quantity = quantity;
     }
 
+    private void validateQuantity(Quantity quantity) {
+        if (quantity.isLessThan(new Quantity(BigDecimal.valueOf(1)))) {
+            throw new ProductException("수량이 1보다 크거나 같아야 합니다");
+        }
+    }
+
     @Override
     public String toString() {
         return "CartProduct{" +
             "name=" + name.getValue() +
             '}';
     }
+
 }

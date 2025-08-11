@@ -1,20 +1,20 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.Name;
+import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
 
 @Getter
 @Entity
@@ -22,43 +22,43 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.Name;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OptionGroupEntity extends BaseUuidEntity {
 
-    @Embedded
-    @Column(name = "name")
-    private Name name;
+	@Column(name = "product_id", columnDefinition = "BINARY(16)", nullable = false)
+	private UUID productId;
 
-    @Column(name = "order")
-    private int order;
+	@Embedded
+	@Column(name = "name")
+	private NameEntity nameEntity;
 
-    @OneToMany(mappedBy = "optionGroupEntity", fetch = FetchType.LAZY)
-    private List<OptionValueEntity> optionValueEntityList = new ArrayList<>();
+	@Column(name = "order")
+	private int order;
 
-    @OneToMany(mappedBy = "optionGroupEntity", fetch = FetchType.LAZY)
-    private List<VariantOptionValueEntity> variantOptionValueEntityList = new ArrayList<>();
+	@OneToMany(mappedBy = "optionGroupEntity", fetch = FetchType.LAZY)
+	private List<OptionValueEntity> optionValueEntityList = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private ProductEntity productEntity;
+	private OptionGroupEntity(
+		UUID id,
+		UUID productId,
+		NameEntity nameEntity,
+		int order
+	) {
+		super(id);
+		this.productId = productId;
+		this.nameEntity = nameEntity;
+		this.order = order;
+	}
 
-    private OptionGroupEntity(
-        Name name,
-        int order,
-        ProductEntity productEntity
-    ) {
-        this.name = name;
-        this.order = order;
-        this.productEntity = productEntity;
-    }
-
-    public static OptionGroupEntity newInstance(
-        Name name,
-        int order,
-        ProductEntity productEntity
-    ) {
-        return new OptionGroupEntity(
-            name,
-            order,
-            productEntity
-        );
-    }
+	public static OptionGroupEntity newInstance(
+		UUID id,
+		UUID productId,
+		NameEntity nameEntity,
+		int order
+	) {
+		return new OptionGroupEntity(
+			id,
+			productId,
+			nameEntity,
+			order
+		);
+	}
 
 }
