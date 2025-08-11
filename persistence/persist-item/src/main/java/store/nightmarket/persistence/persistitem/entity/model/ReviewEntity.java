@@ -36,7 +36,7 @@ public class ReviewEntity extends BaseUuidEntity {
 	private RatingEntity ratingEntity;
 
 	@OneToOne(mappedBy = "reviewEntity")
-	private ImageManagerEntity imageManagerEntity;
+	private ReviewImageManagerEntity reviewImageManagerEntity;
 
 	@Column(name = "create_date", nullable = false)
 	private LocalDate createDate;

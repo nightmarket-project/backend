@@ -24,15 +24,15 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductPostEntity extends BaseUuidEntity {
 
+	@Embedded
+	private RatingEntity ratingEntity;
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
 	private ProductEntity productEntity;
 
-	@Embedded
-	private RatingEntity ratingEntity;
-
 	@OneToMany(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
-	private List<ImageManagerEntity> imageManagerEntityList = new ArrayList<>();
+	private List<ProductPostImageManagerEntity> productPostImageManagerEntityList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
 	private List<ReviewEntity> reviewEntityList = new ArrayList<>();
@@ -43,21 +43,25 @@ public class ProductPostEntity extends BaseUuidEntity {
 	private ProductPostEntity(
 		UUID id,
 		RatingEntity ratingEntity,
+		ProductEntity productEntity,
 		boolean deleted
 	) {
 		super(id);
 		this.ratingEntity = ratingEntity;
+		this.productEntity = productEntity;
 		this.deleted = deleted;
 	}
 
 	public static ProductPostEntity newInstance(
 		UUID id,
 		RatingEntity ratingEntity,
+		ProductEntity productEntity,
 		boolean deleted
 	) {
 		return new ProductPostEntity(
 			id,
 			ratingEntity,
+			productEntity,
 			deleted
 		);
 	}
