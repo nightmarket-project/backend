@@ -1,79 +1,66 @@
 package store.nightmarket.itemweb.fixture;
 
-import java.util.Random;
+import java.util.List;
 import java.util.UUID;
+
 import store.nightmarket.domain.item.valueobject.UserId;
-import store.nightmarket.itemweb.model.Image;
+import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.model.Reply;
 import store.nightmarket.itemweb.model.Review;
 import store.nightmarket.itemweb.state.ImageType;
 import store.nightmarket.itemweb.valueobject.CommentText;
-import store.nightmarket.itemweb.valueobject.ImageId;
+import store.nightmarket.itemweb.valueobject.Image;
+import store.nightmarket.itemweb.valueobject.ImageOwnerId;
+import store.nightmarket.itemweb.valueobject.ProductPostId;
 import store.nightmarket.itemweb.valueobject.Rating;
 import store.nightmarket.itemweb.valueobject.ReplyId;
 import store.nightmarket.itemweb.valueobject.ReviewId;
 
 public class TestObjectFactory {
 
-    public static Review createReview(
-        UUID reviewId,
-        UUID authorId,
-        String commentText,
-        Image image,
-        int rating
-    ) {
-        return Review.newInstance(
-            new ReviewId(reviewId),
-            new UserId(authorId),
-            new CommentText(commentText),
-            image,
-            new Rating(rating)
-        );
-    }
+	public static Review createReview(
+		UUID reviewId,
+		UUID imageOwnerId,
+		List<ImageManager> imageManagerList,
+		UUID productPostId,
+		UUID authorId,
+		String commentText,
+		int rating
+	) {
+		return Review.newInstance(
+			new ReviewId(reviewId),
+			new ImageOwnerId(imageOwnerId),
+			imageManagerList,
+			new ProductPostId(productPostId),
+			new UserId(authorId),
+			new CommentText(commentText),
+			new Rating(rating)
+		);
+	}
 
-    public static Reply createReply(
-        UUID replyId,
-        String commentText,
-        UUID authorId,
-        UUID reviewId
-    ) {
-        return Reply.newInstance(
-            new ReplyId(replyId),
-            new CommentText(commentText),
-            new UserId(authorId),
-            new ReviewId(replyId)
-        );
-    }
+	public static Reply createReply(
+		UUID replyId,
+		String commentText,
+		UUID authorId,
+		UUID reviewId
+	) {
+		return Reply.newInstance(
+			new ReplyId(replyId),
+			new CommentText(commentText),
+			new UserId(authorId),
+			new ReviewId(reviewId)
+		);
+	}
 
-    public static Image createImage(
-        UUID imageId,
-        String imageUrl,
-        String altText,
-        Long fileSize,
-        int displayOrder,
-        ImageType imageType,
-        UUID userId
-    ) {
-        return Image.newInstance(
-            new ImageId(imageId),
-            imageUrl,
-            altText,
-            fileSize,
-            displayOrder,
-            imageType
-        );
-    }
-
-    public static Image defaultImage(UUID imageId) {
-        Random random = new Random();
-        return Image.newInstance(
-            new ImageId(imageId),
-            "https://picsum.photos/" + random.nextInt() + "/" + random.nextInt(),
-            "배경 사진",
-            10000L,
-            50,
-            ImageType.MAIN
-        );
-    }
+	public static List<ImageManager> defaultImageManagerList(UUID imageOwnerId) {
+		return List.of(
+			ImageManager.newInstance(
+				new Image("https://picsum.photos/100"),
+				ImageType.MAIN,
+				1,
+				new ImageOwnerId(imageOwnerId)
+			)
+		);
+	}
 
 }
