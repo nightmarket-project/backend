@@ -2,9 +2,7 @@ package store.nightmarket.itemweb.valueobject;
 
 import java.util.Objects;
 
-import store.nightmarket.domain.item.valueobject.Name;
-
-public record Image(String imageUrl, Name name) {
+public record Image(String imageUrl) {
 
 	private final static int MaxUrlLength = 1000;
 
@@ -26,13 +24,12 @@ public record Image(String imageUrl, Name name) {
 		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Image image = (Image)obj;
-		return Objects.equals(name, image.name)
-			&& Objects.equals(imageUrl, image.imageUrl);
+		return Objects.equals(imageUrl, image.imageUrl);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(imageUrl, name);
+		return Objects.hashCode(imageUrl);
 	}
 
 }
