@@ -13,7 +13,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.CommentTextEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.CommentText;
 
 @Getter
 @Entity
@@ -23,7 +23,7 @@ public class ReplyEntity extends BaseUuidEntity {
 
     @Embedded
     @Column(name = "content", nullable = false)
-    private CommentTextEntity commentTextEntity;
+    private CommentText commentText;
 
     @Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
     private UUID userId;
@@ -39,15 +39,13 @@ public class ReplyEntity extends BaseUuidEntity {
     private ReviewEntity reviewEntity;
 
     public ReplyEntity(
-        UUID id,
-        CommentTextEntity commentTextEntity,
+        CommentText commentText,
         UUID userId,
         LocalDate createdAt,
         boolean deleted,
         ReviewEntity reviewEntity
     ) {
-        super(id);
-        this.commentTextEntity = commentTextEntity;
+        this.commentText = commentText;
         this.userId = userId;
         this.createdAt = createdAt;
         this.deleted = deleted;
@@ -55,16 +53,14 @@ public class ReplyEntity extends BaseUuidEntity {
     }
 
     public static ReplyEntity newInstance(
-        UUID id,
-        CommentTextEntity commentTextEntity,
+        CommentText commentText,
         UUID userId,
         LocalDate createdAt,
         boolean deleted,
         ReviewEntity reviewEntity
     ) {
         return new ReplyEntity(
-            id,
-            commentTextEntity,
+            commentText,
             userId,
             createdAt,
             deleted,
