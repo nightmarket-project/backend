@@ -1,17 +1,21 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
-import java.util.UUID;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.Name;
+import store.nightmarket.persistence.persistitem.entity.valueobject.Price;
 
 @Getter
 @Entity
@@ -19,41 +23,50 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductEntity extends BaseUuidEntity {
 
-	@Embedded
-	@Column(name = "name")
-	private NameEntity nameEntity;
+    @Embedded
+    @Column(name = "name")
+    private Name name;
 
-	@Column(name = "description")
-	private String description;
+    @Column(name = "description")
+    private String description;
 
-	@Embedded
-	@Column(name = "price")
-	private PriceEntity priceEntity;
+    @Embedded
+    @Column(name = "price")
+    private Price price;
 
-	private ProductEntity(
-		UUID id,
-		NameEntity nameEntity,
-		String description,
-		PriceEntity priceEntity
-	) {
-		super(id);
-		this.nameEntity = nameEntity;
-		this.description = description;
-		this.priceEntity = priceEntity;
-	}
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_post_id")
+    private ProductPostEntity productPostEntity;
 
-	public static ProductEntity newInstance(
-		UUID id,
-		NameEntity nameEntity,
-		String description,
-		PriceEntity priceEntity
-	) {
-		return new ProductEntity(
-			id,
-			nameEntity,
-			description,
-			priceEntity
-		);
-	}
+    @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
+    private List<OptionGroupEntity> optionGroupEntityList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
+    private List<ProductVariantEntity> productVariantEntityList = new ArrayList<>();
+
+    private ProductEntity(
+        Name name,
+        String description,
+        Price price,
+        ProductPostEntity productPostEntity
+    ) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.productPostEntity = productPostEntity;
+    }
+
+    public static ProductEntity newInstance(
+        Name name,
+        String description,
+        Price price,
+        ProductPostEntity productPostEntity
+    ) {
+        return new ProductEntity(name,
+            description,
+            price,
+            productPostEntity
+        );
+    }
 
 }

@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class CommentTextEntity {
+public class Name {
 
-    private String value;
-    private boolean deleted;
+    private String name;
 
 }

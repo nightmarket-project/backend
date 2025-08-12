@@ -70,8 +70,4 @@ public class Reply extends BaseModel<ReplyId> {
         this.commentText = editText;
     }
 
-    public ReplyId getReplyId() {
-        return internalId();
-    }
-
 }

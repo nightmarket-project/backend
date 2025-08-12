@@ -6,13 +6,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.Price;
 
 @Getter
 @Entity
@@ -25,40 +27,40 @@ public class OptionValueEntity extends BaseUuidEntity {
 
     @Embedded
     @Column(name = "price")
-    private PriceEntity priceEntity;
+    private Price price;
 
     @Column(name = "order")
     private int order;
+
+    @OneToMany(mappedBy = "optionValueEntity", fetch = FetchType.LAZY)
+    private List<VariantOptionValueEntity> variantOptionValueEntityList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "option_group_id")
     private OptionGroupEntity optionGroupEntity;
 
     private OptionValueEntity(
-        UUID id,
         String value,
-        PriceEntity priceEntity,
+        Price price,
         int order,
         OptionGroupEntity optionGroupEntity
     ) {
-        super(id);
         this.value = value;
-        this.priceEntity = priceEntity;
+        this.price = price;
         this.order = order;
         this.optionGroupEntity = optionGroupEntity;
     }
 
     public static OptionValueEntity newInstance(
-        UUID id,
         String value,
-        PriceEntity priceEntity,
+        Price price,
         int order,
+        List<VariantOptionValueEntity> variantOptionValueEntityList,
         OptionGroupEntity optionGroupEntity
     ) {
         return new OptionValueEntity(
-            id,
             value,
-            priceEntity,
+            price,
             order,
             optionGroupEntity
         );

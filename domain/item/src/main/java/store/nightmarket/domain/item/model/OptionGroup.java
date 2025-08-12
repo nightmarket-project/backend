@@ -1,12 +1,10 @@
 package store.nightmarket.domain.item.model;
 
-import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.OptionGroupId;
 import store.nightmarket.domain.item.valueobject.ProductId;
 
-@Getter
 public class OptionGroup extends BaseModel<OptionGroupId> {
 
     private final ProductId productId;
@@ -37,10 +35,6 @@ public class OptionGroup extends BaseModel<OptionGroupId> {
             name,
             order
         );
-    }
-
-    public OptionGroupId getOptionGroupId() {
-        return internalId();
     }
 
 }
