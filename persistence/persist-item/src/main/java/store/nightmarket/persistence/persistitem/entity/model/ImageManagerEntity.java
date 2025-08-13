@@ -5,6 +5,8 @@ import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -26,7 +28,7 @@ public class ImageManagerEntity extends BaseUuidEntity {
 	@Column(name = "image")
 	private ImageEntity imageEntity;
 
-	@Column(name = "image_type")
+	@Enumerated(EnumType.STRING)
 	private ImageType imageType;
 
 	@Column(name = "display_oreder")
