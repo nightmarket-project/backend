@@ -22,7 +22,7 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 
 	@Embedded
 	@Column(name = "name")
-	private NameEntity name;
+	private NameEntity nameEntity;
 
 	@Embedded
 	@Column(name = "quantity")
@@ -31,26 +31,24 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_variant")
 	private ProductVariantEntity productVariantEntity;
-
-	//추후 UserEntity 매핑 예정
-
+	
 	private ShoppingBasketProductEntity(
-		NameEntity name,
+		NameEntity nameEntity,
 		QuantityEntity quantityEntity,
 		ProductVariantEntity productVariantEntity
 	) {
-		this.name = name;
+		this.nameEntity = nameEntity;
 		this.quantityEntity = quantityEntity;
 		this.productVariantEntity = productVariantEntity;
 	}
 
 	public static ShoppingBasketProductEntity newInstance(
-		NameEntity name,
+		NameEntity nameEntity,
 		QuantityEntity quantityEntity,
 		ProductVariantEntity productVariantEntity
 	) {
 		return new ShoppingBasketProductEntity(
-			name,
+			nameEntity,
 			quantityEntity,
 			productVariantEntity
 		);

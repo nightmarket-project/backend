@@ -15,14 +15,14 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import store.nightmarket.common.entity.BaseUuidEntity;
+import store.nightmarket.itemweb.state.ImageOwnerType;
 import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity;
 
 @Getter
 @Entity
 @Table(name = "product_post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProductPostEntity extends BaseUuidEntity {
+public class ProductPostEntity extends ImageOwnerModelEntity {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
@@ -39,11 +39,16 @@ public class ProductPostEntity extends BaseUuidEntity {
 
 	private ProductPostEntity(
 		UUID id,
+		UUID ownerId,
 		ProductEntity productEntity,
 		RatingEntity ratingEntity,
 		boolean deleted
 	) {
-		super(id);
+		super(
+			id,
+			ownerId,
+			ImageOwnerType.PRODUCT_POST
+		);
 		this.productEntity = productEntity;
 		this.ratingEntity = ratingEntity;
 		this.deleted = deleted;
@@ -51,12 +56,14 @@ public class ProductPostEntity extends BaseUuidEntity {
 
 	public static ProductPostEntity newInstance(
 		UUID id,
+		UUID ownerId,
 		ProductEntity productEntity,
 		RatingEntity ratingEntity,
 		boolean deleted
 	) {
 		return new ProductPostEntity(
 			id,
+			ownerId,
 			productEntity,
 			ratingEntity,
 			deleted
