@@ -1,46 +1,50 @@
 package store.nightmarket.itemweb.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.domain.item.model.Product;
+import lombok.Getter;
+import store.nightmarket.domain.item.valueobject.ProductId;
+import store.nightmarket.itemweb.state.ImageOwnerType;
+import store.nightmarket.itemweb.valueobject.ImageOwnerId;
 import store.nightmarket.itemweb.valueobject.ProductPostId;
 import store.nightmarket.itemweb.valueobject.Rating;
 
-public class ProductPost extends BaseModel<ProductPostId> {
+@Getter
+public class ProductPost extends ImageOwnerModel<ProductPostId> {
 
-    private final Product product;
-    private List<Image> imageList;
-    private Rating rating;
-    private boolean deleted;
+	private final ProductId productId;
+	private Rating rating;
+	private boolean deleted;
 
-    // review size 10 -> 11
+	private ProductPost(
+		ProductPostId id,
+		ImageOwnerId imageOwnerId,
+		ProductId productId,
+		Rating rating,
+		boolean deleted
+	) {
+		super(
+			id,
+			imageOwnerId,
+			ImageOwnerType.PRODUCT_POST
+		);
+		this.productId = productId;
+		this.rating = rating;
+		this.deleted = deleted;
+	}
 
-    private ProductPost(
-        ProductPostId id,
-        Product product,
-        Rating rating,
-        List<Image> imageList
-    ) {
-        super(id);
-        this.product = product;
-        this.imageList = new ArrayList<>(imageList);
-        this.rating = rating;
-        this.deleted = false;
-    }
-
-    public static ProductPost newInstance(
-        ProductPostId id,
-        Product product,
-        Rating rating,
-        List<Image> imageList
-    ) {
-        return new ProductPost(
-            id,
-            product,
-            rating,
-            imageList
-        );
-    }
+	public static ProductPost newInstance(
+		ProductPostId id,
+		ImageOwnerId imageOwnerId,
+		ProductId productId,
+		Rating rating,
+		boolean deleted
+	) {
+		return new ProductPost(
+			id,
+			imageOwnerId,
+			productId,
+			rating,
+			deleted
+		);
+	}
 
 }
