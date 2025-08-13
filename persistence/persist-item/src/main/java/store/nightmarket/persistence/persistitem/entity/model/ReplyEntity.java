@@ -40,12 +40,14 @@ public class ReplyEntity extends BaseUuidEntity {
 	private ReviewEntity reviewEntity;
 
 	public ReplyEntity(
+		UUID id,
 		CommentTextEntity commentTextEntity,
 		UUID userId,
 		LocalDate createdAt,
 		boolean deleted,
 		ReviewEntity reviewEntity
 	) {
+		super(id);
 		this.commentTextEntity = commentTextEntity;
 		this.userId = userId;
 		this.createdAt = createdAt;
@@ -54,6 +56,7 @@ public class ReplyEntity extends BaseUuidEntity {
 	}
 
 	public static ReplyEntity newInstance(
+		UUID id,
 		CommentTextEntity commentTextEntity,
 		UUID userId,
 		LocalDate createdAt,
@@ -61,6 +64,7 @@ public class ReplyEntity extends BaseUuidEntity {
 		ReviewEntity reviewEntity
 	) {
 		return new ReplyEntity(
+			id,
 			commentTextEntity,
 			userId,
 			createdAt,
