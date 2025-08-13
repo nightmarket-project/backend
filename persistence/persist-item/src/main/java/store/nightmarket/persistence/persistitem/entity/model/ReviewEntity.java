@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,13 +15,13 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import store.nightmarket.itemweb.state.ImageOwnerType;
 import store.nightmarket.persistence.persistitem.entity.valueobject.CommentTextEntity;
 import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity;
 
 @Getter
 @Entity
 @Table(name = "review")
+@DiscriminatorValue("REVIEW")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewEntity extends ImageOwnerModelEntity {
 
@@ -61,8 +62,7 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 	) {
 		super(
 			id,
-			ownerId,
-			ImageOwnerType.REVIEW
+			ownerId
 		);
 		this.userId = userId;
 		this.commentTextEntity = commentTextEntity;

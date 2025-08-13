@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,12 +16,12 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import store.nightmarket.itemweb.state.ImageOwnerType;
 import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity;
 
 @Getter
 @Entity
 @Table(name = "product_post")
+@DiscriminatorValue("PRODUCT_POST")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductPostEntity extends ImageOwnerModelEntity {
 
@@ -46,8 +47,7 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 	) {
 		super(
 			id,
-			ownerId,
-			ImageOwnerType.PRODUCT_POST
+			ownerId
 		);
 		this.productEntity = productEntity;
 		this.ratingEntity = ratingEntity;
