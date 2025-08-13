@@ -1,5 +1,7 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -31,23 +33,27 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_variant")
 	private ProductVariantEntity productVariantEntity;
-	
+
 	private ShoppingBasketProductEntity(
+		UUID id,
 		NameEntity nameEntity,
 		QuantityEntity quantityEntity,
 		ProductVariantEntity productVariantEntity
 	) {
+		super(id);
 		this.nameEntity = nameEntity;
 		this.quantityEntity = quantityEntity;
 		this.productVariantEntity = productVariantEntity;
 	}
 
 	public static ShoppingBasketProductEntity newInstance(
+		UUID id,
 		NameEntity nameEntity,
 		QuantityEntity quantityEntity,
 		ProductVariantEntity productVariantEntity
 	) {
 		return new ShoppingBasketProductEntity(
+			id,
 			nameEntity,
 			quantityEntity,
 			productVariantEntity
