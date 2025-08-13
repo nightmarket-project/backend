@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Rating {
+public class RatingEntity {
 
-    private int value;
+	private int value;
 
 }
