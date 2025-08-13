@@ -1,15 +1,10 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,7 +21,7 @@ public class ProductEntity extends BaseUuidEntity {
 
 	@Embedded
 	@Column(name = "name")
-	private NameEntity name;
+	private NameEntity nameEntity;
 
 	@Column(name = "description")
 	private String description;
@@ -35,38 +30,29 @@ public class ProductEntity extends BaseUuidEntity {
 	@Column(name = "price")
 	private PriceEntity priceEntity;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "product_post_id")
-	private ProductPostEntity productPostEntity;
-
-	@OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
-	private List<OptionGroupEntity> optionGroupEntityList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
-	private List<ProductVariantEntity> productVariantEntityList = new ArrayList<>();
-
 	private ProductEntity(
-		NameEntity name,
+		UUID id,
+		NameEntity nameEntity,
 		String description,
-		PriceEntity priceEntity,
-		ProductPostEntity productPostEntity
+		PriceEntity priceEntity
 	) {
-		this.name = name;
+		super(id);
+		this.nameEntity = nameEntity;
 		this.description = description;
 		this.priceEntity = priceEntity;
-		this.productPostEntity = productPostEntity;
 	}
 
 	public static ProductEntity newInstance(
-		NameEntity name,
+		UUID id,
+		NameEntity nameEntity,
 		String description,
-		PriceEntity priceEntity,
-		ProductPostEntity productPostEntity
+		PriceEntity priceEntity
 	) {
-		return new ProductEntity(name,
+		return new ProductEntity(
+			id,
+			nameEntity,
 			description,
-			priceEntity,
-			productPostEntity
+			priceEntity
 		);
 	}
 
