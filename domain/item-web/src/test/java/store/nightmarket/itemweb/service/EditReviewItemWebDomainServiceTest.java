@@ -2,7 +2,6 @@ package store.nightmarket.itemweb.service;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.assertj.core.api.SoftAssertions;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.fixture.TestObjectFactory;
-import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.model.Review;
 import store.nightmarket.itemweb.service.dto.EditReviewItemWebDomainServiceDto.Event;
 import store.nightmarket.itemweb.service.dto.EditReviewItemWebDomainServiceDto.Input;
@@ -39,7 +37,6 @@ class EditReviewItemWebDomainServiceTest {
 		Review review = TestObjectFactory.createReview(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
-			TestObjectFactory.defaultImageManagerList(UUID.randomUUID()),
 			UUID.randomUUID(),
 			authorId,
 			"good!",
@@ -47,15 +44,12 @@ class EditReviewItemWebDomainServiceTest {
 		);
 		CommentText editText = new CommentText("bad");
 		Rating editRating = new Rating(1);
-		List<ImageManager> editImageMangerList =
-			TestObjectFactory.defaultImageManagerList(UUID.randomUUID());
 
 		Input input = Input.builder()
 			.review(review)
 			.authorId(new UserId(authorId))
 			.commentText(editText)
 			.rating(editRating)
-			.imageManagerList(editImageMangerList)
 			.build();
 
 		// when
@@ -66,8 +60,6 @@ class EditReviewItemWebDomainServiceTest {
 			.isEqualTo(editText);
 		softly.assertThat(event.getReview().getRating())
 			.isEqualTo(editRating);
-		softly.assertThat(event.getReview().getImageManagerList())
-			.isEqualTo(editImageMangerList);
 		softly.assertAll();
 	}
 
@@ -77,12 +69,10 @@ class EditReviewItemWebDomainServiceTest {
 		// given
 		UUID authorId = UUID.randomUUID();
 		UserId ohterUserId = new UserId(UUID.randomUUID());
-		List<ImageManager> editImageMangerList =
-			TestObjectFactory.defaultImageManagerList(UUID.randomUUID());
+
 		Review review = TestObjectFactory.createReview(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
-			TestObjectFactory.defaultImageManagerList(UUID.randomUUID()),
 			UUID.randomUUID(),
 			authorId,
 			"good!",
@@ -97,7 +87,6 @@ class EditReviewItemWebDomainServiceTest {
 			.authorId(ohterUserId)
 			.commentText(editText)
 			.rating(editRating)
-			.imageManagerList(editImageMangerList)
 			.build();
 
 		// when

@@ -21,7 +21,6 @@ public class TestObjectFactory {
 	public static Review createReview(
 		UUID reviewId,
 		UUID imageOwnerId,
-		List<ImageManager> imageManagerList,
 		UUID productPostId,
 		UUID authorId,
 		String commentText,
@@ -30,7 +29,6 @@ public class TestObjectFactory {
 		return Review.newInstance(
 			new ReviewId(reviewId),
 			new ImageOwnerId(imageOwnerId),
-			imageManagerList,
 			new ProductPostId(productPostId),
 			new UserId(authorId),
 			new CommentText(commentText),

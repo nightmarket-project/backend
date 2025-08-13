@@ -33,7 +33,6 @@ class ReviewTest {
 		Review review = TestObjectFactory.createReview(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
-			TestObjectFactory.defaultImageManagerList(UUID.randomUUID()),
 			UUID.randomUUID(),
 			authorId,
 			"good!",
@@ -59,7 +58,6 @@ class ReviewTest {
 		Review review = TestObjectFactory.createReview(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
-			TestObjectFactory.defaultImageManagerList(UUID.randomUUID()),
 			UUID.randomUUID(),
 			authorId,
 			"good!",
@@ -81,7 +79,6 @@ class ReviewTest {
 		Review review = TestObjectFactory.createReview(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
-			TestObjectFactory.defaultImageManagerList(UUID.randomUUID()),
 			UUID.randomUUID(),
 			authorId,
 			"good!",
@@ -92,8 +89,7 @@ class ReviewTest {
 		review.edit(
 			new UserId(authorId),
 			new CommentText("bad!"),
-			new Rating(1),
-			TestObjectFactory.defaultImageManagerList(UUID.randomUUID())
+			new Rating(1)
 		);
 
 		// then
@@ -113,7 +109,6 @@ class ReviewTest {
 		Review review = TestObjectFactory.createReview(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
-			TestObjectFactory.defaultImageManagerList(UUID.randomUUID()),
 			UUID.randomUUID(),
 			authorId,
 			"good!",
@@ -128,8 +123,7 @@ class ReviewTest {
 			() -> review.edit(
 				otherUserId,
 				new CommentText("bad!"),
-				new Rating(1),
-				TestObjectFactory.defaultImageManagerList(UUID.randomUUID())
+				new Rating(1)
 			)
 		).isInstanceOf(ItemWebException.class);
 	}

@@ -1,7 +1,5 @@
 package store.nightmarket.itemweb.model;
 
-import java.util.List;
-
 import lombok.Getter;
 import store.nightmarket.domain.item.valueobject.ProductId;
 import store.nightmarket.itemweb.state.ImageOwnerType;
@@ -19,7 +17,6 @@ public class ProductPost extends ImageOwnerModel<ProductPostId> {
 	private ProductPost(
 		ProductPostId id,
 		ImageOwnerId imageOwnerId,
-		List<ImageManager> imageManagerList,
 		ProductId productId,
 		Rating rating,
 		boolean deleted
@@ -27,8 +24,7 @@ public class ProductPost extends ImageOwnerModel<ProductPostId> {
 		super(
 			id,
 			imageOwnerId,
-			ImageOwnerType.PRODUCT_POST,
-			imageManagerList
+			ImageOwnerType.PRODUCT_POST
 		);
 		this.productId = productId;
 		this.rating = rating;
@@ -38,7 +34,6 @@ public class ProductPost extends ImageOwnerModel<ProductPostId> {
 	public static ProductPost newInstance(
 		ProductPostId id,
 		ImageOwnerId imageOwnerId,
-		List<ImageManager> imageManagerList,
 		ProductId productId,
 		Rating rating,
 		boolean deleted
@@ -46,7 +41,6 @@ public class ProductPost extends ImageOwnerModel<ProductPostId> {
 		return new ProductPost(
 			id,
 			imageOwnerId,
-			imageManagerList,
 			productId,
 			rating,
 			deleted

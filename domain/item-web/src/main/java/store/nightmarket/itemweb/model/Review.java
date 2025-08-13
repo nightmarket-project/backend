@@ -1,7 +1,6 @@
 package store.nightmarket.itemweb.model;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import lombok.Getter;
 import store.nightmarket.domain.item.valueobject.UserId;
@@ -26,7 +25,6 @@ public class Review extends ImageOwnerModel<ReviewId> {
 	public Review(
 		ReviewId id,
 		ImageOwnerId imageOwnerId,
-		List<ImageManager> imageManagerList,
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
@@ -35,8 +33,7 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		super(
 			id,
 			imageOwnerId,
-			ImageOwnerType.REVIEW,
-			imageManagerList
+			ImageOwnerType.REVIEW
 		);
 		this.postId = postId;
 		this.author = author;
@@ -48,7 +45,6 @@ public class Review extends ImageOwnerModel<ReviewId> {
 	public static Review newInstance(
 		ReviewId id,
 		ImageOwnerId imageOwnerId,
-		List<ImageManager> imageManagerList,
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
@@ -57,7 +53,6 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		return new Review(
 			id,
 			imageOwnerId,
-			imageManagerList,
 			postId,
 			author,
 			commentText,
@@ -80,8 +75,7 @@ public class Review extends ImageOwnerModel<ReviewId> {
 	public void edit(
 		UserId authorId,
 		CommentText editContent,
-		Rating editRating,
-		List<ImageManager> editImageManager
+		Rating editRating
 	) {
 		if (!authorId.equals(this.author)) {
 			throw new ItemWebException("댓글 작성자만 수정 가능합니다.");
@@ -89,7 +83,6 @@ public class Review extends ImageOwnerModel<ReviewId> {
 
 		this.commentText = (editContent == null) ? commentText : editContent;
 		this.rating = (editRating == null) ? rating : editRating;
-		changeImageManager(editImageManager);
 	}
 
 }
