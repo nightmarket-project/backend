@@ -2,11 +2,13 @@ package store.nightmarket.persistence.persistitem.entity.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -14,7 +16,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.ImageEntity;
 import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity;
 
 @Getter
@@ -23,14 +24,12 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductPostEntity extends BaseUuidEntity {
 
-	@OneToOne(mappedBy = "productPostEntity")
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_id")
 	private ProductEntity productEntity;
 
 	@Embedded
 	private RatingEntity ratingEntity;
-
-	@OneToMany(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
-	private List<ImageEntity> imageEntityList = new ArrayList<>();
 
 	@OneToMany(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
 	private List<ReviewEntity> reviewEntityList = new ArrayList<>();
@@ -39,21 +38,25 @@ public class ProductPostEntity extends BaseUuidEntity {
 	private boolean deleted;
 
 	private ProductPostEntity(
+		UUID id,
 		ProductEntity productEntity,
 		RatingEntity ratingEntity,
 		boolean deleted
 	) {
+		super(id);
 		this.productEntity = productEntity;
 		this.ratingEntity = ratingEntity;
 		this.deleted = deleted;
 	}
 
 	public static ProductPostEntity newInstance(
+		UUID id,
 		ProductEntity productEntity,
 		RatingEntity ratingEntity,
 		boolean deleted
 	) {
 		return new ProductPostEntity(
+			id,
 			productEntity,
 			ratingEntity,
 			deleted
