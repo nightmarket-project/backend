@@ -1,61 +1,67 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.Rating;
+import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity;
 
 @Getter
 @Entity
 @Table(name = "product_post")
+@DiscriminatorValue("PRODUCT_POST")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProductPostEntity extends BaseUuidEntity {
+public class ProductPostEntity extends ImageOwnerModelEntity {
 
-    @OneToOne(mappedBy = "productPostEntity")
-    private ProductEntity productEntity;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_id")
+	private ProductEntity productEntity;
 
-    @Embedded
-    private Rating rating;
+	@Embedded
+	private RatingEntity ratingEntity;
 
-    @OneToMany(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
-    private List<ImageEntity> imageEntityList = new ArrayList<>();
+	@OneToMany(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
+	private List<ReviewEntity> reviewEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
-    private List<ReviewEntity> reviewEntityList = new ArrayList<>();
+	@Column(name = "deleted", nullable = false)
+	private boolean deleted;
 
-    @Column(name = "deleted", nullable = false)
-    private boolean deleted;
+	private ProductPostEntity(
+		UUID id,
+		ProductEntity productEntity,
+		RatingEntity ratingEntity,
+		boolean deleted
+	) {
+		super(id);
+		this.productEntity = productEntity;
+		this.ratingEntity = ratingEntity;
+		this.deleted = deleted;
+	}
 
-    private ProductPostEntity(
-        ProductEntity productEntity,
-        Rating rating,
-        boolean deleted
-    ) {
-        this.productEntity = productEntity;
-        this.rating = rating;
-        this.deleted = deleted;
-    }
-
-    public static ProductPostEntity newInstance(
-        ProductEntity productEntity,
-        Rating rating,
-        boolean deleted
-    ) {
-        return new ProductPostEntity(
-            productEntity,
-            rating,
-            deleted
-        );
-    }
+	public static ProductPostEntity newInstance(
+		UUID id,
+		ProductEntity productEntity,
+		RatingEntity ratingEntity,
+		boolean deleted
+	) {
+		return new ProductPostEntity(
+			id,
+			productEntity,
+			ratingEntity,
+			deleted
+		);
+	}
 
 }

@@ -1,5 +1,7 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -11,8 +13,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.valueobject.Name;
-import store.nightmarket.persistence.persistitem.entity.valueobject.Quantity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.QuantityEntity;
 
 @Getter
 @Entity
@@ -20,40 +22,42 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.Quantity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ShoppingBasketProductEntity extends BaseUuidEntity {
 
-    @Embedded
-    @Column(name = "name")
-    private Name name;
+	@Embedded
+	@Column(name = "name")
+	private NameEntity nameEntity;
 
-    @Embedded
-    @Column(name = "quantity")
-    private Quantity quantity;
+	@Embedded
+	@Column(name = "quantity")
+	private QuantityEntity quantityEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_variant")
-    private ProductVariantEntity productVariantEntity;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_variant")
+	private ProductVariantEntity productVariantEntity;
 
-    //추후 UserEntity 매핑 예정
+	private ShoppingBasketProductEntity(
+		UUID id,
+		NameEntity nameEntity,
+		QuantityEntity quantityEntity,
+		ProductVariantEntity productVariantEntity
+	) {
+		super(id);
+		this.nameEntity = nameEntity;
+		this.quantityEntity = quantityEntity;
+		this.productVariantEntity = productVariantEntity;
+	}
 
-    private ShoppingBasketProductEntity(
-        Name name,
-        Quantity quantity,
-        ProductVariantEntity productVariantEntity
-    ) {
-        this.name = name;
-        this.quantity = quantity;
-        this.productVariantEntity = productVariantEntity;
-    }
-
-    public static ShoppingBasketProductEntity newInstance(
-        Name name,
-        Quantity quantity,
-        ProductVariantEntity productVariantEntity
-    ) {
-        return new ShoppingBasketProductEntity(
-            name,
-            quantity,
-            productVariantEntity
-        );
-    }
+	public static ShoppingBasketProductEntity newInstance(
+		UUID id,
+		NameEntity nameEntity,
+		QuantityEntity quantityEntity,
+		ProductVariantEntity productVariantEntity
+	) {
+		return new ShoppingBasketProductEntity(
+			id,
+			nameEntity,
+			quantityEntity,
+			productVariantEntity
+		);
+	}
 
 }

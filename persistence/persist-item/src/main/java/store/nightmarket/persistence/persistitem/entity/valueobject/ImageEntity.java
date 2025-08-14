@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class CommentText {
+public class ImageEntity {
 
-    private String value;
-    private boolean deleted;
+	private String url;
 
 }

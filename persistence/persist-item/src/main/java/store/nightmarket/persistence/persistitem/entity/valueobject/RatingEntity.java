@@ -1,7 +1,6 @@
 package store.nightmarket.persistence.persistitem.entity.valueobject;
 
 import jakarta.persistence.Embeddable;
-import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Quantity {
+public class RatingEntity {
 
-    private BigDecimal value;
+	private float value;
 
 }

@@ -1,7 +1,6 @@
 package store.nightmarket.persistence.persistitem.entity.valueobject;
 
 import jakarta.persistence.Embeddable;
-import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,8 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Price {
+public class CommentTextEntity {
 
-    private BigDecimal amount;
+	private String value;
+	private boolean deleted;
 
 }
