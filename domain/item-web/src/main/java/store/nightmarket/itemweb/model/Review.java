@@ -7,7 +7,6 @@ import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.state.ImageOwnerType;
 import store.nightmarket.itemweb.valueobject.CommentText;
-import store.nightmarket.itemweb.valueobject.ImageOwnerId;
 import store.nightmarket.itemweb.valueobject.ProductPostId;
 import store.nightmarket.itemweb.valueobject.Rating;
 import store.nightmarket.itemweb.valueobject.ReviewId;
@@ -24,7 +23,6 @@ public class Review extends ImageOwnerModel<ReviewId> {
 
 	public Review(
 		ReviewId id,
-		ImageOwnerId imageOwnerId,
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
@@ -32,7 +30,6 @@ public class Review extends ImageOwnerModel<ReviewId> {
 	) {
 		super(
 			id,
-			imageOwnerId,
 			ImageOwnerType.REVIEW
 		);
 		this.postId = postId;
@@ -44,7 +41,6 @@ public class Review extends ImageOwnerModel<ReviewId> {
 
 	public static Review newInstance(
 		ReviewId id,
-		ImageOwnerId imageOwnerId,
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
@@ -52,7 +48,6 @@ public class Review extends ImageOwnerModel<ReviewId> {
 	) {
 		return new Review(
 			id,
-			imageOwnerId,
 			postId,
 			author,
 			commentText,

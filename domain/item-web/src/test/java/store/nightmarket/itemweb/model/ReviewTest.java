@@ -33,7 +33,6 @@ class ReviewTest {
 		Review review = TestObjectFactory.createReview(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
-			UUID.randomUUID(),
 			authorId,
 			"good!",
 			5
@@ -58,7 +57,6 @@ class ReviewTest {
 		Review review = TestObjectFactory.createReview(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
-			UUID.randomUUID(),
 			authorId,
 			"good!",
 			5
@@ -77,7 +75,6 @@ class ReviewTest {
 		UUID authorId = UUID.randomUUID();
 
 		Review review = TestObjectFactory.createReview(
-			UUID.randomUUID(),
 			UUID.randomUUID(),
 			UUID.randomUUID(),
 			authorId,
@@ -107,7 +104,6 @@ class ReviewTest {
 		UUID authorId = UUID.randomUUID();
 
 		Review review = TestObjectFactory.createReview(
-			UUID.randomUUID(),
 			UUID.randomUUID(),
 			UUID.randomUUID(),
 			authorId,
