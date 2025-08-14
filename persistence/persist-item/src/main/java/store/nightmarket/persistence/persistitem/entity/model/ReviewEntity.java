@@ -51,7 +51,6 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 
 	public ReviewEntity(
 		UUID id,
-		UUID ownerId,
 		UUID userId,
 		CommentTextEntity commentTextEntity,
 		RatingEntity ratingEntity,
@@ -60,10 +59,7 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 		ProductPostEntity productPostEntity,
 		ReplyEntity replyEntity
 	) {
-		super(
-			id,
-			ownerId
-		);
+		super(id);
 		this.userId = userId;
 		this.commentTextEntity = commentTextEntity;
 		this.ratingEntity = ratingEntity;
@@ -75,7 +71,6 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 
 	public static ReviewEntity newInstance(
 		UUID id,
-		UUID ownerId,
 		UUID userId,
 		CommentTextEntity commentTextEntity,
 		RatingEntity ratingEntity,
@@ -86,7 +81,6 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 	) {
 		return new ReviewEntity(
 			id,
-			ownerId,
 			userId,
 			commentTextEntity,
 			ratingEntity,

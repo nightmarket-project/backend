@@ -40,15 +40,11 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 
 	private ProductPostEntity(
 		UUID id,
-		UUID ownerId,
 		ProductEntity productEntity,
 		RatingEntity ratingEntity,
 		boolean deleted
 	) {
-		super(
-			id,
-			ownerId
-		);
+		super(id);
 		this.productEntity = productEntity;
 		this.ratingEntity = ratingEntity;
 		this.deleted = deleted;
@@ -56,14 +52,12 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 
 	public static ProductPostEntity newInstance(
 		UUID id,
-		UUID ownerId,
 		ProductEntity productEntity,
 		RatingEntity ratingEntity,
 		boolean deleted
 	) {
 		return new ProductPostEntity(
 			id,
-			ownerId,
 			productEntity,
 			ratingEntity,
 			deleted
