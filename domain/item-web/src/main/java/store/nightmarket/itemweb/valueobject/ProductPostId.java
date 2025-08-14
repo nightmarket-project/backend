@@ -1,18 +1,14 @@
 package store.nightmarket.itemweb.valueobject;
 
-import lombok.Getter;
-import store.nightmarket.common.domain.model.BaseId;
-
-import java.util.Objects;
 import java.util.UUID;
 
+import lombok.Getter;
+
 @Getter
-public class ProductPostId extends BaseId<UUID> {
+public class ProductPostId extends ImageOwnerId {
 
-    private final UUID id;
-
-    public ProductPostId(UUID id) {
-        this.id = id;
-    }
+	public ProductPostId(UUID id) {
+		super(id);
+	}
 
 }
