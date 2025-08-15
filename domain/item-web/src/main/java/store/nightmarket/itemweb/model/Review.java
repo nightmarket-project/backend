@@ -80,4 +80,8 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		this.rating = (editRating == null) ? rating : editRating;
 	}
 
+	public ReviewId getReviewId() {
+		return internalId();
+	}
+
 }
