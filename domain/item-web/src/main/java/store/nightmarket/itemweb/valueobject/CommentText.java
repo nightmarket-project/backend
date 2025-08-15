@@ -13,7 +13,7 @@ public class CommentText {
 	private final String value;
 	private final boolean deleted;
 
-	private CommentText(String value) {
+	public CommentText(String value) {
 		this(value, false);
 	}
 

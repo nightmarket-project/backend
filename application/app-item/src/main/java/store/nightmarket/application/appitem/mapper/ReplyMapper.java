@@ -19,7 +19,8 @@ public class ReplyMapper {
 				entity.isDeleted()
 			),
 			new UserId(entity.getUserId()),
-			new ReviewId(entity.getReviewEntity().getId())
+			new ReviewId(entity.getReviewEntity().getId()),
+			entity.getCreatedAt()
 		);
 	}
 
@@ -34,7 +35,6 @@ public class ReplyMapper {
 				domain.getCommentText().isDeleted()
 			),
 			domain.getAuthorId().getId(),
-			domain.getCreatedAt(),
 			domain.isDeleted(),
 			reviewEntity
 		);

@@ -1,16 +1,12 @@
 package store.nightmarket.itemweb.fixture;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import store.nightmarket.domain.item.valueobject.UserId;
-import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.model.Reply;
 import store.nightmarket.itemweb.model.Review;
-import store.nightmarket.itemweb.state.DomainImageType;
 import store.nightmarket.itemweb.valueobject.CommentText;
-import store.nightmarket.itemweb.valueobject.Image;
-import store.nightmarket.itemweb.valueobject.ImageOwnerId;
 import store.nightmarket.itemweb.valueobject.ProductPostId;
 import store.nightmarket.itemweb.valueobject.Rating;
 import store.nightmarket.itemweb.valueobject.ReplyId;
@@ -30,7 +26,8 @@ public class TestObjectFactory {
 			new ProductPostId(productPostId),
 			new UserId(authorId),
 			new CommentText(commentText),
-			new Rating(rating)
+			new Rating(rating),
+			LocalDateTime.now()
 		);
 	}
 
@@ -44,18 +41,8 @@ public class TestObjectFactory {
 			new ReplyId(replyId),
 			new CommentText(commentText),
 			new UserId(authorId),
-			new ReviewId(reviewId)
-		);
-	}
-
-	public static List<ImageManager> defaultImageManagerList(UUID imageOwnerId) {
-		return List.of(
-			ImageManager.newInstance(
-				new Image("https://picsum.photos/100"),
-				DomainImageType.MAIN,
-				1,
-				new ImageOwnerId(imageOwnerId)
-			)
+			new ReviewId(reviewId),
+			LocalDateTime.now()
 		);
 	}
 

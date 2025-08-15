@@ -23,7 +23,8 @@ public class ReviewMapper {
 				entity.getCommentTextEntity().getValue(),
 				entity.getCommentTextEntity().isDeleted()
 			),
-			new Rating(entity.getRatingEntity().getValue())
+			new Rating(entity.getRatingEntity().getValue()),
+			entity.getCreatedAt()
 		);
 	}
 
@@ -40,7 +41,6 @@ public class ReviewMapper {
 				domain.getCommentText().isDeleted()
 			),
 			new RatingEntity(domain.getRating().value()),
-			domain.getCreatedAt(),
 			domain.isDeleted(),
 			productPostEntity,
 			replyEntity

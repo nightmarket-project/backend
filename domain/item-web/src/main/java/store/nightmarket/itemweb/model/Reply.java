@@ -1,6 +1,6 @@
 package store.nightmarket.itemweb.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
@@ -16,20 +16,21 @@ public class Reply extends BaseModel<ReplyId> {
 	private CommentText commentText;
 	private final UserId authorId;
 	private final ReviewId reviewId;
-	private final LocalDate createdAt;
+	private final LocalDateTime createdAt;
 	private boolean deleted;
 
 	private Reply(
 		ReplyId id,
 		CommentText commentText,
 		UserId authorId,
-		ReviewId reviewId
+		ReviewId reviewId,
+		LocalDateTime createdAt
 	) {
 		super(id);
 		this.commentText = commentText;
 		this.authorId = authorId;
 		this.reviewId = reviewId;
-		createdAt = LocalDate.now();
+		this.createdAt = createdAt;
 		deleted = false;
 	}
 
@@ -37,13 +38,15 @@ public class Reply extends BaseModel<ReplyId> {
 		ReplyId id,
 		CommentText commentText,
 		UserId authorId,
-		ReviewId reviewId
+		ReviewId reviewId,
+		LocalDateTime createdAt
 	) {
 		return new Reply(
 			id,
 			commentText,
 			authorId,
-			reviewId
+			reviewId,
+			createdAt
 		);
 	}
 

@@ -1,6 +1,6 @@
 package store.nightmarket.itemweb.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.Getter;
 import store.nightmarket.domain.item.valueobject.UserId;
@@ -18,7 +18,7 @@ public class Review extends ImageOwnerModel<ReviewId> {
 	private final UserId author;
 	private CommentText commentText;
 	private Rating rating;
-	private final LocalDate createdAt;
+	private final LocalDateTime createdAt;
 	private boolean deleted = false;
 
 	public Review(
@@ -26,7 +26,8 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
-		Rating rating
+		Rating rating,
+		LocalDateTime createdAt
 	) {
 		super(
 			id,
@@ -36,7 +37,7 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		this.author = author;
 		this.commentText = commentText;
 		this.rating = rating;
-		this.createdAt = LocalDate.now();
+		this.createdAt = createdAt;
 	}
 
 	public static Review newInstance(
@@ -44,14 +45,16 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
-		Rating rating
+		Rating rating,
+		LocalDateTime createdAt
 	) {
 		return new Review(
 			id,
 			postId,
 			author,
 			commentText,
-			rating
+			rating,
+			createdAt
 		);
 	}
 
