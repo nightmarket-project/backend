@@ -7,7 +7,7 @@ import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.model.Reply;
 import store.nightmarket.itemweb.model.Review;
-import store.nightmarket.itemweb.state.ImageType;
+import store.nightmarket.itemweb.state.DomainImageType;
 import store.nightmarket.itemweb.valueobject.CommentText;
 import store.nightmarket.itemweb.valueobject.Image;
 import store.nightmarket.itemweb.valueobject.ImageOwnerId;
@@ -52,7 +52,7 @@ public class TestObjectFactory {
 		return List.of(
 			ImageManager.newInstance(
 				new Image("https://picsum.photos/100"),
-				ImageType.MAIN,
+				DomainImageType.MAIN,
 				1,
 				new ImageOwnerId(imageOwnerId)
 			)

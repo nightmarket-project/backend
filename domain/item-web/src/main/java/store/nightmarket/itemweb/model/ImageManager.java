@@ -2,7 +2,7 @@ package store.nightmarket.itemweb.model;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemweb.state.ImageType;
+import store.nightmarket.itemweb.state.DomainImageType;
 import store.nightmarket.itemweb.valueobject.Image;
 import store.nightmarket.itemweb.valueobject.ImageManagerId;
 import store.nightmarket.itemweb.valueobject.ImageOwnerId;
@@ -11,31 +11,35 @@ import store.nightmarket.itemweb.valueobject.ImageOwnerId;
 public class ImageManager extends BaseModel<ImageManagerId> {
 
 	private final Image image;
-	private final ImageType imageType;
+	private final DomainImageType domainImageType;
 	private final int displayOrder;
 	private final ImageOwnerId ImageOwnerId;
 
 	private ImageManager(
+		ImageManagerId id,
 		Image image,
-		ImageType imageType,
+		DomainImageType domainImageType,
 		int displayOrder,
 		ImageOwnerId imageOwnerId
 	) {
+		super(id);
 		this.image = image;
-		this.imageType = imageType;
+		this.domainImageType = domainImageType;
 		this.displayOrder = displayOrder;
 		ImageOwnerId = imageOwnerId;
 	}
 
 	public static ImageManager newInstance(
+		ImageManagerId id,
 		Image image,
-		ImageType imageType,
+		DomainImageType domainImageType,
 		int displayOrder,
 		ImageOwnerId imageOwnerId
 	) {
 		return new ImageManager(
+			id,
 			image,
-			imageType,
+			domainImageType,
 			displayOrder,
 			imageOwnerId
 		);

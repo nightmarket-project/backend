@@ -1,6 +1,6 @@
 package store.nightmarket.itemweb.state;
 
-public enum ImageType {
+public enum DomainImageType {
 
 	MAIN,
 	THUMBNAIL,
