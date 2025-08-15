@@ -1,6 +1,5 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -29,9 +28,6 @@ public class ReplyEntity extends BaseUuidEntity {
 	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
 	private UUID userId;
 
-	@Column(name = "create_date", nullable = false)
-	private LocalDate createdAt;
-
 	@Column(name = "deleted", nullable = false)
 	private boolean deleted;
 
@@ -43,14 +39,12 @@ public class ReplyEntity extends BaseUuidEntity {
 		UUID id,
 		CommentTextEntity commentTextEntity,
 		UUID userId,
-		LocalDate createdAt,
 		boolean deleted,
 		ReviewEntity reviewEntity
 	) {
 		super(id);
 		this.commentTextEntity = commentTextEntity;
 		this.userId = userId;
-		this.createdAt = createdAt;
 		this.deleted = deleted;
 		this.reviewEntity = reviewEntity;
 	}
@@ -59,7 +53,6 @@ public class ReplyEntity extends BaseUuidEntity {
 		UUID id,
 		CommentTextEntity commentTextEntity,
 		UUID userId,
-		LocalDate createdAt,
 		boolean deleted,
 		ReviewEntity reviewEntity
 	) {
@@ -67,7 +60,6 @@ public class ReplyEntity extends BaseUuidEntity {
 			id,
 			commentTextEntity,
 			userId,
-			createdAt,
 			deleted,
 			reviewEntity
 		);
