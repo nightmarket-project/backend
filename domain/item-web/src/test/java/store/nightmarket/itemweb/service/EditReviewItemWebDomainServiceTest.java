@@ -37,7 +37,6 @@ class EditReviewItemWebDomainServiceTest {
 		Review review = TestObjectFactory.createReview(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
-			UUID.randomUUID(),
 			authorId,
 			"good!",
 			5
@@ -71,7 +70,6 @@ class EditReviewItemWebDomainServiceTest {
 		UserId ohterUserId = new UserId(UUID.randomUUID());
 
 		Review review = TestObjectFactory.createReview(
-			UUID.randomUUID(),
 			UUID.randomUUID(),
 			UUID.randomUUID(),
 			authorId,

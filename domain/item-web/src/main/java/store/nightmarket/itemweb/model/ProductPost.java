@@ -3,7 +3,6 @@ package store.nightmarket.itemweb.model;
 import lombok.Getter;
 import store.nightmarket.domain.item.valueobject.ProductId;
 import store.nightmarket.itemweb.state.ImageOwnerType;
-import store.nightmarket.itemweb.valueobject.ImageOwnerId;
 import store.nightmarket.itemweb.valueobject.ProductPostId;
 import store.nightmarket.itemweb.valueobject.Rating;
 
@@ -16,14 +15,12 @@ public class ProductPost extends ImageOwnerModel<ProductPostId> {
 
 	private ProductPost(
 		ProductPostId id,
-		ImageOwnerId imageOwnerId,
 		ProductId productId,
 		Rating rating,
 		boolean deleted
 	) {
 		super(
 			id,
-			imageOwnerId,
 			ImageOwnerType.PRODUCT_POST
 		);
 		this.productId = productId;
@@ -33,14 +30,12 @@ public class ProductPost extends ImageOwnerModel<ProductPostId> {
 
 	public static ProductPost newInstance(
 		ProductPostId id,
-		ImageOwnerId imageOwnerId,
 		ProductId productId,
 		Rating rating,
 		boolean deleted
 	) {
 		return new ProductPost(
 			id,
-			imageOwnerId,
 			productId,
 			rating,
 			deleted

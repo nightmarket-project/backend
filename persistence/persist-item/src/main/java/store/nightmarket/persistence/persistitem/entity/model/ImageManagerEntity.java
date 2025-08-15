@@ -15,7 +15,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.persistence.persistitem.entity.state.ImageType;
+import store.nightmarket.persistence.persistitem.entity.state.EntityImageType;
 import store.nightmarket.persistence.persistitem.entity.valueobject.ImageEntity;
 
 @Getter
@@ -29,7 +29,7 @@ public class ImageManagerEntity extends BaseUuidEntity {
 	private ImageEntity imageEntity;
 
 	@Enumerated(EnumType.STRING)
-	private ImageType imageType;
+	private EntityImageType entityImageType;
 
 	@Column(name = "display_oreder")
 	private int displayOrder;
@@ -41,13 +41,13 @@ public class ImageManagerEntity extends BaseUuidEntity {
 	private ImageManagerEntity(
 		UUID id,
 		ImageEntity imageEntity,
-		ImageType imageType,
+		EntityImageType entityImageType,
 		int displayOrder,
 		ImageOwnerModelEntity imageOwnerModelEntity
 	) {
 		super(id);
 		this.imageEntity = imageEntity;
-		this.imageType = imageType;
+		this.entityImageType = entityImageType;
 		this.displayOrder = displayOrder;
 		this.imageOwnerModelEntity = imageOwnerModelEntity;
 	}
@@ -55,14 +55,14 @@ public class ImageManagerEntity extends BaseUuidEntity {
 	public static ImageManagerEntity newInstance(
 		UUID id,
 		ImageEntity imageEntity,
-		ImageType imageType,
+		EntityImageType entityImageType,
 		int displayOrder,
 		ImageOwnerModelEntity imageOwnerModelEntity
 	) {
 		return new ImageManagerEntity(
 			id,
 			imageEntity,
-			imageType,
+			entityImageType,
 			displayOrder,
 			imageOwnerModelEntity
 		);

@@ -1,13 +1,12 @@
 package store.nightmarket.itemweb.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.Getter;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.state.ImageOwnerType;
 import store.nightmarket.itemweb.valueobject.CommentText;
-import store.nightmarket.itemweb.valueobject.ImageOwnerId;
 import store.nightmarket.itemweb.valueobject.ProductPostId;
 import store.nightmarket.itemweb.valueobject.Rating;
 import store.nightmarket.itemweb.valueobject.ReviewId;
@@ -19,44 +18,43 @@ public class Review extends ImageOwnerModel<ReviewId> {
 	private final UserId author;
 	private CommentText commentText;
 	private Rating rating;
-	private final LocalDate createdAt;
+	private final LocalDateTime createdAt;
 	private boolean deleted = false;
 
 	public Review(
 		ReviewId id,
-		ImageOwnerId imageOwnerId,
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
-		Rating rating
+		Rating rating,
+		LocalDateTime createdAt
 	) {
 		super(
 			id,
-			imageOwnerId,
 			ImageOwnerType.REVIEW
 		);
 		this.postId = postId;
 		this.author = author;
 		this.commentText = commentText;
 		this.rating = rating;
-		this.createdAt = LocalDate.now();
+		this.createdAt = createdAt;
 	}
 
 	public static Review newInstance(
 		ReviewId id,
-		ImageOwnerId imageOwnerId,
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
-		Rating rating
+		Rating rating,
+		LocalDateTime createdAt
 	) {
 		return new Review(
 			id,
-			imageOwnerId,
 			postId,
 			author,
 			commentText,
-			rating
+			rating,
+			createdAt
 		);
 	}
 
@@ -83,6 +81,10 @@ public class Review extends ImageOwnerModel<ReviewId> {
 
 		this.commentText = (editContent == null) ? commentText : editContent;
 		this.rating = (editRating == null) ? rating : editRating;
+	}
+
+	public ReviewId getReviewId() {
+		return internalId();
 	}
 
 }
