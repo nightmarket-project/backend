@@ -42,7 +42,7 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 	@JoinColumn(name = "product_post_id")
 	private ProductPostEntity productPostEntity;
 
-	@OneToOne(mappedBy = "reviewEntity", fetch = FetchType.EAGER)
+	@OneToOne(mappedBy = "reviewEntity")
 	private ReplyEntity replyEntity;
 
 	public ReviewEntity(
