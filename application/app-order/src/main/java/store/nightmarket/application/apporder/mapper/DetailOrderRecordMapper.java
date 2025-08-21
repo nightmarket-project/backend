@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import store.nightmarket.domain.order.model.DetailOrderRecord;
 import store.nightmarket.domain.order.valueobject.DetailOrderRecordId;
-import store.nightmarket.domain.order.valueobject.ProductId;
+import store.nightmarket.domain.order.valueobject.ProductVariantId;
 import store.nightmarket.persistence.persistorder.entity.model.DetailOrderRecordEntity;
 import store.nightmarket.persistence.persistorder.entity.model.OrderRecordEntity;
 
@@ -14,7 +14,7 @@ public class DetailOrderRecordMapper {
 	public static DetailOrderRecord toDomain(DetailOrderRecordEntity entity) {
 		return DetailOrderRecord.newInstance(
 			new DetailOrderRecordId(entity.getId()),
-			new ProductId(entity.getProductId()),
+			new ProductVariantId(entity.getProductId()),
 			QuantityMapper.toDomain(entity.getQuantity()),
 			entity.getState()
 		);
@@ -26,7 +26,7 @@ public class DetailOrderRecordMapper {
 	) {
 		return new DetailOrderRecordEntity(
 			domain.getDetailOrderRecordId().getId(),
-			domain.getProductId().getId(),
+			domain.getProductVariantId().getId(),
 			QuantityMapper.toEntity(domain.getQuantity()),
 			domain.getState(),
 			orderRecordEntity
