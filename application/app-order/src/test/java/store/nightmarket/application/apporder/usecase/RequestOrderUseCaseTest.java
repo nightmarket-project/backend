@@ -3,6 +3,7 @@ package store.nightmarket.application.apporder.usecase;
 import static org.mockito.Mockito.*;
 import static store.nightmarket.application.apporder.util.OrderTestUtil.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +44,7 @@ class RequestOrderUseCaseTest {
 		RequestOrderUseCaseDto.Input usecaseInput = RequestOrderUseCaseDto.Input.builder()
 			.addressDto(makeAddress())
 			.userId(UUID.randomUUID())
+			.detailOrderDtoList(List.of(makeDetailOrderDto()))
 			.build();
 
 		// when
@@ -54,5 +56,5 @@ class RequestOrderUseCaseTest {
 		verify(mockRequestOrderDomainService, times(1))
 			.execute(any());
 	}
-	
+
 }
