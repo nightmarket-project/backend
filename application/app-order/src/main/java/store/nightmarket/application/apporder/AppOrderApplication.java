@@ -7,7 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan(basePackages = {
 	"store.nightmarket.application.apporder",
-	"store.nightmarket.domain.order"
+	"store.nightmarket.domain.order",
+	"store.nightmarket.persistence.persistorder"
 })
 public class AppOrderApplication {
 

@@ -12,7 +12,7 @@ import store.nightmarket.persistence.persistorder.repository.OrderRecordReposito
 @RequiredArgsConstructor
 public class SaveOrderJpaAdapter implements SaveOrderPort {
 
-	private OrderRecordRepository orderRecordRepository;
+	private final OrderRecordRepository orderRecordRepository;
 
 	@Override
 	public void save(OrderRecord orderRecord) {
