@@ -27,7 +27,7 @@ public class ReadProductPostUseCase implements BaseUseCase<UUID, Output> {
 	@Override
 	public Output execute(UUID productPostId) {
 		ProductPostDto productPostDto = readProductPostPort
-			.readOrThrowFetchWithProductAndReviewAndReplies(productPostId);
+			.readOrThrowFetchWithReviewAndReplies(productPostId);
 
 		UUID productId = productPostDto.getProductPost().getProductId().getId();
 
