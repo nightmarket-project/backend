@@ -15,8 +15,6 @@ public interface ProductPostRepository extends JpaRepository<ProductPostEntity, 
 
 	@Query("SELECT productPostEntity FROM ProductPostEntity productPostEntity " +
 		"JOIN FETCH ProductEntity " +
-		"JOIN FETCH ReviewEntity " +
-		"Join FETCH ReplyEntity " +
 		"WHERE productPostEntity.id = :postId")
 	Optional<ProductPostEntity> findByPostId(@Param("postId") UUID postId);
 
