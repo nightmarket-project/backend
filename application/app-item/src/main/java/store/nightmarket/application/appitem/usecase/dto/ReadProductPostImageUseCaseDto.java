@@ -7,7 +7,7 @@ import lombok.Builder;
 import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.state.DomainImageType;
 
-public class ReadImageManagerUseCaseDto {
+public class ReadProductPostImageUseCaseDto {
 
 	@Builder
 	public record Input(

@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.in.dto.ImageMangerControllerDto;
 import store.nightmarket.application.appitem.in.dto.ReadProductPostControllerDto;
-import store.nightmarket.application.appitem.usecase.ReadImageManagerUseCase;
+import store.nightmarket.application.appitem.usecase.ReadProductPostImageUseCase;
 import store.nightmarket.application.appitem.usecase.ReadProductPostUseCase;
-import store.nightmarket.application.appitem.usecase.dto.ReadImageManagerUseCaseDto;
+import store.nightmarket.application.appitem.usecase.dto.ReadProductPostImageUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadProductPostUseCaseDto;
 import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.state.DomainImageType;
@@ -24,17 +24,17 @@ import store.nightmarket.itemweb.state.DomainImageType;
 public class ReadProductPostControllerV1 {
 
 	private final ReadProductPostUseCase readProductPostUseCase;
-	private final ReadImageManagerUseCase readImageManagerUseCase;
+	private final ReadProductPostImageUseCase readProductPostImageUseCase;
 
 	@GetMapping("/{postId}")
 	public ReadProductPostControllerDto.Response readProductPost(@PathVariable UUID postId) {
-		ReadImageManagerUseCaseDto.Input input = ReadImageManagerUseCaseDto.Input.builder()
+		ReadProductPostImageUseCaseDto.Input input = ReadProductPostImageUseCaseDto.Input.builder()
 			.id(postId)
 			.imageTypeList(List.of(DomainImageType.MAIN, DomainImageType.DETAIL))
 			.build();
 
 		ReadProductPostUseCaseDto.Output productPostOutPut = readProductPostUseCase.execute(postId);
-		List<ImageManager> imageOutPut = readImageManagerUseCase.execute(input).imageManagerList();
+		List<ImageManager> imageOutPut = readProductPostImageUseCase.execute(input).imageManagerList();
 
 		return ReadProductPostControllerDto.Response.builder()
 			.id(productPostOutPut.productPostDto().getProductPost().getProductPostId())

@@ -1,6 +1,6 @@
 package store.nightmarket.application.appitem.usecase;
 
-import static store.nightmarket.application.appitem.usecase.dto.ReadImageManagerUseCaseDto.*;
+import static store.nightmarket.application.appitem.usecase.dto.ReadProductPostImageUseCaseDto.*;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import store.nightmarket.itemweb.model.ImageManager;
 
 @Service
 @RequiredArgsConstructor
-public class ReadImageManagerUseCase implements BaseUseCase<Input, Output> {
+public class ReadProductPostImageUseCase implements BaseUseCase<Input, Output> {
 
 	private final ReadImageManagerPort readImageManagerPort;
 
