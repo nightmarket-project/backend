@@ -1,7 +1,5 @@
 package store.nightmarket.application.appitem.out.dto;
 
-import java.util.List;
-
 import lombok.Builder;
 import lombok.Getter;
 import store.nightmarket.application.appitem.mapper.ProductMapper;
@@ -16,17 +14,12 @@ public class ProductPostDto {
 
 	private final ProductPost productPost;
 	private final Product product;
-	private final List<ReviewDto> reviewDtoList;
 
 	public static ProductPostDto toDomain(ProductPostEntity entity) {
 		return ProductPostDto.builder()
 			.productPost(ProductPostMapper.toDomain(entity))
 			.product(ProductMapper.toDomain(entity.getProductEntity()))
-			.reviewDtoList(
-				entity.getReviewEntityList().stream()
-					.map(ReviewDto::toDomain)
-					.toList()
-			).build();
+			.build();
 	}
 
 }
