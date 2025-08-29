@@ -34,7 +34,7 @@ public class ReadProductPostControllerV1 {
 			.build();
 
 		ReadProductPostUseCaseDto.Output productPostOutPut = readProductPostUseCase.execute(postId);
-		List<ImageManager> imageOutPut = readImageManagerUseCase.execute(input);
+		List<ImageManager> imageOutPut = readImageManagerUseCase.execute(input).imageManagerList();
 
 		return ReadProductPostControllerDto.Response.builder()
 			.id(productPostOutPut.productPostDto().getProductPost().getProductPostId())

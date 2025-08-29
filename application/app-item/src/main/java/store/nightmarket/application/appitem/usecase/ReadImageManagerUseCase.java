@@ -13,16 +13,20 @@ import store.nightmarket.itemweb.model.ImageManager;
 
 @Service
 @RequiredArgsConstructor
-public class ReadImageManagerUseCase implements BaseUseCase<Input, List<ImageManager>> {
+public class ReadImageManagerUseCase implements BaseUseCase<Input, Output> {
 
 	private final ReadImageManagerPort readImageManagerPort;
 
 	@Override
-	public List<ImageManager> execute(Input input) {
-		return readImageManagerPort.readImageTypeList(
+	public Output execute(Input input) {
+		List<ImageManager> imageManagerList = readImageManagerPort.readImageTypeList(
 			input.id(),
 			input.imageTypeList()
 		);
+
+		return Output.builder()
+			.imageManagerList(imageManagerList)
+			.build();
 	}
 
 }
