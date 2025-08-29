@@ -17,7 +17,7 @@ public class ReadProductPostAdaptor implements ReadProductPostPort {
 	private final ProductPostRepository productPostRepository;
 
 	@Override
-	public Optional<ProductPostDto> readFetchWithReviewsAndReplies(UUID id) {
+	public Optional<ProductPostDto> readFetch(UUID id) {
 		return productPostRepository.findByPostId(id)
 			.map(ProductPostDto::toDomain);
 	}

@@ -8,10 +8,10 @@ import store.nightmarket.itemweb.exception.ItemWebException;
 
 public interface ReadProductPostPort {
 
-	Optional<ProductPostDto> readFetchWithReviewsAndReplies(UUID id);
+	Optional<ProductPostDto> readFetch(UUID id);
 
-	default ProductPostDto readOrThrowFetchWithReviewAndReplies(UUID id) {
-		return readFetchWithReviewsAndReplies(id)
+	default ProductPostDto readOrThrowFetch(UUID id) {
+		return readFetch(id)
 			.orElseThrow(() -> new ItemWebException("Not found ProductPost"));
 	}
 
