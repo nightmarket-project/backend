@@ -1,7 +1,8 @@
 package store.nightmarket.application.appitem.usecase;
 
+import static store.nightmarket.application.appitem.usecase.dto.ReadImageManagerUseCaseDto.*;
+
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -12,13 +13,16 @@ import store.nightmarket.itemweb.model.ImageManager;
 
 @Service
 @RequiredArgsConstructor
-public class ReadImageManagerUseCase implements BaseUseCase<UUID, List<ImageManager>> {
+public class ReadImageManagerUseCase implements BaseUseCase<Input, List<ImageManager>> {
 
 	private final ReadImageManagerPort readImageManagerPort;
 
 	@Override
-	public List<ImageManager> execute(UUID uuid) {
-		return readImageManagerPort.read(uuid);
+	public List<ImageManager> execute(Input input) {
+		return readImageManagerPort.readImageTypeList(
+			input.id(),
+			input.imageTypeList()
+		);
 	}
 
 }
