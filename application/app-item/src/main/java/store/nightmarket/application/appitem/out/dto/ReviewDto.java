@@ -2,9 +2,9 @@ package store.nightmarket.application.appitem.out.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import store.nightmarket.application.appitem.mapper.ReplyMapper;
 import store.nightmarket.application.appitem.mapper.ReviewMapper;
-import store.nightmarket.itemweb.model.Reply;
+import store.nightmarket.application.appitem.mapper.UserMapper;
+import store.nightmarket.domain.item.model.User;
 import store.nightmarket.itemweb.model.Review;
 import store.nightmarket.persistence.persistitem.entity.model.ReviewEntity;
 
@@ -13,12 +13,14 @@ import store.nightmarket.persistence.persistitem.entity.model.ReviewEntity;
 public class ReviewDto {
 
 	private final Review review;
-	private final Reply reply;
+	private final ReplyDto replyDto;
+	private final User user;
 
 	public static ReviewDto toDomain(ReviewEntity entity) {
 		return ReviewDto.builder()
 			.review(ReviewMapper.toDomain(entity))
-			.reply(ReplyMapper.toDomain(entity.getReplyEntity()))
+			.replyDto(ReplyDto.toDomain(entity.getReplyEntity()))
+			.user(UserMapper.toDomain(entity.getUserEntity()))
 			.build();
 	}
 

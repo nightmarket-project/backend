@@ -10,6 +10,6 @@ public interface ReadImageManagerPort {
 
 	List<ImageManager> readImageTypeList(UUID id, List<DomainImageType> imageTypeList);
 
-	List<ImageManager> readReivewList(List<UUID> reviewIdList);
+	List<ImageManager> readIdList(List<UUID> idList);
 
 }

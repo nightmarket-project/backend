@@ -33,8 +33,8 @@ public class ReadImageManagerAdaptor implements ReadImageManagerPort {
 	}
 
 	@Override
-	public List<ImageManager> readReivewList(List<UUID> reviewIdList) {
-		return imageManagerRepository.findByImageOwnerModelEntityIdList(reviewIdList).stream()
+	public List<ImageManager> readIdList(List<UUID> idList) {
+		return imageManagerRepository.findByImageOwnerModelEntityIdList(idList).stream()
 			.map(ImageManagerMapper::toDomain)
 			.toList();
 	}
