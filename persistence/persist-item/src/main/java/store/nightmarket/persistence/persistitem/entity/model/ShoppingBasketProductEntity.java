@@ -34,6 +34,10 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 	@JoinColumn(name = "product_variant")
 	private ProductVariantEntity productVariantEntity;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "users")
+	private UserEntity userEntity;
+
 	private ShoppingBasketProductEntity(
 		UUID id,
 		NameEntity nameEntity,

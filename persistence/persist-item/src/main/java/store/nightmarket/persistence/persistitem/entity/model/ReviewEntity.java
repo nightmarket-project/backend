@@ -24,9 +24,6 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewEntity extends ImageOwnerModelEntity {
 
-	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
-	private UUID userId;
-
 	@Embedded
 	@Column(name = "text")
 	private CommentTextEntity commentTextEntity;
@@ -42,43 +39,47 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 	@JoinColumn(name = "product_post_id")
 	private ProductPostEntity productPostEntity;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "users_id")
+	private UserEntity userEntity;
+
 	@OneToOne(mappedBy = "reviewEntity")
 	private ReplyEntity replyEntity;
 
 	public ReviewEntity(
 		UUID id,
-		UUID userId,
 		CommentTextEntity commentTextEntity,
 		RatingEntity ratingEntity,
 		boolean deleted,
 		ProductPostEntity productPostEntity,
+		UserEntity userEntity,
 		ReplyEntity replyEntity
 	) {
 		super(id);
-		this.userId = userId;
 		this.commentTextEntity = commentTextEntity;
 		this.ratingEntity = ratingEntity;
 		this.deleted = deleted;
 		this.productPostEntity = productPostEntity;
+		this.userEntity = userEntity;
 		this.replyEntity = replyEntity;
 	}
 
 	public static ReviewEntity newInstance(
 		UUID id,
-		UUID userId,
 		CommentTextEntity commentTextEntity,
 		RatingEntity ratingEntity,
 		boolean deleted,
 		ProductPostEntity productPostEntity,
+		UserEntity userEntity,
 		ReplyEntity replyEntity
 	) {
 		return new ReviewEntity(
 			id,
-			userId,
 			commentTextEntity,
 			ratingEntity,
 			deleted,
 			productPostEntity,
+			userEntity,
 			replyEntity
 		);
 	}
