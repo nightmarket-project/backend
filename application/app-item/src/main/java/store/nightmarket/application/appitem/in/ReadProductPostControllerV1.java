@@ -51,6 +51,7 @@ public class ReadProductPostControllerV1 {
 			.rating(productPostOutput.productPostDto().getProductPost().getRating())
 			.productControllerDto(
 				ReadProductPostControllerDto.ProductControllerDto.builder()
+					.productId(productPostOutput.productPostDto().getProductPost().getProductId())
 					.name(productPostOutput.productPostDto().getProduct().getName())
 					.price(productPostOutput.productPostDto().getProduct().getPrice())
 					.description(productPostOutput.productPostDto().getProduct().getDescription())
@@ -62,7 +63,7 @@ public class ReadProductPostControllerV1 {
 	}
 
 	@GetMapping("/{postId}/reviews")
-	public ReviewListControllerDto.Response readProductPostReviews(@PathVariable UUID postId) {
+	public ReviewListControllerDto.Response readProductPostReview(@PathVariable UUID postId) {
 		ReadReviewUseCaseDto.Output reviewOutput = readReviewUseCase.execute(postId);
 		List<UUID> idList = reviewOutput.reviewDtoList().stream()
 			.map(reviewDto -> reviewDto.getReview().getReviewId().getId())
