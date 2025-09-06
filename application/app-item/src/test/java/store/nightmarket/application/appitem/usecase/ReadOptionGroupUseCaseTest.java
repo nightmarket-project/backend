@@ -1,0 +1,58 @@
+package store.nightmarket.application.appitem.usecase;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import store.nightmarket.application.appitem.fixture.TestDomainFactory;
+import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
+import store.nightmarket.application.appitem.out.dto.OptionGroupDto;
+import store.nightmarket.application.appitem.usecase.dto.ReadOptionGroupUseCaseDto;
+
+class ReadOptionGroupUseCaseTest {
+
+	private ReadOptionGroupUseCase readOptionGroupUseCase;
+	private ReadOptionGroupPort mockReadOptionGroupPort;
+
+	@BeforeEach
+	void setUp() {
+		mockReadOptionGroupPort = mock(ReadOptionGroupPort.class);
+		readOptionGroupUseCase = new ReadOptionGroupUseCase(mockReadOptionGroupPort);
+	}
+
+	@Test
+	@DisplayName("제품 아이디를 가지고 옵션 그룹 리스트를 읽는다.")
+	void readOptionGroupListWithProductId() {
+		// given
+		UUID productId = UUID.randomUUID();
+		UUID optionGroupId = UUID.randomUUID();
+		UUID optionValueId = UUID.randomUUID();
+
+		OptionGroupDto optionGroupDto = OptionGroupDto.builder()
+			.optionGroup(TestDomainFactory.createOptionGroup(optionGroupId, productId))
+			.optionValueList(List.of(TestDomainFactory.createOptionValue(optionValueId, optionGroupId)))
+			.build();
+
+		when(mockReadOptionGroupPort.readFetchOptionValue(productId))
+			.thenReturn(List.of(optionGroupDto));
+
+		// when
+		ReadOptionGroupUseCaseDto.Output output = readOptionGroupUseCase.execute(productId);
+
+		// then
+		assertThat(output).isNotNull();
+		assertThat(output.optionGroupDtoList().size())
+			.isEqualTo(1);
+		assertThat(output.optionGroupDtoList().getFirst())
+			.isEqualTo(optionGroupDto);
+		verify(mockReadOptionGroupPort, times(1))
+			.readFetchOptionValue(productId);
+	}
+
+}

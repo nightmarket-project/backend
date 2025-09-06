@@ -65,8 +65,10 @@ public class ReadProductControllerV1 {
 								productVariantDto.getVariantOptionValueDtoList().stream()
 									.map(variantOptionValueDto ->
 										ReadProductVariantListControllerDto.VariantOptionValueControllerDto.builder()
-											.optionGroupId(variantOptionValueDto.getOptionGroup().getOptionGroupId())
-											.optionValueId(variantOptionValueDto.getOptionValue().getOptionValueId())
+											.optionGroupId(
+												variantOptionValueDto.getVariantOptionValue().getOptionGroupId())
+											.optionValueId(
+												variantOptionValueDto.getVariantOptionValue().getOptionValueId())
 											.build())
 									.toList())
 							.build())

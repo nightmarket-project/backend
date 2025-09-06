@@ -19,12 +19,12 @@ public class ReadReviewUseCase implements BaseUseCase<UUID, Output> {
 	private final ReadReviewPort readReviewPort;
 
 	@Override
-	public Output execute(UUID uuid) {
-		List<ReviewDto> reviewDtoList = readReviewPort.read(uuid);
+	public Output execute(UUID productPostId) {
+		List<ReviewDto> reviewDtoList = readReviewPort.read(productPostId);
 
 		return Output.builder()
 			.reviewDtoList(reviewDtoList)
 			.build();
 	}
-	
+
 }
