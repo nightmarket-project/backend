@@ -55,10 +55,10 @@ public class ReadProductPostControllerV1 {
 					.name(productPostOutput.productPostDto().getProduct().getName())
 					.price(productPostOutput.productPostDto().getProduct().getPrice())
 					.description(productPostOutput.productPostDto().getProduct().getDescription())
-					.mainImageList(convertToDtoByType(imageOutput, DomainImageType.MAIN))
+					.mainImageList(getDtoListByImageType(imageOutput, DomainImageType.MAIN))
 					.build()
 			)
-			.detailImageList(convertToDtoByType(imageOutput, DomainImageType.DETAIL))
+			.detailImageList(getDtoListByImageType(imageOutput, DomainImageType.DETAIL))
 			.build();
 	}
 
@@ -114,7 +114,7 @@ public class ReadProductPostControllerV1 {
 			.build();
 	}
 
-	private List<ImageMangerControllerDto> convertToDtoByType(
+	private List<ImageMangerControllerDto> getDtoListByImageType(
 		List<ImageManager> imageManagerList,
 		DomainImageType domainImageType
 	) {
