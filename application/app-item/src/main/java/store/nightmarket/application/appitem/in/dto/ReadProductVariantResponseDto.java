@@ -7,7 +7,7 @@ import store.nightmarket.domain.item.valueobject.OptionGroupId;
 import store.nightmarket.domain.item.valueobject.OptionValueId;
 import store.nightmarket.domain.item.valueobject.ProductVariantId;
 
-public class ReadProductVariantListControllerDto {
+public class ReadProductVariantResponseDto {
 
 	@Builder
 	public record Response(

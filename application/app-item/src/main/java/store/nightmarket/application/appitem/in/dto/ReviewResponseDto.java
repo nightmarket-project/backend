@@ -6,7 +6,7 @@ import lombok.Builder;
 import store.nightmarket.itemweb.valueobject.CommentText;
 import store.nightmarket.itemweb.valueobject.Rating;
 
-public class ReviewListControllerDto {
+public class ReviewResponseDto {
 
 	@Builder
 	public record Response(
@@ -17,9 +17,9 @@ public class ReviewListControllerDto {
 
 	@Builder
 	public record ReviewControllerDto(
-		UserControllerDto userControllerDto,
+		UserResponseDto userResponseDto,
 		CommentText commentText,
-		ImageMangerControllerDto imageMangerControllerDto,
+		ImageMangerResponseDto imageMangerResponseDto,
 		Rating rating,
 		ReplyControllerDto replyControllerDto
 	) {
@@ -28,7 +28,7 @@ public class ReviewListControllerDto {
 
 	@Builder
 	public record ReplyControllerDto(
-		UserControllerDto userControllerDto,
+		UserResponseDto userResponseDto,
 		CommentText commentText
 	) {
 

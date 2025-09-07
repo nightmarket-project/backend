@@ -8,7 +8,7 @@ import store.nightmarket.domain.item.valueobject.OptionGroupId;
 import store.nightmarket.domain.item.valueobject.OptionValueId;
 import store.nightmarket.domain.item.valueobject.Price;
 
-public class ReadOptionGroupListControllerDto {
+public class ReadOptionGroupResponseDto {
 
 	@Builder
 	public record Response(
