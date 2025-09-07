@@ -47,14 +47,14 @@ public class ReadProductPostControllerV1 {
 		List<ImageManager> imageOutput = readProductPostImageUseCase.execute(input).imageManagerList();
 
 		return ReadProductPostResponseDto.Response.builder()
-			.id(productPostOutput.productPostDto().getProductPost().getProductPostId())
-			.rating(productPostOutput.productPostDto().getProductPost().getRating())
+			.id(productPostOutput.productPostAdapterDto().getProductPost().getProductPostId())
+			.rating(productPostOutput.productPostAdapterDto().getProductPost().getRating())
 			.productControllerDto(
 				ReadProductPostResponseDto.ProductControllerDto.builder()
-					.productId(productPostOutput.productPostDto().getProductPost().getProductId())
-					.name(productPostOutput.productPostDto().getProduct().getName())
-					.price(productPostOutput.productPostDto().getProduct().getPrice())
-					.description(productPostOutput.productPostDto().getProduct().getDescription())
+					.productId(productPostOutput.productPostAdapterDto().getProductPost().getProductId())
+					.name(productPostOutput.productPostAdapterDto().getProduct().getName())
+					.price(productPostOutput.productPostAdapterDto().getProduct().getPrice())
+					.description(productPostOutput.productPostAdapterDto().getProduct().getDescription())
 					.mainImageList(getDtoListByImageType(imageOutput, DomainImageType.MAIN))
 					.build()
 			)
@@ -65,7 +65,7 @@ public class ReadProductPostControllerV1 {
 	@GetMapping("/{postId}/reviews")
 	public ReviewResponseDto.Response readProductPostReview(@PathVariable UUID postId) {
 		ReadReviewUseCaseDto.Output reviewOutput = readReviewUseCase.execute(postId);
-		List<UUID> idList = reviewOutput.reviewDtoList().stream()
+		List<UUID> idList = reviewOutput.reviewAdapterDtoList().stream()
 			.map(reviewDto -> reviewDto.getReview().getReviewId().getId())
 			.toList();
 		ReadReviewImageUseCaseDto.Input input = ReadReviewImageUseCaseDto.Input.builder()
@@ -81,7 +81,7 @@ public class ReadProductPostControllerV1 {
 
 		return ReviewResponseDto.Response.builder()
 			.reviewControllerDtoList(
-				reviewOutput.reviewDtoList().stream()
+				reviewOutput.reviewAdapterDtoList().stream()
 					.map(dto -> ReviewResponseDto.ReviewControllerDto.builder()
 						.userResponseDto(
 							UserResponseDto.builder()
@@ -100,11 +100,11 @@ public class ReadProductPostControllerV1 {
 							ReviewResponseDto.ReplyControllerDto.builder()
 								.userResponseDto(
 									UserResponseDto.builder()
-										.userId(dto.getReplyDto().getUser().getUserId())
-										.name(dto.getReplyDto().getUser().getName())
+										.userId(dto.getReplyAdapterDto().getUser().getUserId())
+										.name(dto.getReplyAdapterDto().getUser().getName())
 										.build()
 								)
-								.commentText(dto.getReplyDto().getReply().getCommentText())
+								.commentText(dto.getReplyAdapterDto().getReply().getCommentText())
 								.build()
 						)
 						.build()

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadReviewPort;
-import store.nightmarket.application.appitem.out.dto.ReviewDto;
+import store.nightmarket.application.appitem.out.dto.ReviewAdapterDto;
 import store.nightmarket.persistence.persistitem.repository.ReviewRepository;
 
 @Component
@@ -17,9 +17,9 @@ public class ReadReviewAdaptor implements ReadReviewPort {
 	private final ReviewRepository reviewRepository;
 
 	@Override
-	public List<ReviewDto> read(UUID productPostId) {
+	public List<ReviewAdapterDto> read(UUID productPostId) {
 		return reviewRepository.findByProductPostId(productPostId).stream()
-			.map(ReviewDto::toDomain)
+			.map(ReviewAdapterDto::toDomain)
 			.toList();
 	}
 

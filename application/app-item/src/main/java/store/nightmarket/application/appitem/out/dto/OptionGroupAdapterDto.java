@@ -12,13 +12,13 @@ import store.nightmarket.persistence.persistitem.entity.model.OptionGroupEntity;
 
 @Builder
 @Getter
-public class OptionGroupDto {
+public class OptionGroupAdapterDto {
 
 	private final OptionGroup optionGroup;
 	private final List<OptionValue> optionValueList;
 
-	public static OptionGroupDto toDomain(OptionGroupEntity entity) {
-		return OptionGroupDto.builder()
+	public static OptionGroupAdapterDto toDomain(OptionGroupEntity entity) {
+		return OptionGroupAdapterDto.builder()
 			.optionGroup(OptionGroupMapper.toDomain(entity))
 			.optionValueList(
 				entity.getOptionValueEntityList().stream()

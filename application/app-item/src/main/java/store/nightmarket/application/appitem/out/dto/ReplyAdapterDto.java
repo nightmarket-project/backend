@@ -10,13 +10,13 @@ import store.nightmarket.persistence.persistitem.entity.model.ReplyEntity;
 
 @Getter
 @Builder
-public class ReplyDto {
+public class ReplyAdapterDto {
 
 	private final Reply reply;
 	private final User user;
 
-	public static ReplyDto toDomain(ReplyEntity entity) {
-		return ReplyDto.builder()
+	public static ReplyAdapterDto toDomain(ReplyEntity entity) {
+		return ReplyAdapterDto.builder()
 			.reply(ReplyMapper.toDomain(entity))
 			.user(UserMapper.toDomain(entity.getUserEntity()))
 			.build();

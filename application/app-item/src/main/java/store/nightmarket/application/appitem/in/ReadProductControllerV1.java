@@ -30,7 +30,7 @@ public class ReadProductControllerV1 {
 
 		return ReadOptionGroupResponseDto.Response.builder()
 			.optionGroupListControllerDtoList(
-				output.optionGroupDtoList().stream()
+				output.optionGroupAdapterDtoList().stream()
 					.map(optionGroupDto ->
 						ReadOptionGroupResponseDto.OptionGroupControllerDto.builder()
 							.optionGroupId(optionGroupDto.getOptionGroup().getOptionGroupId())
@@ -57,12 +57,12 @@ public class ReadProductControllerV1 {
 
 		return ReadProductVariantResponseDto.Response.builder()
 			.productVariantControllerDtoList(
-				output.productVariantDtoList().stream()
+				output.productVariantAdapterDtoList().stream()
 					.map(productVariantDto ->
 						ReadProductVariantResponseDto.ProductVariantControllerDto.builder()
 							.productVariantId(productVariantDto.getProductVariant().getProductVariantId())
 							.variantOptionValueControllerDtoList(
-								productVariantDto.getVariantOptionValueDtoList().stream()
+								productVariantDto.getVariantOptionValueAdapterDtoList().stream()
 									.map(variantOptionValueDto ->
 										ReadProductVariantResponseDto.VariantOptionValueControllerDto.builder()
 											.optionGroupId(

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
-import store.nightmarket.application.appitem.out.dto.OptionGroupDto;
+import store.nightmarket.application.appitem.out.dto.OptionGroupAdapterDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadOptionGroupUseCaseDto;
 
 class ReadOptionGroupUseCaseTest {
@@ -34,23 +34,23 @@ class ReadOptionGroupUseCaseTest {
 		UUID optionGroupId = UUID.randomUUID();
 		UUID optionValueId = UUID.randomUUID();
 
-		OptionGroupDto optionGroupDto = OptionGroupDto.builder()
+		OptionGroupAdapterDto optionGroupAdapterDto = OptionGroupAdapterDto.builder()
 			.optionGroup(TestDomainFactory.createOptionGroup(optionGroupId, productId))
 			.optionValueList(List.of(TestDomainFactory.createOptionValue(optionValueId, optionGroupId)))
 			.build();
 
 		when(mockReadOptionGroupPort.readFetchOptionValue(productId))
-			.thenReturn(List.of(optionGroupDto));
+			.thenReturn(List.of(optionGroupAdapterDto));
 
 		// when
 		ReadOptionGroupUseCaseDto.Output output = readOptionGroupUseCase.execute(productId);
 
 		// then
 		assertThat(output).isNotNull();
-		assertThat(output.optionGroupDtoList().size())
+		assertThat(output.optionGroupAdapterDtoList().size())
 			.isEqualTo(1);
-		assertThat(output.optionGroupDtoList().getFirst())
-			.isEqualTo(optionGroupDto);
+		assertThat(output.optionGroupAdapterDtoList().getFirst())
+			.isEqualTo(optionGroupAdapterDto);
 		verify(mockReadOptionGroupPort, times(1))
 			.readFetchOptionValue(productId);
 	}

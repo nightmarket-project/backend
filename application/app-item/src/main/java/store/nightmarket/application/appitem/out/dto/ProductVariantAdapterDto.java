@@ -10,17 +10,17 @@ import store.nightmarket.persistence.persistitem.entity.model.ProductVariantEnti
 
 @Getter
 @Builder
-public class ProductVariantDto {
+public class ProductVariantAdapterDto {
 
 	private final ProductVariant productVariant;
-	private final List<VariantOptionValueDto> variantOptionValueDtoList;
+	private final List<VariantOptionValueAdapterDto> variantOptionValueAdapterDtoList;
 
-	public static ProductVariantDto toDomain(ProductVariantEntity entity) {
-		return ProductVariantDto.builder()
+	public static ProductVariantAdapterDto toDomain(ProductVariantEntity entity) {
+		return ProductVariantAdapterDto.builder()
 			.productVariant(ProductVariantMapper.toDomain(entity))
-			.variantOptionValueDtoList(
+			.variantOptionValueAdapterDtoList(
 				entity.getVariantOptionValueEntityList().stream()
-					.map(VariantOptionValueDto::toDomain)
+					.map(VariantOptionValueAdapterDto::toDomain)
 					.toList()
 			).build();
 	}

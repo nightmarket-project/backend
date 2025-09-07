@@ -10,13 +10,13 @@ import store.nightmarket.persistence.persistitem.entity.model.ProductPostEntity;
 
 @Getter
 @Builder
-public class ProductPostDto {
+public class ProductPostAdapterDto {
 
 	private final ProductPost productPost;
 	private final Product product;
 
-	public static ProductPostDto toDomain(ProductPostEntity entity) {
-		return ProductPostDto.builder()
+	public static ProductPostAdapterDto toDomain(ProductPostEntity entity) {
+		return ProductPostAdapterDto.builder()
 			.productPost(ProductPostMapper.toDomain(entity))
 			.product(ProductMapper.toDomain(entity.getProductEntity()))
 			.build();

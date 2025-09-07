@@ -13,8 +13,8 @@ import org.mockito.Mockito;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadProductVariantPort;
-import store.nightmarket.application.appitem.out.dto.ProductVariantDto;
-import store.nightmarket.application.appitem.out.dto.VariantOptionValueDto;
+import store.nightmarket.application.appitem.out.dto.ProductVariantAdapterDto;
+import store.nightmarket.application.appitem.out.dto.VariantOptionValueAdapterDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadProductVariantUseCaseDto;
 
 class ReadProductVariantUseCaseTest {
@@ -39,28 +39,28 @@ class ReadProductVariantUseCaseTest {
 		UUID optionGroupId = UUID.randomUUID();
 		UUID optionValueId = UUID.randomUUID();
 
-		ProductVariantDto productVariantDto = ProductVariantDto.builder()
+		ProductVariantAdapterDto productVariantAdapterDto = ProductVariantAdapterDto.builder()
 			.productVariant(TestDomainFactory.createProductVariant(productVariantId, productId, userId))
-			.variantOptionValueDtoList(
+			.variantOptionValueAdapterDtoList(
 				List.of(
-					VariantOptionValueDto.builder()
+					VariantOptionValueAdapterDto.builder()
 						.variantOptionValue(TestDomainFactory.createVariantOptionValue(
 							variantOptionValueId, productVariantId, optionGroupId, optionValueId))
 						.build()))
 			.build();
 
 		when(mockReadProductVariantPort.readFetchVariantOptionValue(productId))
-			.thenReturn(List.of(productVariantDto));
+			.thenReturn(List.of(productVariantAdapterDto));
 
 		// when
 		ReadProductVariantUseCaseDto.Output output = readProductVariantUseCase.execute(productId);
 
 		// then
 		assertThat(output).isNotNull();
-		assertThat(output.productVariantDtoList())
+		assertThat(output.productVariantAdapterDtoList())
 			.hasSize(1);
-		assertThat(output.productVariantDtoList().getFirst())
-			.isEqualTo(productVariantDto);
+		assertThat(output.productVariantAdapterDtoList().getFirst())
+			.isEqualTo(productVariantAdapterDto);
 		verify(mockReadProductVariantPort, times(1))
 			.readFetchVariantOptionValue(productId);
 	}

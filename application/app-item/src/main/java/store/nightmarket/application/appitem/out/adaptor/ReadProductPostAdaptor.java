@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadProductPostPort;
-import store.nightmarket.application.appitem.out.dto.ProductPostDto;
+import store.nightmarket.application.appitem.out.dto.ProductPostAdapterDto;
 import store.nightmarket.persistence.persistitem.repository.ProductPostRepository;
 
 @Component
@@ -17,9 +17,9 @@ public class ReadProductPostAdaptor implements ReadProductPostPort {
 	private final ProductPostRepository productPostRepository;
 
 	@Override
-	public Optional<ProductPostDto> readFetch(UUID id) {
+	public Optional<ProductPostAdapterDto> readFetch(UUID id) {
 		return productPostRepository.findByPostId(id)
-			.map(ProductPostDto::toDomain);
+			.map(ProductPostAdapterDto::toDomain);
 	}
 
 }

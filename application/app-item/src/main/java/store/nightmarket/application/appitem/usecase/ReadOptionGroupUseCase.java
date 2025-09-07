@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
-import store.nightmarket.application.appitem.out.dto.OptionGroupDto;
+import store.nightmarket.application.appitem.out.dto.OptionGroupAdapterDto;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 
 @Service
@@ -20,10 +20,10 @@ public class ReadOptionGroupUseCase implements BaseUseCase<UUID, Output> {
 
 	@Override
 	public Output execute(UUID productId) {
-		List<OptionGroupDto> optionGroupDtoList = readOptionGroupPort.readFetchOptionValue(productId);
+		List<OptionGroupAdapterDto> optionGroupAdapterDtoList = readOptionGroupPort.readFetchOptionValue(productId);
 
 		return Output.builder()
-			.optionGroupDtoList(optionGroupDtoList)
+			.optionGroupAdapterDtoList(optionGroupAdapterDtoList)
 			.build();
 	}
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadProductVariantPort;
-import store.nightmarket.application.appitem.out.dto.ProductVariantDto;
+import store.nightmarket.application.appitem.out.dto.ProductVariantAdapterDto;
 import store.nightmarket.persistence.persistitem.repository.ProductVariantRepository;
 
 @Component
@@ -17,9 +17,9 @@ public class ReadProductVariantAdaptor implements ReadProductVariantPort {
 	private final ProductVariantRepository productVariantRepository;
 
 	@Override
-	public List<ProductVariantDto> readFetchVariantOptionValue(UUID id) {
+	public List<ProductVariantAdapterDto> readFetchVariantOptionValue(UUID id) {
 		return productVariantRepository.findByProductId(id).stream()
-			.map(ProductVariantDto::toDomain)
+			.map(ProductVariantAdapterDto::toDomain)
 			.toList();
 	}
 

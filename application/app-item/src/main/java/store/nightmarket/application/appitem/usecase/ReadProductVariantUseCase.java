@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadProductVariantPort;
-import store.nightmarket.application.appitem.out.dto.ProductVariantDto;
+import store.nightmarket.application.appitem.out.dto.ProductVariantAdapterDto;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 
 @Service
@@ -20,10 +20,11 @@ public class ReadProductVariantUseCase implements BaseUseCase<UUID, Output> {
 
 	@Override
 	public Output execute(UUID productId) {
-		List<ProductVariantDto> productVariantDtoList = readProductVariantPort.readFetchVariantOptionValue(productId);
+		List<ProductVariantAdapterDto> productVariantAdapterDtoList = readProductVariantPort.readFetchVariantOptionValue(
+			productId);
 
 		return Output.builder()
-			.productVariantDtoList(productVariantDtoList)
+			.productVariantAdapterDtoList(productVariantAdapterDtoList)
 			.build();
 	}
 

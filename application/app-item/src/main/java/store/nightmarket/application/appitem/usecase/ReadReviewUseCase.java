@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadReviewPort;
-import store.nightmarket.application.appitem.out.dto.ReviewDto;
+import store.nightmarket.application.appitem.out.dto.ReviewAdapterDto;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 
 @Service
@@ -20,10 +20,10 @@ public class ReadReviewUseCase implements BaseUseCase<UUID, Output> {
 
 	@Override
 	public Output execute(UUID productPostId) {
-		List<ReviewDto> reviewDtoList = readReviewPort.read(productPostId);
+		List<ReviewAdapterDto> reviewAdapterDtoList = readReviewPort.read(productPostId);
 
 		return Output.builder()
-			.reviewDtoList(reviewDtoList)
+			.reviewAdapterDtoList(reviewAdapterDtoList)
 			.build();
 	}
 

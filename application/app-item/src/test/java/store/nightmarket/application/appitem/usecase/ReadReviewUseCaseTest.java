@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadReviewPort;
-import store.nightmarket.application.appitem.out.dto.ReplyDto;
-import store.nightmarket.application.appitem.out.dto.ReviewDto;
+import store.nightmarket.application.appitem.out.dto.ReplyAdapterDto;
+import store.nightmarket.application.appitem.out.dto.ReviewAdapterDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadReviewUseCaseDto;
 
 class ReadReviewUseCaseTest {
@@ -37,10 +37,10 @@ class ReadReviewUseCaseTest {
 		UUID user1Id = UUID.randomUUID();
 		UUID user2Id = UUID.randomUUID();
 
-		ReviewDto reviewDto = ReviewDto.builder()
+		ReviewAdapterDto reviewAdapterDto = ReviewAdapterDto.builder()
 			.review(TestDomainFactory.createReview(reviewId, productPostId, user1Id))
-			.replyDto(
-				ReplyDto.builder()
+			.replyAdapterDto(
+				ReplyAdapterDto.builder()
 					.reply(TestDomainFactory.createReply(replyId, user2Id, reviewId))
 					.user(TestDomainFactory.createUser(user2Id))
 					.build())
@@ -48,15 +48,15 @@ class ReadReviewUseCaseTest {
 			.build();
 
 		when(mockReadReviewPort.read(productPostId))
-			.thenReturn(List.of(reviewDto));
+			.thenReturn(List.of(reviewAdapterDto));
 
 		// when
 		ReadReviewUseCaseDto.Output output = readReviewUseCase.execute(productPostId);
 
 		// then
 		assertThat(output).isNotNull();
-		assertThat(output.reviewDtoList().size()).isEqualTo(1);
-		assertThat(output.reviewDtoList().getFirst()).isEqualTo(reviewDto);
+		assertThat(output.reviewAdapterDtoList().size()).isEqualTo(1);
+		assertThat(output.reviewAdapterDtoList().getFirst()).isEqualTo(reviewAdapterDto);
 		verify(mockReadReviewPort, times(1)).read(productPostId);
 	}
 

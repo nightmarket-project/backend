@@ -8,12 +8,12 @@ import store.nightmarket.persistence.persistitem.entity.model.VariantOptionValue
 
 @Getter
 @Builder
-public class VariantOptionValueDto {
+public class VariantOptionValueAdapterDto {
 
 	private final VariantOptionValue variantOptionValue;
 
-	public static VariantOptionValueDto toDomain(VariantOptionValueEntity entity) {
-		return VariantOptionValueDto.builder()
+	public static VariantOptionValueAdapterDto toDomain(VariantOptionValueEntity entity) {
+		return VariantOptionValueAdapterDto.builder()
 			.variantOptionValue(VariantOptionValueMapper.toDomain(entity))
 			.build();
 	}

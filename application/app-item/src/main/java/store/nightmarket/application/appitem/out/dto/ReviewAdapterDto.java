@@ -10,16 +10,16 @@ import store.nightmarket.persistence.persistitem.entity.model.ReviewEntity;
 
 @Builder
 @Getter
-public class ReviewDto {
+public class ReviewAdapterDto {
 
 	private final Review review;
-	private final ReplyDto replyDto;
+	private final ReplyAdapterDto replyAdapterDto;
 	private final User user;
 
-	public static ReviewDto toDomain(ReviewEntity entity) {
-		return ReviewDto.builder()
+	public static ReviewAdapterDto toDomain(ReviewEntity entity) {
+		return ReviewAdapterDto.builder()
 			.review(ReviewMapper.toDomain(entity))
-			.replyDto(ReplyDto.toDomain(entity.getReplyEntity()))
+			.replyAdapterDto(ReplyAdapterDto.toDomain(entity.getReplyEntity()))
 			.user(UserMapper.toDomain(entity.getUserEntity()))
 			.build();
 	}

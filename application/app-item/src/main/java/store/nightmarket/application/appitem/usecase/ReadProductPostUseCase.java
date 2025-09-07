@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadProductPostPort;
-import store.nightmarket.application.appitem.out.dto.ProductPostDto;
+import store.nightmarket.application.appitem.out.dto.ProductPostAdapterDto;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 
 @Service
@@ -19,11 +19,11 @@ public class ReadProductPostUseCase implements BaseUseCase<UUID, Output> {
 
 	@Override
 	public Output execute(UUID productPostId) {
-		ProductPostDto productPostDto = readProductPostPort
+		ProductPostAdapterDto productPostAdapterDto = readProductPostPort
 			.readOrThrowFetch(productPostId);
-		
+
 		return Output.builder()
-			.productPostDto(productPostDto)
+			.productPostAdapterDto(productPostAdapterDto)
 			.build();
 	}
 

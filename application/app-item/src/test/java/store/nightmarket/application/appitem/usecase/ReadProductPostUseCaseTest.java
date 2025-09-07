@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadProductPostPort;
-import store.nightmarket.application.appitem.out.dto.ProductPostDto;
+import store.nightmarket.application.appitem.out.dto.ProductPostAdapterDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadProductPostUseCaseDto;
 
 class ReadProductPostUseCaseTest {
@@ -31,20 +31,20 @@ class ReadProductPostUseCaseTest {
 		// given
 		UUID productPostId = UUID.randomUUID();
 		UUID productId = UUID.randomUUID();
-		ProductPostDto productPostDto = ProductPostDto.builder()
+		ProductPostAdapterDto productPostAdapterDto = ProductPostAdapterDto.builder()
 			.product(TestDomainFactory.createProduct(productId))
 			.productPost(TestDomainFactory.createProductPost(productPostId, productId))
 			.build();
 
 		when(mockReadProductPostPort.readOrThrowFetch(productPostId))
-			.thenReturn(productPostDto);
+			.thenReturn(productPostAdapterDto);
 
 		// when
 		ReadProductPostUseCaseDto.Output output = readProductPostUseCase.execute(productPostId);
 
 		// then
 		assertThat(output).isNotNull();
-		assertThat(output.productPostDto()).isEqualTo(productPostDto);
+		assertThat(output.productPostAdapterDto()).isEqualTo(productPostAdapterDto);
 		verify(mockReadProductPostPort, times(1))
 			.readOrThrowFetch(productPostId);
 	}
