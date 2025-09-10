@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.in.dto.ReadOptionGroupResponseDto;
-import store.nightmarket.application.appitem.in.dto.ReadProductVariantResponseDto;
+import store.nightmarket.application.appitem.in.dto.ReadOptionGroupDto;
+import store.nightmarket.application.appitem.in.dto.ReadProductVariantDto;
 import store.nightmarket.application.appitem.usecase.ReadOptionGroupUseCase;
 import store.nightmarket.application.appitem.usecase.ReadProductVariantUseCase;
 import store.nightmarket.application.appitem.usecase.dto.ReadOptionGroupUseCaseDto;
@@ -25,21 +25,21 @@ public class ReadProductControllerV1 {
 	private final ReadProductVariantUseCase readProductVariantUseCase;
 
 	@GetMapping("/{productId}/options")
-	public ReadOptionGroupResponseDto.Response readProductPostOption(@PathVariable UUID productId) {
+	public ReadOptionGroupDto.Response readProductPostOption(@PathVariable UUID productId) {
 		ReadOptionGroupUseCaseDto.Output output = readOptionGroupUseCase.execute(productId);
 
-		return ReadOptionGroupResponseDto.Response.builder()
-			.optionGroupListControllerDtoList(
+		return ReadOptionGroupDto.Response.builder()
+			.optionGroupInfoList(
 				output.optionGroupAdapterDtoList().stream()
 					.map(optionGroupDto ->
-						ReadOptionGroupResponseDto.OptionGroupControllerDto.builder()
+						ReadOptionGroupDto.OptionGroupInfo.builder()
 							.optionGroupId(optionGroupDto.getOptionGroup().getOptionGroupId())
 							.name(optionGroupDto.getOptionGroup().getName())
 							.displayOrder(optionGroupDto.getOptionGroup().getOrder())
-							.optionValueControllerDtoList(
+							.optionValueInfoList(
 								optionGroupDto.getOptionValueList().stream()
 									.map(optionValue ->
-										ReadOptionGroupResponseDto.OptionValueControllerDto.builder()
+										ReadOptionGroupDto.OptionValueInfo.builder()
 											.optionValueId(optionValue.getOptionValueId())
 											.name(new Name(optionValue.getValue()))
 											.price(optionValue.getPrice())
@@ -52,19 +52,19 @@ public class ReadProductControllerV1 {
 	}
 
 	@GetMapping("/{productId}/productVariants")
-	public ReadProductVariantResponseDto.Response readProductPostProductVariant(@PathVariable UUID productId) {
+	public ReadProductVariantDto.Response readProductPostProductVariant(@PathVariable UUID productId) {
 		ReadProductVariantUseCaseDto.Output output = readProductVariantUseCase.execute(productId);
 
-		return ReadProductVariantResponseDto.Response.builder()
-			.productVariantControllerDtoList(
+		return ReadProductVariantDto.Response.builder()
+			.productVariantInfoList(
 				output.productVariantAdapterDtoList().stream()
 					.map(productVariantDto ->
-						ReadProductVariantResponseDto.ProductVariantControllerDto.builder()
+						ReadProductVariantDto.ProductVariantInfo.builder()
 							.productVariantId(productVariantDto.getProductVariant().getProductVariantId())
-							.variantOptionValueControllerDtoList(
+							.variantOptionValueInfoList(
 								productVariantDto.getVariantOptionValueAdapterDtoList().stream()
 									.map(variantOptionValueDto ->
-										ReadProductVariantResponseDto.VariantOptionValueControllerDto.builder()
+										ReadProductVariantDto.VariantOptionValueInfo.builder()
 											.optionGroupId(
 												variantOptionValueDto.getVariantOptionValue().getOptionGroupId())
 											.optionValueId(

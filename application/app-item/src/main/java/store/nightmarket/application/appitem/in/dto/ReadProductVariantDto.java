@@ -7,25 +7,25 @@ import store.nightmarket.domain.item.valueobject.OptionGroupId;
 import store.nightmarket.domain.item.valueobject.OptionValueId;
 import store.nightmarket.domain.item.valueobject.ProductVariantId;
 
-public class ReadProductVariantResponseDto {
+public class ReadProductVariantDto {
 
 	@Builder
 	public record Response(
-		List<ProductVariantControllerDto> productVariantControllerDtoList
+		List<ProductVariantInfo> productVariantInfoList
 	) {
 
 	}
 
 	@Builder
-	public record ProductVariantControllerDto(
+	public record ProductVariantInfo(
 		ProductVariantId productVariantId,
-		List<VariantOptionValueControllerDto> variantOptionValueControllerDtoList
+		List<VariantOptionValueInfo> variantOptionValueInfoList
 	) {
 
 	}
 
 	@Builder
-	public record VariantOptionValueControllerDto(
+	public record VariantOptionValueInfo(
 		OptionGroupId optionGroupId,
 		OptionValueId optionValueId
 	) {

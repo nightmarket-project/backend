@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.in.dto.ImageMangerResponseDto;
-import store.nightmarket.application.appitem.in.dto.ReadProductPostResponseDto;
-import store.nightmarket.application.appitem.in.dto.ReviewResponseDto;
-import store.nightmarket.application.appitem.in.dto.UserResponseDto;
+import store.nightmarket.application.appitem.in.dto.ReadProductPostDto;
+import store.nightmarket.application.appitem.in.dto.ReadReviewDto;
 import store.nightmarket.application.appitem.usecase.ReadProductPostImageUseCase;
 import store.nightmarket.application.appitem.usecase.ReadProductPostUseCase;
 import store.nightmarket.application.appitem.usecase.ReadReviewImageUseCase;
@@ -37,7 +35,7 @@ public class ReadProductPostControllerV1 {
 	private final ReadReviewImageUseCase readReviewImageUseCase;
 
 	@GetMapping("/{postId}")
-	public ReadProductPostResponseDto.Response readProductPost(@PathVariable UUID postId) {
+	public ReadProductPostDto.Response readProductPost(@PathVariable UUID postId) {
 		ReadProductPostImageUseCaseDto.Input input = ReadProductPostImageUseCaseDto.Input.builder()
 			.id(postId)
 			.imageTypeList(List.of(DomainImageType.MAIN, DomainImageType.DETAIL))
@@ -46,11 +44,11 @@ public class ReadProductPostControllerV1 {
 		ReadProductPostUseCaseDto.Output productPostOutput = readProductPostUseCase.execute(postId);
 		List<ImageManager> imageOutput = readProductPostImageUseCase.execute(input).imageManagerList();
 
-		return ReadProductPostResponseDto.Response.builder()
+		return ReadProductPostDto.Response.builder()
 			.id(productPostOutput.productPostAdapterDto().getProductPost().getProductPostId())
 			.rating(productPostOutput.productPostAdapterDto().getProductPost().getRating())
-			.productControllerDto(
-				ReadProductPostResponseDto.ProductControllerDto.builder()
+			.productInfo(
+				ReadProductPostDto.ProductInfo.builder()
 					.productId(productPostOutput.productPostAdapterDto().getProductPost().getProductId())
 					.name(productPostOutput.productPostAdapterDto().getProduct().getName())
 					.price(productPostOutput.productPostAdapterDto().getProduct().getPrice())
@@ -58,12 +56,12 @@ public class ReadProductPostControllerV1 {
 					.mainImageList(getDtoListByImageType(imageOutput, DomainImageType.MAIN))
 					.build()
 			)
-			.detailImageList(getDtoListByImageType(imageOutput, DomainImageType.DETAIL))
+			.detailImageInfoList(getDtoListByImageType(imageOutput, DomainImageType.DETAIL))
 			.build();
 	}
 
 	@GetMapping("/{postId}/reviews")
-	public ReviewResponseDto.Response readProductPostReview(@PathVariable UUID postId) {
+	public ReadReviewDto.Response readProductPostReview(@PathVariable UUID postId) {
 		ReadReviewUseCaseDto.Output reviewOutput = readReviewUseCase.execute(postId);
 		List<UUID> idList = reviewOutput.reviewAdapterDtoList().stream()
 			.map(reviewDto -> reviewDto.getReview().getReviewId().getId())
@@ -79,27 +77,27 @@ public class ReadProductPostControllerV1 {
 				image -> image)
 			);
 
-		return ReviewResponseDto.Response.builder()
-			.reviewControllerDtoList(
+		return ReadReviewDto.Response.builder()
+			.reviewInfoList(
 				reviewOutput.reviewAdapterDtoList().stream()
-					.map(dto -> ReviewResponseDto.ReviewControllerDto.builder()
-						.userResponseDto(
-							UserResponseDto.builder()
+					.map(dto -> ReadReviewDto.ReviewInfo.builder()
+						.userInfo(
+							ReadReviewDto.UserInfo.builder()
 								.userId(dto.getUser().getUserId())
 								.name(dto.getUser().getName())
 								.build())
 						.commentText(dto.getReview().getCommentText())
-						.imageMangerResponseDto(
-							ImageMangerResponseDto.builder()
+						.imageManagerInfo(
+							ReadReviewDto.ImageManagerInfo.builder()
 								.url(imageMap.get(dto.getReview().getReviewId().getId()).getImage().imageUrl())
 								.displayOrder(imageMap.get(dto.getReview().getReviewId().getId()).getDisplayOrder())
 								.build()
 						)
 						.rating(dto.getReview().getRating())
-						.replyControllerDto(
-							ReviewResponseDto.ReplyControllerDto.builder()
-								.userResponseDto(
-									UserResponseDto.builder()
+						.replyInfo(
+							ReadReviewDto.ReplyInfo.builder()
+								.userInfo(
+									ReadReviewDto.UserInfo.builder()
 										.userId(dto.getReplyAdapterDto().getUser().getUserId())
 										.name(dto.getReplyAdapterDto().getUser().getName())
 										.build()
@@ -114,13 +112,13 @@ public class ReadProductPostControllerV1 {
 			.build();
 	}
 
-	private List<ImageMangerResponseDto> getDtoListByImageType(
+	private List<ReadProductPostDto.ImageManagerInfo> getDtoListByImageType(
 		List<ImageManager> imageManagerList,
 		DomainImageType domainImageType
 	) {
 		return imageManagerList.stream()
 			.filter(image -> image.getDomainImageType() == domainImageType)
-			.map(image -> ImageMangerResponseDto.builder()
+			.map(image -> ReadProductPostDto.ImageManagerInfo.builder()
 				.url(image.getImage().imageUrl())
 				.displayOrder(image.getDisplayOrder())
 				.build())

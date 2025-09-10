@@ -9,25 +9,33 @@ import store.nightmarket.domain.item.valueobject.ProductId;
 import store.nightmarket.itemweb.valueobject.ProductPostId;
 import store.nightmarket.itemweb.valueobject.Rating;
 
-public class ReadProductPostResponseDto {
+public class ReadProductPostDto {
 
 	@Builder
 	public record Response(
 		ProductPostId id,
-		ProductControllerDto productControllerDto,
+		ProductInfo productInfo,
 		Rating rating,
-		List<ImageMangerResponseDto> detailImageList
+		List<ImageManagerInfo> detailImageInfoList
 	) {
 
 	}
 
 	@Builder
-	public record ProductControllerDto(
+	public record ProductInfo(
 		ProductId productId,
 		Name name,
 		Price price,
 		String description,
-		List<ImageMangerResponseDto> mainImageList
+		List<ImageManagerInfo> mainImageList
+	) {
+
+	}
+
+	@Builder
+	public record ImageManagerInfo(
+		String url,
+		int displayOrder
 	) {
 
 	}
