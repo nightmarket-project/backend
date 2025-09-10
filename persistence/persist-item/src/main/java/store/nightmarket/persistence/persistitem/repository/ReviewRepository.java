@@ -12,10 +12,8 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, UUID> {
 
 	@Query("SELECT reviewEntity FROM ReviewEntity reviewEntity " +
 		"JOIN FETCH ReplyEntity " +
-		"JOIN FETCH ProductPostEntity " +
 		"JOIN FETCH UserEntity " +
-		"Where reviewEntity.productPostEntity.id = :productPostId " +
-		"and reviewEntity.deleted = false")
+		"WHERE reviewEntity.productPostEntity.id = :productPostId")
 	List<ReviewEntity> findByProductPostId(UUID productPostId);
 
 }
