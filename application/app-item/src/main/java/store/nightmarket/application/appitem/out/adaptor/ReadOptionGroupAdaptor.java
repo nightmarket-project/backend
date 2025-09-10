@@ -1,13 +1,13 @@
 package store.nightmarket.application.appitem.out.adaptor;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
 import store.nightmarket.application.appitem.out.dto.OptionGroupAdapterDto;
+import store.nightmarket.domain.item.valueobject.ProductId;
 import store.nightmarket.persistence.persistitem.repository.OptionGroupRepository;
 
 @Component
@@ -17,8 +17,8 @@ public class ReadOptionGroupAdaptor implements ReadOptionGroupPort {
 	private final OptionGroupRepository optionGroupRepository;
 
 	@Override
-	public List<OptionGroupAdapterDto> readFetchOptionValue(UUID id) {
-		return optionGroupRepository.findByProductPostId(id).stream()
+	public List<OptionGroupAdapterDto> readFetchOptionValue(ProductId id) {
+		return optionGroupRepository.findByProductPostId(id.getId()).stream()
 			.map(OptionGroupAdapterDto::toDomain)
 			.toList();
 	}

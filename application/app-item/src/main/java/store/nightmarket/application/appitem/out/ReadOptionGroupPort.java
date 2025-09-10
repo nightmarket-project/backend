@@ -1,12 +1,12 @@
 package store.nightmarket.application.appitem.out;
 
 import java.util.List;
-import java.util.UUID;
 
 import store.nightmarket.application.appitem.out.dto.OptionGroupAdapterDto;
+import store.nightmarket.domain.item.valueobject.ProductId;
 
 public interface ReadOptionGroupPort {
 
-	List<OptionGroupAdapterDto> readFetchOptionValue(UUID id);
+	List<OptionGroupAdapterDto> readFetchOptionValue(ProductId id);
 
 }

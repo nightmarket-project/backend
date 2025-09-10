@@ -14,6 +14,7 @@ import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
 import store.nightmarket.application.appitem.out.dto.OptionGroupAdapterDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadOptionGroupUseCaseDto;
+import store.nightmarket.domain.item.valueobject.ProductId;
 
 class ReadOptionGroupUseCaseTest {
 
@@ -30,12 +31,12 @@ class ReadOptionGroupUseCaseTest {
 	@DisplayName("제품 아이디를 가지고 옵션 그룹 리스트를 읽는다.")
 	void readOptionGroupListWithProductId() {
 		// given
-		UUID productId = UUID.randomUUID();
+		ProductId productId = new ProductId(UUID.randomUUID());
 		UUID optionGroupId = UUID.randomUUID();
 		UUID optionValueId = UUID.randomUUID();
 
 		OptionGroupAdapterDto optionGroupAdapterDto = OptionGroupAdapterDto.builder()
-			.optionGroup(TestDomainFactory.createOptionGroup(optionGroupId, productId))
+			.optionGroup(TestDomainFactory.createOptionGroup(optionGroupId, productId.getId()))
 			.optionValueList(List.of(TestDomainFactory.createOptionValue(optionValueId, optionGroupId)))
 			.build();
 

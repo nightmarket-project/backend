@@ -15,6 +15,7 @@ import store.nightmarket.application.appitem.usecase.ReadProductVariantUseCase;
 import store.nightmarket.application.appitem.usecase.dto.ReadOptionGroupUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadProductVariantUseCaseDto;
 import store.nightmarket.domain.item.valueobject.Name;
+import store.nightmarket.domain.item.valueobject.ProductId;
 
 @RestController
 @RequestMapping("api/v1/products")
@@ -26,7 +27,7 @@ public class ReadProductControllerV1 {
 
 	@GetMapping("/{productId}/options")
 	public ReadOptionGroupDto.Response readProductPostOption(@PathVariable UUID productId) {
-		ReadOptionGroupUseCaseDto.Output output = readOptionGroupUseCase.execute(productId);
+		ReadOptionGroupUseCaseDto.Output output = readOptionGroupUseCase.execute(new ProductId(productId));
 
 		return ReadOptionGroupDto.Response.builder()
 			.optionGroupInfoList(
