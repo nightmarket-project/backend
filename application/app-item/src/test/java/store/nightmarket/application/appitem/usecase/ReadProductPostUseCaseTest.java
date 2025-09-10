@@ -13,6 +13,7 @@ import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadProductPostPort;
 import store.nightmarket.application.appitem.out.dto.ProductPostAdapterDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadProductPostUseCaseDto;
+import store.nightmarket.itemweb.valueobject.ProductPostId;
 
 class ReadProductPostUseCaseTest {
 
@@ -29,11 +30,11 @@ class ReadProductPostUseCaseTest {
 	@DisplayName("상품 게시글 조회")
 	void readProductPost() {
 		// given
-		UUID productPostId = UUID.randomUUID();
+		ProductPostId productPostId = new ProductPostId(UUID.randomUUID());
 		UUID productId = UUID.randomUUID();
 		ProductPostAdapterDto productPostAdapterDto = ProductPostAdapterDto.builder()
 			.product(TestDomainFactory.createProduct(productId))
-			.productPost(TestDomainFactory.createProductPost(productPostId, productId))
+			.productPost(TestDomainFactory.createProductPost(productPostId.getId(), productId))
 			.build();
 
 		when(mockReadProductPostPort.readOrThrowFetch(productPostId))

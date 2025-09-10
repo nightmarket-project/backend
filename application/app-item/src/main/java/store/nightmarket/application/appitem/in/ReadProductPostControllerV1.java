@@ -23,6 +23,7 @@ import store.nightmarket.application.appitem.usecase.dto.ReadReviewImageUseCaseD
 import store.nightmarket.application.appitem.usecase.dto.ReadReviewUseCaseDto;
 import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.state.DomainImageType;
+import store.nightmarket.itemweb.valueobject.ProductPostId;
 
 @RestController
 @RequestMapping("api/v1/posts")
@@ -41,7 +42,7 @@ public class ReadProductPostControllerV1 {
 			.imageTypeList(List.of(DomainImageType.MAIN, DomainImageType.DETAIL))
 			.build();
 
-		ReadProductPostUseCaseDto.Output productPostOutput = readProductPostUseCase.execute(postId);
+		ReadProductPostUseCaseDto.Output productPostOutput = readProductPostUseCase.execute(new ProductPostId(postId));
 		List<ImageManager> imageOutput = readProductPostImageUseCase.execute(input).imageManagerList();
 
 		return ReadProductPostDto.Response.builder()
