@@ -29,7 +29,7 @@ import store.nightmarket.itemweb.valueobject.ProductPostId;
 @RestController
 @RequestMapping("api/v1/posts")
 @RequiredArgsConstructor
-public class ReadProductPostControllerV1 {
+public class ProductPostControllerV1 {
 
 	private final ReadProductPostUseCase readProductPostUseCase;
 	private final ReadProductPostImageUseCase readProductPostImageUseCase;

@@ -20,7 +20,7 @@ import store.nightmarket.domain.item.valueobject.ProductId;
 @RestController
 @RequestMapping("api/v1/products")
 @RequiredArgsConstructor
-public class ReadProductControllerV1 {
+public class ProductControllerV1 {
 
 	private final ReadOptionGroupUseCase readOptionGroupUseCase;
 	private final ReadProductVariantUseCase readProductVariantUseCase;
