@@ -42,4 +42,8 @@ public class ProductPost extends ImageOwnerModel<ProductPostId> {
 		);
 	}
 
+	public ProductPostId getProductPostId() {
+		return internalId();
+	}
+
 }
