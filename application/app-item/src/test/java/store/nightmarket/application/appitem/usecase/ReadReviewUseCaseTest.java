@@ -15,6 +15,7 @@ import store.nightmarket.application.appitem.out.ReadReviewPort;
 import store.nightmarket.application.appitem.out.dto.ReplyAdapterDto;
 import store.nightmarket.application.appitem.out.dto.ReviewAdapterDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadReviewUseCaseDto;
+import store.nightmarket.itemweb.valueobject.ProductPostId;
 
 class ReadReviewUseCaseTest {
 
@@ -31,14 +32,14 @@ class ReadReviewUseCaseTest {
 	@DisplayName("리뷰 조회")
 	void readReviewList() {
 		// given
-		UUID productPostId = UUID.randomUUID();
+		ProductPostId productPostId = new ProductPostId(UUID.randomUUID());
 		UUID reviewId = UUID.randomUUID();
 		UUID replyId = UUID.randomUUID();
 		UUID user1Id = UUID.randomUUID();
 		UUID user2Id = UUID.randomUUID();
 
 		ReviewAdapterDto reviewAdapterDto = ReviewAdapterDto.builder()
-			.review(TestDomainFactory.createReview(reviewId, productPostId, user1Id))
+			.review(TestDomainFactory.createReview(reviewId, productPostId.getId(), user1Id))
 			.replyAdapterDto(
 				ReplyAdapterDto.builder()
 					.reply(TestDomainFactory.createReply(replyId, user2Id, reviewId))

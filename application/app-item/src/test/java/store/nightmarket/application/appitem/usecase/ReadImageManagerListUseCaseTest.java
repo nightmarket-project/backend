@@ -13,48 +13,49 @@ import org.mockito.Mockito;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadImageManagerPort;
-import store.nightmarket.application.appitem.usecase.dto.ReadReviewImageUseCaseDto;
+import store.nightmarket.application.appitem.usecase.dto.ReadImageManagerListUseCaseDto;
 import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.state.DomainImageType;
+import store.nightmarket.itemweb.valueobject.ReviewId;
 
-class ReadReviewImageUseCaseTest {
+class ReadImageManagerListUseCaseTest {
 
-	private ReadReviewImageUseCase readReviewImageUseCase;
+	private ReadImageManagerListUseCase readImageManagerListUseCase;
 	private ReadImageManagerPort mockReadImageManagerPort;
 
 	@BeforeEach
 	void setUp() {
 		mockReadImageManagerPort = Mockito.mock(ReadImageManagerPort.class);
-		readReviewImageUseCase = new ReadReviewImageUseCase(mockReadImageManagerPort);
+		readImageManagerListUseCase = new ReadImageManagerListUseCase(mockReadImageManagerPort);
 	}
 
 	@Test
 	@DisplayName("리뷰 아이디 리스트를 받아서 리뷰 이미지를 조회한다.")
 	void readReviewImageListWithReviewIdList() {
 		// given
-		UUID review1Id = UUID.randomUUID();
-		UUID review2Id = UUID.randomUUID();
+		ReviewId reviewId1 = new ReviewId(UUID.randomUUID());
+		ReviewId reviewId2 = new ReviewId(UUID.randomUUID());
 		ImageManager imageManager1 = TestDomainFactory.createImageManager(
 			UUID.randomUUID(),
 			DomainImageType.MAIN,
 			1,
-			review1Id
+			reviewId1.getId()
 		);
 		ImageManager imageManager2 = TestDomainFactory.createImageManager(
 			UUID.randomUUID(),
 			DomainImageType.MAIN,
 			1,
-			review2Id
+			reviewId2.getId()
 		);
 
-		ReadReviewImageUseCaseDto.Input input = ReadReviewImageUseCaseDto.Input.builder()
-			.idList(List.of(review1Id, review2Id))
+		ReadImageManagerListUseCaseDto.Input input = ReadImageManagerListUseCaseDto.Input.builder()
+			.idList(List.of(reviewId1, reviewId2))
 			.build();
-		when(mockReadImageManagerPort.readIdList(List.of(review1Id, review2Id)))
+		when(mockReadImageManagerPort.readIdList(List.of(reviewId1, reviewId2)))
 			.thenReturn(List.of(imageManager1, imageManager2));
 
 		// when
-		ReadReviewImageUseCaseDto.Output output = readReviewImageUseCase.execute(input);
+		ReadImageManagerListUseCaseDto.Output output = readImageManagerListUseCase.execute(input);
 
 		// then
 		assertThat(output).isNotNull();
@@ -63,7 +64,7 @@ class ReadReviewImageUseCaseTest {
 		assertThat(output.imageManagerList())
 			.isEqualTo(List.of(imageManager1, imageManager2));
 		verify(mockReadImageManagerPort, times(1))
-			.readIdList(List.of(review1Id, review2Id));
+			.readIdList(List.of(reviewId1, reviewId2));
 	}
 
 }

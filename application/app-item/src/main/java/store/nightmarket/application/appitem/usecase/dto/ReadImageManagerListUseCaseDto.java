@@ -1,16 +1,16 @@
 package store.nightmarket.application.appitem.usecase.dto;
 
 import java.util.List;
-import java.util.UUID;
 
 import lombok.Builder;
 import store.nightmarket.itemweb.model.ImageManager;
+import store.nightmarket.itemweb.valueobject.ImageOwnerId;
 
-public class ReadReviewImageUseCaseDto {
+public class ReadImageManagerListUseCaseDto {
 
 	@Builder
 	public record Input(
-		List<UUID> idList
+		List<ImageOwnerId> idList
 	) {
 
 	}

@@ -17,8 +17,8 @@ public class ReadOptionGroupAdaptor implements ReadOptionGroupPort {
 	private final OptionGroupRepository optionGroupRepository;
 
 	@Override
-	public List<OptionGroupAdapterDto> readFetchOptionValue(ProductId id) {
-		return optionGroupRepository.findByProductPostId(id.getId()).stream()
+	public List<OptionGroupAdapterDto> readFetchOptionValue(ProductId productId) {
+		return optionGroupRepository.findByProductPostId(productId.getId()).stream()
 			.map(OptionGroupAdapterDto::toDomain)
 			.toList();
 	}

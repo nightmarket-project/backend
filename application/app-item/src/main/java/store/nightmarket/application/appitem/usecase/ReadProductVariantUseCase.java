@@ -3,7 +3,6 @@ package store.nightmarket.application.appitem.usecase;
 import static store.nightmarket.application.appitem.usecase.dto.ReadProductVariantUseCaseDto.*;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -11,17 +10,18 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadProductVariantPort;
 import store.nightmarket.application.appitem.out.dto.ProductVariantAdapterDto;
 import store.nightmarket.common.application.usecase.BaseUseCase;
+import store.nightmarket.domain.item.valueobject.ProductId;
 
 @Service
 @RequiredArgsConstructor
-public class ReadProductVariantUseCase implements BaseUseCase<UUID, Output> {
+public class ReadProductVariantUseCase implements BaseUseCase<ProductId, Output> {
 
 	private final ReadProductVariantPort readProductVariantPort;
 
 	@Override
-	public Output execute(UUID productId) {
-		List<ProductVariantAdapterDto> productVariantAdapterDtoList = readProductVariantPort.readFetchVariantOptionValue(
-			productId);
+	public Output execute(ProductId productId) {
+		List<ProductVariantAdapterDto> productVariantAdapterDtoList = readProductVariantPort
+			.readFetchVariantOptionValue(productId);
 
 		return Output.builder()
 			.productVariantAdapterDtoList(productVariantAdapterDtoList)

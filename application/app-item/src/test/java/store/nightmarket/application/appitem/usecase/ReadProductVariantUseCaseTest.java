@@ -16,6 +16,7 @@ import store.nightmarket.application.appitem.out.ReadProductVariantPort;
 import store.nightmarket.application.appitem.out.dto.ProductVariantAdapterDto;
 import store.nightmarket.application.appitem.out.dto.VariantOptionValueAdapterDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadProductVariantUseCaseDto;
+import store.nightmarket.domain.item.valueobject.ProductId;
 
 class ReadProductVariantUseCaseTest {
 
@@ -32,7 +33,7 @@ class ReadProductVariantUseCaseTest {
 	@DisplayName("제품 아이디를 가지고 ProductVariant를 읽는다.")
 	void readProductVariantWithProductId() {
 		// given
-		UUID productId = UUID.randomUUID();
+		ProductId productId = new ProductId(UUID.randomUUID());
 		UUID productVariantId = UUID.randomUUID();
 		UUID userId = UUID.randomUUID();
 		UUID variantOptionValueId = UUID.randomUUID();
@@ -40,7 +41,7 @@ class ReadProductVariantUseCaseTest {
 		UUID optionValueId = UUID.randomUUID();
 
 		ProductVariantAdapterDto productVariantAdapterDto = ProductVariantAdapterDto.builder()
-			.productVariant(TestDomainFactory.createProductVariant(productVariantId, productId, userId))
+			.productVariant(TestDomainFactory.createProductVariant(productVariantId, productId.getId(), userId))
 			.variantOptionValueAdapterDtoList(
 				List.of(
 					VariantOptionValueAdapterDto.builder()

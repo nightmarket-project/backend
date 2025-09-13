@@ -15,6 +15,7 @@ import store.nightmarket.application.appitem.out.ReadImageManagerPort;
 import store.nightmarket.application.appitem.usecase.dto.ReadProductPostImageUseCaseDto;
 import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.state.DomainImageType;
+import store.nightmarket.itemweb.valueobject.ProductPostId;
 
 class ReadProductPostImageUseCaseTest {
 
@@ -31,12 +32,12 @@ class ReadProductPostImageUseCaseTest {
 	@DisplayName("이미지 타입에 맞는 이미지 리스트 읽기")
 	void readProductPostImageListByImageType() {
 		// given
-		UUID productPostId = UUID.randomUUID();
+		ProductPostId productPostId = new ProductPostId(UUID.randomUUID());
 		ImageManager imageManager = TestDomainFactory.createImageManager(
 			UUID.randomUUID(),
 			DomainImageType.MAIN,
 			1,
-			productPostId
+			productPostId.getId()
 		);
 
 		ReadProductPostImageUseCaseDto.Input input = ReadProductPostImageUseCaseDto.Input.builder()

@@ -54,7 +54,7 @@ public class ReadProductControllerV1 {
 
 	@GetMapping("/{productId}/productVariants")
 	public ReadProductVariantDto.Response readProductPostProductVariant(@PathVariable UUID productId) {
-		ReadProductVariantUseCaseDto.Output output = readProductVariantUseCase.execute(productId);
+		ReadProductVariantUseCaseDto.Output output = readProductVariantUseCase.execute(new ProductId(productId));
 
 		return ReadProductVariantDto.Response.builder()
 			.productVariantInfoList(

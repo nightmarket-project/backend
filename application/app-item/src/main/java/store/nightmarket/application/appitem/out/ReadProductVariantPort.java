@@ -1,12 +1,12 @@
 package store.nightmarket.application.appitem.out;
 
 import java.util.List;
-import java.util.UUID;
 
 import store.nightmarket.application.appitem.out.dto.ProductVariantAdapterDto;
+import store.nightmarket.domain.item.valueobject.ProductId;
 
 public interface ReadProductVariantPort {
 
-	List<ProductVariantAdapterDto> readFetchVariantOptionValue(UUID id);
+	List<ProductVariantAdapterDto> readFetchVariantOptionValue(ProductId id);
 
 }

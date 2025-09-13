@@ -17,8 +17,8 @@ public class ReadProductPostAdaptor implements ReadProductPostPort {
 	private final ProductPostRepository productPostRepository;
 
 	@Override
-	public Optional<ProductPostAdapterDto> readFetch(ProductPostId id) {
-		return productPostRepository.findByPostId(id.getId())
+	public Optional<ProductPostAdapterDto> readFetch(ProductPostId productPostId) {
+		return productPostRepository.findByPostId(productPostId.getId())
 			.map(ProductPostAdapterDto::toDomain);
 	}
 
