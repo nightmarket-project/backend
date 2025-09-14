@@ -1,5 +1,9 @@
 package store.nightmarket.application.appitem.in;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +16,9 @@ import store.nightmarket.application.appitem.in.dto.SearchProductDto;
 import store.nightmarket.application.appitem.out.dto.ProductPostAdapterDto;
 import store.nightmarket.application.appitem.usecase.FindProductByComponentUseCase;
 import store.nightmarket.application.appitem.usecase.dto.FindProductByComponentUseCaseDto;
+import store.nightmarket.itemweb.model.ImageManager;
+import store.nightmarket.itemweb.valueobject.Image;
+import store.nightmarket.itemweb.valueobject.ImageOwnerId;
 
 @RestController
 @RequestMapping("api/v1/posts")
@@ -29,12 +36,16 @@ public class ProductPostControllerV1 {
 		if (page < 0)
 			page = 0;
 
-		Page<ProductPostAdapterDto> productPostPage = findProductByComponentUseCase.execute(
+		FindProductByComponentUseCaseDto.Output output = findProductByComponentUseCase.execute(
 			FindProductByComponentUseCaseDto.Input.builder()
 				.component(component)
 				.page(page)
 				.build()
-		).dtoPage();
+		);
+		Page<ProductPostAdapterDto> productPostPage = output.dtoPage();
+		List<ImageManager> imageManagerList = output.imageManagerList();
+		Map<ImageOwnerId, Image> collect = imageManagerList.stream()
+			.collect(Collectors.toMap(ImageManager::getImageOwnerId, ImageManager::getImage));
 
 		return SearchProductDto.Response.builder()
 			.content(
@@ -42,6 +53,7 @@ public class ProductPostControllerV1 {
 					.map(productPostAdapterDto ->
 						SearchProductDto.ProductInfo.builder()
 							.productPostId(productPostAdapterDto.getProductPost().getProductPostId().getId())
+							.image(collect.get(productPostAdapterDto.getProductPost().getProductPostId()))
 							.price(productPostAdapterDto.getProduct().getPrice())
 							.name(productPostAdapterDto.getProduct().getName())
 							.rating(productPostAdapterDto.getProductPost().getRating())
