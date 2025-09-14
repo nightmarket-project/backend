@@ -14,6 +14,8 @@ public interface ImageManagerRepository extends JpaRepository<ImageManagerEntity
 
 	@Query("SELECT imageManagerEntity " +
 		"FROM ImageManagerEntity imageManagerEntity " +
-		"WHERE imageManagerEntity.imageOwnerModelEntity.id IN (:imageOwnerModelEntityIdList)")
-	List<ImageManagerEntity> findByImageOwnerModelEntityIdList(List<UUID> imageOwnerModelEntityIdList);
+		"WHERE imageManagerEntity.imageOwnerModelEntity.id IN :imageOwnerModelEntityIdList " +
+		"AND imageManagerEntity.entityImageType = store.nightmarket.persistence.persistitem.entity.state.EntityImageType.THUMBNAIL")
+	List<ImageManagerEntity> findThumbnailImageListBy(List<UUID> imageOwnerModelEntityIdList);
+
 }
