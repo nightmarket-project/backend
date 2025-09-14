@@ -30,7 +30,7 @@ public class FindProductByComponentUseCase implements BaseUseCase<Input, Output>
 	public Output execute(Input input) {
 		Pageable pageable = PageRequest.of(input.page(), 25);
 		Page<ProductPostAdapterDto> dtoPage = readProductPostPort
-			.findProductPostListByName(input.component(), pageable);
+			.findProductPostListByComponent(input.component(), pageable);
 
 		List<ImageOwnerId> imageOwnerIdList = dtoPage.getContent().stream()
 			.map(productPostAdapterDto -> new ImageOwnerId(
