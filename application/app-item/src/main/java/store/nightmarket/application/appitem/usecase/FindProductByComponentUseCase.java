@@ -16,7 +16,7 @@ import store.nightmarket.application.appitem.out.ReadProductPostPort;
 import store.nightmarket.application.appitem.out.dto.ProductPostAdapterDto;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.valueobject.ImageOwnerId;
+import store.nightmarket.itemweb.valueobject.ProductPostId;
 
 @Service
 @RequiredArgsConstructor
@@ -32,12 +32,11 @@ public class FindProductByComponentUseCase implements BaseUseCase<Input, Output>
 		Page<ProductPostAdapterDto> dtoPage = readProductPostPort
 			.findProductPostListByComponent(input.component(), pageable);
 
-		List<ImageOwnerId> imageOwnerIdList = dtoPage.getContent().stream()
-			.map(productPostAdapterDto -> new ImageOwnerId(
-				productPostAdapterDto.getProductPost().getProductPostId().getId()))
+		List<ProductPostId> productPostIdList = dtoPage.getContent().stream()
+			.map(productPostAdapterDto -> productPostAdapterDto.getProductPost().getProductPostId())
 			.toList();
 
-		List<ImageManager> imageManagerList = readImageManagerPort.readIdList(imageOwnerIdList);
+		List<ImageManager> imageManagerList = readImageManagerPort.readThumbnailList(productPostIdList);
 
 		return Output.builder()
 			.dtoPage(dtoPage)
