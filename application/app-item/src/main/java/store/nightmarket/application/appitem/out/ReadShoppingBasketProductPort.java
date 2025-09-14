@@ -17,6 +17,6 @@ public interface ReadShoppingBasketProductPort {
 			.orElseThrow(() -> new ProductException("Shopping basket product not found"));
 	}
 
-	List<ShoppingBasketProduct> readByUserId(UserId userId);
+	List<ShoppingBasketProduct> readListByUserId(UserId userId);
 
 }

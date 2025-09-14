@@ -26,7 +26,7 @@ public class ReadShoppingBasketProductAdaptor implements ReadShoppingBasketProdu
 	}
 
 	@Override
-	public List<ShoppingBasketProduct> readByUserId(UserId userId) {
+	public List<ShoppingBasketProduct> readListByUserId(UserId userId) {
 		return List.of();
 	}
 
