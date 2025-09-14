@@ -1,0 +1,33 @@
+package store.nightmarket.application.appitem.out.adaptor;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
+import store.nightmarket.application.appitem.mapper.ShoppingBasketProductMapper;
+import store.nightmarket.application.appitem.out.ReadShoppingBasketProductPort;
+import store.nightmarket.domain.item.model.ShoppingBasketProduct;
+import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
+import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.persistence.persistitem.entity.repository.ShoppingBasketProductRepository;
+
+@Component
+@RequiredArgsConstructor
+public class ReadShoppingBasketProductAdaptor implements ReadShoppingBasketProductPort {
+
+	private final ShoppingBasketProductRepository shoppingBasketProductRepository;
+
+	@Override
+	public Optional<ShoppingBasketProduct> read(ShoppingBasketProductId shoppingBasketProductId) {
+		return shoppingBasketProductRepository.findById(shoppingBasketProductId.getId())
+			.map(ShoppingBasketProductMapper::toDomain);
+	}
+
+	@Override
+	public List<ShoppingBasketProduct> readByUserId(UserId userId) {
+		return List.of();
+	}
+
+}
