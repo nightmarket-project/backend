@@ -7,7 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan(basePackages = {
 	"store.nightmarket.persistence.persistitem",
-	"store.nightmarket.application.appitem"
+	"store.nightmarket.application.appitem",
+	"store.nightmarket.itemweb"
 })
 public class AppItemApplication {
 
