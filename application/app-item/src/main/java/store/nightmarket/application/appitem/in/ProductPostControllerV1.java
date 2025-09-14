@@ -44,7 +44,7 @@ public class ProductPostControllerV1 {
 		);
 		Page<ProductPostAdapterDto> productPostPage = output.dtoPage();
 		List<ImageManager> imageManagerList = output.imageManagerList();
-		Map<ImageOwnerId, Image> collect = imageManagerList.stream()
+		Map<ImageOwnerId, Image> imageMap = imageManagerList.stream()
 			.collect(Collectors.toMap(ImageManager::getImageOwnerId, ImageManager::getImage));
 
 		return SearchProductDto.Response.builder()
@@ -53,7 +53,7 @@ public class ProductPostControllerV1 {
 					.map(productPostAdapterDto ->
 						SearchProductDto.ProductInfo.builder()
 							.productPostId(productPostAdapterDto.getProductPost().getProductPostId().getId())
-							.image(collect.get(productPostAdapterDto.getProductPost().getProductPostId()))
+							.image(imageMap.get(productPostAdapterDto.getProductPost().getProductPostId()))
 							.price(productPostAdapterDto.getProduct().getPrice())
 							.name(productPostAdapterDto.getProduct().getName())
 							.rating(productPostAdapterDto.getProductPost().getRating())
