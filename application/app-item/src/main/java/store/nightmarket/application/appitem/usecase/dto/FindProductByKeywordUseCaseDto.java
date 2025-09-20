@@ -8,11 +8,11 @@ import lombok.Builder;
 import store.nightmarket.application.appitem.out.dto.ProductPostAdapterDto;
 import store.nightmarket.itemweb.model.ImageManager;
 
-public class FindProductByComponentUseCaseDto {
+public class FindProductByKeywordUseCaseDto {
 
 	@Builder
 	public record Input(
-		String component,
+		String keyword,
 		int page
 	) {
 

@@ -7,6 +7,6 @@ import store.nightmarket.application.appitem.out.dto.ProductPostAdapterDto;
 
 public interface ReadProductPostPort {
 
-	Page<ProductPostAdapterDto> findProductPostListByComponent(String component, Pageable pageable);
+	Page<ProductPostAdapterDto> findProductPostListByKeyword(String keyword, Pageable pageable);
 
 }

@@ -16,8 +16,8 @@ public class ReadProductPostAdaptor implements ReadProductPostPort {
 	private final ProductPostRepository productPostRepository;
 
 	@Override
-	public Page<ProductPostAdapterDto> findProductPostListByComponent(String component, Pageable pageable) {
-		return productPostRepository.findByComponentContaining(component, pageable)
+	public Page<ProductPostAdapterDto> findProductPostListByKeyword(String keyword, Pageable pageable) {
+		return productPostRepository.findByComponentContaining(keyword, pageable)
 			.map(ProductPostAdapterDto::toDomain);
 	}
 

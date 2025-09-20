@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.in.dto.SearchProductDto;
 import store.nightmarket.application.appitem.out.dto.ProductPostAdapterDto;
-import store.nightmarket.application.appitem.usecase.FindProductByComponentUseCase;
-import store.nightmarket.application.appitem.usecase.dto.FindProductByComponentUseCaseDto;
+import store.nightmarket.application.appitem.usecase.FindProductByKeywordUseCase;
+import store.nightmarket.application.appitem.usecase.dto.FindProductByKeywordUseCaseDto;
 import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.valueobject.Image;
 import store.nightmarket.itemweb.valueobject.ImageOwnerId;
@@ -25,20 +24,20 @@ import store.nightmarket.itemweb.valueobject.ImageOwnerId;
 @RequiredArgsConstructor
 public class ProductPostControllerV1 {
 
-	private final FindProductByComponentUseCase findProductByComponentUseCase;
+	private final FindProductByKeywordUseCase findProductByKeywordUseCase;
 
-	@GetMapping("/{component}")
+	@GetMapping("/search")
 	public SearchProductDto.Response searchProduct(
-		@PathVariable("component") String component,
+		@RequestParam("keyword") String keyword,
 		@RequestParam(defaultValue = "0") int page
 	) {
 		// component 값이 null 이거나 비어 있을때 어떻게 처리할까 고민 중
 		if (page < 0)
 			page = 0;
 
-		FindProductByComponentUseCaseDto.Output output = findProductByComponentUseCase.execute(
-			FindProductByComponentUseCaseDto.Input.builder()
-				.component(component)
+		FindProductByKeywordUseCaseDto.Output output = findProductByKeywordUseCase.execute(
+			FindProductByKeywordUseCaseDto.Input.builder()
+				.keyword(keyword)
 				.page(page)
 				.build()
 		);

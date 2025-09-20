@@ -1,6 +1,6 @@
 package store.nightmarket.application.appitem.usecase;
 
-import static store.nightmarket.application.appitem.usecase.dto.FindProductByComponentUseCaseDto.*;
+import static store.nightmarket.application.appitem.usecase.dto.FindProductByKeywordUseCaseDto.*;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import store.nightmarket.itemweb.valueobject.ProductPostId;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class FindProductByComponentUseCase implements BaseUseCase<Input, Output> {
+public class FindProductByKeywordUseCase implements BaseUseCase<Input, Output> {
 
 	private final ReadProductPostPort readProductPostPort;
 	private final ReadImageManagerPort readImageManagerPort;
@@ -29,10 +29,11 @@ public class FindProductByComponentUseCase implements BaseUseCase<Input, Output>
 	@Override
 	public Output execute(Input input) {
 		Pageable pageable = PageRequest.of(input.page(), 25);
-		Page<ProductPostAdapterDto> dtoPage = readProductPostPort
-			.findProductPostListByComponent(input.component(), pageable);
+		Page<ProductPostAdapterDto> dtoPage =
+			readProductPostPort.findProductPostListByKeyword(input.keyword(), pageable);
 
-		List<ProductPostId> productPostIdList = dtoPage.getContent().stream()
+		List<ProductPostId> productPostIdList = dtoPage.getContent()
+			.stream()
 			.map(productPostAdapterDto -> productPostAdapterDto.getProductPost().getProductPostId())
 			.toList();
 
