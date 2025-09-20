@@ -22,7 +22,7 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.QuantityEnti
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductVariantEntity extends BaseUuidEntity {
 
-	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
+	@Column(name = "product_id", columnDefinition = "BINARY(16)", nullable = false)
 	private UUID productId;
 
 	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
