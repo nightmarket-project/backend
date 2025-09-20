@@ -29,7 +29,8 @@ public class ProductPostControllerV1 {
 	@GetMapping("/search")
 	public SearchProductDto.Response searchProduct(
 		@RequestParam("keyword") String keyword,
-		@RequestParam(defaultValue = "0") int page
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "25") int size
 	) {
 		// component 값이 null 이거나 비어 있을때 어떻게 처리할까 고민 중
 		if (page < 0)
@@ -39,6 +40,7 @@ public class ProductPostControllerV1 {
 			FindProductByKeywordUseCaseDto.Input.builder()
 				.keyword(keyword)
 				.page(page)
+				.size(size)
 				.build()
 		);
 		Page<ProductPostAdapterDto> productPostPage = output.dtoPage();

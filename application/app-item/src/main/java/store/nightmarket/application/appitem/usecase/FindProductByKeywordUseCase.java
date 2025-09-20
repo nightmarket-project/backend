@@ -28,7 +28,7 @@ public class FindProductByKeywordUseCase implements BaseUseCase<Input, Output> {
 
 	@Override
 	public Output execute(Input input) {
-		Pageable pageable = PageRequest.of(input.page(), 25);
+		Pageable pageable = PageRequest.of(input.page(), input.size());
 		Page<ProductPostAdapterDto> dtoPage =
 			readProductPostPort.findProductPostListByKeyword(input.keyword(), pageable);
 

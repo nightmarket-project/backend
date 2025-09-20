@@ -13,7 +13,8 @@ public class FindProductByKeywordUseCaseDto {
 	@Builder
 	public record Input(
 		String keyword,
-		int page
+		int page,
+		int size
 	) {
 
 	}
