@@ -1,5 +1,6 @@
 package store.nightmarket.persistence.persistitem.entity.valueobject;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class RatingEntity {
 
-	private float value;
+	@Column(name = "rating")
+	private float amount;
 
 }
