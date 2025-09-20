@@ -52,7 +52,7 @@ public class ProductControllerV1 {
 			.build();
 	}
 
-	@GetMapping("/{productId}/productVariants")
+	@GetMapping("/{productId}/combination")
 	public ReadProductVariantDto.Response readProductPostProductVariant(@PathVariable UUID productId) {
 		ReadProductVariantUseCaseDto.Output output = readProductVariantUseCase.execute(new ProductId(productId));
 
