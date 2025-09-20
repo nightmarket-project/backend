@@ -2,7 +2,6 @@ package store.nightmarket.application.appitem.in;
 
 import java.util.List;
 import java.util.Map;
-
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -14,27 +13,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import store.nightmarket.application.appitem.in.dto.ReadProductPostDto;
+import store.nightmarket.application.appitem.in.dto.ReadReviewDto;
 import store.nightmarket.application.appitem.in.dto.SearchProductDto;
 import store.nightmarket.application.appitem.out.dto.ProductPostAdapterDto;
 import store.nightmarket.application.appitem.usecase.FindProductByKeywordUseCase;
-import store.nightmarket.application.appitem.usecase.dto.FindProductByKeywordUseCaseDto;
-import store.nightmarket.application.appitem.in.dto.ReadProductPostDto;
-import store.nightmarket.application.appitem.in.dto.ReadReviewDto;
 import store.nightmarket.application.appitem.usecase.ReadImageManagerListUseCase;
 import store.nightmarket.application.appitem.usecase.ReadProductPostImageUseCase;
 import store.nightmarket.application.appitem.usecase.ReadProductPostUseCase;
 import store.nightmarket.application.appitem.usecase.ReadReviewUseCase;
+import store.nightmarket.application.appitem.usecase.dto.FindProductByKeywordUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadImageManagerListUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadProductPostImageUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadProductPostUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadReviewUseCaseDto;
 import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.state.DomainImageType;
-import store.nightmarket.itemweb.valueobject.ImageOwnerId;
 import store.nightmarket.itemweb.valueobject.Image;
 import store.nightmarket.itemweb.valueobject.ImageOwnerId;
 import store.nightmarket.itemweb.valueobject.ProductPostId;
-
 
 @RestController
 @RequestMapping("api/v1/posts")
@@ -42,7 +39,7 @@ import store.nightmarket.itemweb.valueobject.ProductPostId;
 public class ProductPostControllerV1 {
 
 	private final FindProductByKeywordUseCase findProductByKeywordUseCase;
-  private final ReadProductPostUseCase readProductPostUseCase;
+	private final ReadProductPostUseCase readProductPostUseCase;
 	private final ReadProductPostImageUseCase readProductPostImageUseCase;
 	private final ReadReviewUseCase readReviewUseCase;
 	private final ReadImageManagerListUseCase readImageManagerListUseCase;
@@ -87,6 +84,7 @@ public class ProductPostControllerV1 {
 			.totalElements(productPostPage.getTotalElements())
 			.hasNext(productPostPage.hasNext())
 			.build();
+	}
 
 	@GetMapping("/{postId}")
 	public ReadProductPostDto.Response readProductPost(@PathVariable UUID postId) {
