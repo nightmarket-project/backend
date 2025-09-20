@@ -8,6 +8,9 @@ import store.nightmarket.domain.item.model.OptionGroup;
 import store.nightmarket.domain.item.model.OptionValue;
 import store.nightmarket.domain.item.model.Product;
 import store.nightmarket.domain.item.model.ProductVariant;
+
+import store.nightmarket.domain.item.model.ShoppingBasketProduct;
+import store.nightmarket.domain.item.model.User;
 import store.nightmarket.domain.item.model.VariantOptionValue;
 import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.OptionGroupId;
@@ -16,6 +19,8 @@ import store.nightmarket.domain.item.valueobject.Price;
 import store.nightmarket.domain.item.valueobject.ProductId;
 import store.nightmarket.domain.item.valueobject.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
+
+import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.domain.item.valueobject.VariantOptionValueId;
 import store.nightmarket.itemweb.model.ImageManager;
@@ -99,6 +104,15 @@ public class TestDomainFactory {
 		);
 	}
 
+	public static User createUser(
+		UUID userId
+	) {
+		return User.newInstance(
+			new UserId(userId),
+			new Name("이름1")
+		);
+	}
+
 	public static OptionGroup createOptionGroup(
 		UUID optionGroupId,
 		UUID productId
@@ -149,6 +163,22 @@ public class TestDomainFactory {
 			new ProductVariantId(productVariantId),
 			new OptionGroupId(optionGroupId),
 			new OptionValueId(optionValueId)
+		);
+	}
+  
+	public static ShoppingBasketProduct createShoppingBasketProduct(
+		UUID shoppingBasketProductId,
+		UUID userId,
+		UUID productVariantId,
+		BigDecimal quantity
+	) {
+		return ShoppingBasketProduct.newInstance(
+			new ShoppingBasketProductId(shoppingBasketProductId),
+			new ProductVariantId(productVariantId),
+			new UserId(userId),
+			new Name("상품1"),
+			new Price(BigDecimal.valueOf(1000.0)),
+			new Quantity(quantity)
 		);
 	}
 

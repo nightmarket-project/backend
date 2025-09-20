@@ -1,5 +1,6 @@
 package store.nightmarket.persistence.persistitem.repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -18,5 +19,10 @@ public interface ProductPostRepository extends JpaRepository<ProductPostEntity, 
 		"JOIN FETCH ProductEntity " +
 		"WHERE ProductEntity.nameEntity.name LIKE %:keyword%")
 	Page<ProductPostEntity> findByKeywordContaining(@Param("keyword") String keyword, Pageable pageable);
+
+  @Query("SELECT productPostEntity FROM ProductPostEntity productPostEntity " +
+		"JOIN FETCH ProductEntity " +
+		"WHERE productPostEntity.id = :postId")
+	Optional<ProductPostEntity> findByPostId(@Param("postId") UUID postId);
 
 }
