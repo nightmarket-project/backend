@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.mapper.ImageManagerMapper;
+
 import store.nightmarket.application.appitem.mapper.ImageTypeMapper;
 import store.nightmarket.application.appitem.out.ReadImageManagerPort;
 import store.nightmarket.itemweb.model.ImageManager;
@@ -22,6 +23,16 @@ public class ReadImageManagerAdaptor implements ReadImageManagerPort {
 	private final ImageManagerRepository imageManagerRepository;
 
 	@Override
+	public List<ImageManager> readThumbnailList(List<ProductPostId> idList) {
+		return imageManagerRepository.findThumbnailImageListBy(
+      				idList.stream()
+					.map(ImageOwnerId::getId)
+					.toList()).stream()
+			.map(ImageManagerMapper::toDomain)
+			.toList();
+	}
+  
+  @Override
 	public List<ImageManager> readImageTypeList(ProductPostId productPostId, List<DomainImageType> imageTypeList) {
 		List<EntityImageType> entityImageTypeList = imageTypeList.stream()
 			.map(ImageTypeMapper::toEntity)
