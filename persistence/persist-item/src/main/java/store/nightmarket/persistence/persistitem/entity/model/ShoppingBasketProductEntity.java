@@ -16,6 +16,7 @@ import store.nightmarket.common.entity.BaseUuidEntity;
 import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
 import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
 import store.nightmarket.persistence.persistitem.entity.valueobject.QuantityEntity;
+import store.nightmarket.persistence.persistuser.entity.model.UserEntity;
 
 @Getter
 @Entity
@@ -40,7 +41,7 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 	private ProductVariantEntity productVariantEntity;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "users")
+	@JoinColumn(name = "user")
 	private UserEntity userEntity;
 
 	private ShoppingBasketProductEntity(

@@ -29,6 +29,10 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 	@JoinColumn(name = "product_id")
 	private ProductEntity productEntity;
 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private UserEntity userEntity;
+
 	@Embedded
 	private RatingEntity ratingEntity;
 
@@ -41,11 +45,13 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 	private ProductPostEntity(
 		UUID id,
 		ProductEntity productEntity,
+		UserEntity userEntity,
 		RatingEntity ratingEntity,
 		boolean deleted
 	) {
 		super(id);
 		this.productEntity = productEntity;
+		this.userEntity = userEntity;
 		this.ratingEntity = ratingEntity;
 		this.deleted = deleted;
 	}
@@ -53,12 +59,14 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 	public static ProductPostEntity newInstance(
 		UUID id,
 		ProductEntity productEntity,
+		UserEntity userEntity,
 		RatingEntity ratingEntity,
 		boolean deleted
 	) {
 		return new ProductPostEntity(
 			id,
 			productEntity,
+			userEntity,
 			ratingEntity,
 			deleted
 		);
