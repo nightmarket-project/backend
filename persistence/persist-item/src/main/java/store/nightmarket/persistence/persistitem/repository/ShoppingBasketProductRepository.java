@@ -1,4 +1,4 @@
-package store.nightmarket.persistence.persistitem.entity.repository;
+package store.nightmarket.persistence.persistitem.repository;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,5 +17,5 @@ public interface ShoppingBasketProductRepository extends JpaRepository<ShoppingB
 		"FROM ShoppingBasketProductEntity shoppingBasketProduct " +
 		"WHERE shoppingBasketProduct.userEntity.id = :userId")
 	List<ShoppingBasketProductEntity> findByUserId(@Param("userId") UUID userId);
-	
+
 }

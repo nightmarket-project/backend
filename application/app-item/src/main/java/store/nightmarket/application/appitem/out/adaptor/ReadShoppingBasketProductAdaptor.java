@@ -11,7 +11,7 @@ import store.nightmarket.application.appitem.out.ReadShoppingBasketProductPort;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
 import store.nightmarket.domain.item.valueobject.UserId;
-import store.nightmarket.persistence.persistitem.entity.repository.ShoppingBasketProductRepository;
+import store.nightmarket.persistence.persistitem.repository.ShoppingBasketProductRepository;
 
 @Component
 @RequiredArgsConstructor

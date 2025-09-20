@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.DeleteShoppingBasketProductPort;
 import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
-import store.nightmarket.persistence.persistitem.entity.repository.ShoppingBasketProductRepository;
+import store.nightmarket.persistence.persistitem.repository.ShoppingBasketProductRepository;
 
 @Component
 @RequiredArgsConstructor

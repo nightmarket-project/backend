@@ -31,7 +31,7 @@ public class ImageManagerEntity extends BaseUuidEntity {
 	@Enumerated(EnumType.STRING)
 	private EntityImageType entityImageType;
 
-	@Column(name = "display_oreder")
+	@Column(name = "display_order")
 	private int displayOrder;
 
 	@ManyToOne(fetch = FetchType.LAZY)
