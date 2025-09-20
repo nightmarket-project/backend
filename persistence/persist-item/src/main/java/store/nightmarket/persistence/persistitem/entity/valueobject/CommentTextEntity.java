@@ -14,6 +14,5 @@ import lombok.NoArgsConstructor;
 public class CommentTextEntity {
 
 	private String value;
-	private boolean deleted;
-
+	
 }

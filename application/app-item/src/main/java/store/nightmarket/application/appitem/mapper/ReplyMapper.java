@@ -15,10 +15,7 @@ public class ReplyMapper {
 	public static Reply toDomain(ReplyEntity entity) {
 		return Reply.newInstance(
 			new ReplyId(entity.getId()),
-			new CommentText(
-				entity.getCommentTextEntity().getValue(),
-				entity.isDeleted()
-			),
+			new CommentText(entity.getCommentTextEntity().getValue()),
 			new UserId(entity.getUserEntity().getId()),
 			new ReviewId(entity.getReviewEntity().getId()),
 			entity.getCreatedAt()
@@ -32,10 +29,7 @@ public class ReplyMapper {
 	) {
 		return ReplyEntity.newInstance(
 			domain.getReplyId().getId(),
-			new CommentTextEntity(
-				domain.getCommentText().getValue(),
-				domain.getCommentText().isDeleted()
-			),
+			new CommentTextEntity(domain.getCommentText().getValue()),
 			domain.isDeleted(),
 			userEntity,
 			reviewEntity
