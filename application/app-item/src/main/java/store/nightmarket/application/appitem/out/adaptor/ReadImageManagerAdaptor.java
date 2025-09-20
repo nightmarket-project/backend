@@ -10,7 +10,7 @@ import store.nightmarket.application.appitem.out.ReadImageManagerPort;
 import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.valueobject.ImageOwnerId;
 import store.nightmarket.itemweb.valueobject.ProductPostId;
-import store.nightmarket.persistence.persistitem.entity.repository.ImageManagerRepository;
+import store.nightmarket.persistence.persistitem.repository.ImageManagerRepository;
 
 @Component
 @RequiredArgsConstructor

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadProductPostPort;
 import store.nightmarket.application.appitem.out.dto.ProductPostAdapterDto;
-import store.nightmarket.persistence.persistitem.entity.repository.ProductPostRepository;
+import store.nightmarket.persistence.persistitem.repository.ProductPostRepository;
 
 @Component
 @RequiredArgsConstructor

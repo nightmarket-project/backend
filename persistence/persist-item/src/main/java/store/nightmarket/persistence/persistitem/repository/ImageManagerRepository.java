@@ -1,4 +1,4 @@
-package store.nightmarket.persistence.persistitem.entity.repository;
+package store.nightmarket.persistence.persistitem.repository;
 
 import java.util.List;
 import java.util.UUID;
