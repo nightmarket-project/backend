@@ -25,11 +25,9 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity
 public class ReviewEntity extends ImageOwnerModelEntity {
 
 	@Embedded
-	@Column(name = "text")
 	private CommentTextEntity commentTextEntity;
 
 	@Embedded
-	@Column(name = "rating", nullable = false)
 	private RatingEntity ratingEntity;
 
 	@Column(name = "deleted", nullable = false)

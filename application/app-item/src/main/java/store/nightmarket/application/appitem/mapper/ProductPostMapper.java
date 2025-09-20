@@ -15,7 +15,7 @@ public class ProductPostMapper {
 		return ProductPost.newInstance(
 			new ProductPostId(entity.getId()),
 			new ProductId(entity.getProductEntity().getId()),
-			new Rating(entity.getRatingEntity().getValue()),
+			new Rating(entity.getRatingEntity().getAmount()),
 			entity.isDeleted()
 		);
 	}

@@ -11,19 +11,10 @@ public class CommentText {
 	private static final int MAX_DESCRIPTION_LENGTH = 200;
 
 	private final String value;
-	private final boolean deleted;
 
 	public CommentText(String value) {
-		this(value, false);
-	}
-
-	public CommentText(
-		String value,
-		boolean deleted
-	) {
 		validate(value);
 		this.value = value;
-		this.deleted = deleted;
 	}
 
 	private void validate(String value) {
@@ -33,7 +24,7 @@ public class CommentText {
 	}
 
 	public static CommentText createDeletedComment() {
-		return new CommentText("삭제된 댓글입니다.", true);
+		return new CommentText("삭제된 댓글입니다.");
 	}
 
 	@Override

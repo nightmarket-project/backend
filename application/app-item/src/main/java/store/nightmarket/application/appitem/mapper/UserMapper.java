@@ -11,7 +11,7 @@ public class UserMapper {
 	public static User toDomain(UserEntity entity) {
 		return User.newInstance(
 			new UserId(entity.getId()),
-			new Name(entity.getName().getName())
+			new Name(entity.getName().getValue())
 		);
 	}
 
@@ -21,5 +21,5 @@ public class UserMapper {
 			new NameEntity(user.getName().getValue())
 		);
 	}
-	
+
 }

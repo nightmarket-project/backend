@@ -25,13 +25,12 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.ImageEntity;
 public class ImageManagerEntity extends BaseUuidEntity {
 
 	@Embedded
-	@Column(name = "image")
 	private ImageEntity imageEntity;
 
 	@Enumerated(EnumType.STRING)
 	private EntityImageType entityImageType;
 
-	@Column(name = "display_oreder")
+	@Column(name = "display_order")
 	private int displayOrder;
 
 	@ManyToOne(fetch = FetchType.LAZY)

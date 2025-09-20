@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.mapper.ShoppingBasketProductMapper;
 import store.nightmarket.application.appitem.out.SaveShoppingBasketProductPort;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
-import store.nightmarket.persistence.persistitem.entity.repository.ProductVariantRepository;
-import store.nightmarket.persistence.persistitem.entity.repository.ShoppingBasketProductRepository;
-import store.nightmarket.persistence.persistitem.entity.repository.UserRepository;
+import store.nightmarket.persistence.persistitem.repository.ProductVariantRepository;
+import store.nightmarket.persistence.persistitem.repository.ShoppingBasketProductRepository;
+import store.nightmarket.persistence.persistitem.repository.UserRepository;
 
 @Component
 @RequiredArgsConstructor

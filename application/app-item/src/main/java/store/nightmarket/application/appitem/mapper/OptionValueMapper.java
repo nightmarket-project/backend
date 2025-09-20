@@ -14,9 +14,9 @@ public class OptionValueMapper {
 		return OptionValue.newInstance(
 			new OptionValueId(entity.getId()),
 			new OptionGroupId(entity.getOptionGroupEntity().getId()),
-			entity.getValue(),
+			entity.getName(),
 			new Price(entity.getPriceEntity().getAmount()),
-			entity.getOrder()
+			entity.getDisplayOrder()
 		);
 	}
 
@@ -32,5 +32,5 @@ public class OptionValueMapper {
 			optionGroupEntity
 		);
 	}
-	
+
 }

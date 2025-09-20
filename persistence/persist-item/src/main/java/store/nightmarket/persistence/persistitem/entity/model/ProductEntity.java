@@ -20,14 +20,12 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
 public class ProductEntity extends BaseUuidEntity {
 
 	@Embedded
-	@Column(name = "name")
 	private NameEntity nameEntity;
 
 	@Column(name = "description")
 	private String description;
 
 	@Embedded
-	@Column(name = "price")
 	private PriceEntity priceEntity;
 
 	private ProductEntity(

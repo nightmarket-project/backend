@@ -3,7 +3,6 @@ package store.nightmarket.persistence.persistitem.entity.model;
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,7 +22,6 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
 public class UserEntity extends BaseUuidEntity {
 
 	@Embedded
-	@Column(name = "name")
 	private NameEntity name;
 
 	@OneToOne(mappedBy = "userEntity", fetch = FetchType.LAZY)

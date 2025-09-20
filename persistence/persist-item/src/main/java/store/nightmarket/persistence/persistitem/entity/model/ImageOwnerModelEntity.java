@@ -16,7 +16,7 @@ import store.nightmarket.common.entity.BaseUuidEntity;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "owner_type")
-@Table(name = "review")
+@Table(name = "image_owner_model")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class ImageOwnerModelEntity extends BaseUuidEntity {
 

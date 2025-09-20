@@ -26,11 +26,10 @@ public class OptionGroupEntity extends BaseUuidEntity {
 	private UUID productId;
 
 	@Embedded
-	@Column(name = "name")
 	private NameEntity name;
 
-	@Column(name = "order")
-	private int order;
+	@Column(name = "display_order")
+	private int displayOrder;
 
 	@OneToMany(mappedBy = "optionGroupEntity", fetch = FetchType.LAZY)
 	private List<OptionValueEntity> optionValueEntityList = new ArrayList<>();
@@ -39,25 +38,25 @@ public class OptionGroupEntity extends BaseUuidEntity {
 		UUID id,
 		UUID productId,
 		NameEntity name,
-		int order
+		int displayOrder
 	) {
 		super(id);
 		this.productId = productId;
 		this.name = name;
-		this.order = order;
+		this.displayOrder = displayOrder;
 	}
 
 	public static OptionGroupEntity newInstance(
 		UUID id,
 		UUID productId,
 		NameEntity name,
-		int order
+		int displayOrder
 	) {
 		return new OptionGroupEntity(
 			id,
 			productId,
 			name,
-			order
+			displayOrder
 		);
 	}
 
