@@ -35,7 +35,7 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 	private ProductVariantEntity productVariantEntity;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "users")
+	@JoinColumn(name = "user")
 	private UserEntity userEntity;
 
 	private ShoppingBasketProductEntity(
