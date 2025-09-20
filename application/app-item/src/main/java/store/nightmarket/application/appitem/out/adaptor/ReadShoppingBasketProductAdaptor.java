@@ -27,7 +27,10 @@ public class ReadShoppingBasketProductAdaptor implements ReadShoppingBasketProdu
 
 	@Override
 	public List<ShoppingBasketProduct> readListByUserId(UserId userId) {
-		return List.of();
+		return shoppingBasketProductRepository.findByUserId(userId.getId())
+			.stream()
+			.map(ShoppingBasketProductMapper::toDomain)
+			.toList();
 	}
 
 }
