@@ -16,7 +16,7 @@ public interface ProductPostRepository extends JpaRepository<ProductPostEntity, 
 
 	@Query("SELECT productPostEntity FROM ProductPostEntity productPostEntity " +
 		"JOIN FETCH ProductEntity " +
-		"WHERE ProductEntity.nameEntity.name LIKE %:component%")
-	Page<ProductPostEntity> findByComponentContaining(@Param("component") String component, Pageable pageable);
+		"WHERE ProductEntity.nameEntity.name LIKE %:keyword%")
+	Page<ProductPostEntity> findByKeywordContaining(@Param("keyword") String keyword, Pageable pageable);
 
 }
