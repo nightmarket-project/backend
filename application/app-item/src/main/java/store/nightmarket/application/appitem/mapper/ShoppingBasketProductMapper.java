@@ -21,9 +21,9 @@ public class ShoppingBasketProductMapper {
 			new ShoppingBasketProductId(entity.getId()),
 			new ProductVariantId(entity.getProductVariantEntity().getId()),
 			new UserId(entity.getUserEntity().getId()),
-			new Name(entity.getNameEntity().getName()),
+			new Name(entity.getNameEntity().getValue()),
 			new Price(entity.getPriceEntity().getAmount()),
-			new Quantity(entity.getQuantityEntity().getValue())
+			new Quantity(entity.getQuantityEntity().getAmount())
 		);
 	}
 

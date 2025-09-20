@@ -25,7 +25,6 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.ImageEntity;
 public class ImageManagerEntity extends BaseUuidEntity {
 
 	@Embedded
-	@Column(name = "image")
 	private ImageEntity imageEntity;
 
 	@Enumerated(EnumType.STRING)

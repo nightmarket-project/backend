@@ -13,7 +13,7 @@ public class ProductMapper {
 	public static Product toDomain(ProductEntity entity) {
 		return Product.newInstance(
 			new ProductId(entity.getId()),
-			new Name(entity.getNameEntity().getName()),
+			new Name(entity.getNameEntity().getValue()),
 			entity.getDescription(),
 			new Price(entity.getPriceEntity().getAmount())
 		);
@@ -27,5 +27,5 @@ public class ProductMapper {
 			new PriceEntity(domain.getPrice().amount())
 		);
 	}
-	
+
 }

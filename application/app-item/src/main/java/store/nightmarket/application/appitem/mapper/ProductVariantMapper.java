@@ -16,7 +16,7 @@ public class ProductVariantMapper {
 			new ProductId(entity.getProductId()),
 			new UserId(entity.getUserId()),
 			entity.getSKUCode(),
-			new Quantity(entity.getQuantityEntity().getValue())
+			new Quantity(entity.getQuantityEntity().getAmount())
 		);
 	}
 
@@ -29,5 +29,5 @@ public class ProductVariantMapper {
 			new QuantityEntity(domain.getQuantity().value())
 		);
 	}
-	
+
 }

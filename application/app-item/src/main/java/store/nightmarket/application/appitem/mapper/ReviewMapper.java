@@ -21,7 +21,7 @@ public class ReviewMapper {
 			new ProductPostId(entity.getProductPostEntity().getId()),
 			new UserId(entity.getUserEntity().getId()),
 			new CommentText(entity.getCommentTextEntity().getValue()),
-			new Rating(entity.getRatingEntity().getValue()),
+			new Rating(entity.getRatingEntity().getAmount()),
 			entity.getCreatedAt()
 		);
 	}
