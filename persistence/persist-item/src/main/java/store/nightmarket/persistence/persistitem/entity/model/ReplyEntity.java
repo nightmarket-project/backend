@@ -23,7 +23,6 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.CommentTextE
 public class ReplyEntity extends BaseUuidEntity {
 
 	@Embedded
-	@Column(name = "content", nullable = false)
 	private CommentTextEntity commentTextEntity;
 
 	@Column(name = "deleted", nullable = false)

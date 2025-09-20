@@ -32,7 +32,6 @@ public class ProductVariantEntity extends BaseUuidEntity {
 	private String SKUCode;
 
 	@Embedded
-	@Column(name = "quantity")
 	private QuantityEntity quantityEntity;
 
 	@OneToMany(mappedBy = "productVariantEntity", fetch = FetchType.LAZY)

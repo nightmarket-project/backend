@@ -2,7 +2,6 @@ package store.nightmarket.persistence.persistitem.entity.model;
 
 import java.util.UUID;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,15 +23,12 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.QuantityEnti
 public class ShoppingBasketProductEntity extends BaseUuidEntity {
 
 	@Embedded
-	@Column(name = "name")
 	private NameEntity nameEntity;
 
 	@Embedded
-	@Column(name = "quantity")
 	private QuantityEntity quantityEntity;
 
 	@Embedded
-	@Column(name = "price")
 	private PriceEntity priceEntity;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -40,7 +36,7 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 	private ProductVariantEntity productVariantEntity;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user")
+	@JoinColumn(name = "user_id")
 	private UserEntity userEntity;
 
 	private ShoppingBasketProductEntity(
