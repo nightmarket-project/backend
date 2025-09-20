@@ -1,0 +1,52 @@
+package store.nightmarket.application.appitem.usecase;
+
+import static org.mockito.Mockito.*;
+
+import java.math.BigDecimal;
+import java.util.UUID;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import store.nightmarket.application.appitem.out.SaveShoppingBasketProductPort;
+import store.nightmarket.application.appitem.usecase.dto.PutShoppingBasketProductUseCaseDto;
+import store.nightmarket.domain.item.model.ShoppingBasketProduct;
+import store.nightmarket.domain.item.valueobject.Name;
+import store.nightmarket.domain.item.valueobject.Price;
+import store.nightmarket.domain.item.valueobject.ProductVariantId;
+import store.nightmarket.domain.item.valueobject.Quantity;
+import store.nightmarket.domain.item.valueobject.UserId;
+
+class PutShoppingBasketProductUseCaseTest {
+
+	private SaveShoppingBasketProductPort mockSaveShoppingBasketProductPort;
+	private PutShoppingBasketProductUseCase putShoppingBasketProductUseCase;
+
+	@BeforeEach
+	void setUp() {
+		mockSaveShoppingBasketProductPort = mock(SaveShoppingBasketProductPort.class);
+		putShoppingBasketProductUseCase = new PutShoppingBasketProductUseCase(mockSaveShoppingBasketProductPort);
+	}
+
+	@Test
+	@DisplayName("장바구니에 물건 담기")
+	void putProductIntoShoppingBasket() {
+		// given
+		PutShoppingBasketProductUseCaseDto.Input input = PutShoppingBasketProductUseCaseDto.Input.builder()
+			.productVariantId(new ProductVariantId(UUID.randomUUID()))
+			.userId(new UserId(UUID.randomUUID()))
+			.name(new Name("상품"))
+			.price(new Price(BigDecimal.valueOf(10000)))
+			.quantity(new Quantity(BigDecimal.TEN))
+			.build();
+
+		// when
+		putShoppingBasketProductUseCase.execute(input);
+
+		// then
+		verify(mockSaveShoppingBasketProductPort, times(1))
+			.save(any(ShoppingBasketProduct.class));
+	}
+
+}
