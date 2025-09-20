@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 	"store.nightmarket.persistence.persistitem",
 	"store.nightmarket.application.appitem",
 	"store.nightmarket.itemweb"
+
 })
 public class AppItemApplication {
 

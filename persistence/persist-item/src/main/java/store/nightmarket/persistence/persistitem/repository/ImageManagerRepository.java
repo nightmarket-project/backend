@@ -10,8 +10,15 @@ import org.springframework.stereotype.Repository;
 import store.nightmarket.persistence.persistitem.entity.model.ImageManagerEntity;
 import store.nightmarket.persistence.persistitem.entity.state.EntityImageType;
 
+
 @Repository
 public interface ImageManagerRepository extends JpaRepository<ImageManagerEntity, UUID> {
+
+	@Query("SELECT imageManagerEntity " +
+		"FROM ImageManagerEntity imageManagerEntity " +
+		"WHERE imageManagerEntity.imageOwnerModelEntity.id IN :imageOwnerModelEntityIdList " +
+		"AND imageManagerEntity.entityImageType = store.nightmarket.persistence.persistitem.entity.state.EntityImageType.THUMBNAIL")
+	List<ImageManagerEntity> findThumbnailImageListBy(List<UUID> imageOwnerModelEntityIdList);
 
 	@Query("SELECT imageManagerEntity "
 		+ "FROM ImageManagerEntity imageManagerEntity "
