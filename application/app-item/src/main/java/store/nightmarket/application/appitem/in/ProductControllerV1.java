@@ -14,7 +14,6 @@ import store.nightmarket.application.appitem.usecase.ReadOptionGroupUseCase;
 import store.nightmarket.application.appitem.usecase.ReadProductVariantUseCase;
 import store.nightmarket.application.appitem.usecase.dto.ReadOptionGroupUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadProductVariantUseCaseDto;
-import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.ProductId;
 
 @RestController
@@ -35,15 +34,15 @@ public class ProductControllerV1 {
 					.map(optionGroupDto ->
 						ReadOptionGroupDto.OptionGroupInfo.builder()
 							.optionGroupId(optionGroupDto.getOptionGroup().getOptionGroupId())
-							.name(optionGroupDto.getOptionGroup().getName())
+							.name(optionGroupDto.getOptionGroup().getName().getValue())
 							.displayOrder(optionGroupDto.getOptionGroup().getOrder())
 							.optionValueInfoList(
 								optionGroupDto.getOptionValueList().stream()
 									.map(optionValue ->
 										ReadOptionGroupDto.OptionValueInfo.builder()
 											.optionValueId(optionValue.getOptionValueId())
-											.name(new Name(optionValue.getValue()))
-											.price(optionValue.getPrice())
+											.name(optionValue.getValue())
+											.price(optionValue.getPrice().amount())
 											.displayOrder(optionValue.getOrder())
 											.build())
 									.toList())

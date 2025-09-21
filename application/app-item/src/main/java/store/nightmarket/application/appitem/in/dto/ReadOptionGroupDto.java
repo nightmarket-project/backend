@@ -1,12 +1,11 @@
 package store.nightmarket.application.appitem.in.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import lombok.Builder;
-import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.OptionGroupId;
 import store.nightmarket.domain.item.valueobject.OptionValueId;
-import store.nightmarket.domain.item.valueobject.Price;
 
 public class ReadOptionGroupDto {
 
@@ -20,7 +19,7 @@ public class ReadOptionGroupDto {
 	@Builder
 	public record OptionGroupInfo(
 		OptionGroupId optionGroupId,
-		Name name,
+		String name,
 		int displayOrder,
 		List<OptionValueInfo> optionValueInfoList
 	) {
@@ -30,8 +29,8 @@ public class ReadOptionGroupDto {
 	@Builder
 	public record OptionValueInfo(
 		OptionValueId optionValueId,
-		Name name,
-		Price price,
+		String name,
+		BigDecimal price,
 		int displayOrder
 	) {
 

@@ -3,10 +3,7 @@ package store.nightmarket.application.appitem.in.dto;
 import java.util.List;
 
 import lombok.Builder;
-import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.UserId;
-import store.nightmarket.itemweb.valueobject.CommentText;
-import store.nightmarket.itemweb.valueobject.Rating;
 
 public class ReadReviewDto {
 
@@ -20,9 +17,9 @@ public class ReadReviewDto {
 	@Builder
 	public record ReviewInfo(
 		UserInfo userInfo,
-		CommentText commentText,
+		String commentText,
 		ImageManagerInfo imageManagerInfo,
-		Rating rating,
+		Float rating,
 		ReplyInfo replyInfo
 	) {
 
@@ -31,7 +28,7 @@ public class ReadReviewDto {
 	@Builder
 	public record ReplyInfo(
 		UserInfo userInfo,
-		CommentText commentText
+		String commentText
 	) {
 
 	}
@@ -39,7 +36,7 @@ public class ReadReviewDto {
 	@Builder
 	public record UserInfo(
 		UserId userId,
-		Name name
+		String name
 	) {
 
 	}
