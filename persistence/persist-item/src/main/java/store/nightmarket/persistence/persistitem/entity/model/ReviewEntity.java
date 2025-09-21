@@ -50,8 +50,7 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 		RatingEntity ratingEntity,
 		boolean deleted,
 		ProductPostEntity productPostEntity,
-		UserEntity userEntity,
-		ReplyEntity replyEntity
+		UserEntity userEntity
 	) {
 		super(id);
 		this.commentTextEntity = commentTextEntity;
@@ -59,7 +58,6 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 		this.deleted = deleted;
 		this.productPostEntity = productPostEntity;
 		this.userEntity = userEntity;
-		this.replyEntity = replyEntity;
 	}
 
 	public static ReviewEntity newInstance(
@@ -68,8 +66,7 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 		RatingEntity ratingEntity,
 		boolean deleted,
 		ProductPostEntity productPostEntity,
-		UserEntity userEntity,
-		ReplyEntity replyEntity
+		UserEntity userEntity
 	) {
 		return new ReviewEntity(
 			id,
@@ -77,8 +74,7 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 			ratingEntity,
 			deleted,
 			productPostEntity,
-			userEntity,
-			replyEntity
+			userEntity
 		);
 	}
 
