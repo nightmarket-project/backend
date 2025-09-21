@@ -29,14 +29,14 @@ public class ProductControllerV1 {
 		ReadOptionGroupUseCaseDto.Output output = readOptionGroupUseCase.execute(new ProductId(productId));
 
 		return ReadOptionGroupDto.Response.builder()
-			.optionGroupInfoList(
+			.optionGroupList(
 				output.optionGroupAdapterDtoList().stream()
 					.map(optionGroupDto ->
 						ReadOptionGroupDto.OptionGroupInfo.builder()
 							.optionGroupId(optionGroupDto.getOptionGroup().getOptionGroupId().getId())
 							.name(optionGroupDto.getOptionGroup().getName().getValue())
 							.displayOrder(optionGroupDto.getOptionGroup().getOrder())
-							.optionValueInfoList(
+							.optionValueList(
 								optionGroupDto.getOptionValueList().stream()
 									.map(optionValue ->
 										ReadOptionGroupDto.OptionValueInfo.builder()

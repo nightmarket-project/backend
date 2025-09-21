@@ -10,7 +10,7 @@ public class ReadOptionGroupDto {
 
 	@Builder
 	public record Response(
-		List<OptionGroupInfo> optionGroupInfoList
+		List<OptionGroupInfo> optionGroupList
 	) {
 
 	}
@@ -20,7 +20,7 @@ public class ReadOptionGroupDto {
 		UUID optionGroupId,
 		String name,
 		int displayOrder,
-		List<OptionValueInfo> optionValueInfoList
+		List<OptionValueInfo> optionValueList
 	) {
 
 	}
