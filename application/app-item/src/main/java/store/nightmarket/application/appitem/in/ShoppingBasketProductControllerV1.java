@@ -2,6 +2,7 @@ package store.nightmarket.application.appitem.in;
 
 import java.util.UUID;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
 import store.nightmarket.domain.item.valueobject.UserId;
 
+@CrossOrigin(originPatterns = "http://localhost:3000")
 @RestController
 @RequestMapping("api/v1/cart")
 @RequiredArgsConstructor

@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,7 @@ import store.nightmarket.itemweb.valueobject.Image;
 import store.nightmarket.itemweb.valueobject.ImageOwnerId;
 import store.nightmarket.itemweb.valueobject.ProductPostId;
 
+@CrossOrigin(originPatterns = "http://localhost:3000")
 @RestController
 @RequestMapping("api/v1/posts")
 @RequiredArgsConstructor
@@ -47,8 +49,8 @@ public class ProductPostControllerV1 {
 	@GetMapping("/search")
 	public SearchProductDto.Response searchProduct(
 		@RequestParam("keyword") String keyword,
-		@RequestParam(defaultValue = "0") int page,
-		@RequestParam(defaultValue = "25") int size
+		@RequestParam(value = "page", defaultValue = "0") int page,
+		@RequestParam(value = "size", defaultValue = "25") int size
 	) {
 		// component 값이 null 이거나 비어 있을때 어떻게 처리할까 고민 중
 		if (page < 0)
@@ -87,7 +89,7 @@ public class ProductPostControllerV1 {
 	}
 
 	@GetMapping("/{postId}")
-	public ReadProductPostDto.Response readProductPost(@PathVariable UUID postId) {
+	public ReadProductPostDto.Response readProductPost(@PathVariable("postId") UUID postId) {
 		ReadProductPostImageUseCaseDto.Input input = ReadProductPostImageUseCaseDto.Input.builder()
 			.id(new ProductPostId(postId))
 			.imageTypeList(List.of(DomainImageType.MAIN, DomainImageType.DETAIL))
@@ -113,7 +115,7 @@ public class ProductPostControllerV1 {
 	}
 
 	@GetMapping("/{postId}/reviews")
-	public ReadReviewDto.Response readProductPostReview(@PathVariable UUID postId) {
+	public ReadReviewDto.Response readProductPostReview(@PathVariable("postId") UUID postId) {
 		ReadReviewUseCaseDto.Output reviewOutput = readReviewUseCase.execute(new ProductPostId(postId));
 		List<UUID> idList = reviewOutput.reviewAdapterDtoList().stream()
 			.map(reviewDto -> reviewDto.getReview().getReviewId().getId())

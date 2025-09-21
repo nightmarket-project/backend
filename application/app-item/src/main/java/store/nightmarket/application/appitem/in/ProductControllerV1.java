@@ -26,7 +26,7 @@ public class ProductControllerV1 {
 	private final ReadProductVariantUseCase readProductVariantUseCase;
 
 	@GetMapping("/{productId}/options")
-	public ReadOptionGroupDto.Response readProductPostOption(@PathVariable UUID productId) {
+	public ReadOptionGroupDto.Response readProductPostOption(@PathVariable("productId") UUID productId) {
 		ReadOptionGroupUseCaseDto.Output output = readOptionGroupUseCase.execute(new ProductId(productId));
 
 		return ReadOptionGroupDto.Response.builder()
@@ -53,7 +53,7 @@ public class ProductControllerV1 {
 	}
 
 	@GetMapping("/{productId}/combination")
-	public ReadProductVariantDto.Response readProductPostProductVariant(@PathVariable UUID productId) {
+	public ReadProductVariantDto.Response readProductPostProductVariant(@PathVariable("productId") UUID productId) {
 		ReadProductVariantUseCaseDto.Output output = readProductVariantUseCase.execute(new ProductId(productId));
 
 		return ReadProductVariantDto.Response.builder()
