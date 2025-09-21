@@ -33,14 +33,14 @@ public class ProductControllerV1 {
 				output.optionGroupAdapterDtoList().stream()
 					.map(optionGroupDto ->
 						ReadOptionGroupDto.OptionGroupInfo.builder()
-							.optionGroupId(optionGroupDto.getOptionGroup().getOptionGroupId())
+							.optionGroupId(optionGroupDto.getOptionGroup().getOptionGroupId().getId())
 							.name(optionGroupDto.getOptionGroup().getName().getValue())
 							.displayOrder(optionGroupDto.getOptionGroup().getOrder())
 							.optionValueInfoList(
 								optionGroupDto.getOptionValueList().stream()
 									.map(optionValue ->
 										ReadOptionGroupDto.OptionValueInfo.builder()
-											.optionValueId(optionValue.getOptionValueId())
+											.optionValueId(optionValue.getOptionValueId().getId())
 											.name(optionValue.getValue())
 											.price(optionValue.getPrice().amount())
 											.displayOrder(optionValue.getOrder())
@@ -60,15 +60,19 @@ public class ProductControllerV1 {
 				output.productVariantAdapterDtoList().stream()
 					.map(productVariantDto ->
 						ReadProductVariantDto.ProductVariantInfo.builder()
-							.productVariantId(productVariantDto.getProductVariant().getProductVariantId())
+							.productVariantId(productVariantDto.getProductVariant().getProductVariantId().getId())
 							.variantOptionValueInfoList(
 								productVariantDto.getVariantOptionValueAdapterDtoList().stream()
 									.map(variantOptionValueDto ->
 										ReadProductVariantDto.VariantOptionValueInfo.builder()
 											.optionGroupId(
-												variantOptionValueDto.getVariantOptionValue().getOptionGroupId())
+												variantOptionValueDto.getVariantOptionValue()
+													.getOptionGroupId()
+													.getId())
 											.optionValueId(
-												variantOptionValueDto.getVariantOptionValue().getOptionValueId())
+												variantOptionValueDto.getVariantOptionValue()
+													.getOptionValueId()
+													.getId())
 											.build())
 									.toList())
 							.build())

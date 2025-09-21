@@ -1,11 +1,9 @@
 package store.nightmarket.application.appitem.in.dto;
 
 import java.util.List;
+import java.util.UUID;
 
 import lombok.Builder;
-import store.nightmarket.domain.item.valueobject.OptionGroupId;
-import store.nightmarket.domain.item.valueobject.OptionValueId;
-import store.nightmarket.domain.item.valueobject.ProductVariantId;
 
 public class ReadProductVariantDto {
 
@@ -18,7 +16,7 @@ public class ReadProductVariantDto {
 
 	@Builder
 	public record ProductVariantInfo(
-		ProductVariantId productVariantId,
+		UUID productVariantId,
 		List<VariantOptionValueInfo> variantOptionValueInfoList
 	) {
 
@@ -26,8 +24,8 @@ public class ReadProductVariantDto {
 
 	@Builder
 	public record VariantOptionValueInfo(
-		OptionGroupId optionGroupId,
-		OptionValueId optionValueId
+		UUID optionGroupId,
+		UUID optionValueId
 	) {
 
 	}

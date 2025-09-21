@@ -5,13 +5,12 @@ import java.util.List;
 import java.util.UUID;
 
 import lombok.Builder;
-import store.nightmarket.itemweb.valueobject.Image;
 
 public class SearchProductDto {
 
 	@Builder
 	public record Response(
-		List<ProductInfo> content,
+		List<ProductInfo> contents,
 		int currentPage,
 		int numberOfElements,
 		int totalPage,
@@ -24,7 +23,7 @@ public class SearchProductDto {
 	@Builder
 	public record ProductInfo(
 		UUID productPostId,
-		Image image,
+		String imageUrl,
 		String name,
 		BigDecimal price,
 		Float rating

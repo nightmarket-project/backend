@@ -1,24 +1,24 @@
 package store.nightmarket.application.appitem.in.dto;
 
 import java.util.List;
+import java.util.UUID;
 
 import lombok.Builder;
-import store.nightmarket.domain.item.valueobject.UserId;
 
 public class ReadReviewDto {
 
 	@Builder
 	public record Response(
-		List<ReviewInfo> reviewInfoList
+		List<ReviewInfo> reviewList
 	) {
 
 	}
 
 	@Builder
 	public record ReviewInfo(
-		UserInfo userInfo,
-		String commentText,
-		ImageManagerInfo imageManagerInfo,
+		UserInfo user,
+		String comment,
+		String imageUrl,
 		Float rating,
 		ReplyInfo replyInfo
 	) {
@@ -27,24 +27,16 @@ public class ReadReviewDto {
 
 	@Builder
 	public record ReplyInfo(
-		UserInfo userInfo,
-		String commentText
+		UserInfo user,
+		String comment
 	) {
 
 	}
 
 	@Builder
 	public record UserInfo(
-		UserId userId,
+		UUID userId,
 		String name
-	) {
-
-	}
-
-	@Builder
-	public record ImageManagerInfo(
-		String url,
-		int displayOrder
 	) {
 
 	}

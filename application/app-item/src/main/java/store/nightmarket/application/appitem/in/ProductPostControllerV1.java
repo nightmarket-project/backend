@@ -65,16 +65,17 @@ public class ProductPostControllerV1 {
 		);
 		Page<ProductPostAdapterDto> productPostPage = output.dtoPage();
 		List<ImageManager> imageManagerList = output.imageManagerList();
-		Map<ImageOwnerId, Image> imageMap = imageManagerList.stream()
-			.collect(Collectors.toMap(ImageManager::getImageOwnerId, ImageManager::getImage));
+		Map<UUID, Image> imageMap = imageManagerList.stream()
+			.collect(Collectors.toMap(imageManager -> imageManager.getImageOwnerId().getId(), ImageManager::getImage));
 
 		return SearchProductDto.Response.builder()
-			.content(
+			.contents(
 				productPostPage.getContent().stream()
 					.map(productPostAdapterDto ->
 						SearchProductDto.ProductInfo.builder()
 							.productPostId(productPostAdapterDto.getProductPost().getProductPostId().getId())
-							.image(imageMap.get(productPostAdapterDto.getProductPost().getProductPostId()))
+							.imageUrl(imageMap.get(productPostAdapterDto.getProductPost().getProductPostId().getId())
+								.imageUrl())
 							.price(productPostAdapterDto.getProduct().getPrice().amount())
 							.name(productPostAdapterDto.getProduct().getName().getValue())
 							.rating(productPostAdapterDto.getProductPost().getRating().value())
@@ -99,17 +100,17 @@ public class ProductPostControllerV1 {
 		List<ImageManager> imageOutput = readProductPostImageUseCase.execute(input).imageManagerList();
 
 		return ReadProductPostDto.Response.builder()
-			.id(productPostOutput.productPostAdapterDto().getProductPost().getProductPostId())
+			.id(productPostOutput.productPostAdapterDto().getProductPost().getProductPostId().getId())
 			.rating(productPostOutput.productPostAdapterDto().getProductPost().getRating().value())
 			.productInfo(
 				ReadProductPostDto.ProductInfo.builder()
-					.productId(productPostOutput.productPostAdapterDto().getProductPost().getProductId())
+					.productId(productPostOutput.productPostAdapterDto().getProductPost().getProductId().getId())
 					.name(productPostOutput.productPostAdapterDto().getProduct().getName().getValue())
 					.price(productPostOutput.productPostAdapterDto().getProduct().getPrice().amount())
 					.description(productPostOutput.productPostAdapterDto().getProduct().getDescription())
-					.mainImageList(getDtoListByImageType(imageOutput, DomainImageType.MAIN))
 					.build()
 			)
+			.mainImageList(getDtoListByImageType(imageOutput, DomainImageType.MAIN))
 			.detailImageInfoList(getDtoListByImageType(imageOutput, DomainImageType.DETAIL))
 			.build();
 	}
@@ -132,31 +133,26 @@ public class ProductPostControllerV1 {
 			);
 
 		return ReadReviewDto.Response.builder()
-			.reviewInfoList(
+			.reviewList(
 				reviewOutput.reviewAdapterDtoList().stream()
 					.map(dto -> ReadReviewDto.ReviewInfo.builder()
-						.userInfo(
+						.user(
 							ReadReviewDto.UserInfo.builder()
-								.userId(dto.getUser().getUserId())
+								.userId(dto.getUser().getUserId().getId())
 								.name(dto.getUser().getName().getValue())
 								.build())
-						.commentText(dto.getReview().getCommentText().getValue())
-						.imageManagerInfo(
-							ReadReviewDto.ImageManagerInfo.builder()
-								.url(imageMap.get(dto.getReview().getReviewId().getId()).getImage().imageUrl())
-								.displayOrder(imageMap.get(dto.getReview().getReviewId().getId()).getDisplayOrder())
-								.build()
-						)
+						.comment(dto.getReview().getCommentText().getValue())
+						.imageUrl(imageMap.get(dto.getReview().getReviewId().getId()).getImage().imageUrl())
 						.rating(dto.getReview().getRating().value())
 						.replyInfo(
 							ReadReviewDto.ReplyInfo.builder()
-								.userInfo(
+								.user(
 									ReadReviewDto.UserInfo.builder()
-										.userId(dto.getReplyAdapterDto().getUser().getUserId())
+										.userId(dto.getReplyAdapterDto().getUser().getUserId().getId())
 										.name(dto.getReplyAdapterDto().getUser().getName().getValue())
 										.build()
 								)
-								.commentText(dto.getReplyAdapterDto().getReply().getCommentText().getValue())
+								.comment(dto.getReplyAdapterDto().getReply().getCommentText().getValue())
 								.build()
 						)
 						.build()
@@ -173,7 +169,7 @@ public class ProductPostControllerV1 {
 		return imageManagerList.stream()
 			.filter(image -> image.getDomainImageType() == domainImageType)
 			.map(image -> ReadProductPostDto.ImageManagerInfo.builder()
-				.url(image.getImage().imageUrl())
+				.imageUrl(image.getImage().imageUrl())
 				.displayOrder(image.getDisplayOrder())
 				.build())
 			.toList();
