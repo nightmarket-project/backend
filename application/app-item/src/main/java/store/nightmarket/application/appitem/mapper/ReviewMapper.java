@@ -7,7 +7,6 @@ import store.nightmarket.itemweb.valueobject.ProductPostId;
 import store.nightmarket.itemweb.valueobject.Rating;
 import store.nightmarket.itemweb.valueobject.ReviewId;
 import store.nightmarket.persistence.persistitem.entity.model.ProductPostEntity;
-import store.nightmarket.persistence.persistitem.entity.model.ReplyEntity;
 import store.nightmarket.persistence.persistitem.entity.model.ReviewEntity;
 import store.nightmarket.persistence.persistitem.entity.model.UserEntity;
 import store.nightmarket.persistence.persistitem.entity.valueobject.CommentTextEntity;
@@ -29,8 +28,7 @@ public class ReviewMapper {
 	public static ReviewEntity toEntity(
 		Review domain,
 		ProductPostEntity productPostEntity,
-		UserEntity userEntity,
-		ReplyEntity replyEntity
+		UserEntity userEntity
 	) {
 		return ReviewEntity.newInstance(
 			domain.getReviewId().getId(),
@@ -38,8 +36,7 @@ public class ReviewMapper {
 			new RatingEntity(domain.getRating().value()),
 			domain.isDeleted(),
 			productPostEntity,
-			userEntity,
-			replyEntity
+			userEntity
 		);
 	}
 

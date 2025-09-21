@@ -1,19 +1,16 @@
 package store.nightmarket.application.appitem.in.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
 import lombok.Builder;
-import store.nightmarket.domain.item.valueobject.Name;
-import store.nightmarket.domain.item.valueobject.Price;
-import store.nightmarket.itemweb.valueobject.Image;
-import store.nightmarket.itemweb.valueobject.Rating;
 
 public class SearchProductDto {
 
 	@Builder
 	public record Response(
-		List<ProductInfo> content,
+		List<ProductInfo> contents,
 		int currentPage,
 		int numberOfElements,
 		int totalPage,
@@ -26,10 +23,10 @@ public class SearchProductDto {
 	@Builder
 	public record ProductInfo(
 		UUID productPostId,
-		Image image,
-		Name name,
-		Price price,
-		Rating rating
+		String imageUrl,
+		String name,
+		BigDecimal price,
+		Float rating
 	) {
 
 	}

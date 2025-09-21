@@ -13,11 +13,11 @@ import store.nightmarket.persistence.persistitem.entity.model.ProductVariantEnti
 @Repository
 public interface ProductVariantRepository extends JpaRepository<ProductVariantEntity, UUID> {
 
-	@Query("SELECT productVariantEntity FROM ProductVariantEntity productVariantEntity "
-		+ "JOIN FETCH VariantOptionValueEntity "
-		+ "JOIN FETCH OptionGroupEntity "
-		+ "JOIN FETCH OptionValueEntity "
-		+ "WHERE productVariantEntity.productId = :productId")
+	@Query("SELECT productVariantEntity FROM ProductVariantEntity productVariantEntity " +
+		"JOIN FETCH productVariantEntity.variantOptionValueEntityList variantOptionValueEntityList " +
+		"JOIN FETCH variantOptionValueEntityList.optionGroupEntity optionGroupEntity " +
+		"JOIN FETCH variantOptionValueEntityList.optionValueEntity optionValueEntity " +
+		"WHERE productVariantEntity.productId = :productId")
 	List<ProductVariantEntity> findByProductId(@Param("productId") UUID productId);
 
 }

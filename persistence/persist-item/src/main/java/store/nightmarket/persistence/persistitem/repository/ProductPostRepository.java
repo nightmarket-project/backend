@@ -21,7 +21,7 @@ public interface ProductPostRepository extends JpaRepository<ProductPostEntity, 
 	Page<ProductPostEntity> findByKeywordContaining(@Param("keyword") String keyword, Pageable pageable);
 
 	@Query("SELECT productPostEntity FROM ProductPostEntity productPostEntity " +
-		"JOIN FETCH ProductEntity " +
+		"JOIN FETCH productPostEntity.productEntity productEntity " +
 		"WHERE productPostEntity.id = :postId")
 	Optional<ProductPostEntity> findByPostId(@Param("postId") UUID postId);
 

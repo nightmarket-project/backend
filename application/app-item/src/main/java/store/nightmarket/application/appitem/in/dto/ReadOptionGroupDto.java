@@ -1,37 +1,35 @@
 package store.nightmarket.application.appitem.in.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 import lombok.Builder;
-import store.nightmarket.domain.item.valueobject.Name;
-import store.nightmarket.domain.item.valueobject.OptionGroupId;
-import store.nightmarket.domain.item.valueobject.OptionValueId;
-import store.nightmarket.domain.item.valueobject.Price;
 
 public class ReadOptionGroupDto {
 
 	@Builder
 	public record Response(
-		List<OptionGroupInfo> optionGroupInfoList
+		List<OptionGroupInfo> optionGroupList
 	) {
 
 	}
 
 	@Builder
 	public record OptionGroupInfo(
-		OptionGroupId optionGroupId,
-		Name name,
+		UUID optionGroupId,
+		String name,
 		int displayOrder,
-		List<OptionValueInfo> optionValueInfoList
+		List<OptionValueInfo> optionValueList
 	) {
 
 	}
 
 	@Builder
 	public record OptionValueInfo(
-		OptionValueId optionValueId,
-		Name name,
-		Price price,
+		UUID optionValueId,
+		String name,
+		BigDecimal price,
 		int displayOrder
 	) {
 

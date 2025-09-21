@@ -5,33 +5,32 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import store.nightmarket.persistence.persistitem.entity.model.ImageManagerEntity;
 import store.nightmarket.persistence.persistitem.entity.state.EntityImageType;
 
-
 @Repository
 public interface ImageManagerRepository extends JpaRepository<ImageManagerEntity, UUID> {
 
-	@Query("SELECT imageManagerEntity " +
-		"FROM ImageManagerEntity imageManagerEntity " +
+	@Query("SELECT imageManagerEntity FROM ImageManagerEntity imageManagerEntity " +
 		"WHERE imageManagerEntity.imageOwnerModelEntity.id IN :imageOwnerModelEntityIdList " +
 		"AND imageManagerEntity.entityImageType = store.nightmarket.persistence.persistitem.entity.state.EntityImageType.THUMBNAIL")
-	List<ImageManagerEntity> findThumbnailImageListBy(List<UUID> imageOwnerModelEntityIdList);
+	List<ImageManagerEntity> findThumbnailImageListBy(
+		@Param("imageOwnerModelEntityIdList") List<UUID> imageOwnerModelEntityIdList);
 
-	@Query("SELECT imageManagerEntity "
-		+ "FROM ImageManagerEntity imageManagerEntity "
-		+ "Where imageManagerEntity.imageOwnerModelEntity.id = :imageOwnerModelEntityId "
-		+ "AND imageManagerEntity.entityImageType IN (:imageTypeList)")
+	@Query("SELECT imageManagerEntity FROM ImageManagerEntity imageManagerEntity " +
+		"Where imageManagerEntity.imageOwnerModelEntity.id = :imageOwnerModelEntityId " +
+		"AND imageManagerEntity.entityImageType IN (:imageTypeList)")
 	List<ImageManagerEntity> findByImageOwnerModelEntityIdAndEntityImageTypeList(
-		UUID imageOwnerModelEntityId,
-		List<EntityImageType> imageTypeList
+		@Param("imageOwnerModelEntityId") UUID imageOwnerModelEntityId,
+		@Param("imageTypeList") List<EntityImageType> imageTypeList
 	);
 
-	@Query("SELECT imageManagerEntity "
-		+ "FROM ImageManagerEntity imageManagerEntity "
-		+ "WHERE imageManagerEntity.imageOwnerModelEntity.id IN (:imageOwnerModelEntityIdList)")
-	List<ImageManagerEntity> findByImageOwnerModelEntityIdList(List<UUID> imageOwnerModelEntityIdList);
+	@Query("SELECT imageManagerEntity FROM ImageManagerEntity imageManagerEntity " +
+		"WHERE imageManagerEntity.imageOwnerModelEntity.id IN (:imageOwnerModelEntityIdList)")
+	List<ImageManagerEntity> findByImageOwnerModelEntityIdList(
+		@Param("imageOwnerModelEntityIdList") List<UUID> imageOwnerModelEntityIdList);
 
 }

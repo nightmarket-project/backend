@@ -14,7 +14,6 @@ import store.nightmarket.application.appitem.usecase.ReadOptionGroupUseCase;
 import store.nightmarket.application.appitem.usecase.ReadProductVariantUseCase;
 import store.nightmarket.application.appitem.usecase.dto.ReadOptionGroupUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadProductVariantUseCaseDto;
-import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.ProductId;
 
 @RestController
@@ -26,24 +25,24 @@ public class ProductControllerV1 {
 	private final ReadProductVariantUseCase readProductVariantUseCase;
 
 	@GetMapping("/{productId}/options")
-	public ReadOptionGroupDto.Response readProductPostOption(@PathVariable UUID productId) {
+	public ReadOptionGroupDto.Response readProductPostOption(@PathVariable("productId") UUID productId) {
 		ReadOptionGroupUseCaseDto.Output output = readOptionGroupUseCase.execute(new ProductId(productId));
 
 		return ReadOptionGroupDto.Response.builder()
-			.optionGroupInfoList(
+			.optionGroupList(
 				output.optionGroupAdapterDtoList().stream()
 					.map(optionGroupDto ->
 						ReadOptionGroupDto.OptionGroupInfo.builder()
-							.optionGroupId(optionGroupDto.getOptionGroup().getOptionGroupId())
-							.name(optionGroupDto.getOptionGroup().getName())
+							.optionGroupId(optionGroupDto.getOptionGroup().getOptionGroupId().getId())
+							.name(optionGroupDto.getOptionGroup().getName().getValue())
 							.displayOrder(optionGroupDto.getOptionGroup().getOrder())
-							.optionValueInfoList(
+							.optionValueList(
 								optionGroupDto.getOptionValueList().stream()
 									.map(optionValue ->
 										ReadOptionGroupDto.OptionValueInfo.builder()
-											.optionValueId(optionValue.getOptionValueId())
-											.name(new Name(optionValue.getValue()))
-											.price(optionValue.getPrice())
+											.optionValueId(optionValue.getOptionValueId().getId())
+											.name(optionValue.getValue())
+											.price(optionValue.getPrice().amount())
 											.displayOrder(optionValue.getOrder())
 											.build())
 									.toList())
@@ -53,23 +52,27 @@ public class ProductControllerV1 {
 	}
 
 	@GetMapping("/{productId}/combination")
-	public ReadProductVariantDto.Response readProductPostProductVariant(@PathVariable UUID productId) {
+	public ReadProductVariantDto.Response readProductPostProductVariant(@PathVariable("productId") UUID productId) {
 		ReadProductVariantUseCaseDto.Output output = readProductVariantUseCase.execute(new ProductId(productId));
 
 		return ReadProductVariantDto.Response.builder()
-			.productVariantInfoList(
+			.productVariantList(
 				output.productVariantAdapterDtoList().stream()
 					.map(productVariantDto ->
 						ReadProductVariantDto.ProductVariantInfo.builder()
-							.productVariantId(productVariantDto.getProductVariant().getProductVariantId())
-							.variantOptionValueInfoList(
+							.productVariantId(productVariantDto.getProductVariant().getProductVariantId().getId())
+							.variantOptionValue(
 								productVariantDto.getVariantOptionValueAdapterDtoList().stream()
 									.map(variantOptionValueDto ->
 										ReadProductVariantDto.VariantOptionValueInfo.builder()
 											.optionGroupId(
-												variantOptionValueDto.getVariantOptionValue().getOptionGroupId())
+												variantOptionValueDto.getVariantOptionValue()
+													.getOptionGroupId()
+													.getId())
 											.optionValueId(
-												variantOptionValueDto.getVariantOptionValue().getOptionValueId())
+												variantOptionValueDto.getVariantOptionValue()
+													.getOptionValueId()
+													.getId())
 											.build())
 									.toList())
 							.build())

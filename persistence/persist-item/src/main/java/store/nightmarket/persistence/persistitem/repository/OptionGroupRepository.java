@@ -14,7 +14,7 @@ import store.nightmarket.persistence.persistitem.entity.model.OptionGroupEntity;
 public interface OptionGroupRepository extends JpaRepository<OptionGroupEntity, UUID> {
 
 	@Query("SELECT optionGroupEntity FROM OptionGroupEntity optionGroupEntity "
-		+ "JOIN FETCH OptionValueEntity "
+		+ "JOIN FETCH optionGroupEntity.optionValueEntityList optionValueEntityList "
 		+ "WHERE optionGroupEntity.productId = :productId")
 	public List<OptionGroupEntity> findByProductPostId(@Param("productId") UUID productId);
 

@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,7 @@ import store.nightmarket.itemweb.valueobject.Image;
 import store.nightmarket.itemweb.valueobject.ImageOwnerId;
 import store.nightmarket.itemweb.valueobject.ProductPostId;
 
+@CrossOrigin(originPatterns = "http://localhost:3000")
 @RestController
 @RequestMapping("api/v1/posts")
 @RequiredArgsConstructor
@@ -47,8 +49,8 @@ public class ProductPostControllerV1 {
 	@GetMapping("/search")
 	public SearchProductDto.Response searchProduct(
 		@RequestParam("keyword") String keyword,
-		@RequestParam(defaultValue = "0") int page,
-		@RequestParam(defaultValue = "25") int size
+		@RequestParam(value = "page", defaultValue = "0") int page,
+		@RequestParam(value = "size", defaultValue = "25") int size
 	) {
 		// component 값이 null 이거나 비어 있을때 어떻게 처리할까 고민 중
 		if (page < 0)
@@ -63,19 +65,20 @@ public class ProductPostControllerV1 {
 		);
 		Page<ProductPostAdapterDto> productPostPage = output.dtoPage();
 		List<ImageManager> imageManagerList = output.imageManagerList();
-		Map<ImageOwnerId, Image> imageMap = imageManagerList.stream()
-			.collect(Collectors.toMap(ImageManager::getImageOwnerId, ImageManager::getImage));
+		Map<UUID, Image> imageMap = imageManagerList.stream()
+			.collect(Collectors.toMap(imageManager -> imageManager.getImageOwnerId().getId(), ImageManager::getImage));
 
 		return SearchProductDto.Response.builder()
-			.content(
+			.contents(
 				productPostPage.getContent().stream()
 					.map(productPostAdapterDto ->
 						SearchProductDto.ProductInfo.builder()
 							.productPostId(productPostAdapterDto.getProductPost().getProductPostId().getId())
-							.image(imageMap.get(productPostAdapterDto.getProductPost().getProductPostId()))
-							.price(productPostAdapterDto.getProduct().getPrice())
-							.name(productPostAdapterDto.getProduct().getName())
-							.rating(productPostAdapterDto.getProductPost().getRating())
+							.imageUrl(imageMap.get(productPostAdapterDto.getProductPost().getProductPostId().getId())
+								.imageUrl())
+							.price(productPostAdapterDto.getProduct().getPrice().amount())
+							.name(productPostAdapterDto.getProduct().getName().getValue())
+							.rating(productPostAdapterDto.getProductPost().getRating().value())
 							.build())
 					.toList())
 			.currentPage(page)
@@ -87,7 +90,7 @@ public class ProductPostControllerV1 {
 	}
 
 	@GetMapping("/{postId}")
-	public ReadProductPostDto.Response readProductPost(@PathVariable UUID postId) {
+	public ReadProductPostDto.Response readProductPost(@PathVariable("postId") UUID postId) {
 		ReadProductPostImageUseCaseDto.Input input = ReadProductPostImageUseCaseDto.Input.builder()
 			.id(new ProductPostId(postId))
 			.imageTypeList(List.of(DomainImageType.MAIN, DomainImageType.DETAIL))
@@ -97,23 +100,23 @@ public class ProductPostControllerV1 {
 		List<ImageManager> imageOutput = readProductPostImageUseCase.execute(input).imageManagerList();
 
 		return ReadProductPostDto.Response.builder()
-			.id(productPostOutput.productPostAdapterDto().getProductPost().getProductPostId())
-			.rating(productPostOutput.productPostAdapterDto().getProductPost().getRating())
+			.id(productPostOutput.productPostAdapterDto().getProductPost().getProductPostId().getId())
+			.rating(productPostOutput.productPostAdapterDto().getProductPost().getRating().value())
 			.productInfo(
 				ReadProductPostDto.ProductInfo.builder()
-					.productId(productPostOutput.productPostAdapterDto().getProductPost().getProductId())
-					.name(productPostOutput.productPostAdapterDto().getProduct().getName())
-					.price(productPostOutput.productPostAdapterDto().getProduct().getPrice())
+					.productId(productPostOutput.productPostAdapterDto().getProductPost().getProductId().getId())
+					.name(productPostOutput.productPostAdapterDto().getProduct().getName().getValue())
+					.price(productPostOutput.productPostAdapterDto().getProduct().getPrice().amount())
 					.description(productPostOutput.productPostAdapterDto().getProduct().getDescription())
-					.mainImageList(getDtoListByImageType(imageOutput, DomainImageType.MAIN))
 					.build()
 			)
+			.mainImageList(getDtoListByImageType(imageOutput, DomainImageType.MAIN))
 			.detailImageInfoList(getDtoListByImageType(imageOutput, DomainImageType.DETAIL))
 			.build();
 	}
 
 	@GetMapping("/{postId}/reviews")
-	public ReadReviewDto.Response readProductPostReview(@PathVariable UUID postId) {
+	public ReadReviewDto.Response readProductPostReview(@PathVariable("postId") UUID postId) {
 		ReadReviewUseCaseDto.Output reviewOutput = readReviewUseCase.execute(new ProductPostId(postId));
 		List<UUID> idList = reviewOutput.reviewAdapterDtoList().stream()
 			.map(reviewDto -> reviewDto.getReview().getReviewId().getId())
@@ -130,31 +133,26 @@ public class ProductPostControllerV1 {
 			);
 
 		return ReadReviewDto.Response.builder()
-			.reviewInfoList(
+			.reviewList(
 				reviewOutput.reviewAdapterDtoList().stream()
 					.map(dto -> ReadReviewDto.ReviewInfo.builder()
-						.userInfo(
+						.user(
 							ReadReviewDto.UserInfo.builder()
-								.userId(dto.getUser().getUserId())
-								.name(dto.getUser().getName())
+								.userId(dto.getUser().getUserId().getId())
+								.name(dto.getUser().getName().getValue())
 								.build())
-						.commentText(dto.getReview().getCommentText())
-						.imageManagerInfo(
-							ReadReviewDto.ImageManagerInfo.builder()
-								.url(imageMap.get(dto.getReview().getReviewId().getId()).getImage().imageUrl())
-								.displayOrder(imageMap.get(dto.getReview().getReviewId().getId()).getDisplayOrder())
-								.build()
-						)
-						.rating(dto.getReview().getRating())
+						.comment(dto.getReview().getCommentText().getValue())
+						.imageUrl(imageMap.get(dto.getReview().getReviewId().getId()).getImage().imageUrl())
+						.rating(dto.getReview().getRating().value())
 						.replyInfo(
 							ReadReviewDto.ReplyInfo.builder()
-								.userInfo(
+								.user(
 									ReadReviewDto.UserInfo.builder()
-										.userId(dto.getReplyAdapterDto().getUser().getUserId())
-										.name(dto.getReplyAdapterDto().getUser().getName())
+										.userId(dto.getReplyAdapterDto().getUser().getUserId().getId())
+										.name(dto.getReplyAdapterDto().getUser().getName().getValue())
 										.build()
 								)
-								.commentText(dto.getReplyAdapterDto().getReply().getCommentText())
+								.comment(dto.getReplyAdapterDto().getReply().getCommentText().getValue())
 								.build()
 						)
 						.build()
@@ -171,7 +169,7 @@ public class ProductPostControllerV1 {
 		return imageManagerList.stream()
 			.filter(image -> image.getDomainImageType() == domainImageType)
 			.map(image -> ReadProductPostDto.ImageManagerInfo.builder()
-				.url(image.getImage().imageUrl())
+				.imageUrl(image.getImage().imageUrl())
 				.displayOrder(image.getDisplayOrder())
 				.build())
 			.toList();
