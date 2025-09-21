@@ -9,7 +9,7 @@ public class ReadProductVariantDto {
 
 	@Builder
 	public record Response(
-		List<ProductVariantInfo> productVariantInfoList
+		List<ProductVariantInfo> productVariantList
 	) {
 
 	}
@@ -17,7 +17,7 @@ public class ReadProductVariantDto {
 	@Builder
 	public record ProductVariantInfo(
 		UUID productVariantId,
-		List<VariantOptionValueInfo> variantOptionValueInfoList
+		List<VariantOptionValueInfo> variantOptionValue
 	) {
 
 	}

@@ -56,12 +56,12 @@ public class ProductControllerV1 {
 		ReadProductVariantUseCaseDto.Output output = readProductVariantUseCase.execute(new ProductId(productId));
 
 		return ReadProductVariantDto.Response.builder()
-			.productVariantInfoList(
+			.productVariantList(
 				output.productVariantAdapterDtoList().stream()
 					.map(productVariantDto ->
 						ReadProductVariantDto.ProductVariantInfo.builder()
 							.productVariantId(productVariantDto.getProductVariant().getProductVariantId().getId())
-							.variantOptionValueInfoList(
+							.variantOptionValue(
 								productVariantDto.getVariantOptionValueAdapterDtoList().stream()
 									.map(variantOptionValueDto ->
 										ReadProductVariantDto.VariantOptionValueInfo.builder()
