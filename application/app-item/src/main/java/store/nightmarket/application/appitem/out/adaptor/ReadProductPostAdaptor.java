@@ -21,10 +21,10 @@ public class ReadProductPostAdaptor implements ReadProductPostPort {
 	@Override
 	public Page<ProductPostAdapterDto> findProductPostListByKeyword(String keyword, Pageable pageable) {
 		return productPostRepository.findByKeywordContaining(keyword, pageable)
-      .map(ProductPostAdapterDto::toDomain);
+			.map(ProductPostAdapterDto::toDomain);
 	}
 
-  @Override
+	@Override
 	public Optional<ProductPostAdapterDto> readFetch(ProductPostId productPostId) {
 		return productPostRepository.findByPostId(productPostId.getId())
 			.map(ProductPostAdapterDto::toDomain);
