@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import store.nightmarket.persistence.persistitem.entity.model.ProductVariantEntity;
+import store.nightmarket.persistence.persistitem.repository.dto.ProductVariantPostIdSummary;
 
 @Repository
 public interface ProductVariantRepository extends JpaRepository<ProductVariantEntity, UUID> {
@@ -19,5 +20,14 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariantEn
 		"JOIN FETCH variantOptionValueEntityList.optionValueEntity optionValueEntity " +
 		"WHERE productVariantEntity.productId = :productId")
 	List<ProductVariantEntity> findByProductId(@Param("productId") UUID productId);
+
+	@Query(
+		"SELECT new store.nightmarket.persistence.persistitem.repository.dto.ProductVariantPostIdSummary(" +
+			"productPostEntity.id, productVariantEntity.id)  " +
+			"FROM ProductVariantEntity productVariantEntity " +
+			"JOIN ProductEntity productEntity ON productEntity.id = productVariantEntity.productId " +
+			"JOIN ProductPostEntity productPostEntity ON productPostEntity.productEntity.id = productEntity.id " +
+			"WHERE productVariantEntity.id IN :productVariantIds")
+	List<ProductVariantPostIdSummary> findProductPostIdsByProductVariantIds(@Param("productVariantIds") List<UUID> productVariantIds);
 
 }
