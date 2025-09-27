@@ -29,7 +29,6 @@ public class DetailOrderRecordEntity extends BaseUuidEntity {
 	private UUID productVariantId;
 
 	@Embedded
-	@Column(name = "quantity", nullable = false)
 	private QuantityEntity quantity;
 
 	@Enumerated(EnumType.STRING)
