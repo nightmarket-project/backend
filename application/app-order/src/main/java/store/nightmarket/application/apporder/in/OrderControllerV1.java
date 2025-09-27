@@ -1,13 +1,22 @@
 package store.nightmarket.application.apporder.in;
 
+import java.util.UUID;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import store.nightmarket.application.apporder.in.dto.ReadOrderDto;
 import store.nightmarket.application.apporder.in.dto.SaveOrderDto;
+import store.nightmarket.application.apporder.usecase.ReadOrderUseCase;
 import store.nightmarket.application.apporder.usecase.RequestOrderUseCase;
+import store.nightmarket.application.apporder.usecase.dto.ReadOrderUseCaseDto;
 import store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto;
+import store.nightmarket.domain.order.valueobject.OrderRecordId;
 
 @RestController
 @RequestMapping("/api/v1/order")
@@ -15,9 +24,19 @@ import store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto
 public class OrderControllerV1 {
 
 	private final RequestOrderUseCase requestOrderUseCase;
+	private final ReadOrderUseCase readOrderUseCase;
+
+	@GetMapping("/{orderId}")
+	public ReadOrderDto.Response readOrder(@PathVariable("orderId") UUID orderId) {
+		ReadOrderUseCaseDto.Output output = readOrderUseCase.execute(new OrderRecordId(orderId));
+
+		return ReadOrderDto.Response.builder()
+			.orderRecord(output.orderRecord())
+			.build();
+	}
 
 	@PostMapping
-	public void saveOrder(SaveOrderDto.Request request) {
+	public void saveOrder(@RequestBody SaveOrderDto.Request request) {
 		requestOrderUseCase.execute(
 			RequestOrderUseCaseDto.Input.builder()
 				.addressDto(
