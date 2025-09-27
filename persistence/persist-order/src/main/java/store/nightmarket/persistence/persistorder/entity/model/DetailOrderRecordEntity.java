@@ -12,6 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
@@ -20,11 +21,12 @@ import store.nightmarket.persistence.persistorder.entity.valueobject.QuantityEnt
 
 @Getter
 @Entity
+@Table(name = "detail_order_record")
 @NoArgsConstructor(access = PROTECTED)
 public class DetailOrderRecordEntity extends BaseUuidEntity {
 
-	@Column(name = "product_id", columnDefinition = "BINARY(16)", nullable = false)
-	private UUID productId;
+	@Column(name = "product_variant_id", columnDefinition = "BINARY(16)", nullable = false)
+	private UUID productVariantId;
 
 	@Embedded
 	@Column(name = "quantity", nullable = false)
@@ -40,13 +42,13 @@ public class DetailOrderRecordEntity extends BaseUuidEntity {
 
 	public DetailOrderRecordEntity(
 		UUID id,
-		UUID productId,
+		UUID productVariantId,
 		QuantityEntity quantity,
 		DetailOrderState state,
 		OrderRecordEntity orderRecordEntity
 	) {
 		super(id);
-		this.productId = productId;
+		this.productVariantId = productVariantId;
 		this.quantity = quantity;
 		this.state = state;
 		this.orderRecordEntity = orderRecordEntity;

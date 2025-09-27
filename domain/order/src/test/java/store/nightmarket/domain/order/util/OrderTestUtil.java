@@ -13,7 +13,7 @@ import store.nightmarket.domain.order.status.DetailOrderState;
 import store.nightmarket.domain.order.valueobject.Address;
 import store.nightmarket.domain.order.valueobject.DetailOrderRecordId;
 import store.nightmarket.domain.order.valueobject.OrderRecordId;
-import store.nightmarket.domain.order.valueobject.ProductId;
+import store.nightmarket.domain.order.valueobject.ProductVariantId;
 import store.nightmarket.domain.order.valueobject.Quantity;
 import store.nightmarket.domain.order.valueobject.UserId;
 
@@ -27,7 +27,7 @@ public class OrderTestUtil {
 	) {
 		return DetailOrderRecord.newInstance(
 			new DetailOrderRecordId(recordId),
-			new ProductId(productId),
+			new ProductVariantId(productId),
 			new Quantity(value),
 			state
 		);
