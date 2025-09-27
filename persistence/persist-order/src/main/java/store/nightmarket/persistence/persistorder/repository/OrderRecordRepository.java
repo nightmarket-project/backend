@@ -15,6 +15,6 @@ public interface OrderRecordRepository extends JpaRepository<OrderRecordEntity, 
 
 	@Query("SELECT orderRecordEntity FROM OrderRecordEntity orderRecordEntity " +
 		"JOIN FETCH orderRecordEntity.detailOrderRecordList detailOrderRecordList " +
-		"WHERE OrderRecordEntity.id = :orderRecordId")
+		"WHERE orderRecordEntity.id = :orderRecordId")
 	Optional<OrderRecordEntity> findByOrderRecordId(@Param("orderRecordId") UUID orderRecordId);
 }
