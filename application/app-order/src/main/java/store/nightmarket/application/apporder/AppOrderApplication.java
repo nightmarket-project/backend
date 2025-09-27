@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = "store.nightmarket.persistence.persistorder")
 @EntityScan(basePackages = "store.nightmarket.persistence.persistorder")
 @ComponentScan(basePackages = {
+	"store.nightmarket.persistence.persistorder",
 	"store.nightmarket.application.apporder",
 	"store.nightmarket.domain.order"
 })

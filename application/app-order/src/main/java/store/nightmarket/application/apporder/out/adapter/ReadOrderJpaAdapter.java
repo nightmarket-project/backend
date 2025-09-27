@@ -15,7 +15,7 @@ import store.nightmarket.persistence.persistorder.repository.OrderRecordReposito
 @RequiredArgsConstructor
 public class ReadOrderJpaAdapter implements ReadOrderPort {
 
-	private OrderRecordRepository orderRecordRepository;
+	private final OrderRecordRepository orderRecordRepository;
 
 	@Override
 	public Optional<OrderRecord> read(OrderRecordId id) {
