@@ -31,7 +31,29 @@ public class OrderControllerV1 {
 		ReadOrderUseCaseDto.Output output = readOrderUseCase.execute(new OrderRecordId(orderId));
 
 		return ReadOrderDto.Response.builder()
-			.orderRecord(output.orderRecord())
+			.id(output.orderRecord().getOrderRecordId().getId())
+			.userId(output.orderRecord().getUserId().getId())
+			.orderDate(output.orderRecord().getOrderDate())
+			.address(
+				ReadOrderDto.Address.builder()
+					.zipCode(output.orderRecord().getAddress().getZipCode())
+					.roadAddress(output.orderRecord().getAddress().getRoadAddress())
+					.detailAddress(output.orderRecord().getAddress().getDetailAddress())
+					.build()
+			)
+			.detailOrderRecordList(
+				output.orderRecord().getDetailOrderRecordList().stream()
+					.map(detailOrderRecord ->
+						ReadOrderDto.DetailOrderRecord.builder()
+							.detailOrderRecordId(detailOrderRecord.getDetailOrderRecordId().getId())
+							.productVariantId(detailOrderRecord.getProductVariantId().getId())
+							.quantity(detailOrderRecord.getQuantity().getValue())
+							.state(detailOrderRecord.getState().name())
+							.build()
+					)
+					.toList()
+
+			)
 			.build();
 	}
 
