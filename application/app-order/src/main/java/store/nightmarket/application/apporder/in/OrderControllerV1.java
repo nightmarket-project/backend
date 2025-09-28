@@ -7,16 +7,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import store.nightmarket.application.apporder.in.dto.ReadListOrderDto;
 import store.nightmarket.application.apporder.in.dto.ReadOrderDto;
 import store.nightmarket.application.apporder.in.dto.SaveOrderDto;
+import store.nightmarket.application.apporder.usecase.ReadOrderListUseCase;
 import store.nightmarket.application.apporder.usecase.ReadOrderUseCase;
 import store.nightmarket.application.apporder.usecase.RequestOrderUseCase;
+import store.nightmarket.application.apporder.usecase.dto.ReadOrderListUseCaseDto;
 import store.nightmarket.application.apporder.usecase.dto.ReadOrderUseCaseDto;
 import store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto;
 import store.nightmarket.domain.order.valueobject.OrderRecordId;
+import store.nightmarket.domain.order.valueobject.UserId;
 
 @RestController
 @RequestMapping("/api/v1/order")
@@ -25,6 +30,54 @@ public class OrderControllerV1 {
 
 	private final RequestOrderUseCase requestOrderUseCase;
 	private final ReadOrderUseCase readOrderUseCase;
+	private final ReadOrderListUseCase readOrderListUseCase;
+
+	@GetMapping()
+	public ReadListOrderDto.Response readOrderList(
+		@RequestParam("userId") UUID userId,
+		@RequestParam(value = "page", defaultValue = "0") int page,
+		@RequestParam(value = "size", defaultValue = "25") int size
+	) {
+		ReadOrderListUseCaseDto.Input input = ReadOrderListUseCaseDto.Input.builder()
+			.userId(new UserId(userId))
+			.page(page)
+			.size(size)
+			.build();
+
+		ReadOrderListUseCaseDto.Output output = readOrderListUseCase.execute(input);
+
+		return ReadListOrderDto.Response.builder()
+			.contents(
+				output.orderRecords().stream()
+					.map(orderOutput -> ReadOrderDto.Response.builder()
+						.id(orderOutput.getOrderRecordId().getId())
+						.userId(orderOutput.getUserId().getId())
+						.orderDate(orderOutput.getOrderDate())
+						.address(ReadOrderDto.Address.builder()
+							.zipCode(orderOutput.getAddress().getZipCode())
+							.roadAddress(orderOutput.getAddress().getRoadAddress())
+							.detailAddress(orderOutput.getAddress().getDetailAddress())
+							.build())
+						.detailOrderRecordList(
+							orderOutput.getDetailOrderRecordList().stream()
+								.map(detailOutput -> ReadOrderDto.DetailOrderRecord.builder()
+									.detailOrderRecordId(detailOutput.getDetailOrderRecordId().getId())
+									.productVariantId(detailOutput.getProductVariantId().getId())
+									.quantity(detailOutput.getQuantity().getValue())
+									.state(detailOutput.getState().name())
+									.build())
+								.toList()
+						)
+						.build())
+					.toList()
+			)
+			.currentPage(page)
+			.numberOfElements(output.orderRecords().getNumberOfElements())
+			.totalPage(output.orderRecords().getTotalPages())
+			.totalElements(output.orderRecords().getTotalElements())
+			.hasNext(output.orderRecords().hasNext())
+			.build();
+	}
 
 	@GetMapping("/{orderId}")
 	public ReadOrderDto.Response readOrder(@PathVariable("orderId") UUID orderId) {
