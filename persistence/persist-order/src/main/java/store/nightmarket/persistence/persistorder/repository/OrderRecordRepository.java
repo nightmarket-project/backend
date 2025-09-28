@@ -3,6 +3,8 @@ package store.nightmarket.persistence.persistorder.repository;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +19,12 @@ public interface OrderRecordRepository extends JpaRepository<OrderRecordEntity, 
 		"JOIN FETCH orderRecordEntity.detailOrderRecordList detailOrderRecordList " +
 		"WHERE orderRecordEntity.id = :orderRecordId")
 	Optional<OrderRecordEntity> findByOrderRecordId(@Param("orderRecordId") UUID orderRecordId);
+
+	@Query(value = "SELECT orderRecordEntity FROM OrderRecordEntity orderRecordEntity " +
+		"JOIN FETCH orderRecordEntity.detailOrderRecordList detailOrderRecordList " +
+		"WHERE orderRecordEntity.userId = :userId"
+		// countQuery = "SELECT count(order) FROM OrderRecordEntity order WHERE order.userId = :userId"
+	)
+	Page<OrderRecordEntity> findByUserIdWithPagination(@Param("userId") UUID userId, Pageable pageable);
+
 }

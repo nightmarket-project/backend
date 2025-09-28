@@ -2,6 +2,8 @@ package store.nightmarket.application.apporder.out.adapter;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import store.nightmarket.application.apporder.mapper.OrderRecordMapper;
 import store.nightmarket.application.apporder.out.ReadOrderPort;
 import store.nightmarket.domain.order.model.OrderRecord;
 import store.nightmarket.domain.order.valueobject.OrderRecordId;
+import store.nightmarket.domain.order.valueobject.UserId;
 import store.nightmarket.persistence.persistorder.repository.OrderRecordRepository;
 
 @Component
@@ -23,4 +26,9 @@ public class ReadOrderJpaAdapter implements ReadOrderPort {
 			.map(OrderRecordMapper::toDomain);
 	}
 
+	@Override
+	public Page<OrderRecord> readAllByUserId(UserId id, Pageable pageable) {
+		return orderRecordRepository.findByUserIdWithPagination(id.getId(), pageable)
+			.map(OrderRecordMapper::toDomain);
+	}
 }
