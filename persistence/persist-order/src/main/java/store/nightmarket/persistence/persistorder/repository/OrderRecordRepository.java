@@ -23,7 +23,6 @@ public interface OrderRecordRepository extends JpaRepository<OrderRecordEntity, 
 	@Query(value = "SELECT orderRecordEntity FROM OrderRecordEntity orderRecordEntity " +
 		"JOIN FETCH orderRecordEntity.detailOrderRecordList detailOrderRecordList " +
 		"WHERE orderRecordEntity.userId = :userId"
-		// countQuery = "SELECT count(order) FROM OrderRecordEntity order WHERE order.userId = :userId"
 	)
 	Page<OrderRecordEntity> findByUserIdWithPagination(@Param("userId") UUID userId, Pageable pageable);
 
