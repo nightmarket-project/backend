@@ -16,7 +16,7 @@ public class Reply extends BaseModel<ReplyId> {
 	private CommentText commentText;
 	private final UserId authorId;
 	private final ReviewId reviewId;
-	private final LocalDateTime createdAt;
+	private final LocalDateTime writtenAt;
 	private boolean deleted;
 
 	private Reply(
@@ -24,13 +24,29 @@ public class Reply extends BaseModel<ReplyId> {
 		CommentText commentText,
 		UserId authorId,
 		ReviewId reviewId,
-		LocalDateTime createdAt
+		LocalDateTime writtenAt
 	) {
 		super(id);
 		this.commentText = commentText;
 		this.authorId = authorId;
 		this.reviewId = reviewId;
-		this.createdAt = createdAt;
+		this.writtenAt = writtenAt;
+		deleted = false;
+	}
+
+	private Reply(
+		ReplyId id,
+		LocalDateTime createdAt,
+		CommentText commentText,
+		UserId authorId,
+		ReviewId reviewId,
+		LocalDateTime writtenAt
+	) {
+		super(id, createdAt);
+		this.commentText = commentText;
+		this.authorId = authorId;
+		this.reviewId = reviewId;
+		this.writtenAt = writtenAt;
 		deleted = false;
 	}
 
@@ -39,14 +55,32 @@ public class Reply extends BaseModel<ReplyId> {
 		CommentText commentText,
 		UserId authorId,
 		ReviewId reviewId,
-		LocalDateTime createdAt
+		LocalDateTime writtenAt
 	) {
 		return new Reply(
 			id,
 			commentText,
 			authorId,
 			reviewId,
-			createdAt
+			writtenAt
+		);
+	}
+
+	public static Reply newInstanceWithCreatedAt(
+		ReplyId id,
+		LocalDateTime createdAt,
+		CommentText commentText,
+		UserId authorId,
+		ReviewId reviewId,
+		LocalDateTime writtenAt
+	) {
+		return new Reply(
+			id,
+			createdAt,
+			commentText,
+			authorId,
+			reviewId,
+			writtenAt
 		);
 	}
 
