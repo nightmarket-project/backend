@@ -16,8 +16,9 @@ public class PaymentRecordMapper {
 		List<DetailPaymentRecord> detailPaymentRecords = DetailPaymentRecordMapper
 			.toDomainList(entity.getDetailPaymentRecordEntityList());
 
-		return PaymentRecord.newInstance(
+		return PaymentRecord.newInstanceWithCreatedAt(
 			new PaymentRecordId(entity.getId()),
+			entity.getCreatedAt(),
 			new UserId(entity.getUserId()),
 			detailPaymentRecords
 		);
@@ -25,7 +26,8 @@ public class PaymentRecordMapper {
 
 	public static PaymentRecordEntity toEntity(PaymentRecord domain) {
 		PaymentRecordEntity entity = new PaymentRecordEntity(
-			domain.getUserId().getId(),
+			domain.getPaymentRecordId().getId(),
+			domain.getCreatedAt(),
 			domain.getUserId().getId(),
 			new ArrayList<>()
 		);
