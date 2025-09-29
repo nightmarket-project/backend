@@ -1,6 +1,9 @@
 package store.nightmarket.application.apporder.in;
 
+import static store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto.*;
+
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +20,7 @@ public class OrderControllerV1 {
 	private final RequestOrderUseCase requestOrderUseCase;
 
 	@PostMapping
-	public void saveOrder(SaveOrderDto.Request request) {
+	public void saveOrder(@RequestBody SaveOrderDto.Request request) {
 		requestOrderUseCase.execute(
 			RequestOrderUseCaseDto.Input.builder()
 				.addressDto(
@@ -28,6 +31,7 @@ public class OrderControllerV1 {
 						.build()
 				)
 				.userId(request.userId())
+				.detailOrderDtoList(toUseCaseDto(request.detailOrderDtoList()))
 				.build()
 		);
 	}

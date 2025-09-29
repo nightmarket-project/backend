@@ -7,37 +7,37 @@ import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.order.exception.OrderException;
 import store.nightmarket.domain.order.status.DetailOrderState;
 import store.nightmarket.domain.order.valueobject.DetailOrderRecordId;
-import store.nightmarket.domain.order.valueobject.ProductId;
+import store.nightmarket.domain.order.valueobject.ProductVariantId;
 import store.nightmarket.domain.order.valueobject.Quantity;
 
 @Getter
 public class DetailOrderRecord extends BaseModel<DetailOrderRecordId> {
 
-	private ProductId productId;
+	private ProductVariantId productVariantId;
 	private Quantity quantity;
 	private DetailOrderState state;
 
 	private DetailOrderRecord(
 		DetailOrderRecordId id,
-		ProductId productId,
+		ProductVariantId productVariantId,
 		Quantity quantity,
 		DetailOrderState state
 	) {
 		super(id);
-		this.productId = productId;
+		this.productVariantId = productVariantId;
 		this.quantity = quantity;
 		this.state = state;
 	}
 
 	public static DetailOrderRecord newInstance(
 		DetailOrderRecordId id,
-		ProductId productId,
+		ProductVariantId productVariantId,
 		Quantity quantity,
 		DetailOrderState state
 	) {
 		return new DetailOrderRecord(
 			id,
-			productId,
+			productVariantId,
 			quantity,
 			state
 		);
@@ -76,14 +76,14 @@ public class DetailOrderRecord extends BaseModel<DetailOrderRecordId> {
 		if (obj == null || obj.getClass() != getClass())
 			return false;
 		DetailOrderRecord other = (DetailOrderRecord)obj;
-		return Objects.equals(productId, other.productId) &&
+		return Objects.equals(productVariantId, other.productVariantId) &&
 			Objects.equals(quantity, other.quantity) &&
 			state == other.state;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(productId, quantity, state);
+		return Objects.hash(productVariantId, quantity, state);
 	}
 
 }

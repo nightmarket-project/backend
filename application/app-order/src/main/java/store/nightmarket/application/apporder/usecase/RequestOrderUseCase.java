@@ -9,11 +9,16 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.apporder.out.SaveOrderPort;
 import store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto;
 import store.nightmarket.common.application.usecase.BaseUseCase;
+import store.nightmarket.domain.order.model.DetailOrderRecord;
 import store.nightmarket.domain.order.model.OrderRecord;
 import store.nightmarket.domain.order.service.RequestOrderDomainService;
 import store.nightmarket.domain.order.service.dto.RequestOrderDomainServiceDto;
+import store.nightmarket.domain.order.status.DetailOrderState;
 import store.nightmarket.domain.order.valueobject.Address;
+import store.nightmarket.domain.order.valueobject.DetailOrderRecordId;
 import store.nightmarket.domain.order.valueobject.OrderRecordId;
+import store.nightmarket.domain.order.valueobject.ProductVariantId;
+import store.nightmarket.domain.order.valueobject.Quantity;
 import store.nightmarket.domain.order.valueobject.UserId;
 
 @Service
@@ -34,7 +39,14 @@ public class RequestOrderUseCase implements BaseUseCase<RequestOrderUseCaseDto.I
 			),
 			LocalDate.now(),
 			new UserId(input.userId()),
-			null
+			input.detailOrderDtoList().stream()
+				.map(dto -> DetailOrderRecord.newInstance(
+					new DetailOrderRecordId(UUID.randomUUID()),
+					new ProductVariantId(dto.productVariantId().getId()),
+					new Quantity(dto.quantity().getValue()),
+					DetailOrderState.NONE
+				))
+				.toList()
 		);
 
 		RequestOrderDomainServiceDto.Input domainInput = RequestOrderDomainServiceDto.Input.builder()

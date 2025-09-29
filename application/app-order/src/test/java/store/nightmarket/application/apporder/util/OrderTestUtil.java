@@ -12,7 +12,7 @@ import store.nightmarket.domain.order.status.DetailOrderState;
 import store.nightmarket.domain.order.valueobject.Address;
 import store.nightmarket.domain.order.valueobject.DetailOrderRecordId;
 import store.nightmarket.domain.order.valueobject.OrderRecordId;
-import store.nightmarket.domain.order.valueobject.ProductId;
+import store.nightmarket.domain.order.valueobject.ProductVariantId;
 import store.nightmarket.domain.order.valueobject.Quantity;
 import store.nightmarket.domain.order.valueobject.UserId;
 
@@ -43,10 +43,17 @@ public class OrderTestUtil {
 	public static DetailOrderRecord makeDetailOrderRecord() {
 		return DetailOrderRecord.newInstance(
 			new DetailOrderRecordId(UUID.randomUUID()),
-			new ProductId(UUID.randomUUID()),
+			new ProductVariantId(UUID.randomUUID()),
 			new Quantity(1),
 			DetailOrderState.SUBMITTED
 		);
+	}
+
+	public static RequestOrderUseCaseDto.DetailOrderDto makeDetailOrderDto() {
+		return RequestOrderUseCaseDto.DetailOrderDto.builder()
+			.productVariantId(new ProductVariantId(UUID.randomUUID()))
+			.quantity(new Quantity(1))
+			.build();
 	}
 
 }
