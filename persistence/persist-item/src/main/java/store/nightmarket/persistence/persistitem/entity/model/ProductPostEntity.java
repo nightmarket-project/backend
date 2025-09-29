@@ -1,5 +1,6 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -56,6 +57,21 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 		this.deleted = deleted;
 	}
 
+	private ProductPostEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		ProductEntity productEntity,
+		UserEntity userEntity,
+		RatingEntity ratingEntity,
+		boolean deleted
+	) {
+		super(id, createdAt);
+		this.productEntity = productEntity;
+		this.userEntity = userEntity;
+		this.ratingEntity = ratingEntity;
+		this.deleted = deleted;
+	}
+
 	public static ProductPostEntity newInstance(
 		UUID id,
 		ProductEntity productEntity,
@@ -65,6 +81,24 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 	) {
 		return new ProductPostEntity(
 			id,
+			productEntity,
+			userEntity,
+			ratingEntity,
+			deleted
+		);
+	}
+
+	public static ProductPostEntity newInstanceWithCreatedAt(
+		UUID id,
+		LocalDateTime createdAt,
+		ProductEntity productEntity,
+		UserEntity userEntity,
+		RatingEntity ratingEntity,
+		boolean deleted
+	) {
+		return new ProductPostEntity(
+			id,
+			createdAt,
 			productEntity,
 			userEntity,
 			ratingEntity,
