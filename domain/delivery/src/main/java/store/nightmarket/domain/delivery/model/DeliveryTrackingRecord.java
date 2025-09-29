@@ -30,6 +30,21 @@ public class DeliveryTrackingRecord extends BaseModel<DeliveryTrackingRecordId> 
 		this.content = content;
 	}
 
+	private DeliveryTrackingRecord(
+		DeliveryTrackingRecordId id,
+		LocalDateTime createdAt,
+		LocalDateTime time,
+		Location location,
+		DetailDeliveryState state,
+		String content
+	) {
+		super(id, createdAt);
+		this.time = time;
+		this.location = location;
+		this.state = state;
+		this.content = content;
+	}
+
 	public static DeliveryTrackingRecord newInstance(
 		DeliveryTrackingRecordId id,
 		LocalDateTime time,
@@ -39,6 +54,24 @@ public class DeliveryTrackingRecord extends BaseModel<DeliveryTrackingRecordId> 
 	) {
 		return new DeliveryTrackingRecord(
 			id,
+			time,
+			location,
+			state,
+			content
+		);
+	}
+
+	public static DeliveryTrackingRecord newInstanceWithCreatedAt(
+		DeliveryTrackingRecordId id,
+		LocalDateTime createdAt,
+		LocalDateTime time,
+		Location location,
+		DetailDeliveryState state,
+		String content
+	) {
+		return new DeliveryTrackingRecord(
+			id,
+			createdAt,
 			time,
 			location,
 			state,
