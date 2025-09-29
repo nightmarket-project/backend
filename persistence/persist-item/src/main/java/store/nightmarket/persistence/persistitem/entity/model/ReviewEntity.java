@@ -34,9 +34,6 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 	@Column(name = "deleted", nullable = false)
 	private boolean deleted;
 
-	@Column(name = "written_at", nullable = false)
-	private LocalDateTime writtenAt;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_post_id")
 	private ProductPostEntity productPostEntity;
@@ -53,7 +50,6 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 		CommentTextEntity commentTextEntity,
 		RatingEntity ratingEntity,
 		boolean deleted,
-		LocalDateTime writtenAt,
 		ProductPostEntity productPostEntity,
 		UserEntity userEntity
 	) {
@@ -61,7 +57,6 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 		this.commentTextEntity = commentTextEntity;
 		this.ratingEntity = ratingEntity;
 		this.deleted = deleted;
-		this.writtenAt = writtenAt;
 		this.productPostEntity = productPostEntity;
 		this.userEntity = userEntity;
 	}
@@ -72,7 +67,6 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 		CommentTextEntity commentTextEntity,
 		RatingEntity ratingEntity,
 		boolean deleted,
-		LocalDateTime writtenAt,
 		ProductPostEntity productPostEntity,
 		UserEntity userEntity
 	) {
@@ -80,7 +74,6 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 		this.commentTextEntity = commentTextEntity;
 		this.ratingEntity = ratingEntity;
 		this.deleted = deleted;
-		this.writtenAt = writtenAt;
 		this.productPostEntity = productPostEntity;
 		this.userEntity = userEntity;
 	}
@@ -90,7 +83,6 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 		CommentTextEntity commentTextEntity,
 		RatingEntity ratingEntity,
 		boolean deleted,
-		LocalDateTime writtenAt,
 		ProductPostEntity productPostEntity,
 		UserEntity userEntity
 	) {
@@ -99,7 +91,6 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 			commentTextEntity,
 			ratingEntity,
 			deleted,
-			writtenAt,
 			productPostEntity,
 			userEntity
 		);
@@ -111,7 +102,6 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 		CommentTextEntity commentTextEntity,
 		RatingEntity ratingEntity,
 		boolean deleted,
-		LocalDateTime writtenAt,
 		ProductPostEntity productPostEntity,
 		UserEntity userEntity
 	) {
@@ -121,7 +111,6 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 			commentTextEntity,
 			ratingEntity,
 			deleted,
-			writtenAt,
 			productPostEntity,
 			userEntity
 		);

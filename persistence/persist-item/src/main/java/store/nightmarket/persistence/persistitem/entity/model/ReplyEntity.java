@@ -29,9 +29,6 @@ public class ReplyEntity extends BaseUuidEntity {
 	@Column(name = "deleted", nullable = false)
 	private boolean deleted;
 
-	@Column(name = "written_at", nullable = false)
-	private LocalDateTime writtenAt;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "users_id")
 	private UserEntity userEntity;
@@ -44,14 +41,12 @@ public class ReplyEntity extends BaseUuidEntity {
 		UUID id,
 		CommentTextEntity commentTextEntity,
 		boolean deleted,
-		LocalDateTime writtenAt,
 		UserEntity userEntity,
 		ReviewEntity reviewEntity
 	) {
 		super(id);
 		this.commentTextEntity = commentTextEntity;
 		this.deleted = deleted;
-		this.writtenAt = writtenAt;
 		this.userEntity = userEntity;
 		this.reviewEntity = reviewEntity;
 	}
@@ -61,14 +56,12 @@ public class ReplyEntity extends BaseUuidEntity {
 		LocalDateTime createdAt,
 		CommentTextEntity commentTextEntity,
 		boolean deleted,
-		LocalDateTime writtenAt,
 		UserEntity userEntity,
 		ReviewEntity reviewEntity
 	) {
 		super(id, createdAt);
 		this.commentTextEntity = commentTextEntity;
 		this.deleted = deleted;
-		this.writtenAt = writtenAt;
 		this.userEntity = userEntity;
 		this.reviewEntity = reviewEntity;
 	}
@@ -77,7 +70,6 @@ public class ReplyEntity extends BaseUuidEntity {
 		UUID id,
 		CommentTextEntity commentTextEntity,
 		boolean deleted,
-		LocalDateTime writtenAt,
 		UserEntity userEntity,
 		ReviewEntity reviewEntity
 	) {
@@ -85,7 +77,6 @@ public class ReplyEntity extends BaseUuidEntity {
 			id,
 			commentTextEntity,
 			deleted,
-			writtenAt,
 			userEntity,
 			reviewEntity
 		);
@@ -96,7 +87,6 @@ public class ReplyEntity extends BaseUuidEntity {
 		LocalDateTime createdAt,
 		CommentTextEntity commentTextEntity,
 		boolean deleted,
-		LocalDateTime writtenAt,
 		UserEntity userEntity,
 		ReviewEntity reviewEntity
 	) {
@@ -105,7 +95,6 @@ public class ReplyEntity extends BaseUuidEntity {
 			createdAt,
 			commentTextEntity,
 			deleted,
-			writtenAt,
 			userEntity,
 			reviewEntity
 		);

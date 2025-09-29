@@ -16,22 +16,18 @@ public class Reply extends BaseModel<ReplyId> {
 	private CommentText commentText;
 	private final UserId authorId;
 	private final ReviewId reviewId;
-	private final LocalDateTime writtenAt;
 	private boolean deleted;
 
 	private Reply(
 		ReplyId id,
 		CommentText commentText,
 		UserId authorId,
-		ReviewId reviewId,
-		LocalDateTime writtenAt
+		ReviewId reviewId
 	) {
 		super(id);
 		this.commentText = commentText;
 		this.authorId = authorId;
 		this.reviewId = reviewId;
-		this.writtenAt = writtenAt;
-		deleted = false;
 	}
 
 	private Reply(
@@ -39,30 +35,25 @@ public class Reply extends BaseModel<ReplyId> {
 		LocalDateTime createdAt,
 		CommentText commentText,
 		UserId authorId,
-		ReviewId reviewId,
-		LocalDateTime writtenAt
+		ReviewId reviewId
 	) {
 		super(id, createdAt);
 		this.commentText = commentText;
 		this.authorId = authorId;
 		this.reviewId = reviewId;
-		this.writtenAt = writtenAt;
-		deleted = false;
 	}
 
 	public static Reply newInstance(
 		ReplyId id,
 		CommentText commentText,
 		UserId authorId,
-		ReviewId reviewId,
-		LocalDateTime writtenAt
+		ReviewId reviewId
 	) {
 		return new Reply(
 			id,
 			commentText,
 			authorId,
-			reviewId,
-			writtenAt
+			reviewId
 		);
 	}
 
@@ -71,16 +62,14 @@ public class Reply extends BaseModel<ReplyId> {
 		LocalDateTime createdAt,
 		CommentText commentText,
 		UserId authorId,
-		ReviewId reviewId,
-		LocalDateTime writtenAt
+		ReviewId reviewId
 	) {
 		return new Reply(
 			id,
 			createdAt,
 			commentText,
 			authorId,
-			reviewId,
-			writtenAt
+			reviewId
 		);
 	}
 
@@ -92,8 +81,8 @@ public class Reply extends BaseModel<ReplyId> {
 			throw new ItemWebException("댓글 작성자만 삭제 가능합니다.");
 		}
 
-		commentText = CommentText.createDeletedComment();
-		deleted = true;
+		this.commentText = CommentText.createDeletedComment();
+		this.deleted = true;
 	}
 
 	public void edit(

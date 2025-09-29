@@ -18,16 +18,14 @@ public class Review extends ImageOwnerModel<ReviewId> {
 	private final UserId author;
 	private CommentText commentText;
 	private Rating rating;
-	private final LocalDateTime writtenAt;
-	private boolean deleted;
+	private boolean deleted = false;
 
 	private Review(
 		ReviewId id,
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
-		Rating rating,
-		LocalDateTime writtenAt
+		Rating rating
 	) {
 		super(
 			id,
@@ -37,7 +35,6 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		this.author = author;
 		this.commentText = commentText;
 		this.rating = rating;
-		this.writtenAt = writtenAt;
 	}
 
 	private Review(
@@ -46,8 +43,7 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
-		Rating rating,
-		LocalDateTime writtenAt
+		Rating rating
 	) {
 		super(
 			id,
@@ -58,7 +54,6 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		this.author = author;
 		this.commentText = commentText;
 		this.rating = rating;
-		this.writtenAt = writtenAt;
 	}
 
 	public static Review newInstance(
@@ -66,16 +61,14 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
-		Rating rating,
-		LocalDateTime writtenAt
+		Rating rating
 	) {
 		return new Review(
 			id,
 			postId,
 			author,
 			commentText,
-			rating,
-			writtenAt
+			rating
 		);
 	}
 
@@ -85,8 +78,7 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
-		Rating rating,
-		LocalDateTime writtenAt
+		Rating rating
 	) {
 		return new Review(
 			id,
@@ -94,8 +86,7 @@ public class Review extends ImageOwnerModel<ReviewId> {
 			postId,
 			author,
 			commentText,
-			rating,
-			writtenAt
+			rating
 		);
 	}
 
@@ -108,7 +99,7 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		}
 
 		this.commentText = CommentText.createDeletedComment();
-		deleted = true;
+		this.deleted = true;
 	}
 
 	public void edit(

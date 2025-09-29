@@ -18,8 +18,7 @@ public class ReplyMapper {
 			entity.getCreatedAt(),
 			new CommentText(entity.getCommentTextEntity().getValue()),
 			new UserId(entity.getUserEntity().getId()),
-			new ReviewId(entity.getReviewEntity().getId()),
-			entity.getWrittenAt()
+			new ReviewId(entity.getReviewEntity().getId())
 		);
 	}
 
@@ -33,7 +32,6 @@ public class ReplyMapper {
 			domain.getCreatedAt(),
 			new CommentTextEntity(domain.getCommentText().getValue()),
 			domain.isDeleted(),
-			domain.getWrittenAt(),
 			userEntity,
 			reviewEntity
 		);

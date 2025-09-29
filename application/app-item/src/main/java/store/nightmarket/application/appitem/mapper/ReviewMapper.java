@@ -21,8 +21,7 @@ public class ReviewMapper {
 			new ProductPostId(entity.getProductPostEntity().getId()),
 			new UserId(entity.getUserEntity().getId()),
 			new CommentText(entity.getCommentTextEntity().getValue()),
-			new Rating(entity.getRatingEntity().getAmount()),
-			entity.getWrittenAt()
+			new Rating(entity.getRatingEntity().getAmount())
 		);
 	}
 
@@ -37,7 +36,6 @@ public class ReviewMapper {
 			new CommentTextEntity(domain.getCommentText().getValue()),
 			new RatingEntity(domain.getRating().value()),
 			domain.isDeleted(),
-			domain.getWrittenAt(),
 			productPostEntity,
 			userEntity
 		);
