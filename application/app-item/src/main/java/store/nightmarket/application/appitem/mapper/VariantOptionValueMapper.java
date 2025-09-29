@@ -13,8 +13,9 @@ import store.nightmarket.persistence.persistitem.entity.model.VariantOptionValue
 public class VariantOptionValueMapper {
 
 	public static VariantOptionValue toDomain(VariantOptionValueEntity entity) {
-		return VariantOptionValue.newInstance(
+		return VariantOptionValue.newInstanceWithCreatedAt(
 			new VariantOptionValueId(entity.getId()),
+			entity.getCreatedAt(),
 			new ProductVariantId(entity.getProductVariantEntity().getId()),
 			new OptionGroupId(entity.getOptionGroupEntity().getId()),
 			new OptionValueId(entity.getOptionValueEntity().getId())
@@ -27,12 +28,13 @@ public class VariantOptionValueMapper {
 		OptionGroupEntity optionGroupEntity,
 		OptionValueEntity optionValueEntity
 	) {
-		return VariantOptionValueEntity.newInstance(
+		return VariantOptionValueEntity.newInstanceWithCreatedAt(
 			domain.getVariantOptionValueId().getId(),
+			domain.getCreatedAt(),
 			productVariantEntity,
 			optionGroupEntity,
 			optionValueEntity
 		);
 	}
-	
+
 }
