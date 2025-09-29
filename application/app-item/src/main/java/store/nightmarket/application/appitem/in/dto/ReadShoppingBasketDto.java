@@ -17,6 +17,7 @@ public class ReadShoppingBasketDto {
 
 	@Builder
 	public record ShoppingBasketProductInfo(
+		UUID shoppingBasketId,
 		UUID productVariantId,
 		UUID productPostId,
 		String name,

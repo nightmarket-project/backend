@@ -67,12 +67,16 @@ public class ShoppingBasketProductControllerV1 {
 			.shoppingBasket(
 				shoppingBasketProductList.stream()
 					.map(shoppingBasketProduct -> ReadShoppingBasketDto.ShoppingBasketProductInfo.builder()
+						.shoppingBasketId(shoppingBasketProduct.getShoppingBasketProductId().getId())
 						.productVariantId(shoppingBasketProduct.getVariantId().getId())
 						.name(shoppingBasketProduct.getName().getValue())
 						.price(shoppingBasketProduct.getUnitPrice().amount())
 						.quantity(shoppingBasketProduct.getQuantity().value())
 						.imageUrl(
-							imageManagerMap.get(variantIdProductPostIdMap.get(shoppingBasketProduct.getVariantId()).getId()).getImage().imageUrl())
+							imageManagerMap.get(
+									variantIdProductPostIdMap.get(shoppingBasketProduct.getVariantId()).getId())
+								.getImage()
+								.imageUrl())
 						.productPostId(variantIdProductPostIdMap.get(shoppingBasketProduct.getVariantId()).getId())
 						.build()
 					)
