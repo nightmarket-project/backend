@@ -49,4 +49,11 @@ public class OrderTestUtil {
 		);
 	}
 
+	public static RequestOrderUseCaseDto.DetailOrderDto makeDetailOrderDto() {
+		return RequestOrderUseCaseDto.DetailOrderDto.builder()
+			.productVariantId(new ProductVariantId(UUID.randomUUID()))
+			.quantity(new Quantity(1))
+			.build();
+	}
+
 }

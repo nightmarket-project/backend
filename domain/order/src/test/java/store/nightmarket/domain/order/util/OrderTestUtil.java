@@ -21,13 +21,13 @@ public class OrderTestUtil {
 
 	public static DetailOrderRecord makeDetailOrderRecord(
 		UUID recordId,
-		UUID productId,
+		UUID productVariantId,
 		int value,
 		DetailOrderState state
 	) {
 		return DetailOrderRecord.newInstance(
 			new DetailOrderRecordId(recordId),
-			new ProductVariantId(productId),
+			new ProductVariantId(productVariantId),
 			new Quantity(value),
 			state
 		);

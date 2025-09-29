@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import static store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto.*;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -122,6 +124,7 @@ public class OrderControllerV1 {
 						.build()
 				)
 				.userId(request.userId())
+				.detailOrderDtoList(toUseCaseDto(request.detailOrderDtoList()))
 				.build()
 		);
 	}

@@ -12,7 +12,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan(basePackages = {
 	"store.nightmarket.persistence.persistorder",
 	"store.nightmarket.application.apporder",
-	"store.nightmarket.domain.order"
+	"store.nightmarket.domain.order",
+	"store.nightmarket.persistence.persistorder"
 })
 public class AppOrderApplication {
 
