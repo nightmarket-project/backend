@@ -1,6 +1,7 @@
 package store.nightmarket.domain.order.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,21 @@ public class OrderRecord extends BaseModel<OrderRecordId> {
 			detailOrderRecordList != null ? new ArrayList<>(detailOrderRecordList) : new ArrayList<>();
 	}
 
+	private OrderRecord(
+		OrderRecordId id,
+		LocalDateTime createdAt,
+		Address address,
+		LocalDate orderDate,
+		UserId userId,
+		List<DetailOrderRecord> detailOrderRecordList
+	) {
+		super(id, createdAt);
+		this.address = address;
+		this.orderDate = orderDate;
+		this.userId = userId;
+		this.detailOrderRecordList = detailOrderRecordList;
+	}
+
 	public static OrderRecord newInstance(
 		OrderRecordId id,
 		Address address,
@@ -43,6 +59,24 @@ public class OrderRecord extends BaseModel<OrderRecordId> {
 	) {
 		return new OrderRecord(
 			id,
+			address,
+			orderDate,
+			userId,
+			detailOrderRecordList
+		);
+	}
+
+	public static OrderRecord newInstanceWithCreatedAt(
+		OrderRecordId id,
+		LocalDateTime createdAt,
+		Address address,
+		LocalDate orderDate,
+		UserId userId,
+		List<DetailOrderRecord> detailOrderRecordList
+	) {
+		return new OrderRecord(
+			id,
+			createdAt,
 			address,
 			orderDate,
 			userId,
