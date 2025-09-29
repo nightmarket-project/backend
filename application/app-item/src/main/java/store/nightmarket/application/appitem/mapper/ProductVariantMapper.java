@@ -11,8 +11,9 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.QuantityEnti
 public class ProductVariantMapper {
 
 	public static ProductVariant toDomain(ProductVariantEntity entity) {
-		return ProductVariant.newInstance(
+		return ProductVariant.newInstanceWithCreatedAt(
 			new ProductVariantId(entity.getId()),
+			entity.getCreatedAt(),
 			new ProductId(entity.getProductId()),
 			new UserId(entity.getUserId()),
 			entity.getSKUCode(),
@@ -21,8 +22,9 @@ public class ProductVariantMapper {
 	}
 
 	public static ProductVariantEntity toEntity(ProductVariant domain) {
-		return ProductVariantEntity.newInstance(
+		return ProductVariantEntity.newInstanceWithCreatedAt(
 			domain.getProductVariantId().getId(),
+			domain.getCreatedAt(),
 			domain.getProductId().getId(),
 			domain.getSeller().getId(),
 			domain.getSKUCode(),
