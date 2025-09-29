@@ -11,8 +11,9 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
 public class ProductMapper {
 
 	public static Product toDomain(ProductEntity entity) {
-		return Product.newInstance(
+		return Product.newInstanceWithCreatedAt(
 			new ProductId(entity.getId()),
+			entity.getCreatedAt(),
 			new Name(entity.getNameEntity().getValue()),
 			entity.getDescription(),
 			new Price(entity.getPriceEntity().getAmount())
@@ -20,8 +21,9 @@ public class ProductMapper {
 	}
 
 	public static ProductEntity toEntity(Product domain) {
-		return ProductEntity.newInstance(
+		return ProductEntity.newInstanceWithCreatedAt(
 			domain.getProductId().getId(),
+			domain.getCreatedAt(),
 			new NameEntity(domain.getName().getValue()),
 			domain.getDescription(),
 			new PriceEntity(domain.getPrice().amount())

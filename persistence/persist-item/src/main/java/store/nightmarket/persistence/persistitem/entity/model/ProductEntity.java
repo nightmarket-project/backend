@@ -1,5 +1,6 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -40,6 +41,19 @@ public class ProductEntity extends BaseUuidEntity {
 		this.priceEntity = priceEntity;
 	}
 
+	private ProductEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		NameEntity nameEntity,
+		String description,
+		PriceEntity priceEntity
+	) {
+		super(id, createdAt);
+		this.nameEntity = nameEntity;
+		this.description = description;
+		this.priceEntity = priceEntity;
+	}
+
 	public static ProductEntity newInstance(
 		UUID id,
 		NameEntity nameEntity,
@@ -48,6 +62,22 @@ public class ProductEntity extends BaseUuidEntity {
 	) {
 		return new ProductEntity(
 			id,
+			nameEntity,
+			description,
+			priceEntity
+		);
+	}
+
+	public static ProductEntity newInstanceWithCreatedAt(
+		UUID id,
+		LocalDateTime createdAt,
+		NameEntity nameEntity,
+		String description,
+		PriceEntity priceEntity
+	) {
+		return new ProductEntity(
+			id,
+			createdAt,
 			nameEntity,
 			description,
 			priceEntity
