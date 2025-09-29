@@ -1,6 +1,8 @@
 package store.nightmarket.persistence.persistpayment.entity.model;
 
-import jakarta.persistence.Column;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
@@ -16,13 +18,25 @@ import store.nightmarket.persistence.persistpayment.entity.valueobject.PriceEnti
 public class ProductEntity extends BaseUuidEntity {
 
 	@Embedded
-	@Column(name = "price")
 	private PriceEntity priceEntity;
 
 	@OneToOne(mappedBy = "productEntity")
 	private DetailPaymentRecordEntity detailPaymentRecordEntity;
 
-	public ProductEntity(PriceEntity priceEntity) {
+	public ProductEntity(
+		UUID id,
+		PriceEntity priceEntity
+	) {
+		super(id);
+		this.priceEntity = priceEntity;
+	}
+
+	public ProductEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		PriceEntity priceEntity
+	) {
+		super(id, createdAt);
 		this.priceEntity = priceEntity;
 	}
 

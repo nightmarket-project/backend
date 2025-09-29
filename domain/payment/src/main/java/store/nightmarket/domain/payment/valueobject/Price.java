@@ -7,10 +7,10 @@ import lombok.Getter;
 @Getter
 public class Price {
 
-	private final BigDecimal amount;
+	private final BigDecimal price;
 
-	public Price(BigDecimal amount) {
-		this.amount = amount;
+	public Price(BigDecimal price) {
+		this.price = price;
 	}
 
 }
