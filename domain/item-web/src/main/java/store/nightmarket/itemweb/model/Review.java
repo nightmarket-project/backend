@@ -18,16 +18,16 @@ public class Review extends ImageOwnerModel<ReviewId> {
 	private final UserId author;
 	private CommentText commentText;
 	private Rating rating;
-	private final LocalDateTime createdAt;
-	private boolean deleted = false;
+	private final LocalDateTime writtenAt;
+	private boolean deleted;
 
-	public Review(
+	private Review(
 		ReviewId id,
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
 		Rating rating,
-		LocalDateTime createdAt
+		LocalDateTime writtenAt
 	) {
 		super(
 			id,
@@ -37,7 +37,28 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		this.author = author;
 		this.commentText = commentText;
 		this.rating = rating;
-		this.createdAt = createdAt;
+		this.writtenAt = writtenAt;
+	}
+
+	private Review(
+		ReviewId id,
+		LocalDateTime createdAt,
+		ProductPostId postId,
+		UserId author,
+		CommentText commentText,
+		Rating rating,
+		LocalDateTime writtenAt
+	) {
+		super(
+			id,
+			createdAt,
+			ImageOwnerType.REVIEW
+		);
+		this.postId = postId;
+		this.author = author;
+		this.commentText = commentText;
+		this.rating = rating;
+		this.writtenAt = writtenAt;
 	}
 
 	public static Review newInstance(
@@ -46,7 +67,7 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		UserId author,
 		CommentText commentText,
 		Rating rating,
-		LocalDateTime createdAt
+		LocalDateTime writtenAt
 	) {
 		return new Review(
 			id,
@@ -54,7 +75,27 @@ public class Review extends ImageOwnerModel<ReviewId> {
 			author,
 			commentText,
 			rating,
-			createdAt
+			writtenAt
+		);
+	}
+
+	public static Review newInstanceWithCreatedAt(
+		ReviewId id,
+		LocalDateTime createdAt,
+		ProductPostId postId,
+		UserId author,
+		CommentText commentText,
+		Rating rating,
+		LocalDateTime writtenAt
+	) {
+		return new Review(
+			id,
+			createdAt,
+			postId,
+			author,
+			commentText,
+			rating,
+			writtenAt
 		);
 	}
 
