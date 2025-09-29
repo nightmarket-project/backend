@@ -9,15 +9,17 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
 public class UserMapper {
 
 	public static User toDomain(UserEntity entity) {
-		return User.newInstance(
+		return User.newInstanceWithCreatedAt(
 			new UserId(entity.getId()),
+			entity.getCreatedAt(),
 			new Name(entity.getName().getValue())
 		);
 	}
 
 	public static UserEntity toEntity(User user) {
-		return UserEntity.newInstance(
+		return UserEntity.newInstanceWithCreatedAt(
 			user.getUserId().getId(),
+			user.getCreatedAt(),
 			new NameEntity(user.getName().getValue())
 		);
 	}
