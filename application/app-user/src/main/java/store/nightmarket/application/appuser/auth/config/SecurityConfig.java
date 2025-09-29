@@ -68,7 +68,7 @@ public class SecurityConfig {
 				.securityContextRepository(securityContextRepository())
 			)
 			.logout(logout -> logout
-				.logoutRequestMatcher(new AntPathRequestMatcher("/api/v1/auth/logout", "GET"))
+				.logoutRequestMatcher(new AntPathRequestMatcher("/api/v1/auth/logout", "POST"))
 				.logoutSuccessUrl("http://localhost:3000/?logout=success")
 				.invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID")
