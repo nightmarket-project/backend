@@ -1,5 +1,6 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -51,6 +52,21 @@ public class ImageManagerEntity extends BaseUuidEntity {
 		this.imageOwnerModelEntity = imageOwnerModelEntity;
 	}
 
+	private ImageManagerEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		ImageEntity imageEntity,
+		EntityImageType entityImageType,
+		int displayOrder,
+		ImageOwnerModelEntity imageOwnerModelEntity
+	) {
+		super(id, createdAt);
+		this.imageEntity = imageEntity;
+		this.entityImageType = entityImageType;
+		this.displayOrder = displayOrder;
+		this.imageOwnerModelEntity = imageOwnerModelEntity;
+	}
+
 	public static ImageManagerEntity newInstance(
 		UUID id,
 		ImageEntity imageEntity,
@@ -60,6 +76,24 @@ public class ImageManagerEntity extends BaseUuidEntity {
 	) {
 		return new ImageManagerEntity(
 			id,
+			imageEntity,
+			entityImageType,
+			displayOrder,
+			imageOwnerModelEntity
+		);
+	}
+
+	public static ImageManagerEntity newInstanceWithCreatedAt(
+		UUID id,
+		LocalDateTime createdAt,
+		ImageEntity imageEntity,
+		EntityImageType entityImageType,
+		int displayOrder,
+		ImageOwnerModelEntity imageOwnerModelEntity
+	) {
+		return new ImageManagerEntity(
+			id,
+			createdAt,
 			imageEntity,
 			entityImageType,
 			displayOrder,

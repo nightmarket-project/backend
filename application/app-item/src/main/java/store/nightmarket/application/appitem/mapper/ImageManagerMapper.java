@@ -11,8 +11,9 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.ImageEntity;
 public class ImageManagerMapper {
 
 	public static ImageManager toDomain(ImageManagerEntity entity) {
-		return ImageManager.newInstance(
+		return ImageManager.newInstanceWithCreatedAt(
 			new ImageManagerId(entity.getId()),
+			entity.getCreatedAt(),
 			new Image(entity.getImageEntity().getUrl()),
 			ImageTypeMapper.toDomain(entity.getEntityImageType()),
 			entity.getDisplayOrder(),
@@ -24,13 +25,14 @@ public class ImageManagerMapper {
 		ImageManager domain,
 		ImageOwnerModelEntity imageOwnerModelEntity
 	) {
-		return ImageManagerEntity.newInstance(
+		return ImageManagerEntity.newInstanceWithCreatedAt(
 			domain.getImageManagerId().getId(),
+			domain.getCreatedAt(),
 			new ImageEntity(domain.getImage().imageUrl()),
 			ImageTypeMapper.toEntity(domain.getDomainImageType()),
 			domain.getDisplayOrder(),
 			imageOwnerModelEntity
 		);
 	}
-	
+
 }
