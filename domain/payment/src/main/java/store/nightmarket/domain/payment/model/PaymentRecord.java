@@ -1,5 +1,6 @@
 package store.nightmarket.domain.payment.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.Getter;
@@ -24,6 +25,17 @@ public class PaymentRecord extends BaseModel<PaymentRecordId> {
 		this.detailPaymentRecordList = detailPaymentRecordList;
 	}
 
+	private PaymentRecord(
+		PaymentRecordId id,
+		LocalDateTime createdAt,
+		UserId userId,
+		List<DetailPaymentRecord> detailPaymentRecordList
+	) {
+		super(id, createdAt);
+		this.userId = userId;
+		this.detailPaymentRecordList = detailPaymentRecordList;
+	}
+
 	public static PaymentRecord newInstance(
 		PaymentRecordId id,
 		UserId userId,
@@ -31,6 +43,20 @@ public class PaymentRecord extends BaseModel<PaymentRecordId> {
 	) {
 		return new PaymentRecord(
 			id,
+			userId,
+			detailPaymentRecordList
+		);
+	}
+
+	public static PaymentRecord newInstanceWithCreatedAt(
+		PaymentRecordId id,
+		LocalDateTime createdAt,
+		UserId userId,
+		List<DetailPaymentRecord> detailPaymentRecordList
+	) {
+		return new PaymentRecord(
+			id,
+			createdAt,
 			userId,
 			detailPaymentRecordList
 		);

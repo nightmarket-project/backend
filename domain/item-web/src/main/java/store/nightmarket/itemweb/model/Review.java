@@ -18,16 +18,14 @@ public class Review extends ImageOwnerModel<ReviewId> {
 	private final UserId author;
 	private CommentText commentText;
 	private Rating rating;
-	private final LocalDateTime createdAt;
 	private boolean deleted = false;
 
-	public Review(
+	private Review(
 		ReviewId id,
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
-		Rating rating,
-		LocalDateTime createdAt
+		Rating rating
 	) {
 		super(
 			id,
@@ -37,7 +35,25 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		this.author = author;
 		this.commentText = commentText;
 		this.rating = rating;
-		this.createdAt = createdAt;
+	}
+
+	private Review(
+		ReviewId id,
+		LocalDateTime createdAt,
+		ProductPostId postId,
+		UserId author,
+		CommentText commentText,
+		Rating rating
+	) {
+		super(
+			id,
+			createdAt,
+			ImageOwnerType.REVIEW
+		);
+		this.postId = postId;
+		this.author = author;
+		this.commentText = commentText;
+		this.rating = rating;
 	}
 
 	public static Review newInstance(
@@ -45,16 +61,32 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		ProductPostId postId,
 		UserId author,
 		CommentText commentText,
-		Rating rating,
-		LocalDateTime createdAt
+		Rating rating
 	) {
 		return new Review(
 			id,
 			postId,
 			author,
 			commentText,
-			rating,
-			createdAt
+			rating
+		);
+	}
+
+	public static Review newInstanceWithCreatedAt(
+		ReviewId id,
+		LocalDateTime createdAt,
+		ProductPostId postId,
+		UserId author,
+		CommentText commentText,
+		Rating rating
+	) {
+		return new Review(
+			id,
+			createdAt,
+			postId,
+			author,
+			commentText,
+			rating
 		);
 	}
 
@@ -67,7 +99,7 @@ public class Review extends ImageOwnerModel<ReviewId> {
 		}
 
 		this.commentText = CommentText.createDeletedComment();
-		deleted = true;
+		this.deleted = true;
 	}
 
 	public void edit(

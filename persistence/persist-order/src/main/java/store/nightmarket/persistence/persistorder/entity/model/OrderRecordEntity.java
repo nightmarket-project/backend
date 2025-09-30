@@ -1,6 +1,7 @@
 package store.nightmarket.persistence.persistorder.entity.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -44,6 +45,21 @@ public class OrderRecordEntity extends BaseUuidEntity {
 		List<DetailOrderRecordEntity> detailOrderRecordList
 	) {
 		super(id);
+		this.addressEntity = addressEntity;
+		this.orderDate = orderDate;
+		this.userId = userId;
+		this.detailOrderRecordList = detailOrderRecordList;
+	}
+
+	public OrderRecordEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		AddressEntity addressEntity,
+		LocalDate orderDate,
+		UUID userId,
+		List<DetailOrderRecordEntity> detailOrderRecordList
+	) {
+		super(id, createdAt);
 		this.addressEntity = addressEntity;
 		this.orderDate = orderDate;
 		this.userId = userId;

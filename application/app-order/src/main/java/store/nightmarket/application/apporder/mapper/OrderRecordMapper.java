@@ -16,8 +16,9 @@ public class OrderRecordMapper {
 		List<DetailOrderRecord> domainDetails = DetailOrderRecordMapper
 			.toDomainList(entity.getDetailOrderRecordList());
 
-		return OrderRecord.newInstance(
+		return OrderRecord.newInstanceWithCreatedAt(
 			new OrderRecordId(entity.getId()),
+			entity.getCreatedAt(),
 			AddressMapper.toDomain(entity.getAddressEntity()),
 			entity.getOrderDate(),
 			new UserId(entity.getUserId()),
@@ -28,6 +29,7 @@ public class OrderRecordMapper {
 	public static OrderRecordEntity toEntity(OrderRecord domain) {
 		OrderRecordEntity entity = new OrderRecordEntity(
 			domain.getOrderRecordId().getId(),
+			domain.getCreatedAt(),
 			AddressMapper.toEntity(domain.getAddress()),
 			domain.getOrderDate(),
 			domain.getUserId().getId(),

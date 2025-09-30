@@ -15,13 +15,13 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity
 public class ReviewMapper {
 
 	public static Review toDomain(ReviewEntity entity) {
-		return Review.newInstance(
+		return Review.newInstanceWithCreatedAt(
 			new ReviewId(entity.getId()),
+			entity.getCreatedAt(),
 			new ProductPostId(entity.getProductPostEntity().getId()),
 			new UserId(entity.getUserEntity().getId()),
 			new CommentText(entity.getCommentTextEntity().getValue()),
-			new Rating(entity.getRatingEntity().getAmount()),
-			entity.getCreatedAt()
+			new Rating(entity.getRatingEntity().getAmount())
 		);
 	}
 
@@ -30,8 +30,9 @@ public class ReviewMapper {
 		ProductPostEntity productPostEntity,
 		UserEntity userEntity
 	) {
-		return ReviewEntity.newInstance(
+		return ReviewEntity.newInstanceWithCreatedAt(
 			domain.getReviewId().getId(),
+			domain.getCreatedAt(),
 			new CommentTextEntity(domain.getCommentText().getValue()),
 			new RatingEntity(domain.getRating().value()),
 			domain.isDeleted(),

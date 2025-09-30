@@ -1,5 +1,7 @@
 package store.nightmarket.domain.item.model;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.valueobject.Name;
@@ -18,12 +20,33 @@ public class User extends BaseModel<UserId> {
 		this.name = name;
 	}
 
+	private User(
+		UserId id,
+		LocalDateTime createdAt,
+		Name name
+	) {
+		super(id, createdAt);
+		this.name = name;
+	}
+
 	public static User newInstance(
 		UserId id,
 		Name name
 	) {
 		return new User(
 			id,
+			name
+		);
+	}
+
+	public static User newInstanceWithCreatedAt(
+		UserId id,
+		LocalDateTime createdAt,
+		Name name
+	) {
+		return new User(
+			id,
+			createdAt,
 			name
 		);
 	}

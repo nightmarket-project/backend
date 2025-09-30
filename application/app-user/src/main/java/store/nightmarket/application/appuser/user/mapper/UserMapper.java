@@ -16,8 +16,9 @@ import store.nightmarket.persistence.persistuser.entity.valueobject.PointEntity;
 public class UserMapper {
 
 	public static User toDomain(UserEntity entity) {
-		return User.newInstance(
+		return User.newInstanceWithCreatedAt(
 			new UserId(entity.getId()),
+			entity.getCreatedAt(),
 			new Name(entity.getNameEntity().getName()),
 			entity.getEmail(),
 			entity.getProfileImageUrl(),
@@ -31,6 +32,7 @@ public class UserMapper {
 	public static UserEntity toEntity(User domain) {
 		return new UserEntity(
 			domain.getUserId().getId(),
+			domain.getCreatedAt(),
 			new NameEntity(domain.getName().getValue()),
 			domain.getEmail(),
 			domain.getImageUrl(),

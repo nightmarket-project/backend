@@ -7,10 +7,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @MappedSuperclass
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BaseEntity {
 
 	@CreationTimestamp
@@ -20,6 +23,10 @@ public abstract class BaseEntity {
 	@UpdateTimestamp
 	@Column(name = "updated_at", nullable = false)
 	protected LocalDateTime updatedAt;
-	
+
+	protected BaseEntity(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
 }
 

@@ -1,5 +1,6 @@
 package store.nightmarket.domain.delivery.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,20 @@ public class DeliveryRecord extends BaseModel<DeliveryRecordId> {
 			deliveryTrackingRecordList != null ? new ArrayList<>(deliveryTrackingRecordList) : new ArrayList<>();
 	}
 
+	private DeliveryRecord(
+		DeliveryRecordId id,
+		LocalDateTime createdAt,
+		Address address,
+		UserId userId,
+		List<DeliveryTrackingRecord> deliveryTrackingRecordList
+	) {
+		super(id, createdAt);
+		this.address = address;
+		this.userId = userId;
+		this.deliveryTrackingRecordList =
+			deliveryTrackingRecordList != null ? new ArrayList<>(deliveryTrackingRecordList) : new ArrayList<>();
+	}
+
 	public static DeliveryRecord newInstance(
 		DeliveryRecordId id,
 		Address address,
@@ -39,6 +54,22 @@ public class DeliveryRecord extends BaseModel<DeliveryRecordId> {
 	) {
 		return new DeliveryRecord(
 			id,
+			address,
+			userId,
+			deliveryTrackingRecordList
+		);
+	}
+
+	public static DeliveryRecord newInstanceWithCreatedAt(
+		DeliveryRecordId id,
+		LocalDateTime createdAt,
+		Address address,
+		UserId userId,
+		List<DeliveryTrackingRecord> deliveryTrackingRecordList
+	) {
+		return new DeliveryRecord(
+			id,
+			createdAt,
 			address,
 			userId,
 			deliveryTrackingRecordList

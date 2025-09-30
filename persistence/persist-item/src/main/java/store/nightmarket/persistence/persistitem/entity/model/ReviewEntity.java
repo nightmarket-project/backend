@@ -1,5 +1,6 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -60,6 +61,23 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 		this.userEntity = userEntity;
 	}
 
+	public ReviewEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		CommentTextEntity commentTextEntity,
+		RatingEntity ratingEntity,
+		boolean deleted,
+		ProductPostEntity productPostEntity,
+		UserEntity userEntity
+	) {
+		super(id, createdAt);
+		this.commentTextEntity = commentTextEntity;
+		this.ratingEntity = ratingEntity;
+		this.deleted = deleted;
+		this.productPostEntity = productPostEntity;
+		this.userEntity = userEntity;
+	}
+
 	public static ReviewEntity newInstance(
 		UUID id,
 		CommentTextEntity commentTextEntity,
@@ -70,6 +88,26 @@ public class ReviewEntity extends ImageOwnerModelEntity {
 	) {
 		return new ReviewEntity(
 			id,
+			commentTextEntity,
+			ratingEntity,
+			deleted,
+			productPostEntity,
+			userEntity
+		);
+	}
+
+	public static ReviewEntity newInstanceWithCreatedAt(
+		UUID id,
+		LocalDateTime createdAt,
+		CommentTextEntity commentTextEntity,
+		RatingEntity ratingEntity,
+		boolean deleted,
+		ProductPostEntity productPostEntity,
+		UserEntity userEntity
+	) {
+		return new ReviewEntity(
+			id,
+			createdAt,
 			commentTextEntity,
 			ratingEntity,
 			deleted,

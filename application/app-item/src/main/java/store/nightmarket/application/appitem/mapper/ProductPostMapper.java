@@ -12,8 +12,9 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity
 public class ProductPostMapper {
 
 	public static ProductPost toDomain(ProductPostEntity entity) {
-		return ProductPost.newInstance(
+		return ProductPost.newInstanceWithCreatedAt(
 			new ProductPostId(entity.getId()),
+			entity.getCreatedAt(),
 			new ProductId(entity.getProductEntity().getId()),
 			new Rating(entity.getRatingEntity().getAmount()),
 			entity.isDeleted()
@@ -25,8 +26,9 @@ public class ProductPostMapper {
 		ProductEntity productEntity,
 		UserEntity userEntity
 	) {
-		return ProductPostEntity.newInstance(
+		return ProductPostEntity.newInstanceWithCreatedAt(
 			domain.getProductId().getId(),
+			domain.getCreatedAt(),
 			productEntity,
 			userEntity,
 			new RatingEntity(domain.getRating().value()),

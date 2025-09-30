@@ -1,5 +1,7 @@
 package store.nightmarket.itemweb.model;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.itemweb.state.DomainImageType;
@@ -29,6 +31,21 @@ public class ImageManager extends BaseModel<ImageManagerId> {
 		ImageOwnerId = imageOwnerId;
 	}
 
+	private ImageManager(
+		ImageManagerId id,
+		LocalDateTime createdAt,
+		Image image,
+		DomainImageType domainImageType,
+		int displayOrder,
+		ImageOwnerId imageOwnerId
+	) {
+		super(id, createdAt);
+		this.image = image;
+		this.domainImageType = domainImageType;
+		this.displayOrder = displayOrder;
+		ImageOwnerId = imageOwnerId;
+	}
+
 	public static ImageManager newInstance(
 		ImageManagerId id,
 		Image image,
@@ -38,6 +55,24 @@ public class ImageManager extends BaseModel<ImageManagerId> {
 	) {
 		return new ImageManager(
 			id,
+			image,
+			domainImageType,
+			displayOrder,
+			imageOwnerId
+		);
+	}
+
+	public static ImageManager newInstanceWithCreatedAt(
+		ImageManagerId id,
+		LocalDateTime createdAt,
+		Image image,
+		DomainImageType domainImageType,
+		int displayOrder,
+		ImageOwnerId imageOwnerId
+	) {
+		return new ImageManager(
+			id,
+			createdAt,
 			image,
 			domainImageType,
 			displayOrder,

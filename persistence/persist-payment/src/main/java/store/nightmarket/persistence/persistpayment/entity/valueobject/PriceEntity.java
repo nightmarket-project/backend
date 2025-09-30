@@ -16,6 +16,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class PriceEntity {
 
-	private BigDecimal amount;
+	private BigDecimal price;
 
 }

@@ -1,5 +1,6 @@
 package store.nightmarket.persistence.persistpayment.entity.model;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -42,6 +43,19 @@ public class DetailPaymentRecordEntity extends BaseUuidEntity {
 		PaymentRecordEntity paymentRecordEntity
 	) {
 		super(id);
+		this.state = state;
+		this.productEntity = productEntity;
+		this.paymentRecordEntity = paymentRecordEntity;
+	}
+
+	public DetailPaymentRecordEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		DetailPaymentState state,
+		ProductEntity productEntity,
+		PaymentRecordEntity paymentRecordEntity
+	) {
+		super(id, createdAt);
 		this.state = state;
 		this.productEntity = productEntity;
 		this.paymentRecordEntity = paymentRecordEntity;

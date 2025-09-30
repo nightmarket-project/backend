@@ -1,5 +1,7 @@
 package store.nightmarket.domain.item.model;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.valueobject.OptionGroupId;
@@ -28,6 +30,21 @@ public class OptionValue extends BaseModel<OptionValueId> {
 		this.order = order;
 	}
 
+	private OptionValue(
+		OptionValueId id,
+		LocalDateTime createdAt,
+		OptionGroupId optionGroupId,
+		String value,
+		Price price,
+		int order
+	) {
+		super(id, createdAt);
+		this.optionGroupId = optionGroupId;
+		this.value = value;
+		this.price = price;
+		this.order = order;
+	}
+
 	public static OptionValue newInstance(
 		OptionValueId id,
 		OptionGroupId optionGroupId,
@@ -37,6 +54,24 @@ public class OptionValue extends BaseModel<OptionValueId> {
 	) {
 		return new OptionValue(
 			id,
+			optionGroupId,
+			value,
+			price,
+			order
+		);
+	}
+
+	public static OptionValue newInstanceWithCreatedAt(
+		OptionValueId id,
+		LocalDateTime createdAt,
+		OptionGroupId optionGroupId,
+		String value,
+		Price price,
+		int order
+	) {
+		return new OptionValue(
+			id,
+			createdAt,
 			optionGroupId,
 			value,
 			price,

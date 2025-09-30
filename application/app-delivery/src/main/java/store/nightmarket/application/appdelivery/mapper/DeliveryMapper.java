@@ -16,8 +16,9 @@ public class DeliveryMapper {
 		List<DeliveryTrackingRecord> trackingRecords = DeliveryTrackingRecordMapper
 			.toDomainList(entity.getDeliveryTrackingRecords());
 
-		return DeliveryRecord.newInstance(
+		return DeliveryRecord.newInstanceWithCreatedAt(
 			new DeliveryRecordId(entity.getId()),
+			entity.getCreatedAt(),
 			AddressMapper.toDomain(entity.getAddressEntity()),
 			new UserId(entity.getUserId()),
 			trackingRecords
@@ -28,6 +29,7 @@ public class DeliveryMapper {
 
 		DeliveryRecordEntity entity = new DeliveryRecordEntity(
 			domain.getDeliveryRecordId().getId(),
+			domain.getCreatedAt(),
 			AddressMapper.toEntity(domain.getAddress()),
 			domain.getUserId().getId(),
 			new ArrayList<>()
