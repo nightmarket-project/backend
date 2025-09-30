@@ -177,7 +177,7 @@ project(':persist-user') {
 
 //application layer
 
-def app = [project(':app-item'), project(':app-order'), project(':app-payment'), project(':app-delivery'), project(':app-user')]
+def app = [project(':app-item'), project(':app-order'), project(':app-payment'), project(':app-delivery'), project(':app-user'), project(':logging')]
 
 configure(app) {
     bootJar {
