@@ -1,5 +1,6 @@
 package store.nightmarket.domain.order.model;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import lombok.Getter;
@@ -29,6 +30,19 @@ public class DetailOrderRecord extends BaseModel<DetailOrderRecordId> {
 		this.state = state;
 	}
 
+	private DetailOrderRecord(
+		DetailOrderRecordId id,
+		LocalDateTime createdAt,
+		ProductVariantId productVariantId,
+		Quantity quantity,
+		DetailOrderState state
+	) {
+		super(id, createdAt);
+		this.productVariantId = productVariantId;
+		this.quantity = quantity;
+		this.state = state;
+	}
+
 	public static DetailOrderRecord newInstance(
 		DetailOrderRecordId id,
 		ProductVariantId productVariantId,
@@ -37,6 +51,22 @@ public class DetailOrderRecord extends BaseModel<DetailOrderRecordId> {
 	) {
 		return new DetailOrderRecord(
 			id,
+			productVariantId,
+			quantity,
+			state
+		);
+	}
+
+	public static DetailOrderRecord newInstanceWithCreatedAt(
+		DetailOrderRecordId id,
+		LocalDateTime createdAt,
+		ProductVariantId productVariantId,
+		Quantity quantity,
+		DetailOrderState state
+	) {
+		return new DetailOrderRecord(
+			id,
+			createdAt,
 			productVariantId,
 			quantity,
 			state

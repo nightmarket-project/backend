@@ -12,8 +12,9 @@ import store.nightmarket.persistence.persistorder.entity.model.OrderRecordEntity
 public class DetailOrderRecordMapper {
 
 	public static DetailOrderRecord toDomain(DetailOrderRecordEntity entity) {
-		return DetailOrderRecord.newInstance(
+		return DetailOrderRecord.newInstanceWithCreatedAt(
 			new DetailOrderRecordId(entity.getId()),
+			entity.getCreatedAt(),
 			new ProductVariantId(entity.getProductVariantId()),
 			QuantityMapper.toDomain(entity.getQuantity()),
 			entity.getState()
@@ -26,6 +27,7 @@ public class DetailOrderRecordMapper {
 	) {
 		return new DetailOrderRecordEntity(
 			domain.getDetailOrderRecordId().getId(),
+			domain.getCreatedAt(),
 			domain.getProductVariantId().getId(),
 			QuantityMapper.toEntity(domain.getQuantity()),
 			domain.getState(),

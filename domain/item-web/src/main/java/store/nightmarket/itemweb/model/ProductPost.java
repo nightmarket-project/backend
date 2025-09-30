@@ -1,5 +1,7 @@
 package store.nightmarket.itemweb.model;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import store.nightmarket.domain.item.valueobject.ProductId;
 import store.nightmarket.itemweb.state.ImageOwnerType;
@@ -28,6 +30,23 @@ public class ProductPost extends ImageOwnerModel<ProductPostId> {
 		this.deleted = deleted;
 	}
 
+	private ProductPost(
+		ProductPostId id,
+		LocalDateTime createdAt,
+		ProductId productId,
+		Rating rating,
+		boolean deleted
+	) {
+		super(
+			id,
+			createdAt,
+			ImageOwnerType.PRODUCT_POST
+		);
+		this.productId = productId;
+		this.rating = rating;
+		this.deleted = deleted;
+	}
+
 	public static ProductPost newInstance(
 		ProductPostId id,
 		ProductId productId,
@@ -36,6 +55,22 @@ public class ProductPost extends ImageOwnerModel<ProductPostId> {
 	) {
 		return new ProductPost(
 			id,
+			productId,
+			rating,
+			deleted
+		);
+	}
+
+	public static ProductPost newInstanceWithCreatedAt(
+		ProductPostId id,
+		LocalDateTime createdAt,
+		ProductId productId,
+		Rating rating,
+		boolean deleted
+	) {
+		return new ProductPost(
+			id,
+			createdAt,
 			productId,
 			rating,
 			deleted

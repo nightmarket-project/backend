@@ -1,5 +1,6 @@
 package store.nightmarket.persistence.persistpayment.entity.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +33,17 @@ public class PaymentRecordEntity extends BaseUuidEntity {
 		List<DetailPaymentRecordEntity> detailPaymentRecordEntityList
 	) {
 		super(id);
+		this.userId = userId;
+		this.detailPaymentRecordEntityList = detailPaymentRecordEntityList;
+	}
+
+	public PaymentRecordEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		UUID userId,
+		List<DetailPaymentRecordEntity> detailPaymentRecordEntityList
+	) {
+		super(id, createdAt);
 		this.userId = userId;
 		this.detailPaymentRecordEntityList = detailPaymentRecordEntityList;
 	}

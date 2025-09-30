@@ -11,8 +11,9 @@ import store.nightmarket.persistence.persistpayment.entity.model.PaymentRecordEn
 public class DetailPaymentRecordMapper {
 
 	public static DetailPaymentRecord toDomain(DetailPaymentRecordEntity entity) {
-		return DetailPaymentRecord.newInstance(
+		return DetailPaymentRecord.newInstanceWithCreatedAt(
 			new DetailPaymentRecordId(entity.getId()),
+			entity.getCreatedAt(),
 			ProductMapper.toDomain(entity.getProductEntity()),
 			entity.getState()
 		);
@@ -24,6 +25,7 @@ public class DetailPaymentRecordMapper {
 	) {
 		return new DetailPaymentRecordEntity(
 			domain.getDetailPaymentRecordId().getId(),
+			domain.getCreatedAt(),
 			domain.getState(),
 			ProductMapper.toEntity(domain.getProduct()),
 			paymentRecordEntity

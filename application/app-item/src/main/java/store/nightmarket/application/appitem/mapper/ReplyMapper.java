@@ -13,12 +13,12 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.CommentTextE
 public class ReplyMapper {
 
 	public static Reply toDomain(ReplyEntity entity) {
-		return Reply.newInstance(
+		return Reply.newInstanceWithCreatedAt(
 			new ReplyId(entity.getId()),
+			entity.getCreatedAt(),
 			new CommentText(entity.getCommentTextEntity().getValue()),
 			new UserId(entity.getUserEntity().getId()),
-			new ReviewId(entity.getReviewEntity().getId()),
-			entity.getCreatedAt()
+			new ReviewId(entity.getReviewEntity().getId())
 		);
 	}
 
@@ -27,8 +27,9 @@ public class ReplyMapper {
 		ReviewEntity reviewEntity,
 		UserEntity userEntity
 	) {
-		return ReplyEntity.newInstance(
+		return ReplyEntity.newInstanceWithCreatedAt(
 			domain.getReplyId().getId(),
+			domain.getCreatedAt(),
 			new CommentTextEntity(domain.getCommentText().getValue()),
 			domain.isDeleted(),
 			userEntity,

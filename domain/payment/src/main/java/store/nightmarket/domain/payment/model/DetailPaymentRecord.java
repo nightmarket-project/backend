@@ -1,5 +1,7 @@
 package store.nightmarket.domain.payment.model;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.payment.exception.PaymentException;
@@ -22,6 +24,17 @@ public class DetailPaymentRecord extends BaseModel<DetailPaymentRecordId> {
 		this.state = state;
 	}
 
+	private DetailPaymentRecord(
+		DetailPaymentRecordId id,
+		LocalDateTime createdAt,
+		Product product,
+		DetailPaymentState state
+	) {
+		super(id, createdAt);
+		this.product = product;
+		this.state = state;
+	}
+
 	public static DetailPaymentRecord newInstance(
 		DetailPaymentRecordId id,
 		Product product,
@@ -29,6 +42,20 @@ public class DetailPaymentRecord extends BaseModel<DetailPaymentRecordId> {
 	) {
 		return new DetailPaymentRecord(
 			id,
+			product,
+			state
+		);
+	}
+
+	public static DetailPaymentRecord newInstanceWithCreatedAt(
+		DetailPaymentRecordId id,
+		LocalDateTime createdAt,
+		Product product,
+		DetailPaymentState state
+	) {
+		return new DetailPaymentRecord(
+			id,
+			createdAt,
 			product,
 			state
 		);

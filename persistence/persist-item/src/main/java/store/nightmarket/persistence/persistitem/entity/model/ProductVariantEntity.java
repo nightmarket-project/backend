@@ -1,5 +1,6 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -51,6 +52,21 @@ public class ProductVariantEntity extends BaseUuidEntity {
 		this.quantityEntity = quantityEntity;
 	}
 
+	private ProductVariantEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		UUID productId,
+		UUID userId,
+		String SKUCode,
+		QuantityEntity quantityEntity
+	) {
+		super(id, createdAt);
+		this.productId = productId;
+		this.userId = userId;
+		this.SKUCode = SKUCode;
+		this.quantityEntity = quantityEntity;
+	}
+
 	public static ProductVariantEntity newInstance(
 		UUID id,
 		UUID productId,
@@ -60,6 +76,24 @@ public class ProductVariantEntity extends BaseUuidEntity {
 	) {
 		return new ProductVariantEntity(
 			id,
+			productId,
+			userId,
+			SKUCode,
+			quantityEntity
+		);
+	}
+
+	public static ProductVariantEntity newInstanceWithCreatedAt(
+		UUID id,
+		LocalDateTime createdAt,
+		UUID productId,
+		UUID userId,
+		String SKUCode,
+		QuantityEntity quantityEntity
+	) {
+		return new ProductVariantEntity(
+			id,
+			createdAt,
 			productId,
 			userId,
 			SKUCode,

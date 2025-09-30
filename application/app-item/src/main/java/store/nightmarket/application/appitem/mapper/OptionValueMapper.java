@@ -11,8 +11,9 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
 public class OptionValueMapper {
 
 	public static OptionValue toDomain(OptionValueEntity entity) {
-		return OptionValue.newInstance(
+		return OptionValue.newInstanceWithCreatedAt(
 			new OptionValueId(entity.getId()),
+			entity.getCreatedAt(),
 			new OptionGroupId(entity.getOptionGroupEntity().getId()),
 			entity.getName(),
 			new Price(entity.getPriceEntity().getAmount()),
@@ -24,8 +25,9 @@ public class OptionValueMapper {
 		OptionValue domain,
 		OptionGroupEntity optionGroupEntity
 	) {
-		return OptionValueEntity.newInstance(
+		return OptionValueEntity.newInstanceWithCreatedAt(
 			domain.getOptionValueId().getId(),
+			domain.getCreatedAt(),
 			domain.getValue(),
 			new PriceEntity(domain.getPrice().amount()),
 			domain.getOrder(),

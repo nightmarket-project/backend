@@ -1,5 +1,6 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -42,6 +43,19 @@ public class VariantOptionValueEntity extends BaseUuidEntity {
 		this.optionValueEntity = optionValueEntity;
 	}
 
+	private VariantOptionValueEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		ProductVariantEntity productVariantEntity,
+		OptionGroupEntity optionGroupEntity,
+		OptionValueEntity optionValueEntity
+	) {
+		super(id, createdAt);
+		this.productVariantEntity = productVariantEntity;
+		this.optionGroupEntity = optionGroupEntity;
+		this.optionValueEntity = optionValueEntity;
+	}
+
 	public static VariantOptionValueEntity newInstance(
 		UUID id,
 		ProductVariantEntity productVariantEntity,
@@ -50,6 +64,22 @@ public class VariantOptionValueEntity extends BaseUuidEntity {
 	) {
 		return new VariantOptionValueEntity(
 			id,
+			productVariantEntity,
+			optionGroupEntity,
+			optionValueEntity
+		);
+	}
+
+	public static VariantOptionValueEntity newInstanceWithCreatedAt(
+		UUID id,
+		LocalDateTime createdAt,
+		ProductVariantEntity productVariantEntity,
+		OptionGroupEntity optionGroupEntity,
+		OptionValueEntity optionValueEntity
+	) {
+		return new VariantOptionValueEntity(
+			id,
+			createdAt,
 			productVariantEntity,
 			optionGroupEntity,
 			optionValueEntity

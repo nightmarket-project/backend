@@ -17,8 +17,9 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.QuantityEnti
 public class ShoppingBasketProductMapper {
 
 	public static ShoppingBasketProduct toDomain(ShoppingBasketProductEntity entity) {
-		return ShoppingBasketProduct.newInstance(
+		return ShoppingBasketProduct.newInstanceWithCreatedAt(
 			new ShoppingBasketProductId(entity.getId()),
+			entity.getCreatedAt(),
 			new ProductVariantId(entity.getProductVariantEntity().getId()),
 			new UserId(entity.getUserEntity().getId()),
 			new Name(entity.getNameEntity().getValue()),
@@ -32,8 +33,9 @@ public class ShoppingBasketProductMapper {
 		ProductVariantEntity productVariantEntity,
 		UserEntity userEntity
 	) {
-		return ShoppingBasketProductEntity.newInstance(
+		return ShoppingBasketProductEntity.newInstanceWithCreatedAt(
 			domain.getShoppingBasketProductId().getId(),
+			domain.getCreatedAt(),
 			new NameEntity(domain.getName().getValue()),
 			new QuantityEntity(domain.getQuantity().value()),
 			new PriceEntity(domain.getUnitPrice().amount()),

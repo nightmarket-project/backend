@@ -1,5 +1,6 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,12 +45,33 @@ public class UserEntity extends BaseUuidEntity {
 		this.name = name;
 	}
 
+	public UserEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		NameEntity name
+	) {
+		super(id, createdAt);
+		this.name = name;
+	}
+
 	public static UserEntity newInstance(
 		UUID id,
 		NameEntity name
 	) {
 		return new UserEntity(
 			id,
+			name
+		);
+	}
+
+	public static UserEntity newInstanceWithCreatedAt(
+		UUID id,
+		LocalDateTime createdAt,
+		NameEntity name
+	) {
+		return new UserEntity(
+			id,
+			createdAt,
 			name
 		);
 	}

@@ -1,5 +1,7 @@
 package store.nightmarket.domain.item.model;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.valueobject.OptionGroupId;
@@ -26,6 +28,19 @@ public class VariantOptionValue extends BaseModel<VariantOptionValueId> {
 		this.optionValueId = optionValueId;
 	}
 
+	private VariantOptionValue(
+		VariantOptionValueId id,
+		LocalDateTime createdAt,
+		ProductVariantId productVariantId,
+		OptionGroupId optionGroupId,
+		OptionValueId optionValueId
+	) {
+		super(id, createdAt);
+		this.productVariantId = productVariantId;
+		this.optionGroupId = optionGroupId;
+		this.optionValueId = optionValueId;
+	}
+
 	public static VariantOptionValue newInstance(
 		VariantOptionValueId id,
 		ProductVariantId productVariantId,
@@ -34,6 +49,22 @@ public class VariantOptionValue extends BaseModel<VariantOptionValueId> {
 	) {
 		return new VariantOptionValue(
 			id,
+			productVariantId,
+			optionGroupId,
+			optionValueId
+		);
+	}
+
+	public static VariantOptionValue newInstanceWithCreatedAt(
+		VariantOptionValueId id,
+		LocalDateTime createdAt,
+		ProductVariantId productVariantId,
+		OptionGroupId optionGroupId,
+		OptionValueId optionValueId
+	) {
+		return new VariantOptionValue(
+			id,
+			createdAt,
 			productVariantId,
 			optionGroupId,
 			optionValueId

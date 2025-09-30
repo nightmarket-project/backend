@@ -1,5 +1,6 @@
 package store.nightmarket.persistence.persistuser.entity.model;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -59,6 +60,27 @@ public class UserEntity extends BaseUuidEntity {
 		String providerId
 	) {
 		super(id);
+		this.nameEntity = nameEntity;
+		this.email = email;
+		this.profileImageUrl = profileImageUrl;
+		this.pointEntity = pointEntity;
+		this.role = role;
+		this.authProvider = authProvider;
+		this.providerId = providerId;
+	}
+
+	public UserEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		NameEntity nameEntity,
+		String email,
+		String profileImageUrl,
+		PointEntity pointEntity,
+		UserRole role,
+		AuthProvider authProvider,
+		String providerId
+	) {
+		super(id, createdAt);
 		this.nameEntity = nameEntity;
 		this.email = email;
 		this.profileImageUrl = profileImageUrl;

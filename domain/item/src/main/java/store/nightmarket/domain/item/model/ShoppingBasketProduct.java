@@ -1,6 +1,7 @@
 package store.nightmarket.domain.item.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
@@ -38,6 +39,24 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
 		this.quantity = quantity;
 	}
 
+	private ShoppingBasketProduct(
+		ShoppingBasketProductId id,
+		LocalDateTime createdAt,
+		ProductVariantId variantId,
+		UserId userId,
+		Name name,
+		Price unitPrice,
+		Quantity quantity
+	) {
+		super(id, createdAt);
+		validateQuantity(quantity);
+		this.variantId = variantId;
+		this.userId = userId;
+		this.name = name;
+		this.unitPrice = unitPrice;
+		this.quantity = quantity;
+	}
+
 	public static ShoppingBasketProduct newInstance(
 		ShoppingBasketProductId id,
 		ProductVariantId variantId,
@@ -48,6 +67,26 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
 	) {
 		return new ShoppingBasketProduct(
 			id,
+			variantId,
+			userId,
+			name,
+			unitPrice,
+			quantity
+		);
+	}
+
+	public static ShoppingBasketProduct newInstanceWithCreatedAt(
+		ShoppingBasketProductId id,
+		LocalDateTime createdAt,
+		ProductVariantId variantId,
+		UserId userId,
+		Name name,
+		Price unitPrice,
+		Quantity quantity
+	) {
+		return new ShoppingBasketProduct(
+			id,
+			createdAt,
 			variantId,
 			userId,
 			name,

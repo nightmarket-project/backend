@@ -59,4 +59,21 @@ public class DeliveryTrackingRecordEntity extends BaseUuidEntity {
 		this.deliveryRecordEntity = deliveryRecordEntity;
 	}
 
+	public DeliveryTrackingRecordEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		LocalDateTime time,
+		LocationEntity locationEntity,
+		DetailDeliveryState state,
+		String content,
+		DeliveryRecordEntity deliveryRecordEntity
+	) {
+		super(id, createdAt);
+		this.time = time;
+		this.locationEntity = locationEntity;
+		this.state = state;
+		this.content = content;
+		this.deliveryRecordEntity = deliveryRecordEntity;
+	}
+
 }

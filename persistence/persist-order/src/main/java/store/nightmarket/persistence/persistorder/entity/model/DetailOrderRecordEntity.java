@@ -2,6 +2,7 @@ package store.nightmarket.persistence.persistorder.entity.model;
 
 import static lombok.AccessLevel.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -29,6 +30,7 @@ public class DetailOrderRecordEntity extends BaseUuidEntity {
 	private UUID productVariantId;
 
 	@Embedded
+	@Column(name = "quantity", nullable = false)
 	private QuantityEntity quantity;
 
 	@Enumerated(EnumType.STRING)
@@ -47,6 +49,21 @@ public class DetailOrderRecordEntity extends BaseUuidEntity {
 		OrderRecordEntity orderRecordEntity
 	) {
 		super(id);
+		this.productVariantId = productVariantId;
+		this.quantity = quantity;
+		this.state = state;
+		this.orderRecordEntity = orderRecordEntity;
+	}
+
+	public DetailOrderRecordEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		UUID productVariantId,
+		QuantityEntity quantity,
+		DetailOrderState state,
+		OrderRecordEntity orderRecordEntity
+	) {
+		super(id, createdAt);
 		this.productVariantId = productVariantId;
 		this.quantity = quantity;
 		this.state = state;

@@ -1,5 +1,6 @@
 package store.nightmarket.persistence.persistitem.entity.model;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -36,12 +37,27 @@ public class OptionValueEntity extends BaseUuidEntity {
 
 	private OptionValueEntity(
 		UUID id,
-		String value,
+		String name,
 		PriceEntity priceEntity,
 		int displayOrder,
 		OptionGroupEntity optionGroupEntity
 	) {
 		super(id);
+		this.name = name;
+		this.priceEntity = priceEntity;
+		this.displayOrder = displayOrder;
+		this.optionGroupEntity = optionGroupEntity;
+	}
+
+	private OptionValueEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		String name,
+		PriceEntity priceEntity,
+		int displayOrder,
+		OptionGroupEntity optionGroupEntity
+	) {
+		super(id, createdAt);
 		this.name = name;
 		this.priceEntity = priceEntity;
 		this.displayOrder = displayOrder;
@@ -57,6 +73,24 @@ public class OptionValueEntity extends BaseUuidEntity {
 	) {
 		return new OptionValueEntity(
 			id,
+			name,
+			priceEntity,
+			displayOrder,
+			optionGroupEntity
+		);
+	}
+
+	public static OptionValueEntity newInstanceWithCreatedAt(
+		UUID id,
+		LocalDateTime createdAt,
+		String name,
+		PriceEntity priceEntity,
+		int displayOrder,
+		OptionGroupEntity optionGroupEntity
+	) {
+		return new OptionValueEntity(
+			id,
+			createdAt,
 			name,
 			priceEntity,
 			displayOrder,

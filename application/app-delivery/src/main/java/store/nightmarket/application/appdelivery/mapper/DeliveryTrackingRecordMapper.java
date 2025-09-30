@@ -12,8 +12,9 @@ import store.nightmarket.persistence.persistdelivery.entity.model.DeliveryTracki
 public class DeliveryTrackingRecordMapper {
 
 	public static DeliveryTrackingRecord toDomain(DeliveryTrackingRecordEntity entity) {
-		return DeliveryTrackingRecord.newInstance(
+		return DeliveryTrackingRecord.newInstanceWithCreatedAt(
 			new DeliveryTrackingRecordId(entity.getId()),
+			entity.getCreatedAt(),
 			entity.getTime(),
 			LocationMapper.toDomain(entity.getLocationEntity()),
 			DetailDeliveryState.valueOf(entity.getState().name()),
@@ -27,6 +28,7 @@ public class DeliveryTrackingRecordMapper {
 	) {
 		return new DeliveryTrackingRecordEntity(
 			domain.getDeliveryTrackingRecordId().getId(),
+			domain.getCreatedAt(),
 			domain.getTime(),
 			LocationMapper.toEntity(domain.getLocation()),
 			domain.getState(),
