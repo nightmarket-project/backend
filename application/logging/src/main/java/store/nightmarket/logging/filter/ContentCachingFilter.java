@@ -33,7 +33,11 @@ public class ContentCachingFilter implements Filter {
 		ContentCachingResponseWrapper wrappedResponse =
 			new ContentCachingResponseWrapper((HttpServletResponse)servletResponse);
 
-		filterChain.doFilter(wrappedRequest, wrappedResponse);
+		try {
+			filterChain.doFilter(wrappedRequest, wrappedResponse);
+		} finally {
+			wrappedResponse.copyBodyToResponse();
+		}
 	}
 
 }
