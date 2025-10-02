@@ -40,3 +40,5 @@ include 'app-delivery'
 project(':app-delivery').projectDir = file('application/app-delivery')
 include 'app-user'
 project(':app-user').projectDir = file('application/app-user')
+include 'logging'
+project(':logging').projectDir = file('application/logging')

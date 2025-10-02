@@ -177,7 +177,7 @@ project(':persist-user') {
 
 //application layer
 
-def app = [project(':app-item'), project(':app-order'), project(':app-payment'), project(':app-delivery'), project(':app-user')]
+def app = [project(':app-item'), project(':app-order'), project(':app-payment'), project(':app-delivery'), project(':app-user'), project(':logging')]
 
 configure(app) {
     bootJar {
@@ -271,4 +271,16 @@ project(':app-user') {
         implementation "org.springframework.boot:spring-boot-starter-security"
     }
 
+}
+
+project(':logging') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+
+    }
 }
