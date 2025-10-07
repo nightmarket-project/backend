@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import net.logstash.logback.argument.StructuredArguments;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import feign.Logger;
 import feign.Request;
 import feign.Response;
@@ -76,12 +78,20 @@ public class FeignLogger extends Logger {
 	}
 
 	private Object parseRequestBody(Request request) {
-		if (request.body() == null)
+		if (request == null || request.body() == null) {
 			return null;
+		}
+
 		try {
-			return new String(request.body(), request.charset());
+			String body = new String(request.body(), request.charset());
+
+			try {
+				return new ObjectMapper().readTree(body);
+			} catch (Exception e) {
+				return body;
+			}
 		} catch (Exception e) {
-			return "cannot read body";
+			return null;
 		}
 	}
 
@@ -90,9 +100,14 @@ public class FeignLogger extends Logger {
 			return null;
 
 		try (InputStream inputStream = response.body().asInputStream()) {
-			return new String(inputStream.readAllBytes(), response.charset());
+			String body = new String(inputStream.readAllBytes(), response.charset());
+			try {
+				return new ObjectMapper().readTree(body);
+			} catch (Exception e) {
+				return body;
+			}
 		} catch (Exception e) {
-			return "cannot read body";
+			return null;
 		}
 	}
 
