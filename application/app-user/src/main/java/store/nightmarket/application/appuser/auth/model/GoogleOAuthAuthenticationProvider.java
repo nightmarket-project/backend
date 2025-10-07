@@ -48,7 +48,7 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 			.orElseGet(() -> saveUserPort.save(UserMapper.toDomainFromGoogleUser(googleUser)));
 
 		return new UsernamePasswordAuthenticationToken(
-			user,
+			user.getUserId(),
 			null,
 			Collections.singleton(new SimpleGrantedAuthority(user.getRole().name()))
 		);

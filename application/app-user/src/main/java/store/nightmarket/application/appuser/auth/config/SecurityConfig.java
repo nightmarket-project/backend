@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import lombok.RequiredArgsConstructor;
@@ -39,10 +40,11 @@ public class SecurityConfig {
 		AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
 
 		http
+			.requestCache(cache -> cache.requestCache(new NullRequestCache()))
 			.csrf(csrf -> csrf
 				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-				.ignoringRequestMatchers("/api/v1/test/**")
-				.ignoringRequestMatchers("/api/v1/auth/**")
+				.ignoringRequestMatchers("/api/v1/test/*")
+				.ignoringRequestMatchers("/api/v1/auth/*")
 			)
 			.cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
 			.httpBasic(AbstractHttpConfigurer::disable)
