@@ -2,7 +2,6 @@ package store.nightmarket.logging.filter;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -15,7 +14,6 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import net.logstash.logback.argument.StructuredArguments;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.FilterChain;
@@ -23,13 +21,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import store.nightmarket.logging.model.detail.AccessEvent;
 
 @Slf4j
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE + 1)
 public class LoggingFilter extends OncePerRequestFilter {
-
-	ObjectMapper objectMapper = new ObjectMapper();
 
 	@Override
 	protected void doFilterInternal(
@@ -38,6 +35,7 @@ public class LoggingFilter extends OncePerRequestFilter {
 		FilterChain filterChain
 	) throws ServletException, IOException {
 
+		long startTime = System.currentTimeMillis();
 		ContentCachingRequestWrapper wrappedRequest = (ContentCachingRequestWrapper)request;
 		ContentCachingResponseWrapper wrappedResponse = (ContentCachingResponseWrapper)response;
 
@@ -45,60 +43,55 @@ public class LoggingFilter extends OncePerRequestFilter {
 			filterChain.doFilter(wrappedRequest, wrappedResponse);
 		} finally {
 			logRequest(wrappedRequest);
-			logResponse(wrappedResponse);
+			logResponse(wrappedResponse, wrappedRequest, startTime);
 		}
 
 	}
 
 	private void logRequest(ContentCachingRequestWrapper request) throws IOException {
-		if (request == null)
-			return;
 
-		String body = new String(request.getContentAsByteArray(), request.getCharacterEncoding());
+		AccessEvent event = AccessEvent.builder()
+			.eventType("HTTP")
+			.direction("IN")
+			.uri(request.getRequestURI())
+			.method(request.getMethod())
+			.headers(getHeaderMap(request))
+			.body(parseBody(new String(request.getContentAsByteArray(), request.getCharacterEncoding())))
+			.build();
 
-		Map<String, Object> requestMap = new HashMap<>();
-		requestMap.put("method", request.getMethod());
-		requestMap.put("uri", request.getRequestURI());
-		requestMap.put("headers", Collections.list(request.getHeaderNames())
-			.stream().collect(Collectors.toMap(h -> h, request::getHeader)));
-
-		if (!body.isEmpty()) {
-			try {
-				JsonNode jsonBody = objectMapper.readTree(body);
-				requestMap.put("body", jsonBody);
-			} catch (Exception e) {
-				requestMap.put("body", body);
-			}
-		} else {
-			requestMap.put("body", null);
-		}
-
-		log.info(">>> REQUEST", StructuredArguments.value("request", requestMap));
+		log.info(">>> HTTP REQUEST", StructuredArguments.value("event", event));
 	}
 
-	private void logResponse(ContentCachingResponseWrapper response) throws IOException {
-		if (response == null)
-			return;
+	private void logResponse(ContentCachingResponseWrapper response, ContentCachingRequestWrapper request,
+		long startTime) throws
+		IOException {
 
-		String body = new String(response.getContentAsByteArray(), response.getCharacterEncoding());
+		AccessEvent event = AccessEvent.builder()
+			.eventType("HTTP")
+			.direction("OUT")
+			.uri(request.getRequestURI())
+			.method(request.getMethod())
+			.headers(getHeaderMap(request))
+			.body(parseBody(new String(response.getContentAsByteArray(), response.getCharacterEncoding())))
+			.status(response.getStatus())
+			.responseTimeMs(System.currentTimeMillis() - startTime)
+			.build();
 
-		Map<String, Object> responseMap = new HashMap<>();
-		responseMap.put("status", response.getStatus());
-		responseMap.put("headers", response.getHeaderNames()
-			.stream().collect(Collectors.toMap(h -> h, response::getHeader)));
+		log.info(">>> HTTP RESPONSE", StructuredArguments.value("event", event));
+	}
 
-		if (!body.isEmpty()) {
-			try {
-				JsonNode jsonBody = objectMapper.readTree(body);
-				responseMap.put("body", jsonBody);
-			} catch (Exception e) {
-				responseMap.put("body", body);
-			}
-		} else {
-			responseMap.put("body", null);
+	private static Map<String, Object> getHeaderMap(ContentCachingRequestWrapper request) {
+		return Collections.list(request.getHeaderNames())
+			.stream()
+			.collect(Collectors.toMap(h -> h, request::getHeader));
+	}
+
+	private Object parseBody(String body) {
+		try {
+			return new ObjectMapper().readTree(body);
+		} catch (Exception e) {
+			return body;
 		}
-
-		log.info("<<< RESPONSE", StructuredArguments.value("response", responseMap));
 	}
 
 }
