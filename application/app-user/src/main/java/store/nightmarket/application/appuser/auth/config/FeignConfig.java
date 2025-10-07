@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import feign.Logger;
-import store.nightmarket.application.appuser.auth.logging.FeignLogger;
+import store.nightmarket.logging.FeignLogger;
 
 @Configuration
 public class FeignConfig {

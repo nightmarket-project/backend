@@ -1,4 +1,4 @@
-package store.nightmarket.application.appuser.auth.logging;
+package store.nightmarket.logging;
 
 import java.io.IOException;
 import java.io.InputStream;
