@@ -1,7 +1,7 @@
 package store.nightmarket.logging;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -55,7 +55,7 @@ public class FeignLogger extends Logger {
 			.uri(response.request().url())
 			.method(response.request().httpMethod().name())
 			.headers(flattenHeaders(response.request().headers()))
-			.body(parseResponseBody(response))
+			.body(parseResponseBody(bodyData, response.charset()))
 			.status(response.status())
 			.responseTimeMs(elapsedTime)
 			.build();
@@ -82,33 +82,25 @@ public class FeignLogger extends Logger {
 			return null;
 		}
 
-		try {
-			String body = new String(request.body(), request.charset());
+		String body = new String(request.body(), request.charset());
 
-			try {
-				return new ObjectMapper().readTree(body);
-			} catch (Exception e) {
-				return body;
-			}
+		try {
+			return new ObjectMapper().readTree(body);
 		} catch (Exception e) {
-			return null;
+			return body;
 		}
+
 	}
 
-	private Object parseResponseBody(Response response) {
-		if (response == null || response.body() == null)
-			return null;
+	private Object parseResponseBody(byte[] bodyData, Charset charset) {
+		String body = new String(bodyData, charset);
 
-		try (InputStream inputStream = response.body().asInputStream()) {
-			String body = new String(inputStream.readAllBytes(), response.charset());
-			try {
-				return new ObjectMapper().readTree(body);
-			} catch (Exception e) {
-				return body;
-			}
+		try {
+			return new ObjectMapper().readTree(body);
 		} catch (Exception e) {
-			return null;
+			return body;
 		}
+
 	}
 
 }
