@@ -2,22 +2,8 @@
 <configuration scan="true">
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <providers>
-                <timestamp/>
-                <version/>
-                <logLevel/>
-                <loggerName/>
-                <threadName/>
-                <message/>
-                <logstashMarkers/>
-                <arguments/>
-
-                <!-- MDC 자동 포함 (traceId, spanId) -->
-                <mdc/>
-
-                <context/>
-            </providers>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
