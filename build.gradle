@@ -185,6 +185,7 @@ configure(app) {
     }
     dependencies {
         implementation project(':common')
+        implementation project(':logging')
 
         // Spring Boot
         implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -215,6 +216,10 @@ configure(app) {
         testImplementation 'org.assertj:assertj-core:3.27.3'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
+
+        implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        implementation 'io.micrometer:micrometer-tracing-bridge-brave'
     }
 }
 
