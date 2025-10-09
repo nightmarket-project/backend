@@ -1,5 +1,6 @@
 package store.nightmarket.persistence.persistitem.repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,5 +30,7 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariantEn
 			"JOIN ProductPostEntity productPostEntity ON productPostEntity.productEntity.id = productEntity.id " +
 			"WHERE productVariantEntity.id IN :productVariantIds")
 	List<ProductVariantPostIdSummary> findProductPostIdsByProductVariantIds(@Param("productVariantIds") List<UUID> productVariantIds);
+
+	List<ProductVariantEntity> findProductVariantEntitiesByIdIn(Collection<UUID> ids);
 
 }
