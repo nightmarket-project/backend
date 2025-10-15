@@ -2,105 +2,69 @@ package store.nightmarket.logging;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import net.logstash.logback.argument.StructuredArguments;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import feign.Logger;
 import feign.Request;
 import feign.Response;
 import feign.Util;
-import lombok.extern.slf4j.Slf4j;
-import store.nightmarket.logging.model.detail.FeignEvent;
+import store.nightmarket.logging.model.detail.FeignLog;
 
-@Slf4j
 public class FeignLogger extends Logger {
 
 	@Override
 	protected void log(String configKey, String format, Object... args) {
-
 	}
 
 	@Override
 	protected void logRequest(String configKey, Level logLevel, Request request) {
-
-		FeignEvent event = FeignEvent.builder()
-			.eventType("FEIGN")
-			.direction("OUT")
-			.feignClient(configKey)
-			.targetService(extractServiceName(request))
-			.uri(request.url())
-			.method(request.httpMethod().name())
-			.headers(flattenHeaders(request.headers()))
-			.body(parseRequestBody(request))
-			.build();
-
-		log.info(">>> FEIGN REQUEST", StructuredArguments.value("event", event));
 	}
 
 	@Override
-	protected Response logAndRebufferResponse(String configKey, Level logLevel, Response response,
-		long elapsedTime) throws IOException {
-		byte[] bodyData = Util.toByteArray(response.body().asInputStream());
+	protected Response logAndRebufferResponse(String configKey, Level logLevel, Response response, long elapsedTime)
+		throws IOException {
 
-		FeignEvent event = FeignEvent.builder()
+		byte[] requestBodyData = response.request().body();
+
+		byte[] responseBodyData = (response.body() == null) ?
+			null : Util.toByteArray(response.body().asInputStream());
+
+		String requestBody = parseBody(requestBodyData, response.request().charset());
+		String responseBody = parseBody(responseBodyData, response.charset());
+
+		FeignLog logData = FeignLog.builder()
 			.eventType("FEIGN")
-			.direction("IN")
-			.feignClient(configKey)
-			.targetService(extractServiceName(response.request()))
 			.uri(response.request().url())
 			.method(response.request().httpMethod().name())
-			.headers(flattenHeaders(response.request().headers()))
-			.body(parseResponseBody(bodyData, response.charset()))
 			.status(response.status())
 			.responseTimeMs(elapsedTime)
+			.requestHeaders(extractHeaders(response.request().headers()))
+			.responseHeaders(extractHeaders(response.headers()))
+			.requestBody(requestBody)
+			.responseBody(responseBody)
 			.build();
 
-		log.info(">>> FEIGN RESPONSE", StructuredArguments.value("event", event));
+		CustomLogger.log(logData);
 
-		return response.toBuilder().body(bodyData).build();
+		return response.toBuilder().body(responseBodyData).build();
 	}
 
-	private String extractServiceName(Request request) {
-		return request.url().split("/")[2]; //ex http://order-service/api/... → order-service
-	}
-
-	private Map<String, Object> flattenHeaders(Map<String, Collection<String>> headers) {
+	private Map<String, String> extractHeaders(Map<String, Collection<String>> headers) {
+		if (headers == null)
+			return Collections.emptyMap();
 		return headers.entrySet().stream()
-			.collect(Collectors.toMap(
-				Map.Entry::getKey,
-				Map.Entry::getValue
-			));
+			.collect(Collectors.toMap(Map.Entry::getKey, e -> String.join(",", e.getValue())));
 	}
 
-	private Object parseRequestBody(Request request) {
-		if (request == null || request.body() == null) {
+	private String parseBody(byte[] data, Charset charset) {
+		if (data == null || data.length == 0)
 			return null;
-		}
-
-		String body = new String(request.body(), request.charset());
-
-		try {
-			return new ObjectMapper().readTree(body);
-		} catch (Exception e) {
-			return body;
-		}
-
-	}
-
-	private Object parseResponseBody(byte[] bodyData, Charset charset) {
-		String body = new String(bodyData, charset);
-
-		try {
-			return new ObjectMapper().readTree(body);
-		} catch (Exception e) {
-			return body;
-		}
-
+		return new String(data, charset == null ? StandardCharsets.UTF_8 : charset);
 	}
 
 }
+
