@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import store.nightmarket.domain.user.model.User;
+import store.nightmarket.domain.user.valueobject.UserId;
 
 @Slf4j
 public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -20,12 +20,12 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
 		HttpServletResponse response,
 		Authentication authentication
 	) throws IOException {
-		User user = (User)authentication.getPrincipal();
+		UserId userId = (UserId)authentication.getPrincipal();
 
 		HttpSession session = request.getSession(true);
 		session.setMaxInactiveInterval(3600);
 
-		log.info("Session created for user: {} with sessionId: {}", user.getName().getValue(), session.getId());
+		log.info("Session created for userId: {} with sessionId: {}", userId, session.getId());
 
 		response.sendRedirect("http://localhost:3000/?login=success");
 	}
