@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class QuantityEntity {
 
-	private int value;
+	private int quantity;
 
 }

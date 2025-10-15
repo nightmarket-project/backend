@@ -6,7 +6,7 @@ import store.nightmarket.persistence.persistorder.entity.valueobject.QuantityEnt
 public class QuantityMapper {
 
 	public static Quantity toDomain(QuantityEntity entity) {
-		return new Quantity(entity.getValue());
+		return new Quantity(entity.getQuantity());
 	}
 
 	public static QuantityEntity toEntity(Quantity domain) {
