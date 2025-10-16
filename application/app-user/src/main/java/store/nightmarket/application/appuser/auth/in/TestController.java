@@ -72,26 +72,15 @@ public class TestController {
 		}
 	}
 
-	@GetMapping("/session")
-	public ResponseEntity<?> testSession(HttpServletRequest request) {
-		HttpSession session = request.getSession(false);
-		Object securityContext = session != null ? session.getAttribute("SPRING_SECURITY_CONTEXT") : null;
-
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-		Map<String, Object> response = new HashMap<>();
-		response.put("sessionId", session != null ? session.getId() : "null");
-		response.put("SPRING_SECURITY_CONTEXT in session", securityContext);
-		response.put("Authentication from SecurityContextHolder", authentication);
-		response.put("Authorities", authentication != null ? authentication.getAuthorities() : "null");
-
-		return ResponseEntity.ok(response);
-	}
-
 	@GetMapping("/auth-check")
 	public ResponseEntity<?> check() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		return ResponseEntity.ok(auth.getAuthorities());
+	}
+
+	@GetMapping("/hello")
+	public String hello() {
+		return "hello";
 	}
 
 	private User createMockUser(MockOAuthRequest request) {
