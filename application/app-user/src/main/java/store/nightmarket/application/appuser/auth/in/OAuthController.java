@@ -1,6 +1,7 @@
 package store.nightmarket.application.appuser.auth.in;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -46,10 +47,10 @@ public class OAuthController {
 		Object securityContext = session != null ? session.getAttribute("SPRING_SECURITY_CONTEXT") : null;
 
 		if (securityContext == null) {
-			return ResponseEntity.badRequest().build();
+			return ResponseEntity.ok(Map.of("loggedIn", false));
 		}
 
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(Map.of("loggedIn", true));
 	}
 
 	private String generateState() {
