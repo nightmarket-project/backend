@@ -46,6 +46,7 @@ public class SecurityConfig {
 				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 				.ignoringRequestMatchers("/api/v1/test/*")
 				.ignoringRequestMatchers("/api/v1/auth/*")
+				.ignoringRequestMatchers("/h2-console/*")
 			)
 			.cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
 			.httpBasic(AbstractHttpConfigurer::disable)
@@ -60,11 +61,11 @@ public class SecurityConfig {
 					.maximumSessions(1)
 					.maxSessionsPreventsLogin(false)
 					.sessionRegistry(sessionRegistry())
-					.expiredUrl("/login?expired");
+					.expiredUrl("/login/expired");
 
 				session
 					.sessionFixation().changeSessionId()
-					.invalidSessionUrl("/login?invalid");
+					.invalidSessionUrl("/login/invalid");
 			})
 			.securityContext(context -> context
 				.requireExplicitSave(false) //true는 수동
