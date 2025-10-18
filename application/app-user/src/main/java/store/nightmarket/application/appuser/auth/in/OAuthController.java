@@ -1,13 +1,16 @@
 package store.nightmarket.application.appuser.auth.in;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -38,13 +41,20 @@ public class OAuthController {
 		response.sendRedirect(authorizationUrl);
 	}
 
-	private String generateState() {
-		return UUID.randomUUID().toString();
+	@GetMapping("/session")
+	public ResponseEntity<?> testSession(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		Object securityContext = session != null ? session.getAttribute("SPRING_SECURITY_CONTEXT") : null;
+
+		if (securityContext == null) {
+			return ResponseEntity.ok(Map.of("loggedIn", false));
+		}
+
+		return ResponseEntity.ok(Map.of("loggedIn", true));
 	}
 
-	@GetMapping("/test")
-	public String test() {
-		return "hello";
+	private String generateState() {
+		return UUID.randomUUID().toString();
 	}
 
 }

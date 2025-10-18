@@ -2,7 +2,6 @@ package store.nightmarket.application.appitem.in;
 
 import java.util.UUID;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,6 @@ import store.nightmarket.application.appitem.usecase.dto.ReadOptionGroupUseCaseD
 import store.nightmarket.application.appitem.usecase.dto.ReadProductVariantUseCaseDto;
 import store.nightmarket.domain.item.valueobject.ProductId;
 
-@CrossOrigin(originPatterns = "http://localhost:3000")
 @RestController
 @RequestMapping("api/v1/products")
 @RequiredArgsConstructor

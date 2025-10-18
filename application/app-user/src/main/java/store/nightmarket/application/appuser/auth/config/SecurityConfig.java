@@ -21,6 +21,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appuser.auth.model.OAuthAuthenticationSuccessHandler;
 import store.nightmarket.application.appuser.auth.model.OAuthCallbackFilter;
@@ -45,6 +46,7 @@ public class SecurityConfig {
 				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 				.ignoringRequestMatchers("/api/v1/test/*")
 				.ignoringRequestMatchers("/api/v1/auth/*")
+				.ignoringRequestMatchers("/h2-console/*")
 			)
 			.cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
 			.httpBasic(AbstractHttpConfigurer::disable)
@@ -59,11 +61,11 @@ public class SecurityConfig {
 					.maximumSessions(1)
 					.maxSessionsPreventsLogin(false)
 					.sessionRegistry(sessionRegistry())
-					.expiredUrl("/login?expired");
+					.expiredUrl("/login/expired");
 
 				session
 					.sessionFixation().changeSessionId()
-					.invalidSessionUrl("/login?invalid");
+					.invalidSessionUrl("/login/invalid");
 			})
 			.securityContext(context -> context
 				.requireExplicitSave(false) //true는 수동
@@ -71,21 +73,23 @@ public class SecurityConfig {
 			)
 			.logout(logout -> logout
 				.logoutRequestMatcher(new AntPathRequestMatcher("/api/v1/auth/logout", "POST"))
-				.logoutSuccessUrl("http://localhost:3000/?logout=success")
 				.invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID")
 				.clearAuthentication(true)
+				.logoutSuccessHandler((request, response, authentication) -> {
+					response.setStatus(HttpServletResponse.SC_OK);
+					response.setContentType("application/json");
+					response.getWriter().write("{\"message\": \"logout success\"}");
+				})
 			)
 			.addFilterBefore(callBackFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class)
 			.authorizeHttpRequests(auth -> auth
 				//OAuth2
 				.requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
 				.requestMatchers("api/v1/order/**").hasRole("BUYER")
-				.requestMatchers("/api/v1/oauth/authorization/**").permitAll()
+				.requestMatchers("/api/v1/oauth/**").permitAll()
+				.requestMatchers("/api/v1/test/**").permitAll()
 				.requestMatchers("/login/oauth2/code/**").permitAll()
-				.requestMatchers("/api/v1/test/login").permitAll()
-				.requestMatchers("/api/v1/test/check").permitAll()
-				.requestMatchers("/api/v1/test/session").hasAnyRole("BUYER", "ADMIN")
 				.requestMatchers("/h2-console/**").permitAll()
 				.anyRequest().authenticated()
 			);
