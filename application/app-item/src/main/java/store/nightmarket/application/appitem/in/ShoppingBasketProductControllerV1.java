@@ -65,7 +65,6 @@ public class ShoppingBasketProductControllerV1 {
 						.quantity(new Quantity(new BigDecimal(productQuantityDto.quantity())))
 						.build())
 					.toList())
-			.userId(new UserId(request.userId()))
 			.build();
 
 		validateProductStockUseCase.execute(input);

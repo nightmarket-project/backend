@@ -9,8 +9,7 @@ public class CheckShoppingBasketProductDto {
 
 	@Builder
 	public record Request(
-		List<ProductQuantityInfo> checkProduct,
-		UUID userId
+		List<ProductQuantityInfo> checkProduct
 	) {
 
 	}

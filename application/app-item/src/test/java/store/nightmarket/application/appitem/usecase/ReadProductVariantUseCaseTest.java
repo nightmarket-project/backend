@@ -35,13 +35,12 @@ class ReadProductVariantUseCaseTest {
 		// given
 		ProductId productId = new ProductId(UUID.randomUUID());
 		UUID productVariantId = UUID.randomUUID();
-		UUID userId = UUID.randomUUID();
 		UUID variantOptionValueId = UUID.randomUUID();
 		UUID optionGroupId = UUID.randomUUID();
 		UUID optionValueId = UUID.randomUUID();
 
 		ProductVariantAdapterDto productVariantAdapterDto = ProductVariantAdapterDto.builder()
-			.productVariant(TestDomainFactory.createProductVariant(productVariantId, productId.getId(), userId))
+			.productVariant(TestDomainFactory.createProductVariant(productVariantId, productId.getId()))
 			.variantOptionValueAdapterDtoList(
 				List.of(
 					VariantOptionValueAdapterDto.builder()
