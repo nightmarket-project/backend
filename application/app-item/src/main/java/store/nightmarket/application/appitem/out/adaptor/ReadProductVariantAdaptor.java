@@ -3,12 +3,15 @@ package store.nightmarket.application.appitem.out.adaptor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
+import store.nightmarket.application.appitem.mapper.ProductVariantMapper;
 import store.nightmarket.application.appitem.out.ReadProductVariantPort;
 import store.nightmarket.application.appitem.out.dto.ProductVariantAdapterDto;
+import store.nightmarket.domain.item.model.ProductVariant;
 import store.nightmarket.domain.item.valueobject.ProductId;
 import store.nightmarket.domain.item.valueobject.ProductVariantId;
 import store.nightmarket.itemweb.valueobject.ProductPostId;
@@ -42,6 +45,18 @@ public class ReadProductVariantAdaptor implements ReadProductVariantPort {
 				));
 
 		return variantIdProductPostIdMap;
+	}
+
+	@Override
+	public List<ProductVariant> readByIdList(List<ProductVariantId> productVariantId) {
+		List<UUID> uuidList = productVariantId.stream()
+			.map(ProductVariantId::getId)
+			.toList();
+		
+		return productVariantRepository.findByIdList(uuidList)
+			.stream()
+			.map(ProductVariantMapper::toDomain)
+			.toList();
 	}
 
 }

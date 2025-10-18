@@ -231,6 +231,8 @@ project(':app-item') {
         implementation project(':item')
         implementation project(':item-web')
         implementation project(':persist-item')
+
+        implementation 'org.redisson:redisson-spring-boot-starter:3.45.1'
     }
 }
 

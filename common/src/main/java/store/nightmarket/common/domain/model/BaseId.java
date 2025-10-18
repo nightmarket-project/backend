@@ -24,4 +24,9 @@ public abstract class BaseId<Type> {
 		return Objects.equals(getId(), other.getId());
 	}
 
+	@Override
+	public String toString() {
+		return getId().toString();
+	}
+
 }

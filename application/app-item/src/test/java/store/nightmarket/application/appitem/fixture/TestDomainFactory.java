@@ -8,7 +8,6 @@ import store.nightmarket.domain.item.model.OptionGroup;
 import store.nightmarket.domain.item.model.OptionValue;
 import store.nightmarket.domain.item.model.Product;
 import store.nightmarket.domain.item.model.ProductVariant;
-
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.model.User;
 import store.nightmarket.domain.item.model.VariantOptionValue;
@@ -19,7 +18,6 @@ import store.nightmarket.domain.item.valueobject.Price;
 import store.nightmarket.domain.item.valueobject.ProductId;
 import store.nightmarket.domain.item.valueobject.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
-
 import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.domain.item.valueobject.VariantOptionValueId;
@@ -140,15 +138,14 @@ public class TestDomainFactory {
 
 	public static ProductVariant createProductVariant(
 		UUID productVariantId,
-		UUID productId,
-		UUID userId
+		UUID productId
 	) {
 		return ProductVariant.newInstance(
 			new ProductVariantId(productVariantId),
 			new ProductId(productId),
-			new UserId(userId),
+			new UserId(UUID.randomUUID()),
 			"1111",
-			new Quantity(BigDecimal.TEN)
+			new Quantity(new BigDecimal(100))
 		);
 	}
 
@@ -165,7 +162,7 @@ public class TestDomainFactory {
 			new OptionValueId(optionValueId)
 		);
 	}
-  
+
 	public static ShoppingBasketProduct createShoppingBasketProduct(
 		UUID shoppingBasketProductId,
 		UUID userId,
