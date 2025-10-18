@@ -13,27 +13,6 @@ public class CustomSpringElpParser {
 	private CustomSpringElpParser() {
 	}
 
-	// 단일 키 처리
-	// public static Object getDynamicValue(String[] parameterNames, Object[] args, String key) {
-	// 	ExpressionParser parser = new SpelExpressionParser();
-	// 	StandardEvaluationContext context = new StandardEvaluationContext();
-	//
-	// 	for (int i = 0; i < parameterNames.length; i++) {
-	// 		context.setVariable(parameterNames[i], args[i]);
-	// 	}
-	//
-	// 	Object value = parser.parseExpression(key).getValue(context);
-	//
-	// 	if (value == null) {
-	// 		throw new IllegalArgumentException(
-	// 			"SpEL expression '" + key + "' evaluated to null. " +
-	// 				"Available parameters: " + Arrays.toString(parameterNames)
-	// 		);
-	// 	}
-	//
-	// 	return value;
-	// }
-
 	// 복합키 처리
 	public static List<Object> getDynamicValue(String[] parameterNames, Object[] args, String[] keys) {
 		ExpressionParser parser = new SpelExpressionParser();
