@@ -12,6 +12,7 @@ import feign.Logger;
 import feign.Request;
 import feign.Response;
 import feign.Util;
+import store.nightmarket.logging.model.TypeEnum;
 import store.nightmarket.logging.model.detail.FeignLog;
 
 public class FeignLogger extends Logger {
@@ -37,7 +38,7 @@ public class FeignLogger extends Logger {
 		String responseBody = parseBody(responseBodyData, response.charset());
 
 		FeignLog logData = FeignLog.builder()
-			.eventType("FEIGN")
+			.eventType(TypeEnum.FEIGN)
 			.uri(response.request().url())
 			.method(response.request().httpMethod().name())
 			.status(response.status())
