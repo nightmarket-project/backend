@@ -14,6 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import store.nightmarket.logging.CustomLogger;
+import store.nightmarket.logging.model.TypeEnum;
 import store.nightmarket.logging.model.detail.AccessLog;
 
 public class AccessLogFilter extends OncePerRequestFilter {
@@ -25,21 +26,18 @@ public class AccessLogFilter extends OncePerRequestFilter {
 		FilterChain filterChain
 	) throws ServletException, IOException {
 
-		if (!(request instanceof ContentCachingRequestWrapper req)
-			|| !(response instanceof ContentCachingResponseWrapper res)) {
-			filterChain.doFilter(request, response);
-			return;
-		}
-		
 		long start = System.currentTimeMillis();
 		filterChain.doFilter(request, response);
 		long duration = System.currentTimeMillis() - start;
 
-		try {
-			AccessLog logEvent = buildAccessLog(req, res, duration);
-			CustomLogger.log(logEvent);
-		} finally {
-			res.copyBodyToResponse();
+		if (request instanceof ContentCachingRequestWrapper req
+			&& response instanceof ContentCachingResponseWrapper res) {
+			try {
+				AccessLog logEvent = buildAccessLog(req, res, duration);
+				CustomLogger.log(logEvent);
+			} finally {
+				res.copyBodyToResponse();
+			}
 		}
 
 	}
@@ -47,7 +45,7 @@ public class AccessLogFilter extends OncePerRequestFilter {
 	private AccessLog buildAccessLog(ContentCachingRequestWrapper req, ContentCachingResponseWrapper res,
 		long elapsedTime) {
 		return AccessLog.builder()
-			.eventType("ACCESS")
+			.eventType(TypeEnum.ACCESS)
 			.uri(req.getRequestURI())
 			.method(req.getMethod())
 			.status(res.getStatus())
@@ -80,8 +78,15 @@ public class AccessLogFilter extends OncePerRequestFilter {
 	private String readRequestBody(ContentCachingRequestWrapper request) {
 		try {
 			byte[] buf = request.getContentAsByteArray();
+
+			if (buf.length == 0 && request.getContentLength() > 0) {
+				request.getInputStream().readAllBytes();
+				buf = request.getContentAsByteArray();
+			}
+
 			if (buf.length == 0)
 				return null;
+
 			return new String(buf, request.getCharacterEncoding());
 		} catch (Exception e) {
 			return null;
@@ -91,8 +96,10 @@ public class AccessLogFilter extends OncePerRequestFilter {
 	private String readResponseBody(ContentCachingResponseWrapper response) {
 		try {
 			byte[] buf = response.getContentAsByteArray();
+
 			if (buf.length == 0)
 				return null;
+
 			return new String(buf, response.getCharacterEncoding());
 		} catch (Exception e) {
 			return null;
