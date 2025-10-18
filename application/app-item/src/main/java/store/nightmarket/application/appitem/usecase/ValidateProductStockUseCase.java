@@ -53,7 +53,7 @@ public class ValidateProductStockUseCase implements BaseUseCase<Input, Void> {
 				Quantity remainingStock = currentStock.subtract(product.quantity());
 				stockMap.replace(product.productVariantId(), remainingStock);
 			} catch (Exception e) {
-				errors.add(e.getMessage());
+				errors.add(product.productVariantId().toString());
 			}
 		}
 
