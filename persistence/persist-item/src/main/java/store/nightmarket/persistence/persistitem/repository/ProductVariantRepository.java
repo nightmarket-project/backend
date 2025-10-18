@@ -1,6 +1,5 @@
 package store.nightmarket.persistence.persistitem.repository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,15 +21,16 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariantEn
 		"WHERE productVariantEntity.productId = :productId")
 	List<ProductVariantEntity> findByProductId(@Param("productId") UUID productId);
 
-	@Query(
-		"SELECT new store.nightmarket.persistence.persistitem.repository.dto.ProductVariantPostIdSummary(" +
-			"productPostEntity.id, productVariantEntity.id)  " +
-			"FROM ProductVariantEntity productVariantEntity " +
-			"JOIN ProductEntity productEntity ON productEntity.id = productVariantEntity.productId " +
-			"JOIN ProductPostEntity productPostEntity ON productPostEntity.productEntity.id = productEntity.id " +
-			"WHERE productVariantEntity.id IN :productVariantIds")
+	@Query("SELECT new store.nightmarket.persistence.persistitem.repository.dto.ProductVariantPostIdSummary(" +
+		"productPostEntity.id, productVariantEntity.id)  " +
+		"FROM ProductVariantEntity productVariantEntity " +
+		"JOIN ProductEntity productEntity ON productEntity.id = productVariantEntity.productId " +
+		"JOIN ProductPostEntity productPostEntity ON productPostEntity.productEntity.id = productEntity.id " +
+		"WHERE productVariantEntity.id IN :productVariantIds")
 	List<ProductVariantPostIdSummary> findProductPostIdsByProductVariantIds(@Param("productVariantIds") List<UUID> productVariantIds);
 
-	List<ProductVariantEntity> findProductVariantEntitiesByIdIn(Collection<UUID> ids);
+	@Query("SELECT productVariantEntity FROM ProductVariantEntity productVariantEntity " +
+		"WHERE productVariantEntity.id IN (:idList)")
+	List<ProductVariantEntity> findByIdList(@Param("idList") List<UUID> idList);
 
 }

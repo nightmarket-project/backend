@@ -3,7 +3,7 @@ package store.nightmarket.application.appitem.out.adaptor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
@@ -48,9 +48,15 @@ public class ReadProductVariantAdaptor implements ReadProductVariantPort {
 	}
 
 	@Override
-	public Optional<ProductVariant> read(ProductVariantId productVariantId) {
-		return productVariantRepository.findById(productVariantId.getId())
-			.map(ProductVariantMapper::toDomain);
+	public List<ProductVariant> readByIdList(List<ProductVariantId> productVariantId) {
+		List<UUID> uuidList = productVariantId.stream()
+			.map(ProductVariantId::getId)
+			.toList();
+		
+		return productVariantRepository.findByIdList(uuidList)
+			.stream()
+			.map(ProductVariantMapper::toDomain)
+			.toList();
 	}
 
 }
