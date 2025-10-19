@@ -32,3 +32,6 @@ logging:
         type:
           descriptor:
             sql: TRACE
+
+server:
+  port: 10040
