@@ -1,10 +1,13 @@
 package store.nightmarket.logging.filter;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.util.StreamUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
@@ -32,12 +35,10 @@ public class AccessLogFilter extends OncePerRequestFilter {
 
 		if (request instanceof ContentCachingRequestWrapper req
 			&& response instanceof ContentCachingResponseWrapper res) {
-			try {
-				AccessLog logEvent = buildAccessLog(req, res, duration);
-				CustomLogger.log(logEvent);
-			} finally {
-				res.copyBodyToResponse();
-			}
+
+			AccessLog logEvent = buildAccessLog(req, res, duration);
+			CustomLogger.log(logEvent);
+
 		}
 
 	}
@@ -80,14 +81,15 @@ public class AccessLogFilter extends OncePerRequestFilter {
 			byte[] buf = request.getContentAsByteArray();
 
 			if (buf.length == 0 && request.getContentLength() > 0) {
-				request.getInputStream().readAllBytes();
-				buf = request.getContentAsByteArray();
+				buf = StreamUtils.copyToByteArray(request.getInputStream());
 			}
 
 			if (buf.length == 0)
 				return null;
 
-			return new String(buf, request.getCharacterEncoding());
+			String encoding = Optional.of(request.getCharacterEncoding()).orElse(StandardCharsets.UTF_8.name());
+
+			return new String(buf, encoding);
 		} catch (Exception e) {
 			return null;
 		}
@@ -100,7 +102,9 @@ public class AccessLogFilter extends OncePerRequestFilter {
 			if (buf.length == 0)
 				return null;
 
-			return new String(buf, response.getCharacterEncoding());
+			String encoding = Optional.of(response.getCharacterEncoding()).orElse(StandardCharsets.UTF_8.name());
+
+			return new String(buf, encoding);
 		} catch (Exception e) {
 			return null;
 		}
