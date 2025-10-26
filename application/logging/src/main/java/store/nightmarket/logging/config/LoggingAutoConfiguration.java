@@ -15,7 +15,7 @@ public class LoggingAutoConfiguration {
 	public FilterRegistrationBean<Filter> contentCachingFilter() {
 		FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
 		registration.setFilter(new ContentCachingFilter());
-		registration.setOrder(Integer.MIN_VALUE); // 가장 먼저 실행
+		registration.setOrder(Integer.MIN_VALUE);
 		registration.addUrlPatterns("/*");
 		return registration;
 	}

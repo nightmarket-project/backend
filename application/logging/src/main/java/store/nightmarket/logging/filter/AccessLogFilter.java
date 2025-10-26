@@ -1,10 +1,13 @@
 package store.nightmarket.logging.filter;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.util.StreamUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
@@ -14,6 +17,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import store.nightmarket.logging.CustomLogger;
+import store.nightmarket.logging.model.TypeEnum;
 import store.nightmarket.logging.model.detail.AccessLog;
 
 public class AccessLogFilter extends OncePerRequestFilter {
@@ -25,21 +29,16 @@ public class AccessLogFilter extends OncePerRequestFilter {
 		FilterChain filterChain
 	) throws ServletException, IOException {
 
-		if (!(request instanceof ContentCachingRequestWrapper req)
-			|| !(response instanceof ContentCachingResponseWrapper res)) {
-			filterChain.doFilter(request, response);
-			return;
-		}
-		
 		long start = System.currentTimeMillis();
 		filterChain.doFilter(request, response);
 		long duration = System.currentTimeMillis() - start;
 
-		try {
+		if (request instanceof ContentCachingRequestWrapper req
+			&& response instanceof ContentCachingResponseWrapper res) {
+
 			AccessLog logEvent = buildAccessLog(req, res, duration);
 			CustomLogger.log(logEvent);
-		} finally {
-			res.copyBodyToResponse();
+
 		}
 
 	}
@@ -47,7 +46,7 @@ public class AccessLogFilter extends OncePerRequestFilter {
 	private AccessLog buildAccessLog(ContentCachingRequestWrapper req, ContentCachingResponseWrapper res,
 		long elapsedTime) {
 		return AccessLog.builder()
-			.eventType("ACCESS")
+			.eventType(TypeEnum.ACCESS)
 			.uri(req.getRequestURI())
 			.method(req.getMethod())
 			.status(res.getStatus())
@@ -80,9 +79,17 @@ public class AccessLogFilter extends OncePerRequestFilter {
 	private String readRequestBody(ContentCachingRequestWrapper request) {
 		try {
 			byte[] buf = request.getContentAsByteArray();
+
+			if (buf.length == 0 && request.getContentLength() > 0) {
+				buf = StreamUtils.copyToByteArray(request.getInputStream());
+			}
+
 			if (buf.length == 0)
 				return null;
-			return new String(buf, request.getCharacterEncoding());
+
+			String encoding = Optional.of(request.getCharacterEncoding()).orElse(StandardCharsets.UTF_8.name());
+
+			return new String(buf, encoding);
 		} catch (Exception e) {
 			return null;
 		}
@@ -91,9 +98,13 @@ public class AccessLogFilter extends OncePerRequestFilter {
 	private String readResponseBody(ContentCachingResponseWrapper response) {
 		try {
 			byte[] buf = response.getContentAsByteArray();
+
 			if (buf.length == 0)
 				return null;
-			return new String(buf, response.getCharacterEncoding());
+
+			String encoding = Optional.of(response.getCharacterEncoding()).orElse(StandardCharsets.UTF_8.name());
+
+			return new String(buf, encoding);
 		} catch (Exception e) {
 			return null;
 		}
