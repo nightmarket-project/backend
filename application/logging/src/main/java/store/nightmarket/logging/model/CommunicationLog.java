@@ -6,5 +6,5 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 public abstract class CommunicationLog {
-	private String eventType;
+	private TypeEnum eventType;
 }
