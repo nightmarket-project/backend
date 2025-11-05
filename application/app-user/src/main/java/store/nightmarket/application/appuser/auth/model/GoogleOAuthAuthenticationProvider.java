@@ -3,13 +3,13 @@ package store.nightmarket.application.appuser.auth.model;
 import java.util.Collections;
 
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
+import store.nightmarket.application.appuser.auth.dto.CustomAuthentication;
 import store.nightmarket.application.appuser.auth.dto.GoogleAccessTokenDto;
 import store.nightmarket.application.appuser.auth.dto.GoogleUserDto;
 import store.nightmarket.application.appuser.auth.dto.OAuthProviderProperties;
@@ -47,9 +47,9 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 		User user = readUserPort.readByEmail(googleUser.getEmail())
 			.orElseGet(() -> saveUserPort.save(UserMapper.toDomainFromGoogleUser(googleUser)));
 
-		return new UsernamePasswordAuthenticationToken(
+		return new CustomAuthentication(
 			user.getUserId().getId().toString(),
-			null,
+			user.getName().getValue(),
 			Collections.singleton(new SimpleGrantedAuthority(user.getRole().name()))
 		);
 	}
