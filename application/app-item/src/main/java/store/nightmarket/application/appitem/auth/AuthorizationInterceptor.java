@@ -1,17 +1,16 @@
 package store.nightmarket.application.appitem.auth;
 
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 public class AuthorizationInterceptor implements HandlerInterceptor {
 
@@ -23,67 +22,47 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 		HttpServletResponse response,
 		Object handler) throws Exception {
 
-		if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-			response.setStatus(HttpServletResponse.SC_OK);
+		if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+			response.setStatus(HttpStatus.OK.value());
 			return false;
 		}
 
 		HttpSession session = request.getSession(false);
 		if (session == null) {
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			log.info("session");
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 			return false;
 		}
 
 		Object sessionAttr = session.getAttribute(SESSION_KEY);
 		if (sessionAttr == null) {
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			log.info("securityContext");
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 			return false;
 		}
 
 		try {
 			String jsonString = objectMapper.writeValueAsString(sessionAttr);
+			SecurityContextData.SecurityContext securityContext =
+				objectMapper.readValue(jsonString, SecurityContextData.SecurityContext.class);
 
-			JsonNode root = objectMapper.readTree(jsonString);
-			JsonNode authNode = root.path("authentication");
+			SecurityContextData.Authentication auth = securityContext.authentication();
 
-			if (authNode.isMissingNode()) {
-				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-				log.info("authNode");
+			if (auth == null || auth.principal() == null) {
+				response.setStatus(HttpStatus.UNAUTHORIZED.value());
 				return false;
 			}
 
-			JsonNode principalNode = authNode.path("principal");
-			String userId;
-
-			if (principalNode.isTextual()) {
-				userId = principalNode.asText();
-			} else {
-				userId = principalNode.path("id").asText(null);
-			}
-
-			String role = null;
-			JsonNode authorities = authNode.path("authorities");
-
-			if (authorities.isArray() && !authorities.isEmpty()) {
-				for (JsonNode auth : authorities) {
-					if (auth.has("authority")) {
-						role = auth.path("authority").asText(null);
-						break;
-					}
-				}
-			}
+			String userId = auth.principal().userId();
+			String role = (auth.authorities() != null && !auth.authorities().isEmpty())
+				? auth.authorities().getFirst().authority()
+				: null;
 
 			if (userId == null) {
-				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-				log.info("Not Exists UserId");
+				response.setStatus(HttpStatus.UNAUTHORIZED.value());
 				return false;
 			}
 
 			if (!"ROLE_BUYER".equals(role)) {
-				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-				log.info("Role is Not Buyer");
+				response.setStatus(HttpStatus.FORBIDDEN.value());
 				return false;
 			}
 
@@ -91,10 +70,9 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 			return true;
 
 		} catch (Exception e) {
-			log.error("Error processing security context", e);
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 			response.setContentType("application/json");
-			response.getWriter().write("{\"error\":\"Internal server error\"}");
+			response.getWriter().write("{\"error\":\"Invalid session data\"}");
 			return false;
 		}
 	}
