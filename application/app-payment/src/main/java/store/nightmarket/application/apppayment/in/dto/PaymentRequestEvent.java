@@ -9,12 +9,12 @@ import lombok.Builder;
 public record PaymentRequestEvent(
 	UUID orderId,
 	UUID userId,
-	long totalPrice,
 	List<PaymentItem> paymentItems
 ) {
 	@Builder
 	public record PaymentItem(
-		UUID productId,
+		UUID productVariantId,
+		long price,
 		int quantity
 	) {
 

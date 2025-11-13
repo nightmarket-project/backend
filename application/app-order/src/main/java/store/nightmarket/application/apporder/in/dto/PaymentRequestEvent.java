@@ -13,7 +13,8 @@ public record PaymentRequestEvent(
 ) {
 	@Builder
 	public record PaymentItem(
-		UUID productId,
+		UUID productVariantId,
+		long price,
 		int quantity
 	) {
 
