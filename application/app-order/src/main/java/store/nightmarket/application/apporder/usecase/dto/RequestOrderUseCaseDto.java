@@ -39,8 +39,8 @@ public class RequestOrderUseCaseDto {
 	public static List<DetailOrderDto> toUseCaseDto(List<SaveOrderDto.DetailOrderDto> detailOrderDtoList) {
 		return detailOrderDtoList.stream()
 			.map(dto -> new DetailOrderDto.DetailOrderDtoBuilder()
-				.productVariantId(dto.productVariantId())
-				.quantity(dto.quantity())
+				.productVariantId(new ProductVariantId(dto.productVariantId()))
+				.quantity(new Quantity(dto.quantity()))
 				.build()
 			).toList();
 	}
