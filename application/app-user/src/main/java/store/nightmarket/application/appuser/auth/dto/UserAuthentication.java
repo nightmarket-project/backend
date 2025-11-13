@@ -9,14 +9,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CustomAuthentication implements Authentication {
+public class UserAuthentication implements Authentication {
 
 	private final String userId;
 	private final String username;
 	private final Collection<? extends GrantedAuthority> authorities;
 	private boolean authenticated = true;
 
-	public CustomAuthentication(String userId, String username,
+	public UserAuthentication(String userId, String username,
 		Collection<? extends GrantedAuthority> authorities) {
 		this.userId = userId;
 		this.username = username;
@@ -40,7 +40,7 @@ public class CustomAuthentication implements Authentication {
 
 	@Override
 	public Object getPrincipal() {
-		return new CustomUserPrincipal(userId, username);
+		return new UserPrincipal(userId, username);
 	}
 
 	@Override

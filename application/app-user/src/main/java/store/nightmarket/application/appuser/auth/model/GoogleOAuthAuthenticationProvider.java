@@ -9,10 +9,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appuser.auth.dto.CustomAuthentication;
 import store.nightmarket.application.appuser.auth.dto.GoogleAccessTokenDto;
 import store.nightmarket.application.appuser.auth.dto.GoogleUserDto;
 import store.nightmarket.application.appuser.auth.dto.OAuthProviderProperties;
+import store.nightmarket.application.appuser.auth.dto.UserAuthentication;
 import store.nightmarket.application.appuser.auth.model.feign.GoogleAuthApi;
 import store.nightmarket.application.appuser.auth.model.feign.GoogleUserApi;
 import store.nightmarket.application.appuser.user.mapper.UserMapper;
@@ -47,7 +47,7 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 		User user = readUserPort.readByEmail(googleUser.getEmail())
 			.orElseGet(() -> saveUserPort.save(UserMapper.toDomainFromGoogleUser(googleUser)));
 
-		return new CustomAuthentication(
+		return new UserAuthentication(
 			user.getUserId().getId().toString(),
 			user.getName().getValue(),
 			Collections.singleton(new SimpleGrantedAuthority(user.getRole().name()))
