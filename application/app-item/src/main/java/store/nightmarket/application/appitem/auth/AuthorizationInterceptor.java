@@ -41,10 +41,9 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
 		try {
 			String jsonString = objectMapper.writeValueAsString(sessionAttr);
-			SecurityContextData.SecurityContext securityContext =
-				objectMapper.readValue(jsonString, SecurityContextData.SecurityContext.class);
+			SecurityContext securityContext = objectMapper.readValue(jsonString, SecurityContext.class);
 
-			SecurityContextData.Authentication auth = securityContext.authentication();
+			SecurityContext.Authentication auth = securityContext.authentication();
 
 			if (auth == null || auth.principal() == null) {
 				response.setStatus(HttpStatus.UNAUTHORIZED.value());
