@@ -59,7 +59,7 @@ class PaymentRequestEventTest {
 			.orderId(UUID.randomUUID())
 			.userId(UUID.randomUUID())
 			.paymentItems(List.of(
-				new PaymentRequestEvent.PaymentItem(UUID.randomUUID(), 5)
+				new PaymentRequestEvent.PaymentItem(UUID.randomUUID(), 5000, 1)
 			))
 			.build();
 
