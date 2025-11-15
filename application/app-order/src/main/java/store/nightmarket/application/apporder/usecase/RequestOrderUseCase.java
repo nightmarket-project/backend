@@ -1,5 +1,7 @@
 package store.nightmarket.application.apporder.usecase;
 
+import static store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto.*;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,6 @@ import store.nightmarket.application.apporder.in.dto.PaymentRequestEvent;
 import store.nightmarket.application.apporder.out.ReadProductVariantPort;
 import store.nightmarket.application.apporder.out.SaveOrderPort;
 import store.nightmarket.application.apporder.out.adapter.PaymentRequestEventKafkaPublisher;
-import store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.order.exception.OrderException;
 import store.nightmarket.domain.order.model.DetailOrderRecord;
@@ -33,7 +34,7 @@ import store.nightmarket.domain.order.valueobject.UserId;
 
 @Service
 @RequiredArgsConstructor
-public class RequestOrderUseCase implements BaseUseCase<RequestOrderUseCaseDto.Input, Void> {
+public class RequestOrderUseCase implements BaseUseCase<Input, Output> {
 
 	private final SaveOrderPort saveOrderPort;
 	private final ReadProductVariantPort readProductVariantPort;
@@ -42,7 +43,7 @@ public class RequestOrderUseCase implements BaseUseCase<RequestOrderUseCaseDto.I
 
 	@Override
 	@Transactional
-	public Void execute(RequestOrderUseCaseDto.Input input) {
+	public Output execute(Input input) {
 		OrderRecord orderRecord = OrderRecord.newInstance(
 			new OrderRecordId(UUID.randomUUID()),
 			new Address(
@@ -110,7 +111,9 @@ public class RequestOrderUseCase implements BaseUseCase<RequestOrderUseCaseDto.I
 				.build()
 		);
 
-		return null;
+		return Output.builder()
+			.orderRecordId(submittedOrderRecord.getOrderRecordId().getId())
+			.build();
 	}
 
 }

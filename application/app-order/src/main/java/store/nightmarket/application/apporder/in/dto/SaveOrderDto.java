@@ -17,6 +17,13 @@ public class SaveOrderDto {
 	}
 
 	@Builder
+	public record Response(
+		UUID orderRecordId
+	) {
+
+	}
+
+	@Builder
 	public record AddressDto(
 		String zipCode,
 		String roadAddress,

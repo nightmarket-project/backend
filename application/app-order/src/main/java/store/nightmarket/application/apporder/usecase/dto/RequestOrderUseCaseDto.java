@@ -20,6 +20,13 @@ public class RequestOrderUseCaseDto {
 	}
 
 	@Builder
+	public record Output(
+		UUID orderRecordId
+	) {
+
+	}
+
+	@Builder
 	public record AddressDto(
 		String zipCode,
 		String roadAddress,
