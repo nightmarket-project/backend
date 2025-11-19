@@ -5,7 +5,6 @@ import static store.nightmarket.application.apporder.usecase.dto.RequestOrderUse
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -18,7 +17,6 @@ import store.nightmarket.application.apporder.out.ReadProductVariantPort;
 import store.nightmarket.application.apporder.out.SaveOrderPort;
 import store.nightmarket.application.apporder.out.adapter.PaymentRequestEventKafkaPublisher;
 import store.nightmarket.common.application.usecase.BaseUseCase;
-import store.nightmarket.domain.order.exception.OrderException;
 import store.nightmarket.domain.order.model.DetailOrderRecord;
 import store.nightmarket.domain.order.model.OrderRecord;
 import store.nightmarket.domain.order.model.ProductVariant;
@@ -73,47 +71,38 @@ public class RequestOrderUseCase implements BaseUseCase<Input, Output> {
 
 		saveOrderPort.save(submittedOrderRecord);
 
-		List<ProductVariantId> productVariantIdList = submittedOrderRecord.getDetailOrderRecordList()
-			.stream()
-			.map(DetailOrderRecord::getProductVariantId)
-			.toList();
-
-		List<ProductVariant> productVariantList = readProductVariantPort.readByIdList(productVariantIdList);
-
-		Map<UUID, Integer> productVariantQuantityMap = submittedOrderRecord.getDetailOrderRecordList()
-			.stream()
-			.collect(Collectors.toMap(
-				d -> d.getProductVariantId().getId(),
-				d -> d.getQuantity().getValue()
-			));
-
 		paymentRequestEventKafkaPublisher.publishEvent(
 			PaymentRequestEvent.builder()
 				.orderId(submittedOrderRecord.getOrderRecordId().getId())
 				.userId(submittedOrderRecord.getUserId().getId())
-				.paymentItems(
-					productVariantList.stream()
-						.map(productVariant -> PaymentRequestEvent.PaymentItem.builder()
-							.productVariantId(productVariant.getProductVariantId().getId())
-							.price(productVariant.getPrice().getPrice())
-							.quantity(
-								Optional.ofNullable(
-									productVariantQuantityMap.get(productVariant.getProductVariantId().getId())
-								).orElseThrow(() ->
-									new OrderException("No quantity found for productVariantId: " +
-										productVariant.getProductVariantId().getId())
-								)
-							)
-							.build()
-						)
-						.toList()
-				)
+				.price(calculatePrice(submittedOrderRecord))
 				.build()
 		);
 
 		return Output.builder()
 			.orderRecordId(submittedOrderRecord.getOrderRecordId().getId())
 			.build();
+	}
+
+	private long calculatePrice(OrderRecord orderRecord) {
+		List<ProductVariantId> productVariantIdList = orderRecord.getDetailOrderRecordList()
+			.stream()
+			.map(DetailOrderRecord::getProductVariantId)
+			.toList();
+
+		List<ProductVariant> productVariantList = readProductVariantPort.readByIdList(productVariantIdList);
+
+		Map<UUID, Integer> productVariantQuantityMap = orderRecord.getDetailOrderRecordList()
+			.stream()
+			.collect(Collectors.toMap(
+				d -> d.getProductVariantId().getId(),
+				d -> d.getQuantity().getValue()
+			));
+
+		return productVariantList.stream()
+			.mapToLong(productVariant -> productVariantQuantityMap.get(productVariant.getProductVariantId().getId())
+				* productVariant.getPrice().getPrice())
+			.sum();
 	}
 
 }
