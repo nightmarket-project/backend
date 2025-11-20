@@ -7,8 +7,8 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import store.nightmarket.application.apporder.in.dto.PaymentRequestEvent;
 import store.nightmarket.application.apporder.out.PaymentRequestEventPublisher;
+import store.nightmarket.application.apporder.out.dto.PaymentRequestEvent;
 
 @Slf4j
 @Component

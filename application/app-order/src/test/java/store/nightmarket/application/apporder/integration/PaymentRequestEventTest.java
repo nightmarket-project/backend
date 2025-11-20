@@ -2,7 +2,6 @@ package store.nightmarket.application.apporder.integration;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -22,7 +21,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.annotation.DirtiesContext;
 
-import store.nightmarket.application.apporder.in.dto.PaymentRequestEvent;
+import store.nightmarket.application.apporder.out.dto.PaymentRequestEvent;
 
 @SpringBootTest
 @EmbeddedKafka(partitions = 1, topics = {"order.payment-request"})
@@ -58,9 +57,7 @@ class PaymentRequestEventTest {
 		PaymentRequestEvent event = PaymentRequestEvent.builder()
 			.orderId(UUID.randomUUID())
 			.userId(UUID.randomUUID())
-			.paymentItems(List.of(
-				new PaymentRequestEvent.PaymentItem(UUID.randomUUID(), 5000, 1)
-			))
+			.price(10000)
 			.build();
 
 		// when
