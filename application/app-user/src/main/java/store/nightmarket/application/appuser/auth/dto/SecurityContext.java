@@ -1,4 +1,4 @@
-package store.nightmarket.application.appitem.auth;
+package store.nightmarket.application.appuser.auth.dto;
 
 import java.util.List;
 
@@ -25,8 +25,3 @@ public record SecurityContext(
 	}
 
 }
-
-
-
-
-
