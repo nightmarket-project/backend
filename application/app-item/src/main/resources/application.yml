@@ -3,7 +3,7 @@ spring:
     name: app-item
 
   profiles:
-    include: redis
+    include: redis, kafka
 
   datasource:
     driver-class-name: org.h2.Driver
