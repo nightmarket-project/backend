@@ -1,7 +1,6 @@
 package store.nightmarket.application.appitem.fixture;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import store.nightmarket.domain.item.model.OptionGroup;
@@ -83,8 +82,7 @@ public class TestDomainFactory {
 			new ProductPostId(productPostId),
 			new UserId(userId),
 			new CommentText("내용1"),
-			new Rating(4.5f),
-			LocalDateTime.now()
+			new Rating(4.5f)
 		);
 	}
 
@@ -97,8 +95,7 @@ public class TestDomainFactory {
 			new ReplyId(replyId),
 			new CommentText("내용2"),
 			new UserId(userId),
-			new ReviewId(reviewId),
-			LocalDateTime.now()
+			new ReviewId(reviewId)
 		);
 	}
 
