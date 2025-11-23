@@ -1,8 +1,6 @@
 package store.nightmarket.application.appuser.auth.in;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -13,14 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appuser.auth.dto.OAuthProviderProperties;
-import store.nightmarket.application.appuser.auth.dto.SecurityContext;
 
 @RestController
 @RequestMapping("/api/v1/oauth")
@@ -48,7 +44,7 @@ public class OAuthController {
 	}
 
 	@GetMapping("/session")
-	public ResponseEntity<?> testSession(HttpServletRequest request) throws JsonProcessingException {
+	public ResponseEntity<?> checkLogin(HttpServletRequest request) throws JsonProcessingException {
 		HttpSession session = request.getSession(false);
 		if (session == null) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -59,24 +55,7 @@ public class OAuthController {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
-		ObjectMapper objectMapper = new ObjectMapper();
-
-		String json;
-		if (sessionAttr instanceof String) {
-			json = (String)sessionAttr;
-		} else {
-			json = objectMapper.writeValueAsString(sessionAttr);
-		}
-
-		SecurityContext securityContext = objectMapper.readValue(json, SecurityContext.class);
-		SecurityContext.Authentication auth = securityContext.authentication();
-
-		String userId = auth.principal().userId();
-
-		Map<String, String> body = new HashMap<>();
-		body.put("userId", userId);
-
-		return ResponseEntity.ok(body);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	private String generateState() {
