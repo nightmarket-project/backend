@@ -103,11 +103,15 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
 		UserId userId,
 		Quantity quantity
 	) {
-		if (!this.userId.equals(userId)) {
+		if (!isOwner(userId)) {
 			throw new ProductException("UserId is not the same");
 		}
 		validateQuantity(quantity);
 		this.quantity = quantity;
+	}
+
+	public boolean isOwner(UserId userId) {
+		return this.userId.equals(userId);
 	}
 
 	public ShoppingBasketProductId getShoppingBasketProductId() {
