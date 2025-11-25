@@ -15,7 +15,7 @@ public interface ShoppingBasketProductRepository extends JpaRepository<ShoppingB
 
 	@Query("SELECT shoppingBasketProduct " +
 		"FROM ShoppingBasketProductEntity shoppingBasketProduct " +
-		"WHERE shoppingBasketProduct.userEntity.id = :userId")
+		"WHERE shoppingBasketProduct.userId = :userId")
 	List<ShoppingBasketProductEntity> findByUserId(@Param("userId") UUID userId);
 
 }

@@ -3,6 +3,7 @@ package store.nightmarket.persistence.persistitem.entity.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,6 +24,9 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.QuantityEnti
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ShoppingBasketProductEntity extends BaseUuidEntity {
 
+	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
+	private UUID userId;
+
 	@Embedded
 	private NameEntity nameEntity;
 
@@ -36,78 +40,75 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 	@JoinColumn(name = "product_variant")
 	private ProductVariantEntity productVariantEntity;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private UserEntity userEntity;
-
 	private ShoppingBasketProductEntity(
 		UUID id,
+		UUID userId,
 		NameEntity nameEntity,
 		QuantityEntity quantityEntity,
 		PriceEntity priceEntity,
-		ProductVariantEntity productVariantEntity,
-		UserEntity userEntity
+		ProductVariantEntity productVariantEntity
 	) {
 		super(id);
+		this.userId = userId;
 		this.nameEntity = nameEntity;
 		this.quantityEntity = quantityEntity;
 		this.priceEntity = priceEntity;
 		this.productVariantEntity = productVariantEntity;
-		this.userEntity = userEntity;
 	}
 
 	private ShoppingBasketProductEntity(
 		UUID id,
 		LocalDateTime createdAt,
+		UUID userId,
 		NameEntity nameEntity,
 		QuantityEntity quantityEntity,
 		PriceEntity priceEntity,
-		ProductVariantEntity productVariantEntity,
-		UserEntity userEntity
+		ProductVariantEntity productVariantEntity
 	) {
 		super(id, createdAt);
+		this.userId = userId;
 		this.nameEntity = nameEntity;
 		this.quantityEntity = quantityEntity;
 		this.priceEntity = priceEntity;
 		this.productVariantEntity = productVariantEntity;
-		this.userEntity = userEntity;
+
 	}
 
 	public static ShoppingBasketProductEntity newInstance(
 		UUID id,
+		UUID userId,
 		NameEntity nameEntity,
 		QuantityEntity quantityEntity,
 		PriceEntity priceEntity,
-		ProductVariantEntity productVariantEntity,
-		UserEntity userEntity
+		ProductVariantEntity productVariantEntity
 	) {
 		return new ShoppingBasketProductEntity(
 			id,
+			userId,
 			nameEntity,
 			quantityEntity,
 			priceEntity,
-			productVariantEntity,
-			userEntity
+			productVariantEntity
 		);
 	}
 
 	public static ShoppingBasketProductEntity newInstanceWithCreatedAt(
 		UUID id,
 		LocalDateTime createdAt,
+		UUID userId,
 		NameEntity nameEntity,
 		QuantityEntity quantityEntity,
 		PriceEntity priceEntity,
-		ProductVariantEntity productVariantEntity,
-		UserEntity userEntity
+		ProductVariantEntity productVariantEntity
 	) {
 		return new ShoppingBasketProductEntity(
 			id,
 			createdAt,
+			userId,
 			nameEntity,
 			quantityEntity,
 			priceEntity,
-			productVariantEntity,
-			userEntity
+			productVariantEntity
 		);
 	}
 

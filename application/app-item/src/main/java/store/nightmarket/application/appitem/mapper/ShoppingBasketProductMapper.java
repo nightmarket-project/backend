@@ -9,7 +9,6 @@ import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
 import store.nightmarket.domain.item.valueobject.UserId;
 import store.nightmarket.persistence.persistitem.entity.model.ProductVariantEntity;
 import store.nightmarket.persistence.persistitem.entity.model.ShoppingBasketProductEntity;
-import store.nightmarket.persistence.persistitem.entity.model.UserEntity;
 import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
 import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
 import store.nightmarket.persistence.persistitem.entity.valueobject.QuantityEntity;
@@ -21,7 +20,7 @@ public class ShoppingBasketProductMapper {
 			new ShoppingBasketProductId(entity.getId()),
 			entity.getCreatedAt(),
 			new ProductVariantId(entity.getProductVariantEntity().getId()),
-			new UserId(entity.getUserEntity().getId()),
+			new UserId(entity.getUserId()),
 			new Name(entity.getNameEntity().getValue()),
 			new Price(entity.getPriceEntity().getAmount()),
 			new Quantity(entity.getQuantityEntity().getAmount())
@@ -30,17 +29,16 @@ public class ShoppingBasketProductMapper {
 
 	public static ShoppingBasketProductEntity toEntity(
 		ShoppingBasketProduct domain,
-		ProductVariantEntity productVariantEntity,
-		UserEntity userEntity
+		ProductVariantEntity productVariantEntity
 	) {
 		return ShoppingBasketProductEntity.newInstanceWithCreatedAt(
 			domain.getShoppingBasketProductId().getId(),
 			domain.getCreatedAt(),
+			domain.getUserId().getId(),
 			new NameEntity(domain.getName().getValue()),
 			new QuantityEntity(domain.getQuantity().value()),
 			new PriceEntity(domain.getUnitPrice().amount()),
-			productVariantEntity,
-			userEntity
+			productVariantEntity
 		);
 	}
 
