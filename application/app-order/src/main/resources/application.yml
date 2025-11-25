@@ -1,6 +1,8 @@
 spring:
   application:
     name: app-order
+  profiles:
+    include: kafka
 
   datasource:
     driver-class-name: org.h2.Driver
@@ -32,3 +34,6 @@ logging:
         type:
           descriptor:
             sql: TRACE
+
+server:
+  port: 10050

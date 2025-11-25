@@ -1,11 +1,11 @@
 package store.nightmarket.application.apporder.in;
 
+import static store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto.*;
+
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import static store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto.*;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +21,6 @@ import store.nightmarket.application.apporder.usecase.ReadOrderUseCase;
 import store.nightmarket.application.apporder.usecase.RequestOrderUseCase;
 import store.nightmarket.application.apporder.usecase.dto.ReadOrderListUseCaseDto;
 import store.nightmarket.application.apporder.usecase.dto.ReadOrderUseCaseDto;
-import store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto;
 import store.nightmarket.domain.order.valueobject.OrderRecordId;
 import store.nightmarket.domain.order.valueobject.UserId;
 
@@ -113,11 +112,11 @@ public class OrderControllerV1 {
 	}
 
 	@PostMapping
-	public void saveOrder(@RequestBody SaveOrderDto.Request request) {
-		requestOrderUseCase.execute(
-			RequestOrderUseCaseDto.Input.builder()
+	public SaveOrderDto.Response saveOrder(@RequestBody SaveOrderDto.Request request) {
+		Output output = requestOrderUseCase.execute(
+			Input.builder()
 				.addressDto(
-					RequestOrderUseCaseDto.AddressDto.builder()
+					AddressDto.builder()
 						.zipCode(request.addressDto().zipCode())
 						.roadAddress(request.addressDto().roadAddress())
 						.detailAddress(request.addressDto().detailAddress())
@@ -127,6 +126,10 @@ public class OrderControllerV1 {
 				.detailOrderDtoList(toUseCaseDto(request.detailOrderDtoList()))
 				.build()
 		);
+
+		return SaveOrderDto.Response.builder()
+			.orderRecordId(output.orderRecordId())
+			.build();
 	}
 
 }

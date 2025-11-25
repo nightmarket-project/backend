@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.UUID;
 
 import lombok.Builder;
-import store.nightmarket.domain.order.valueobject.ProductVariantId;
-import store.nightmarket.domain.order.valueobject.Quantity;
 
 public class SaveOrderDto {
 
@@ -14,6 +12,13 @@ public class SaveOrderDto {
 		AddressDto addressDto,
 		UUID userId,
 		List<DetailOrderDto> detailOrderDtoList
+	) {
+
+	}
+
+	@Builder
+	public record Response(
+		UUID orderRecordId
 	) {
 
 	}
@@ -29,8 +34,8 @@ public class SaveOrderDto {
 
 	@Builder
 	public record DetailOrderDto(
-		ProductVariantId productVariantId,
-		Quantity quantity
+		UUID productVariantId,
+		int quantity
 	) {
 
 	}

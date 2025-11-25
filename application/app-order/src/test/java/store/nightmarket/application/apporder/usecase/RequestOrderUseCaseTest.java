@@ -10,7 +10,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import store.nightmarket.application.apporder.out.ReadProductVariantPort;
 import store.nightmarket.application.apporder.out.SaveOrderPort;
+import store.nightmarket.application.apporder.out.adapter.PaymentRequestEventKafkaPublisher;
 import store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto;
 import store.nightmarket.domain.order.service.RequestOrderDomainService;
 import store.nightmarket.domain.order.service.dto.RequestOrderDomainServiceDto;
@@ -19,15 +21,22 @@ class RequestOrderUseCaseTest {
 
 	private RequestOrderUseCase requestOrderUseCase;
 	private SaveOrderPort mockSaveOrderPort;
+	private ReadProductVariantPort mockReadProductVariantPort;
 	private RequestOrderDomainService mockRequestOrderDomainService;
+	private PaymentRequestEventKafkaPublisher mockPaymentRequestEventKafkaPublisher;
 
 	@BeforeEach
 	void setUp() {
 		mockSaveOrderPort = mock(SaveOrderPort.class);
+		mockReadProductVariantPort = mock(ReadProductVariantPort.class);
 		mockRequestOrderDomainService = mock(RequestOrderDomainService.class);
+		mockPaymentRequestEventKafkaPublisher = mock(PaymentRequestEventKafkaPublisher.class);
+
 		requestOrderUseCase = new RequestOrderUseCase(
 			mockSaveOrderPort,
-			mockRequestOrderDomainService
+			mockReadProductVariantPort,
+			mockRequestOrderDomainService,
+			mockPaymentRequestEventKafkaPublisher
 		);
 	}
 
@@ -53,8 +62,12 @@ class RequestOrderUseCaseTest {
 		// then
 		verify(mockSaveOrderPort, times(1))
 			.save(any());
+		verify(mockReadProductVariantPort, times(1))
+			.readByIdList(any());
 		verify(mockRequestOrderDomainService, times(1))
 			.execute(any());
+		verify(mockPaymentRequestEventKafkaPublisher, times(1))
+			.publishEvent(any());
 	}
 
 }

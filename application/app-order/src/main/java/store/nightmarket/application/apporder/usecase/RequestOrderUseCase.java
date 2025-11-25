@@ -1,16 +1,25 @@
 package store.nightmarket.application.apporder.usecase;
 
+import static store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto.*;
+
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import store.nightmarket.application.apporder.out.ReadProductVariantPort;
 import store.nightmarket.application.apporder.out.SaveOrderPort;
-import store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto;
+import store.nightmarket.application.apporder.out.adapter.PaymentRequestEventKafkaPublisher;
+import store.nightmarket.application.apporder.out.dto.PaymentRequestEvent;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.order.model.DetailOrderRecord;
 import store.nightmarket.domain.order.model.OrderRecord;
+import store.nightmarket.domain.order.model.ProductVariant;
 import store.nightmarket.domain.order.service.RequestOrderDomainService;
 import store.nightmarket.domain.order.service.dto.RequestOrderDomainServiceDto;
 import store.nightmarket.domain.order.status.DetailOrderState;
@@ -23,13 +32,16 @@ import store.nightmarket.domain.order.valueobject.UserId;
 
 @Service
 @RequiredArgsConstructor
-public class RequestOrderUseCase implements BaseUseCase<RequestOrderUseCaseDto.Input, Void> {
+public class RequestOrderUseCase implements BaseUseCase<Input, Output> {
 
 	private final SaveOrderPort saveOrderPort;
+	private final ReadProductVariantPort readProductVariantPort;
 	private final RequestOrderDomainService requestOrderDomainService;
+	private final PaymentRequestEventKafkaPublisher paymentRequestEventKafkaPublisher;
 
 	@Override
-	public Void execute(RequestOrderUseCaseDto.Input input) {
+	@Transactional
+	public Output execute(Input input) {
 		OrderRecord orderRecord = OrderRecord.newInstance(
 			new OrderRecordId(UUID.randomUUID()),
 			new Address(
@@ -55,8 +67,42 @@ public class RequestOrderUseCase implements BaseUseCase<RequestOrderUseCaseDto.I
 
 		RequestOrderDomainServiceDto.Event event = requestOrderDomainService.execute(domainInput);
 
-		saveOrderPort.save(event.getOrderRecord());
-		return null;
+		OrderRecord submittedOrderRecord = event.getOrderRecord();
+
+		saveOrderPort.save(submittedOrderRecord);
+
+		paymentRequestEventKafkaPublisher.publishEvent(
+			PaymentRequestEvent.builder()
+				.orderId(submittedOrderRecord.getOrderRecordId().getId())
+				.userId(submittedOrderRecord.getUserId().getId())
+				.price(calculatePrice(submittedOrderRecord))
+				.build()
+		);
+
+		return Output.builder()
+			.orderRecordId(submittedOrderRecord.getOrderRecordId().getId())
+			.build();
+	}
+
+	private long calculatePrice(OrderRecord orderRecord) {
+		List<ProductVariantId> productVariantIdList = orderRecord.getDetailOrderRecordList()
+			.stream()
+			.map(DetailOrderRecord::getProductVariantId)
+			.toList();
+
+		List<ProductVariant> productVariantList = readProductVariantPort.readByIdList(productVariantIdList);
+
+		Map<UUID, Integer> productVariantQuantityMap = orderRecord.getDetailOrderRecordList()
+			.stream()
+			.collect(Collectors.toMap(
+				d -> d.getProductVariantId().getId(),
+				d -> d.getQuantity().getValue()
+			));
+
+		return productVariantList.stream()
+			.mapToLong(productVariant -> productVariantQuantityMap.get(productVariant.getProductVariantId().getId())
+				* productVariant.getPrice().getPrice())
+			.sum();
 	}
 
 }
