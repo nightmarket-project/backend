@@ -23,8 +23,7 @@ public class SaveShoppingBasketProductAdaptor implements SaveShoppingBasketProdu
 		shoppingBasketProductRepository.save(
 			ShoppingBasketProductMapper.toEntity(
 				shoppingBasketProduct,
-				productVariantRepository.getReferenceById(shoppingBasketProduct.getVariantId().getId()),
-				userRepository.getReferenceById(shoppingBasketProduct.getUserId().getId())
+				productVariantRepository.getReferenceById(shoppingBasketProduct.getVariantId().getId())
 			)
 		);
 	}

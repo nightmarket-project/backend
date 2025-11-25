@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import store.nightmarket.application.appitem.auth.AuthorizedUser;
+import store.nightmarket.application.appitem.auth.UserSession;
 import store.nightmarket.application.appitem.in.dto.CheckShoppingBasketProductDto;
 import store.nightmarket.application.appitem.in.dto.ModifyShoppingBasketProductDto;
 import store.nightmarket.application.appitem.in.dto.ReadShoppingBasketDto;
@@ -69,9 +70,9 @@ public class ShoppingBasketProductControllerV1 {
 	}
 
 	@GetMapping
-	public ReadShoppingBasketDto.Response readShoppingBasket(@RequestParam("userId") UUID userId) {
+	public ReadShoppingBasketDto.Response readShoppingBasket(@AuthorizedUser UserSession userSession) {
 		ReadShoppingBasketUseCaseDto.Input input = ReadShoppingBasketUseCaseDto.Input.builder()
-			.userId(new UserId(userId))
+			.userId(new UserId(UUID.fromString(userSession.userId())))
 			.build();
 
 		ReadShoppingBasketUseCaseDto.Output output = readShoppingBasketUseCase.execute(input);
@@ -104,11 +105,12 @@ public class ShoppingBasketProductControllerV1 {
 	}
 
 	@PostMapping
-	public void saveShoppingBasketProduct(@RequestBody SaveShoppingBasketProductDto.Request request) {
+	public void saveShoppingBasketProduct(@RequestBody SaveShoppingBasketProductDto.Request request,
+		@AuthorizedUser UserSession userSession) {
 		putShoppingBasketProductUseCase.execute(
 			PutShoppingBasketProductUseCaseDto.Input.builder()
 				.productVariantId(new ProductVariantId(request.productVariantId()))
-				.userId(new UserId(request.userId()))
+				.userId(new UserId(UUID.fromString(userSession.userId())))
 				.name(new Name(request.name()))
 				.price(new Price(request.price()))
 				.quantity(new Quantity(request.quantity()))
@@ -117,10 +119,12 @@ public class ShoppingBasketProductControllerV1 {
 	}
 
 	@DeleteMapping("/{cartId}")
-	public void deleteShoppingBasketProduct(@PathVariable("cartId") UUID cartId) {
+	public void deleteShoppingBasketProduct(@PathVariable("cartId") UUID cartId,
+		@AuthorizedUser UserSession userSession) {
 		deleteShoppingBasketProductUseCase.execute(
 			DeleteShoppingBasketProductUseCaseDto.Input.builder()
 				.shoppingBasketProductId(new ShoppingBasketProductId(cartId))
+				.userId(new UserId(UUID.fromString(userSession.userId())))
 				.build()
 		);
 	}
@@ -128,13 +132,14 @@ public class ShoppingBasketProductControllerV1 {
 	@PatchMapping("/{cartId}")
 	public void modifyShoppingBasketQuantity(
 		@PathVariable("cartId") UUID cartId,
-		@RequestBody ModifyShoppingBasketProductDto.Request request
+		@RequestBody ModifyShoppingBasketProductDto.Request request,
+		@AuthorizedUser UserSession userSession
 	) {
 		modifyShoppingBasketQuantityUseCase.execute(
 			ModifyShoppingBasketQuantityUseCaseDto.Input.builder()
 				.shoppingBasketProductId(new ShoppingBasketProductId(cartId))
 				.quantity(new Quantity(request.quantity()))
-				.userId(new UserId(request.userId()))
+				.userId(new UserId(UUID.fromString(userSession.userId())))
 				.build()
 		);
 	}

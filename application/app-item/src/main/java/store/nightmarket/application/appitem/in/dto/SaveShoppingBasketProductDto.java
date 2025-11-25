@@ -10,7 +10,6 @@ public class SaveShoppingBasketProductDto {
 	@Builder
 	public record Request(
 		UUID productVariantId,
-		UUID userId,
 		String name,
 		BigDecimal price,
 		BigDecimal quantity

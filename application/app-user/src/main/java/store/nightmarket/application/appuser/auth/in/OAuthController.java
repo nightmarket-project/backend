@@ -1,18 +1,16 @@
 package store.nightmarket.application.appuser.auth.in;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -46,21 +44,18 @@ public class OAuthController {
 	}
 
 	@GetMapping("/session")
-	public ResponseEntity<?> testSession(HttpServletRequest request) {
+	public ResponseEntity<?> checkLogin(HttpServletRequest request) throws JsonProcessingException {
 		HttpSession session = request.getSession(false);
-		Object securityContext = session != null ? session.getAttribute("SPRING_SECURITY_CONTEXT") : null;
-
-		if (securityContext == null) {
+		if (session == null) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String userId = (String)authentication.getPrincipal();
+		Object sessionAttr = session.getAttribute("SPRING_SECURITY_CONTEXT");
+		if (sessionAttr == null) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
 
-		Map<String, String> body = new HashMap<>();
-		body.put("userId", userId);
-
-		return ResponseEntity.ok(body);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	private String generateState() {

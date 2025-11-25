@@ -207,9 +207,7 @@ configure(app) {
 
         //Session
         implementation 'org.springframework.session:spring-session-data-redis'
-
-        implementation 'org.springframework.security:spring-security-core'
-
+        
         // Test
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //        testImplementation 'org.springframework.kafka:spring-kafka-test'

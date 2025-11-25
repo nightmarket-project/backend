@@ -29,9 +29,6 @@ public class UserEntity extends BaseUuidEntity {
 	private ProductPostEntity productPostEntity;
 
 	@OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
-	private List<ShoppingBasketProductEntity> shoppingBasketProductEntityList;
-
-	@OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
 	private List<ReviewEntity> reviewEntityList;
 
 	@OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
