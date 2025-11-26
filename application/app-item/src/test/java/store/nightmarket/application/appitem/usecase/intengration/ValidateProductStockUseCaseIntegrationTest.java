@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
@@ -30,6 +31,7 @@ import store.nightmarket.domain.item.valueobject.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.itemweb.exception.ItemWebException;
 
+@ActiveProfiles("test")
 @SpringBootTest
 public class ValidateProductStockUseCaseIntegrationTest {
 
