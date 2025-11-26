@@ -207,7 +207,7 @@ configure(app) {
 
         //Session
         implementation 'org.springframework.session:spring-session-data-redis'
-        
+
         // Test
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation 'org.springframework.kafka:spring-kafka-test'
@@ -233,6 +233,7 @@ project(':app-item') {
         implementation project(':persist-item')
 
         implementation 'org.redisson:redisson-spring-boot-starter:3.45.1'
+        implementation 'it.ozimov:embedded-redis:0.7.2'
     }
 }
 
