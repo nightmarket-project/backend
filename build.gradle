@@ -69,7 +69,7 @@ project(':common') {
 
 //domain layer
 
-def domain = [project(':item'), project(":order"), project(":payment"), project(":delivery"), project(':user'), project(':item-web')]
+def domain = [project(':item'), project(":order"), project(":payment"), project(":delivery"), project(':user'), project(':item-web'), project(':logging')]
 
 configure(domain) {
     bootJar {
@@ -102,6 +102,21 @@ configure(item) {
         implementation project(':item')
     }
 }
+
+project(':logging') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+        implementation 'org.springframework.kafka:spring-kafka'
+    }
+}
+
 //persistence layer
 def persist = [project(':persist-delivery'), project(':persist-order'), project(':persist-payment'), project(':persist-item'), project(':persist-user')]
 
@@ -177,7 +192,7 @@ project(':persist-user') {
 
 //application layer
 
-def app = [project(':app-item'), project(':app-order'), project(':app-payment'), project(':app-delivery'), project(':app-user'), project(':logging')]
+def app = [project(':app-item'), project(':app-order'), project(':app-payment'), project(':app-delivery'), project(':app-user')]
 
 configure(app) {
     bootJar {
@@ -194,6 +209,7 @@ configure(app) {
 
         // Database
         runtimeOnly 'com.h2database:h2'
+        runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
         // Lombok
         compileOnly 'org.projectlombok:lombok'
@@ -217,6 +233,7 @@ configure(app) {
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
 
+        // ELK
         implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
         implementation 'org.springframework.boot:spring-boot-starter-actuator'
         implementation 'io.micrometer:micrometer-tracing-bridge-brave'
@@ -224,9 +241,6 @@ configure(app) {
 }
 
 project(':app-item') {
-    bootJar {
-        enabled = false
-    }
     dependencies {
         implementation project(':item')
         implementation project(':item-web')
@@ -238,9 +252,6 @@ project(':app-item') {
 }
 
 project(':app-order') {
-    bootJar {
-        enabled = false
-    }
     dependencies {
         implementation project(':order')
         implementation project(':persist-order')
@@ -248,9 +259,6 @@ project(':app-order') {
 }
 
 project(':app-payment') {
-    bootJar {
-        enabled = false
-    }
     dependencies {
         implementation project(':payment')
         implementation project(':persist-payment')
@@ -258,9 +266,6 @@ project(':app-payment') {
 }
 
 project(':app-delivery') {
-    bootJar {
-        enabled = false
-    }
     dependencies {
         implementation project(':delivery')
         implementation project(':persist-delivery')
@@ -268,27 +273,11 @@ project(':app-delivery') {
 }
 
 project(':app-user') {
-    bootJar {
-        enabled = false
-    }
     dependencies {
         implementation project(':user')
         implementation project(':persist-user')
 
-        //Spring Security
         implementation "org.springframework.boot:spring-boot-starter-security"
     }
 
-}
-
-project(':logging') {
-    bootJar {
-        enabled = false
-    }
-    dependencies {
-        implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
-        implementation 'org.springframework.boot:spring-boot-starter-actuator'
-        implementation 'io.micrometer:micrometer-tracing-bridge-brave'
-
-    }
 }
