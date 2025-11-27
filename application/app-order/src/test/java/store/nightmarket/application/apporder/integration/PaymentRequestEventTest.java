@@ -19,13 +19,11 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
-import org.springframework.test.annotation.DirtiesContext;
 
 import store.nightmarket.application.apporder.out.dto.PaymentRequestEvent;
 
 @SpringBootTest
 @EmbeddedKafka(partitions = 1, topics = {"order.payment-request"})
-@DirtiesContext
 class PaymentRequestEventTest {
 
 	@Autowired
