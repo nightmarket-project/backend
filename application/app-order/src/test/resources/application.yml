@@ -1,8 +1,4 @@
 spring:
-  application:
-    name: app-order
-  profiles:
-    include: kafka
 
   datasource:
     driver-class-name: org.h2.Driver
@@ -26,14 +22,10 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: true
 
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: DEBUG
-        type:
-          descriptor:
-            sql: TRACE
-
-server:
-  port: 10050
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
