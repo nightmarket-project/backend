@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: app-delivery
+
+server:
+  port: 10090

@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+/application/app-item/src/main/resources/application-prod.yml
+/application/app-order/src/main/resources/application-prod.yml
+/application/app-user/src/main/resources/application-prod.yml
+/application/app-user/src/main/resources/application-oauth.yml
+/application/app-payment/src/main/resources/application-prod.yml
