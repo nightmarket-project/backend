@@ -195,9 +195,6 @@ project(':persist-user') {
 def app = [project(':app-item'), project(':app-order'), project(':app-payment'), project(':app-delivery'), project(':app-user')]
 
 configure(app) {
-    bootJar {
-        enabled = false
-    }
     dependencies {
         implementation project(':common')
         implementation project(':logging')
