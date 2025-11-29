@@ -1,5 +1,9 @@
 server:
   port: 10050
+  servlet:
+    session:
+      cookie:
+        name: JSESSIONID
 
 logging:
   level:
@@ -10,9 +14,18 @@ logging:
           descriptor:
             sql: TRACE
 
+session:
+  store-type: redis
+  redis.namespace: spring:session
+
 spring:
   application:
     name: app-order
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
   datasource:
     driver-class-name: org.h2.Driver
