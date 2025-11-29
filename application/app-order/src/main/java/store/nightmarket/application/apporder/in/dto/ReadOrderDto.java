@@ -11,7 +11,6 @@ public class ReadOrderDto {
 	@Builder
 	public record Response(
 		UUID id,
-		UUID userId,
 		LocalDate orderDate,
 		Address address,
 		List<DetailOrderRecord> detailOrderRecordList

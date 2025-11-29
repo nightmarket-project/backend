@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import store.nightmarket.application.apporder.auth.AuthorizedUser;
+import store.nightmarket.application.apporder.auth.UserSession;
 import store.nightmarket.application.apporder.in.dto.ReadListOrderDto;
 import store.nightmarket.application.apporder.in.dto.ReadOrderDto;
 import store.nightmarket.application.apporder.in.dto.SaveOrderDto;
@@ -35,12 +37,12 @@ public class OrderControllerV1 {
 
 	@GetMapping()
 	public ReadListOrderDto.Response readOrderList(
-		@RequestParam("userId") UUID userId,
 		@RequestParam(value = "page", defaultValue = "0") int page,
-		@RequestParam(value = "size", defaultValue = "25") int size
+		@RequestParam(value = "size", defaultValue = "25") int size,
+		@AuthorizedUser UserSession userSession
 	) {
 		ReadOrderListUseCaseDto.Input input = ReadOrderListUseCaseDto.Input.builder()
-			.userId(new UserId(userId))
+			.userId(new UserId(UUID.fromString(userSession.userId())))
 			.page(page)
 			.size(size)
 			.build();
@@ -52,7 +54,6 @@ public class OrderControllerV1 {
 				output.orderRecords().stream()
 					.map(orderOutput -> ReadOrderDto.Response.builder()
 						.id(orderOutput.getOrderRecordId().getId())
-						.userId(orderOutput.getUserId().getId())
 						.orderDate(orderOutput.getOrderDate())
 						.address(ReadOrderDto.Address.builder()
 							.zipCode(orderOutput.getAddress().getZipCode())
@@ -86,7 +87,6 @@ public class OrderControllerV1 {
 
 		return ReadOrderDto.Response.builder()
 			.id(output.orderRecord().getOrderRecordId().getId())
-			.userId(output.orderRecord().getUserId().getId())
 			.orderDate(output.orderRecord().getOrderDate())
 			.address(
 				ReadOrderDto.Address.builder()
@@ -112,7 +112,10 @@ public class OrderControllerV1 {
 	}
 
 	@PostMapping
-	public SaveOrderDto.Response saveOrder(@RequestBody SaveOrderDto.Request request) {
+	public SaveOrderDto.Response saveOrder(
+		@RequestBody SaveOrderDto.Request request,
+		@AuthorizedUser UserSession userSession
+	) {
 		Output output = requestOrderUseCase.execute(
 			Input.builder()
 				.addressDto(
@@ -122,7 +125,7 @@ public class OrderControllerV1 {
 						.detailAddress(request.addressDto().detailAddress())
 						.build()
 				)
-				.userId(request.userId())
+				.userId(UUID.fromString(userSession.userId()))
 				.detailOrderDtoList(toUseCaseDto(request.detailOrderDtoList()))
 				.build()
 		);
