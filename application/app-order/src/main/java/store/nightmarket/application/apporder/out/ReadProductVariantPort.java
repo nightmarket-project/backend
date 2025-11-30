@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import store.nightmarket.domain.order.exception.OrderException;
 import store.nightmarket.domain.order.model.ProductVariant;
-import store.nightmarket.domain.order.valueobject.ProductVariantId;
+import store.nightmarket.domain.order.model.id.ProductVariantId;
 
 public interface ReadProductVariantPort {
 

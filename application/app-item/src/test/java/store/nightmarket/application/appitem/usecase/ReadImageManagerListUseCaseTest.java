@@ -15,8 +15,8 @@ import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadImageManagerPort;
 import store.nightmarket.application.appitem.usecase.dto.ReadImageManagerListUseCaseDto;
 import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.state.DomainImageType;
-import store.nightmarket.itemweb.valueobject.ReviewId;
+import store.nightmarket.itemweb.model.state.ImageType;
+import store.nightmarket.itemweb.model.id.ReviewId;
 
 class ReadImageManagerListUseCaseTest {
 
@@ -37,13 +37,13 @@ class ReadImageManagerListUseCaseTest {
 		ReviewId reviewId2 = new ReviewId(UUID.randomUUID());
 		ImageManager imageManager1 = TestDomainFactory.createImageManager(
 			UUID.randomUUID(),
-			DomainImageType.MAIN,
+			ImageType.MAIN,
 			1,
 			reviewId1.getId()
 		);
 		ImageManager imageManager2 = TestDomainFactory.createImageManager(
 			UUID.randomUUID(),
-			DomainImageType.MAIN,
+			ImageType.MAIN,
 			1,
 			reviewId2.getId()
 		);

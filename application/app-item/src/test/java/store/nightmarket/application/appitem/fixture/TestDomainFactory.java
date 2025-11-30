@@ -11,28 +11,28 @@ import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.model.User;
 import store.nightmarket.domain.item.model.VariantOptionValue;
 import store.nightmarket.domain.item.valueobject.Name;
-import store.nightmarket.domain.item.valueobject.OptionGroupId;
-import store.nightmarket.domain.item.valueobject.OptionValueId;
+import store.nightmarket.domain.item.model.id.OptionGroupId;
+import store.nightmarket.domain.item.model.id.OptionValueId;
 import store.nightmarket.domain.item.valueobject.Price;
-import store.nightmarket.domain.item.valueobject.ProductId;
-import store.nightmarket.domain.item.valueobject.ProductVariantId;
+import store.nightmarket.domain.item.model.id.ProductId;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
-import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
-import store.nightmarket.domain.item.valueobject.UserId;
-import store.nightmarket.domain.item.valueobject.VariantOptionValueId;
+import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;
+import store.nightmarket.domain.item.model.id.UserId;
+import store.nightmarket.domain.item.model.id.VariantOptionValueId;
 import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.model.ProductPost;
 import store.nightmarket.itemweb.model.Reply;
 import store.nightmarket.itemweb.model.Review;
-import store.nightmarket.itemweb.state.DomainImageType;
+import store.nightmarket.itemweb.model.state.ImageType;
 import store.nightmarket.itemweb.valueobject.CommentText;
 import store.nightmarket.itemweb.valueobject.Image;
-import store.nightmarket.itemweb.valueobject.ImageManagerId;
-import store.nightmarket.itemweb.valueobject.ImageOwnerId;
-import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.itemweb.model.id.ImageManagerId;
+import store.nightmarket.itemweb.model.id.ImageOwnerId;
+import store.nightmarket.itemweb.model.id.ProductPostId;
 import store.nightmarket.itemweb.valueobject.Rating;
-import store.nightmarket.itemweb.valueobject.ReplyId;
-import store.nightmarket.itemweb.valueobject.ReviewId;
+import store.nightmarket.itemweb.model.id.ReplyId;
+import store.nightmarket.itemweb.model.id.ReviewId;
 
 public class TestDomainFactory {
 
@@ -59,7 +59,7 @@ public class TestDomainFactory {
 
 	public static ImageManager createImageManager(
 		UUID imageManagerId,
-		DomainImageType imageType,
+		ImageType imageType,
 		int displayOrder,
 		UUID imageOwnerId
 	) {

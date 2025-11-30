@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import store.nightmarket.common.domain.service.BaseDomainService;
 import store.nightmarket.domain.user.model.User;
-import store.nightmarket.domain.user.valueobject.UserRole;
+import store.nightmarket.domain.user.model.UserRole;
 
 @Component
 public class ChangeUserRoleDomainService implements BaseDomainService<Input, Event> {

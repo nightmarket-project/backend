@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import lombok.Builder;
 import store.nightmarket.application.apporder.in.dto.SaveOrderDto;
-import store.nightmarket.domain.order.valueobject.ProductVariantId;
+import store.nightmarket.domain.order.model.id.ProductVariantId;
 import store.nightmarket.domain.order.valueobject.Quantity;
 
 public class RequestOrderUseCaseDto {

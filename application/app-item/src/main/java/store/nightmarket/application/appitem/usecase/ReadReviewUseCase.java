@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadReviewPort;
 import store.nightmarket.application.appitem.out.dto.ReviewAdapterDto;
 import store.nightmarket.common.application.usecase.BaseUseCase;
-import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.itemweb.model.id.ProductPostId;
 
 @Service
 @RequiredArgsConstructor

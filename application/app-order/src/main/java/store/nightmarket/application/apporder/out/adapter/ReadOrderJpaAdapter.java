@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.apporder.mapper.OrderRecordMapper;
 import store.nightmarket.application.apporder.out.ReadOrderPort;
 import store.nightmarket.domain.order.model.OrderRecord;
-import store.nightmarket.domain.order.valueobject.OrderRecordId;
-import store.nightmarket.domain.order.valueobject.UserId;
+import store.nightmarket.domain.order.model.id.OrderRecordId;
+import store.nightmarket.domain.order.model.id.UserId;
 import store.nightmarket.persistence.persistorder.repository.OrderRecordRepository;
 
 @Component

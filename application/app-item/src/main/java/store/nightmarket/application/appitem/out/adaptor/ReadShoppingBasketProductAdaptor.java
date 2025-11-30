@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.mapper.ShoppingBasketProductMapper;
+import store.nightmarket.application.appitem.out.mapper.ShoppingBasketProductMapper;
 import store.nightmarket.application.appitem.out.ReadShoppingBasketProductPort;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
-import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;
+import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.persistence.persistitem.repository.ShoppingBasketProductRepository;
 
 @Component

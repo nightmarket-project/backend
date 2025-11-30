@@ -20,8 +20,8 @@ import store.nightmarket.application.appitem.usecase.dto.FindProductByKeywordUse
 import store.nightmarket.domain.item.model.Product;
 import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.model.ProductPost;
-import store.nightmarket.itemweb.state.DomainImageType;
-import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.itemweb.model.state.ImageType;
+import store.nightmarket.itemweb.model.id.ProductPostId;
 
 class FindProductByKeywordUseCaseTest {
 
@@ -114,7 +114,7 @@ class FindProductByKeywordUseCaseTest {
 	) {
 		return TestDomainFactory.createImageManager(
 			UUID.randomUUID(),
-			DomainImageType.THUMBNAIL,
+			ImageType.THUMBNAIL,
 			displayOrder,
 			ImageOwnerId
 		);

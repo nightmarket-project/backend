@@ -9,13 +9,13 @@ import store.nightmarket.domain.order.model.OrderRecord;
 import store.nightmarket.domain.order.service.dto.CancelDetailOrderDomainServiceDto;
 import store.nightmarket.domain.order.service.dto.CancelOrderDomainServiceDto;
 import store.nightmarket.domain.order.service.dto.RequestOrderDomainServiceDto;
-import store.nightmarket.domain.order.status.DetailOrderState;
+import store.nightmarket.domain.order.model.status.DetailOrderState;
 import store.nightmarket.domain.order.valueobject.Address;
-import store.nightmarket.domain.order.valueobject.DetailOrderRecordId;
-import store.nightmarket.domain.order.valueobject.OrderRecordId;
-import store.nightmarket.domain.order.valueobject.ProductVariantId;
+import store.nightmarket.domain.order.model.id.DetailOrderRecordId;
+import store.nightmarket.domain.order.model.id.OrderRecordId;
+import store.nightmarket.domain.order.model.id.ProductVariantId;
 import store.nightmarket.domain.order.valueobject.Quantity;
-import store.nightmarket.domain.order.valueobject.UserId;
+import store.nightmarket.domain.order.model.id.UserId;
 
 public class OrderTestUtil {
 

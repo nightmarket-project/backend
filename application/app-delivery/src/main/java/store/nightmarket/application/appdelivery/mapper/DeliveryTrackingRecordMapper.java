@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import store.nightmarket.domain.delivery.model.DeliveryTrackingRecord;
-import store.nightmarket.domain.delivery.state.DetailDeliveryState;
-import store.nightmarket.domain.delivery.valueobject.DeliveryTrackingRecordId;
+import store.nightmarket.domain.delivery.model.state.DetailDeliveryState;
+import store.nightmarket.domain.delivery.model.id.DeliveryTrackingRecordId;
 import store.nightmarket.persistence.persistdelivery.entity.model.DeliveryRecordEntity;
 import store.nightmarket.persistence.persistdelivery.entity.model.DeliveryTrackingRecordEntity;
 

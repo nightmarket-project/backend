@@ -8,13 +8,13 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.mapper.ProductVariantMapper;
+import store.nightmarket.application.appitem.out.mapper.ProductVariantMapper;
 import store.nightmarket.application.appitem.out.ReadProductVariantPort;
 import store.nightmarket.application.appitem.out.dto.ProductVariantAdapterDto;
 import store.nightmarket.domain.item.model.ProductVariant;
-import store.nightmarket.domain.item.valueobject.ProductId;
-import store.nightmarket.domain.item.valueobject.ProductVariantId;
-import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.domain.item.model.id.ProductId;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
+import store.nightmarket.itemweb.model.id.ProductPostId;
 import store.nightmarket.persistence.persistitem.repository.ProductVariantRepository;
 
 @Component

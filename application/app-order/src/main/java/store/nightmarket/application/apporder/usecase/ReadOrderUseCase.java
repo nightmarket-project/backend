@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.apporder.out.ReadOrderPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.order.model.OrderRecord;
-import store.nightmarket.domain.order.valueobject.OrderRecordId;
+import store.nightmarket.domain.order.model.id.OrderRecordId;
 
 @Service
 @RequiredArgsConstructor

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.auth.AuthorizedUser;
+import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
 import store.nightmarket.application.appitem.auth.UserSession;
 import store.nightmarket.application.appitem.in.dto.CheckShoppingBasketProductDto;
 import store.nightmarket.application.appitem.in.dto.ModifyShoppingBasketProductDto;
@@ -36,12 +36,12 @@ import store.nightmarket.application.appitem.usecase.dto.ValidateProductStockUse
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
-import store.nightmarket.domain.item.valueobject.ProductVariantId;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
-import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;
+import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.itemweb.model.id.ProductPostId;
 
 @RestController
 @RequestMapping("api/v1/cart")

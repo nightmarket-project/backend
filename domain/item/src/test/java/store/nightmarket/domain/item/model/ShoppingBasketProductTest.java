@@ -11,7 +11,7 @@ import store.nightmarket.domain.item.exception.ProductException;
 import store.nightmarket.domain.item.fixture.TestShoppingBasketFactory;
 import store.nightmarket.domain.item.valueobject.Price;
 import store.nightmarket.domain.item.valueobject.Quantity;
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.UserId;
 
 class ShoppingBasketProductTest {
 

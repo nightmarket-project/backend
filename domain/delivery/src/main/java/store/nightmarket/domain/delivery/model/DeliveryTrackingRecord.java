@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.domain.delivery.state.DetailDeliveryState;
-import store.nightmarket.domain.delivery.valueobject.DeliveryTrackingRecordId;
+import store.nightmarket.domain.delivery.model.state.DetailDeliveryState;
+import store.nightmarket.domain.delivery.model.id.DeliveryTrackingRecordId;
 import store.nightmarket.domain.delivery.valueobject.Location;
 
 @Getter

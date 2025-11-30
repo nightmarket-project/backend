@@ -3,7 +3,7 @@ package store.nightmarket.application.appitem.out.adaptor;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.mapper.ShoppingBasketProductMapper;
+import store.nightmarket.application.appitem.out.mapper.ShoppingBasketProductMapper;
 import store.nightmarket.application.appitem.out.SaveShoppingBasketProductPort;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.persistence.persistitem.repository.ProductVariantRepository;

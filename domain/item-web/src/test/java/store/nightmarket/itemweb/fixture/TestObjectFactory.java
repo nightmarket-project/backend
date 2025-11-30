@@ -3,14 +3,14 @@ package store.nightmarket.itemweb.fixture;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.itemweb.model.Reply;
 import store.nightmarket.itemweb.model.Review;
 import store.nightmarket.itemweb.valueobject.CommentText;
-import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.itemweb.model.id.ProductPostId;
 import store.nightmarket.itemweb.valueobject.Rating;
-import store.nightmarket.itemweb.valueobject.ReplyId;
-import store.nightmarket.itemweb.valueobject.ReviewId;
+import store.nightmarket.itemweb.model.id.ReplyId;
+import store.nightmarket.itemweb.model.id.ReviewId;
 
 public class TestObjectFactory {
 
@@ -26,8 +26,7 @@ public class TestObjectFactory {
 			new ProductPostId(productPostId),
 			new UserId(authorId),
 			new CommentText(commentText),
-			new Rating(rating),
-			LocalDateTime.now()
+			new Rating(rating)
 		);
 	}
 
@@ -41,8 +40,7 @@ public class TestObjectFactory {
 			new ReplyId(replyId),
 			new CommentText(commentText),
 			new UserId(authorId),
-			new ReviewId(reviewId),
-			LocalDateTime.now()
+			new ReviewId(reviewId)
 		);
 	}
 

@@ -23,8 +23,8 @@ import store.nightmarket.application.apporder.usecase.ReadOrderUseCase;
 import store.nightmarket.application.apporder.usecase.RequestOrderUseCase;
 import store.nightmarket.application.apporder.usecase.dto.ReadOrderListUseCaseDto;
 import store.nightmarket.application.apporder.usecase.dto.ReadOrderUseCaseDto;
-import store.nightmarket.domain.order.valueobject.OrderRecordId;
-import store.nightmarket.domain.order.valueobject.UserId;
+import store.nightmarket.domain.order.model.id.OrderRecordId;
+import store.nightmarket.domain.order.model.id.UserId;
 
 @RestController
 @RequestMapping("/api/v1/order")

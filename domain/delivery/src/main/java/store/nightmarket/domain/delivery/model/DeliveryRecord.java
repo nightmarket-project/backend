@@ -7,10 +7,10 @@ import java.util.List;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.delivery.exception.DeliveryException;
-import store.nightmarket.domain.delivery.state.DetailDeliveryState;
+import store.nightmarket.domain.delivery.model.state.DetailDeliveryState;
 import store.nightmarket.domain.delivery.valueobject.Address;
-import store.nightmarket.domain.delivery.valueobject.DeliveryRecordId;
-import store.nightmarket.domain.delivery.valueobject.UserId;
+import store.nightmarket.domain.delivery.model.id.DeliveryRecordId;
+import store.nightmarket.domain.delivery.model.id.UserId;
 
 @Getter
 public class DeliveryRecord extends BaseModel<DeliveryRecordId> {

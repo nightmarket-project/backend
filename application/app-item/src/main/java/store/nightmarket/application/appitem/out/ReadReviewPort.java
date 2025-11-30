@@ -3,7 +3,7 @@ package store.nightmarket.application.appitem.out;
 import java.util.List;
 
 import store.nightmarket.application.appitem.out.dto.ReviewAdapterDto;
-import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.itemweb.model.id.ProductPostId;
 
 public interface ReadReviewPort {
 

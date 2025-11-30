@@ -1,7 +1,7 @@
 package store.nightmarket.application.apppayment.mapper;
 
 import store.nightmarket.domain.payment.model.Product;
-import store.nightmarket.domain.payment.valueobject.ProductId;
+import store.nightmarket.domain.payment.model.id.ProductId;
 import store.nightmarket.persistence.persistpayment.entity.model.ProductEntity;
 
 public class ProductMapper {

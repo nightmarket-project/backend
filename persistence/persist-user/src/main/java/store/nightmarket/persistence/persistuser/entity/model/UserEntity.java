@@ -13,8 +13,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.domain.user.valueobject.AuthProvider;
-import store.nightmarket.domain.user.valueobject.UserRole;
+import store.nightmarket.domain.user.model.AuthProvider;
+import store.nightmarket.domain.user.model.UserRole;
 import store.nightmarket.persistence.persistuser.entity.valueobject.NameEntity;
 import store.nightmarket.persistence.persistuser.entity.valueobject.PointEntity;
 

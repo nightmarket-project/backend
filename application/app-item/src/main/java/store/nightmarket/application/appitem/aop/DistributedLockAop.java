@@ -27,7 +27,6 @@ public class DistributedLockAop {
 
 	@Around("@annotation(store.nightmarket.application.appitem.aop.DistributedLock)")
 	public Object lock(final ProceedingJoinPoint joinPoint) throws Throwable {
-
 		MethodSignature signature = (MethodSignature)joinPoint.getSignature();
 		Method method = signature.getMethod();
 		DistributedLock distributedLock = method.getAnnotation(DistributedLock.class);
@@ -37,8 +36,6 @@ public class DistributedLockAop {
 			joinPoint,
 			distributedLock
 		);
-		String threadName = Thread.currentThread().getName();
-		log.debug("[{}] 락 획득 시도: Key={}", threadName, keys);
 
 		List<RLock> lockList = new ArrayList<>();
 		try {
@@ -52,23 +49,19 @@ public class DistributedLockAop {
 				);
 
 				if (!available) {
-					releaseAllLocks(lockList, threadName);
+					releaseAllLocks(lockList);
 					return false;
 				}
 
 				lockList.add(rLock);
-				log.debug("[{}] 락 획득 성공: Key={}", threadName, key);
 			}
-
-			log.debug("[{}] 락 획득 성공! 비즈니스 로직 시작: Key={}", threadName, keys);
 
 			return joinPoint.proceed();
 		} catch (InterruptedException e) {
-			throw new InterruptedException();
+			throw new InterruptedException(); // TODO : custom exception 생성하면 좋음
 		} finally {
 			try {
-				log.debug("[{}] 락 해제 완료: Key={}", threadName, keys);
-				releaseAllLocks(lockList, threadName);
+				releaseAllLocks(lockList);
 			} catch (IllegalMonitorStateException e) {
 				log.debug("Redisson Lock Already UnLock {} {}",
 					method.getName(),
@@ -78,15 +71,13 @@ public class DistributedLockAop {
 		}
 	}
 
-	private void releaseAllLocks(List<RLock> locks, String threadName) {
+	private void releaseAllLocks(List<RLock> locks) {
 		for (RLock lock : locks) {
 			try {
 				if (lock.isHeldByCurrentThread()) {
 					lock.unlock();
-					log.debug("[{}] 🔓 락 해제: {}", threadName, lock.getName());
 				}
 			} catch (IllegalMonitorStateException e) {
-				log.warn("[{}] ⚠️ 락이 이미 해제됨: {}", threadName, lock.getName());
 			}
 		}
 	}

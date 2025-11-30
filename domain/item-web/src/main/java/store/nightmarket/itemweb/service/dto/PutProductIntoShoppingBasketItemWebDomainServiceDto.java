@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.Quantity;
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.UserId;
 
 public class PutProductIntoShoppingBasketItemWebDomainServiceDto {
 

@@ -18,7 +18,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import store.nightmarket.domain.order.exception.OrderException;
 import store.nightmarket.domain.order.model.DetailOrderRecord;
 import store.nightmarket.domain.order.model.OrderRecord;
-import store.nightmarket.domain.order.status.DetailOrderState;
+import store.nightmarket.domain.order.model.status.DetailOrderState;
 
 public class CancelDetailOrderDomainServiceTest {
 

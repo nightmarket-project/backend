@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import store.nightmarket.domain.item.model.ProductVariant;
-import store.nightmarket.domain.item.valueobject.ProductId;
-import store.nightmarket.domain.item.valueobject.ProductVariantId;
+import store.nightmarket.domain.item.model.id.ProductId;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.UserId;
 
 public class TestItemFactory {
 

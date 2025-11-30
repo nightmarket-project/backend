@@ -1,7 +1,7 @@
 package store.nightmarket.itemweb.service;
 
 import store.nightmarket.common.domain.service.BaseDomainService;
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.itemweb.model.Review;
 import store.nightmarket.itemweb.service.dto.EditReviewItemWebDomainServiceDto.Event;
 import store.nightmarket.itemweb.service.dto.EditReviewItemWebDomainServiceDto.Input;

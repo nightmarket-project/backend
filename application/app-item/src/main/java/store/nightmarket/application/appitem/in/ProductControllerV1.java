@@ -14,7 +14,7 @@ import store.nightmarket.application.appitem.usecase.ReadOptionGroupUseCase;
 import store.nightmarket.application.appitem.usecase.ReadProductVariantUseCase;
 import store.nightmarket.application.appitem.usecase.dto.ReadOptionGroupUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadProductVariantUseCaseDto;
-import store.nightmarket.domain.item.valueobject.ProductId;
+import store.nightmarket.domain.item.model.id.ProductId;
 
 @RestController
 @RequestMapping("api/v1/products")

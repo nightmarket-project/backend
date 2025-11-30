@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadProductVariantPort;
 import store.nightmarket.application.appitem.out.dto.ProductVariantAdapterDto;
 import store.nightmarket.common.application.usecase.BaseUseCase;
-import store.nightmarket.domain.item.valueobject.ProductId;
+import store.nightmarket.domain.item.model.id.ProductId;
 
 @Service
 @RequiredArgsConstructor

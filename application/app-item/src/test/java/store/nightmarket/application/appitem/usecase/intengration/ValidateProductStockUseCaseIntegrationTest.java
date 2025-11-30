@@ -27,7 +27,7 @@ import store.nightmarket.application.appitem.usecase.ValidateProductStockUseCase
 import store.nightmarket.application.appitem.usecase.dto.ValidateProductStockUseCaseDto;
 import store.nightmarket.domain.item.exception.QuantityException;
 import store.nightmarket.domain.item.model.ProductVariant;
-import store.nightmarket.domain.item.valueobject.ProductVariantId;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.itemweb.exception.ItemWebException;
 

@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 
 import lombok.Builder;
 import store.nightmarket.domain.order.model.OrderRecord;
-import store.nightmarket.domain.order.valueobject.UserId;
+import store.nightmarket.domain.order.model.id.UserId;
 
 public class ReadOrderListUseCaseDto {
 

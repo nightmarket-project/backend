@@ -4,29 +4,29 @@ import java.time.LocalDateTime;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.itemweb.state.DomainImageType;
+import store.nightmarket.itemweb.model.state.ImageType;
 import store.nightmarket.itemweb.valueobject.Image;
-import store.nightmarket.itemweb.valueobject.ImageManagerId;
-import store.nightmarket.itemweb.valueobject.ImageOwnerId;
+import store.nightmarket.itemweb.model.id.ImageManagerId;
+import store.nightmarket.itemweb.model.id.ImageOwnerId;
 
 @Getter
 public class ImageManager extends BaseModel<ImageManagerId> {
 
 	private final Image image;
-	private final DomainImageType domainImageType;
+	private final ImageType imageType;
 	private final int displayOrder;
 	private final ImageOwnerId ImageOwnerId;
 
 	private ImageManager(
 		ImageManagerId id,
 		Image image,
-		DomainImageType domainImageType,
+		ImageType imageType,
 		int displayOrder,
 		ImageOwnerId imageOwnerId
 	) {
 		super(id);
 		this.image = image;
-		this.domainImageType = domainImageType;
+		this.imageType = imageType;
 		this.displayOrder = displayOrder;
 		ImageOwnerId = imageOwnerId;
 	}
@@ -35,13 +35,13 @@ public class ImageManager extends BaseModel<ImageManagerId> {
 		ImageManagerId id,
 		LocalDateTime createdAt,
 		Image image,
-		DomainImageType domainImageType,
+		ImageType imageType,
 		int displayOrder,
 		ImageOwnerId imageOwnerId
 	) {
 		super(id, createdAt);
 		this.image = image;
-		this.domainImageType = domainImageType;
+		this.imageType = imageType;
 		this.displayOrder = displayOrder;
 		ImageOwnerId = imageOwnerId;
 	}
@@ -49,14 +49,14 @@ public class ImageManager extends BaseModel<ImageManagerId> {
 	public static ImageManager newInstance(
 		ImageManagerId id,
 		Image image,
-		DomainImageType domainImageType,
+		ImageType imageType,
 		int displayOrder,
 		ImageOwnerId imageOwnerId
 	) {
 		return new ImageManager(
 			id,
 			image,
-			domainImageType,
+                imageType,
 			displayOrder,
 			imageOwnerId
 		);
@@ -66,7 +66,7 @@ public class ImageManager extends BaseModel<ImageManagerId> {
 		ImageManagerId id,
 		LocalDateTime createdAt,
 		Image image,
-		DomainImageType domainImageType,
+		ImageType imageType,
 		int displayOrder,
 		ImageOwnerId imageOwnerId
 	) {
@@ -74,7 +74,7 @@ public class ImageManager extends BaseModel<ImageManagerId> {
 			id,
 			createdAt,
 			image,
-			domainImageType,
+                imageType,
 			displayOrder,
 			imageOwnerId
 		);

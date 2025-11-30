@@ -16,7 +16,7 @@ import store.nightmarket.application.appitem.out.ReadProductVariantPort;
 import store.nightmarket.application.appitem.out.dto.ProductVariantAdapterDto;
 import store.nightmarket.application.appitem.out.dto.VariantOptionValueAdapterDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadProductVariantUseCaseDto;
-import store.nightmarket.domain.item.valueobject.ProductId;
+import store.nightmarket.domain.item.model.id.ProductId;
 
 class ReadProductVariantUseCaseTest {
 

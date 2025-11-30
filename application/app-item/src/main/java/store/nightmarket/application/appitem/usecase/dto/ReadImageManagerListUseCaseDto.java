@@ -4,7 +4,7 @@ import java.util.List;
 
 import lombok.Builder;
 import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.valueobject.ImageOwnerId;
+import store.nightmarket.itemweb.model.id.ImageOwnerId;
 
 public class ReadImageManagerListUseCaseDto {
 

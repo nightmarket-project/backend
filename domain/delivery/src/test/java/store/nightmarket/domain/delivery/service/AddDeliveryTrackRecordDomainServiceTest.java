@@ -18,7 +18,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import store.nightmarket.domain.delivery.exception.DeliveryException;
 import store.nightmarket.domain.delivery.model.DeliveryRecord;
 import store.nightmarket.domain.delivery.model.DeliveryTrackingRecord;
-import store.nightmarket.domain.delivery.state.DetailDeliveryState;
+import store.nightmarket.domain.delivery.model.state.DetailDeliveryState;
 
 public class AddDeliveryTrackRecordDomainServiceTest {
 

@@ -3,7 +3,7 @@ package store.nightmarket.application.appitem.usecase.dto;
 import java.util.List;
 
 import lombok.Builder;
-import store.nightmarket.domain.item.valueobject.ProductVariantId;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
 
 public class ValidateProductStockUseCaseDto {

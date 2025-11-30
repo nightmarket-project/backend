@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import store.nightmarket.domain.payment.model.DetailPaymentRecord;
-import store.nightmarket.domain.payment.valueobject.DetailPaymentRecordId;
+import store.nightmarket.domain.payment.model.id.DetailPaymentRecordId;
 import store.nightmarket.persistence.persistpayment.entity.model.DetailPaymentRecordEntity;
 import store.nightmarket.persistence.persistpayment.entity.model.PaymentRecordEntity;
 

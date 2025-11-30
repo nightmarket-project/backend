@@ -9,8 +9,8 @@ import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.order.exception.OrderException;
 import store.nightmarket.domain.order.valueobject.Address;
-import store.nightmarket.domain.order.valueobject.OrderRecordId;
-import store.nightmarket.domain.order.valueobject.UserId;
+import store.nightmarket.domain.order.model.id.OrderRecordId;
+import store.nightmarket.domain.order.model.id.UserId;
 
 @Getter
 public class OrderRecord extends BaseModel<OrderRecordId> {

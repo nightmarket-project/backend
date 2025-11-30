@@ -14,8 +14,8 @@ import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadImageManagerPort;
 import store.nightmarket.application.appitem.usecase.dto.ReadProductPostImageUseCaseDto;
 import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.state.DomainImageType;
-import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.itemweb.model.state.ImageType;
+import store.nightmarket.itemweb.model.id.ProductPostId;
 
 class ReadProductPostImageUseCaseTest {
 
@@ -35,17 +35,17 @@ class ReadProductPostImageUseCaseTest {
 		ProductPostId productPostId = new ProductPostId(UUID.randomUUID());
 		ImageManager imageManager = TestDomainFactory.createImageManager(
 			UUID.randomUUID(),
-			DomainImageType.MAIN,
+			ImageType.MAIN,
 			1,
 			productPostId.getId()
 		);
 
 		ReadProductPostImageUseCaseDto.Input input = ReadProductPostImageUseCaseDto.Input.builder()
 			.id(productPostId)
-			.imageTypeList(List.of(DomainImageType.MAIN))
+			.imageTypeList(List.of(ImageType.MAIN))
 			.build();
 
-		when(mockReadImageManagerPort.readImageTypeList(productPostId, List.of(DomainImageType.MAIN)))
+		when(mockReadImageManagerPort.readImageTypeList(productPostId, List.of(ImageType.MAIN)))
 			.thenReturn(List.of(imageManager));
 
 		// when
@@ -56,7 +56,7 @@ class ReadProductPostImageUseCaseTest {
 		assertThat(output.imageManagerList())
 			.isEqualTo(List.of(imageManager));
 		verify(mockReadImageManagerPort, times(1))
-			.readImageTypeList(productPostId, List.of(DomainImageType.MAIN));
+			.readImageTypeList(productPostId, List.of(ImageType.MAIN));
 	}
 
 }

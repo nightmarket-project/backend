@@ -14,7 +14,7 @@ import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
 import store.nightmarket.application.appitem.out.dto.OptionGroupAdapterDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadOptionGroupUseCaseDto;
-import store.nightmarket.domain.item.valueobject.ProductId;
+import store.nightmarket.domain.item.model.id.ProductId;
 
 class ReadOptionGroupUseCaseTest {
 
