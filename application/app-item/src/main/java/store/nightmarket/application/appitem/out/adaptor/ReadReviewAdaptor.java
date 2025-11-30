@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadReviewPort;
 import store.nightmarket.application.appitem.out.dto.ReviewAdapterDto;
-import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.itemweb.model.id.ProductPostId;
 import store.nightmarket.persistence.persistitem.repository.ReviewRepository;
 
 @Component

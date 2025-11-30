@@ -5,11 +5,11 @@ import java.util.UUID;
 import store.nightmarket.domain.user.model.User;
 import store.nightmarket.domain.user.service.dto.ChangeUserNameDomainServiceDto;
 import store.nightmarket.domain.user.service.dto.ChangeUserRoleDomainServiceDto;
-import store.nightmarket.domain.user.valueobject.AuthProvider;
+import store.nightmarket.domain.user.model.AuthProvider;
 import store.nightmarket.domain.user.valueobject.Name;
 import store.nightmarket.domain.user.valueobject.Point;
-import store.nightmarket.domain.user.valueobject.UserId;
-import store.nightmarket.domain.user.valueobject.UserRole;
+import store.nightmarket.domain.user.model.id.UserId;
+import store.nightmarket.domain.user.model.UserRole;
 
 public class UserTestUtil {
 

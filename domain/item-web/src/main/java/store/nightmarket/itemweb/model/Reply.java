@@ -4,11 +4,11 @@ import java.time.LocalDateTime;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.itemweb.exception.ItemWebException;
 import store.nightmarket.itemweb.valueobject.CommentText;
-import store.nightmarket.itemweb.valueobject.ReplyId;
-import store.nightmarket.itemweb.valueobject.ReviewId;
+import store.nightmarket.itemweb.model.id.ReplyId;
+import store.nightmarket.itemweb.model.id.ReviewId;
 
 @Getter
 public class Reply extends BaseModel<ReplyId> {

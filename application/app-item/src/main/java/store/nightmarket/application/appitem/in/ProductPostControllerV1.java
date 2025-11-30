@@ -28,10 +28,10 @@ import store.nightmarket.application.appitem.usecase.dto.ReadProductPostImageUse
 import store.nightmarket.application.appitem.usecase.dto.ReadProductPostUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadReviewUseCaseDto;
 import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.state.DomainImageType;
+import store.nightmarket.itemweb.model.state.ImageType;
 import store.nightmarket.itemweb.valueobject.Image;
-import store.nightmarket.itemweb.valueobject.ImageOwnerId;
-import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.itemweb.model.id.ImageOwnerId;
+import store.nightmarket.itemweb.model.id.ProductPostId;
 
 @RestController
 @RequestMapping("api/v1/posts")
@@ -91,7 +91,7 @@ public class ProductPostControllerV1 {
 	public ReadProductPostDto.Response readProductPost(@PathVariable("postId") UUID postId) {
 		ReadProductPostImageUseCaseDto.Input input = ReadProductPostImageUseCaseDto.Input.builder()
 			.id(new ProductPostId(postId))
-			.imageTypeList(List.of(DomainImageType.MAIN, DomainImageType.DETAIL))
+			.imageTypeList(List.of(ImageType.MAIN, ImageType.DETAIL))
 			.build();
 
 		ReadProductPostUseCaseDto.Output productPostOutput = readProductPostUseCase.execute(new ProductPostId(postId));
@@ -108,8 +108,8 @@ public class ProductPostControllerV1 {
 					.description(productPostOutput.productPostAdapterDto().getProduct().getDescription())
 					.build()
 			)
-			.mainImageList(getDtoListByImageType(imageOutput, DomainImageType.MAIN))
-			.detailImageInfoList(getDtoListByImageType(imageOutput, DomainImageType.DETAIL))
+			.mainImageList(getDtoListByImageType(imageOutput, ImageType.MAIN))
+			.detailImageInfoList(getDtoListByImageType(imageOutput, ImageType.DETAIL))
 			.build();
 	}
 
@@ -162,10 +162,10 @@ public class ProductPostControllerV1 {
 
 	private List<ReadProductPostDto.ImageManagerInfo> getDtoListByImageType(
 		List<ImageManager> imageManagerList,
-		DomainImageType domainImageType
+		ImageType imageType
 	) {
 		return imageManagerList.stream()
-			.filter(image -> image.getDomainImageType() == domainImageType)
+			.filter(image -> image.getImageType() == imageType)
 			.map(image -> ReadProductPostDto.ImageManagerInfo.builder()
 				.imageUrl(image.getImage().imageUrl())
 				.displayOrder(image.getDisplayOrder())

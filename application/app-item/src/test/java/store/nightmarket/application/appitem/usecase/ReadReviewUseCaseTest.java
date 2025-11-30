@@ -15,7 +15,7 @@ import store.nightmarket.application.appitem.out.ReadReviewPort;
 import store.nightmarket.application.appitem.out.dto.ReplyAdapterDto;
 import store.nightmarket.application.appitem.out.dto.ReviewAdapterDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadReviewUseCaseDto;
-import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.itemweb.model.id.ProductPostId;
 
 class ReadReviewUseCaseTest {
 

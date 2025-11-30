@@ -13,7 +13,7 @@ import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadProductPostPort;
 import store.nightmarket.application.appitem.out.dto.ProductPostAdapterDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadProductPostUseCaseDto;
-import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.itemweb.model.id.ProductPostId;
 
 class ReadProductPostUseCaseTest {
 

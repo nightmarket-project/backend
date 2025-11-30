@@ -13,7 +13,7 @@ public class CookieConfig {
 		DefaultCookieSerializer serializer = new DefaultCookieSerializer();
 		serializer.setCookieName("JSESSIONID");
 		serializer.setCookiePath("/");
-		serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
+		serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$"); // TODO : 수정 필요
 		return serializer;
 	}
 

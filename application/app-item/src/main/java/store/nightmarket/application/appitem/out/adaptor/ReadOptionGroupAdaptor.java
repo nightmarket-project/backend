@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
 import store.nightmarket.application.appitem.out.dto.OptionGroupAdapterDto;
-import store.nightmarket.domain.item.valueobject.ProductId;
+import store.nightmarket.domain.item.model.id.ProductId;
 import store.nightmarket.persistence.persistitem.repository.OptionGroupRepository;
 
 @Component

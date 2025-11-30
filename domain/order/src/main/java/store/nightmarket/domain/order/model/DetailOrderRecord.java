@@ -6,9 +6,9 @@ import java.util.Objects;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.order.exception.OrderException;
-import store.nightmarket.domain.order.status.DetailOrderState;
-import store.nightmarket.domain.order.valueobject.DetailOrderRecordId;
-import store.nightmarket.domain.order.valueobject.ProductVariantId;
+import store.nightmarket.domain.order.model.status.DetailOrderState;
+import store.nightmarket.domain.order.model.id.DetailOrderRecordId;
+import store.nightmarket.domain.order.model.id.ProductVariantId;
 import store.nightmarket.domain.order.valueobject.Quantity;
 
 @Getter

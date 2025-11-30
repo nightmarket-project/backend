@@ -6,7 +6,7 @@ import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.payment.exception.PaymentException;
 import store.nightmarket.domain.payment.state.DetailPaymentState;
-import store.nightmarket.domain.payment.valueobject.DetailPaymentRecordId;
+import store.nightmarket.domain.payment.model.id.DetailPaymentRecordId;
 
 @Getter
 public class DetailPaymentRecord extends BaseModel<DetailPaymentRecordId> {

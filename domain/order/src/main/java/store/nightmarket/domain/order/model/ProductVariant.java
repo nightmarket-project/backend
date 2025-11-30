@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.order.valueobject.Price;
-import store.nightmarket.domain.order.valueobject.ProductVariantId;
+import store.nightmarket.domain.order.model.id.ProductVariantId;
 
 @Getter
 public class ProductVariant extends BaseModel<ProductVariantId> {

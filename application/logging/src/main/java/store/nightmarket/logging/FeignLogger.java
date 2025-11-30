@@ -1,5 +1,11 @@
 package store.nightmarket.logging;
 
+import feign.Logger;
+import feign.Request;
+import feign.Response;
+import feign.Util;
+import store.nightmarket.logging.model.FeignLog;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -7,13 +13,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import feign.Logger;
-import feign.Request;
-import feign.Response;
-import feign.Util;
-import store.nightmarket.logging.model.TypeEnum;
-import store.nightmarket.logging.model.detail.FeignLog;
 
 public class FeignLogger extends Logger {
 
@@ -38,7 +37,7 @@ public class FeignLogger extends Logger {
 		String responseBody = parseBody(responseBodyData, response.charset());
 
 		FeignLog logData = FeignLog.builder()
-			.eventType(TypeEnum.FEIGN)
+			.eventType(CommunicationLog.Type.FEIGN)
 			.uri(response.request().url())
 			.method(response.request().httpMethod().name())
 			.status(response.status())
@@ -49,7 +48,7 @@ public class FeignLogger extends Logger {
 			.responseBody(responseBody)
 			.build();
 
-		CustomLogger.log(logData);
+		CummicationLogger.log(logData);
 
 		return response.toBuilder().body(responseBodyData).build();
 	}

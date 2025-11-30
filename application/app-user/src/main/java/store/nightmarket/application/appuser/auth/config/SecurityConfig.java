@@ -23,9 +23,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appuser.auth.model.OAuthAuthenticationSuccessHandler;
-import store.nightmarket.application.appuser.auth.model.OAuthCallbackFilter;
-import store.nightmarket.application.appuser.auth.model.strategy.GoogleAuthenticationGenerator;
+import store.nightmarket.application.appuser.auth.handler.OAuthAuthenticationSuccessHandler;
+import store.nightmarket.application.appuser.auth.filter.OAuthCallbackFilter;
+import store.nightmarket.application.appuser.auth.provider.google.GoogleAuthenticationGenerator;
 
 @Configuration
 @EnableWebSecurity

@@ -15,8 +15,8 @@ import store.nightmarket.application.appitem.out.DeleteShoppingBasketProductPort
 import store.nightmarket.application.appitem.out.ReadShoppingBasketProductPort;
 import store.nightmarket.application.appitem.usecase.dto.DeleteShoppingBasketProductUseCaseDto;
 import store.nightmarket.domain.item.exception.ShoppingBasketException;
-import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;
+import store.nightmarket.domain.item.model.id.UserId;
 
 class DeleteShoppingBasketProductUseCaseTest {
 

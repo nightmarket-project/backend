@@ -54,7 +54,7 @@ class PriceTest {
     @DisplayName("Price의 amount은 0보다 작은 값을 가지면 예외가 발생한다.")
     void shouldThrowException_WhenAmountIsLessThanZero() {
         //given
-        BigDecimal amount = BigDecimal.ZERO;
+        BigDecimal amount = BigDecimal.valueOf(-1);
 
         //when& then
         assertThatThrownBy(() -> new Price(amount)).isInstanceOf(PriceException.class);

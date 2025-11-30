@@ -1,7 +1,7 @@
 package store.nightmarket.application.apporder.mapper;
 
 import store.nightmarket.domain.order.model.ProductVariant;
-import store.nightmarket.domain.order.valueobject.ProductVariantId;
+import store.nightmarket.domain.order.model.id.ProductVariantId;
 import store.nightmarket.persistence.persistorder.entity.model.ProductVariantEntity;
 
 public class ProductVariantMapper {

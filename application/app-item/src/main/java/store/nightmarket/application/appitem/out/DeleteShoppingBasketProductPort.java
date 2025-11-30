@@ -1,6 +1,6 @@
 package store.nightmarket.application.appitem.out;
 
-import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
+import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;
 
 public interface DeleteShoppingBasketProductPort {
 

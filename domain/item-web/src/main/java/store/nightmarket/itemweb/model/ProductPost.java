@@ -3,9 +3,9 @@ package store.nightmarket.itemweb.model;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
-import store.nightmarket.domain.item.valueobject.ProductId;
-import store.nightmarket.itemweb.state.ImageOwnerType;
-import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.domain.item.model.id.ProductId;
+import store.nightmarket.itemweb.model.state.ImageOwnerType;
+import store.nightmarket.itemweb.model.id.ProductPostId;
 import store.nightmarket.itemweb.valueobject.Rating;
 
 @Getter

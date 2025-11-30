@@ -7,8 +7,8 @@ import org.springframework.data.domain.Pageable;
 
 import store.nightmarket.domain.order.exception.OrderException;
 import store.nightmarket.domain.order.model.OrderRecord;
-import store.nightmarket.domain.order.valueobject.OrderRecordId;
-import store.nightmarket.domain.order.valueobject.UserId;
+import store.nightmarket.domain.order.model.id.OrderRecordId;
+import store.nightmarket.domain.order.model.id.UserId;
 
 public interface ReadOrderPort {
 

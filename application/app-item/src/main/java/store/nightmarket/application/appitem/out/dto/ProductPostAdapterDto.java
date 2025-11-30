@@ -2,8 +2,8 @@ package store.nightmarket.application.appitem.out.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import store.nightmarket.application.appitem.mapper.ProductMapper;
-import store.nightmarket.application.appitem.mapper.ProductPostMapper;
+import store.nightmarket.application.appitem.out.mapper.ProductMapper;
+import store.nightmarket.application.appitem.out.mapper.ProductPostMapper;
 import store.nightmarket.domain.item.model.Product;
 import store.nightmarket.itemweb.model.ProductPost;
 import store.nightmarket.persistence.persistitem.entity.model.ProductPostEntity;

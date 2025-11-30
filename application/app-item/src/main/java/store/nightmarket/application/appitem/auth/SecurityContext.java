@@ -21,7 +21,6 @@ public record SecurityContext(
 			String userName
 		) {
 		}
-
 	}
 
 }

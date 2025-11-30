@@ -14,9 +14,9 @@ import store.nightmarket.application.appitem.usecase.dto.PutShoppingBasketProduc
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
-import store.nightmarket.domain.item.valueobject.ProductVariantId;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.UserId;
 
 class PutShoppingBasketProductUseCaseTest {
 

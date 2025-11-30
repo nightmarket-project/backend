@@ -20,7 +20,7 @@ import store.nightmarket.application.appitem.aop.DistributedLock;
 import store.nightmarket.application.appitem.out.ReadProductVariantPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.model.ProductVariant;
-import store.nightmarket.domain.item.valueobject.ProductVariantId;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.itemweb.exception.ItemWebException;
 

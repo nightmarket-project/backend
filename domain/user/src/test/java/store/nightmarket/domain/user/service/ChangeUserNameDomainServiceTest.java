@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import store.nightmarket.domain.user.exception.UserException;
 import store.nightmarket.domain.user.model.User;
-import store.nightmarket.domain.user.valueobject.AuthProvider;
-import store.nightmarket.domain.user.valueobject.UserRole;
+import store.nightmarket.domain.user.model.AuthProvider;
+import store.nightmarket.domain.user.model.UserRole;
 
 class ChangeUserNameDomainServiceTest {
 

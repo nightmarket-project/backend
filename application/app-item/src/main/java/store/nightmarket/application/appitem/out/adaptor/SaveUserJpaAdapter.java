@@ -3,7 +3,7 @@ package store.nightmarket.application.appitem.out.adaptor;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.mapper.UserMapper;
+import store.nightmarket.application.appitem.out.mapper.UserMapper;
 import store.nightmarket.application.appitem.out.SaveUserPort;
 import store.nightmarket.domain.item.model.User;
 import store.nightmarket.persistence.persistitem.repository.UserRepository;

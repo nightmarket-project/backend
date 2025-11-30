@@ -9,7 +9,7 @@ import store.nightmarket.application.appitem.out.SaveUserPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.model.User;
 import store.nightmarket.domain.item.valueobject.Name;
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.UserId;
 
 @Service
 @RequiredArgsConstructor

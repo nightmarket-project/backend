@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.apporder.mapper.ProductVariantMapper;
 import store.nightmarket.application.apporder.out.ReadProductVariantPort;
 import store.nightmarket.domain.order.model.ProductVariant;
-import store.nightmarket.domain.order.valueobject.ProductVariantId;
+import store.nightmarket.domain.order.model.id.ProductVariantId;
 import store.nightmarket.persistence.persistorder.repository.ProductVariantRepository;
 
 @Component

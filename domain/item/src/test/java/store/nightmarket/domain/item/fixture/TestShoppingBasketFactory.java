@@ -5,10 +5,10 @@ import java.util.UUID;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
-import store.nightmarket.domain.item.valueobject.ProductVariantId;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
-import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;
+import store.nightmarket.domain.item.model.id.UserId;
 
 public class TestShoppingBasketFactory {
 

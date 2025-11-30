@@ -19,11 +19,11 @@ import store.nightmarket.application.appitem.out.ReadProductVariantPort;
 import store.nightmarket.application.appitem.out.ReadShoppingBasketProductPort;
 import store.nightmarket.application.appitem.usecase.dto.ReadShoppingBasketUseCaseDto;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
-import store.nightmarket.domain.item.valueobject.ProductVariantId;
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
+import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.state.DomainImageType;
-import store.nightmarket.itemweb.valueobject.ProductPostId;
+import store.nightmarket.itemweb.model.state.ImageType;
+import store.nightmarket.itemweb.model.id.ProductPostId;
 
 class ReadShoppingBasketUseCaseTest {
 
@@ -76,7 +76,7 @@ class ReadShoppingBasketUseCaseTest {
 		variantIdProductPostIdMap.put(productVariantId2, productPostId);
 		ImageManager imageManager = TestDomainFactory.createImageManager(
 			UUID.randomUUID(),
-			DomainImageType.THUMBNAIL,
+			ImageType.THUMBNAIL,
 			1,
 			productPostId.getId()
 		);

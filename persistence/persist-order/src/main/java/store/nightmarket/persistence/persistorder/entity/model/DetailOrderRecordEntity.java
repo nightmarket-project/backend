@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.domain.order.status.DetailOrderState;
+import store.nightmarket.domain.order.model.status.DetailOrderState;
 import store.nightmarket.persistence.persistorder.entity.valueobject.QuantityEntity;
 
 @Getter

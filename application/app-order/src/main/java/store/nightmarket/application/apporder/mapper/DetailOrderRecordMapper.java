@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import store.nightmarket.domain.order.model.DetailOrderRecord;
-import store.nightmarket.domain.order.valueobject.DetailOrderRecordId;
-import store.nightmarket.domain.order.valueobject.ProductVariantId;
+import store.nightmarket.domain.order.model.id.DetailOrderRecordId;
+import store.nightmarket.domain.order.model.id.ProductVariantId;
 import store.nightmarket.persistence.persistorder.entity.model.DetailOrderRecordEntity;
 import store.nightmarket.persistence.persistorder.entity.model.OrderRecordEntity;
 

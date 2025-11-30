@@ -16,7 +16,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.domain.delivery.state.DetailDeliveryState;
+import store.nightmarket.domain.delivery.model.state.DetailDeliveryState;
 import store.nightmarket.persistence.persistdelivery.entity.valueobject.LocationEntity;
 
 @Getter

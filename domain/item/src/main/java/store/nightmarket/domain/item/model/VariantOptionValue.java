@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.domain.item.valueobject.OptionGroupId;
-import store.nightmarket.domain.item.valueobject.OptionValueId;
-import store.nightmarket.domain.item.valueobject.ProductVariantId;
-import store.nightmarket.domain.item.valueobject.VariantOptionValueId;
+import store.nightmarket.domain.item.model.id.OptionGroupId;
+import store.nightmarket.domain.item.model.id.OptionValueId;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
+import store.nightmarket.domain.item.model.id.VariantOptionValueId;
 
 @Getter
 public class VariantOptionValue extends BaseModel<VariantOptionValueId> {

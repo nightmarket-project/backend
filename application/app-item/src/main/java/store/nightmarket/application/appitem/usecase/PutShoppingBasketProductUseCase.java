@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.SaveShoppingBasketProductPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
-import store.nightmarket.domain.item.valueobject.ShoppingBasketProductId;
+import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;
 
 @Service
 @RequiredArgsConstructor

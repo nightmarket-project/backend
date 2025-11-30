@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.auth.AuthorizationInterceptor;
-import store.nightmarket.application.appitem.auth.AuthorizedUserArgumentResolver;
+import store.nightmarket.application.appitem.config.resolver.AuthorizedUserArgumentResolver;
 
 @Configuration
 @RequiredArgsConstructor

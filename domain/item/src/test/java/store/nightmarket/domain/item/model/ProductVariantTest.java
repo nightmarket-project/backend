@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import store.nightmarket.domain.item.exception.QuantityException;
 import store.nightmarket.domain.item.fixture.TestItemFactory;
-import store.nightmarket.domain.item.valueobject.ProductVariantId;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
 
 class ProductVariantTest {

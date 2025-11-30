@@ -14,66 +14,75 @@ import jakarta.servlet.http.HttpSession;
 @Component
 public class AuthorizationInterceptor implements HandlerInterceptor {
 
-	private static final String SESSION_KEY = "SPRING_SECURITY_CONTEXT";
-	private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final String SESSION_KEY = "SPRING_SECURITY_CONTEXT";
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
-	@Override
-	public boolean preHandle(HttpServletRequest request,
-		HttpServletResponse response,
-		Object handler) throws Exception {
+    @Override
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response,
+                             Object handler
+    ) {
+        if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+            response.setStatus(HttpStatus.OK.value());
+            return false;
+        }
 
-		if (HttpMethod.OPTIONS.matches(request.getMethod())) {
-			response.setStatus(HttpStatus.OK.value());
-			return false;
-		}
+        SecurityContext.Authentication authentication = getAuthentication(request);
+        if (isNotValidAuthentication(authentication)) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return false;
+        };
 
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			response.setStatus(HttpStatus.UNAUTHORIZED.value());
-			return false;
-		}
+        // TODO : UserSession이 여러개의 role을 가질 수 있도록 구현 변경 필요
+        String userId = authentication.principal().userId();
+        String role = hasRole(authentication) ? authentication.authorities().getFirst().authority() : null;
+        request.setAttribute("USER_SESSION", new UserSession(userId, role));
+        return true;
+    }
 
-		Object sessionAttr = session.getAttribute(SESSION_KEY);
-		if (sessionAttr == null) {
-			response.setStatus(HttpStatus.UNAUTHORIZED.value());
-			return false;
-		}
+    private boolean isNotValidAuthentication(SecurityContext.Authentication authentication) {
+        return (authentication != null) && (authentication.principal().userId() != null);
+    }
 
-		try {
-			String jsonString = objectMapper.writeValueAsString(sessionAttr);
-			SecurityContext securityContext = objectMapper.readValue(jsonString, SecurityContext.class);
+    private static boolean hasRole(SecurityContext.Authentication authentication) {
+        return (authentication.authorities() == null)
+                || (authentication.authorities().isEmpty());
+    }
 
-			SecurityContext.Authentication auth = securityContext.authentication();
+    private SecurityContext.Authentication getAuthentication(
+            HttpServletRequest request
+    ) {
+        SecurityContext securityContext = getSecurityContext(request);
+        if (securityContext == null) {
+            return null;
+        }
 
-			if (auth == null || auth.principal() == null) {
-				response.setStatus(HttpStatus.UNAUTHORIZED.value());
-				return false;
-			}
+        SecurityContext.Authentication auth = securityContext.authentication();
+        if (auth == null || auth.principal() == null) {
+            return null;
+        }
 
-			String userId = auth.principal().userId();
-			String role = (auth.authorities() != null && !auth.authorities().isEmpty())
-				? auth.authorities().getFirst().authority()
-				: null;
+        return auth;
+    }
 
-			if (userId == null) {
-				response.setStatus(HttpStatus.UNAUTHORIZED.value());
-				return false;
-			}
+    private SecurityContext getSecurityContext(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return null;
+        }
 
-			if (!"ROLE_BUYER".equals(role)) {
-				response.setStatus(HttpStatus.FORBIDDEN.value());
-				return false;
-			}
+        Object sessionAttr = session.getAttribute(SESSION_KEY);
+        if (sessionAttr == null) {
+            return null;
+        }
 
-			request.setAttribute("USER_SESSION", new UserSession(userId, role));
-			return true;
-
-		} catch (Exception e) {
-			response.setStatus(HttpStatus.UNAUTHORIZED.value());
-			response.setContentType("application/json");
-			response.getWriter().write("{\"error\":\"Invalid session data\"}");
-			return false;
-		}
-	}
+        try {
+            String jsonString = objectMapper.writeValueAsString(sessionAttr);
+            return objectMapper.readValue(jsonString, SecurityContext.class);
+        } catch (Exception e) {
+            // TODO : log 추가
+            return null;
+        }
+    }
 
 }

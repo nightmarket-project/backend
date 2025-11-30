@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.exception.QuantityException;
-import store.nightmarket.domain.item.valueobject.ProductId;
-import store.nightmarket.domain.item.valueobject.ProductVariantId;
+import store.nightmarket.domain.item.model.id.ProductId;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.UserId;
 
 @Getter
 public class ProductVariant extends BaseModel<ProductVariantId> {

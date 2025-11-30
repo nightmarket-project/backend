@@ -2,7 +2,7 @@ package store.nightmarket.itemweb.service.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.itemweb.model.Reply;
 
 public class DeleteReplyItemWebDomainServiceDto {

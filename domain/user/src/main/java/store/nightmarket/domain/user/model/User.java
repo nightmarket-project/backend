@@ -4,11 +4,9 @@ import java.time.LocalDateTime;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.domain.user.valueobject.AuthProvider;
 import store.nightmarket.domain.user.valueobject.Name;
 import store.nightmarket.domain.user.valueobject.Point;
-import store.nightmarket.domain.user.valueobject.UserId;
-import store.nightmarket.domain.user.valueobject.UserRole;
+import store.nightmarket.domain.user.model.id.UserId;
 
 @Getter
 public class User extends BaseModel<UserId> {

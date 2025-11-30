@@ -4,12 +4,13 @@ import java.util.List;
 
 import lombok.Builder;
 import lombok.Getter;
-import store.nightmarket.application.appitem.mapper.OptionGroupMapper;
-import store.nightmarket.application.appitem.mapper.OptionValueMapper;
+import store.nightmarket.application.appitem.out.mapper.OptionGroupMapper;
+import store.nightmarket.application.appitem.out.mapper.OptionValueMapper;
 import store.nightmarket.domain.item.model.OptionGroup;
 import store.nightmarket.domain.item.model.OptionValue;
 import store.nightmarket.persistence.persistitem.entity.model.OptionGroupEntity;
 
+// TODO : AdaptorDto 네이밍 수정 필요(AdaptorDto 모두)
 @Builder
 @Getter
 public class OptionGroupAdapterDto {

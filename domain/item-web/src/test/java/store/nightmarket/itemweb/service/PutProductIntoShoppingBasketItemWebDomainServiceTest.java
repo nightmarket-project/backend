@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.domain.item.exception.ProductException;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.valueobject.Quantity;
-import store.nightmarket.domain.item.valueobject.UserId;
+import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.itemweb.fixture.TestShoppingBasketFactory;
 import store.nightmarket.itemweb.service.dto.PutProductIntoShoppingBasketItemWebDomainServiceDto.Event;
 import store.nightmarket.itemweb.service.dto.PutProductIntoShoppingBasketItemWebDomainServiceDto.Input;
