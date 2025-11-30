@@ -1,4 +1,4 @@
-package store.nightmarket.application.appitem.config;
+package store.nightmarket.application.apporder.config;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.auth.AuthorizationInterceptor;
-import store.nightmarket.application.appitem.auth.AuthorizedUserArgumentResolver;
+import store.nightmarket.application.apporder.auth.AuthorizationInterceptor;
+import store.nightmarket.application.apporder.auth.AuthorizedUserArgumentResolver;
 
 @Configuration
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
 			.allowedOriginPatterns("http://localhost:3000", "https://localhost:3000",
-				"https://item.syua-test.duckdns.org")
+				"https://order.syua-test.duckdns.org")
 			.allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
 			.allowedHeaders("*")
 			.allowCredentials(true)
@@ -33,7 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(authorizationInterceptor)
-			.addPathPatterns("/api/v1/cart/**");
+			.addPathPatterns("/api/v1/order/**");
 	}
 
 	@Override

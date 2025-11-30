@@ -10,7 +10,6 @@ public class SaveOrderDto {
 	@Builder
 	public record Request(
 		AddressDto addressDto,
-		UUID userId,
 		List<DetailOrderDto> detailOrderDtoList
 	) {
 
