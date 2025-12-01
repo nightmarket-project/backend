@@ -1,4 +1,4 @@
-package store.nightmarket.application.apporder.auth;
+package store.nightmarket.application.apporder.config.resolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

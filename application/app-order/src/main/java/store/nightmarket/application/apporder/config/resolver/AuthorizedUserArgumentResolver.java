@@ -1,4 +1,4 @@
-package store.nightmarket.application.apporder.auth;
+package store.nightmarket.application.apporder.config.resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -8,6 +8,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import jakarta.servlet.http.HttpServletRequest;
+import store.nightmarket.application.apporder.auth.UserSession;
 
 @Component
 public class AuthorizedUserArgumentResolver implements HandlerMethodArgumentResolver {

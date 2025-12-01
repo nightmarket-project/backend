@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.apporder.auth.AuthorizedUser;
 import store.nightmarket.application.apporder.auth.UserSession;
+import store.nightmarket.application.apporder.config.resolver.AuthorizedUser;
 import store.nightmarket.application.apporder.in.dto.ReadListOrderDto;
 import store.nightmarket.application.apporder.in.dto.ReadOrderDto;
 import store.nightmarket.application.apporder.in.dto.SaveOrderDto;
