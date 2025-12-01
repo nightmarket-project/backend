@@ -1,4 +1,4 @@
-package store.nightmarket.application.apporder.mapper;
+package store.nightmarket.application.apporder.out.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
