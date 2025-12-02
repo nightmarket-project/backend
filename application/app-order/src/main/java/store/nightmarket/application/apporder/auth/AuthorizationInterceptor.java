@@ -1,5 +1,7 @@
 package store.nightmarket.application.apporder.auth;
 
+import java.util.List;
+
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -10,7 +12,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class AuthorizationInterceptor implements HandlerInterceptor {
 
@@ -18,61 +22,71 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Override
-	public boolean preHandle(HttpServletRequest request,
+	public boolean preHandle(
+		HttpServletRequest request,
 		HttpServletResponse response,
-		Object handler) throws Exception {
-
+		Object handler
+	) {
 		if (HttpMethod.OPTIONS.matches(request.getMethod())) {
 			response.setStatus(HttpStatus.OK.value());
 			return false;
 		}
 
-		HttpSession session = request.getSession(false);
-		if (session == null) {
+		SecurityContext.Authentication authentication = getAuthentication(request);
+		if (isNotValidAuthentication(authentication)) {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 			return false;
+		}
+
+		String userId = authentication.principal().userId();
+		List<String> roles = hasRole(authentication) ?
+			authentication.authorities().stream().map(Record::toString).toList() : null;
+		request.setAttribute("USER_SESSION", new UserSession(userId, roles));
+		return true;
+	}
+
+	private boolean isNotValidAuthentication(SecurityContext.Authentication authentication) {
+		return (authentication != null) && (authentication.principal().userId() != null);
+	}
+
+	private static boolean hasRole(SecurityContext.Authentication authentication) {
+		return (authentication.authorities() == null)
+			|| (authentication.authorities().isEmpty());
+	}
+
+	private SecurityContext.Authentication getAuthentication(
+		HttpServletRequest request
+	) {
+		SecurityContext securityContext = getSecurityContext(request);
+		if (securityContext == null) {
+			return null;
+		}
+
+		SecurityContext.Authentication auth = securityContext.authentication();
+		if (auth == null || auth.principal() == null) {
+			return null;
+		}
+
+		return auth;
+	}
+
+	private SecurityContext getSecurityContext(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			return null;
 		}
 
 		Object sessionAttr = session.getAttribute(SESSION_KEY);
 		if (sessionAttr == null) {
-			response.setStatus(HttpStatus.UNAUTHORIZED.value());
-			return false;
+			return null;
 		}
 
 		try {
 			String jsonString = objectMapper.writeValueAsString(sessionAttr);
-			SecurityContext securityContext = objectMapper.readValue(jsonString, SecurityContext.class);
-
-			SecurityContext.Authentication auth = securityContext.authentication();
-
-			if (auth == null || auth.principal() == null) {
-				response.setStatus(HttpStatus.UNAUTHORIZED.value());
-				return false;
-			}
-
-			String userId = auth.principal().userId();
-			String role = (auth.authorities() != null && !auth.authorities().isEmpty())
-				? auth.authorities().getFirst().authority()
-				: null;
-
-			if (userId == null) {
-				response.setStatus(HttpStatus.UNAUTHORIZED.value());
-				return false;
-			}
-
-			if (!"ROLE_BUYER".equals(role)) {
-				response.setStatus(HttpStatus.FORBIDDEN.value());
-				return false;
-			}
-
-			request.setAttribute("USER_SESSION", new UserSession(userId, role));
-			return true;
-
+			return objectMapper.readValue(jsonString, SecurityContext.class);
 		} catch (Exception e) {
-			response.setStatus(HttpStatus.UNAUTHORIZED.value());
-			response.setContentType("application/json");
-			response.getWriter().write("{\"error\":\"Invalid session data\"}");
-			return false;
+			log.warn("Cannot Deserialize SecurityContext");
+			return null;
 		}
 	}
 
