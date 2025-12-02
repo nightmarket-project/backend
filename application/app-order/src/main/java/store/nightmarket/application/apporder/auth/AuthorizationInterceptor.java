@@ -13,12 +13,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import store.nightmarket.application.apporder.constant.Constant;
 
 @Slf4j
 @Component
 public class AuthorizationInterceptor implements HandlerInterceptor {
 
-	private static final String SESSION_KEY = "SPRING_SECURITY_CONTEXT";
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Override
@@ -41,7 +41,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 		String userId = authentication.principal().userId();
 		List<String> roles = hasRole(authentication) ?
 			authentication.authorities().stream().map(Record::toString).toList() : null;
-		request.setAttribute("USER_SESSION", new UserSession(userId, roles));
+		request.setAttribute(Constant.USER_SESSION, new UserSession(userId, roles));
 		return true;
 	}
 
@@ -76,7 +76,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 			return null;
 		}
 
-		Object sessionAttr = session.getAttribute(SESSION_KEY);
+		Object sessionAttr = session.getAttribute(Constant.SESSION_KEY);
 		if (sessionAttr == null) {
 			return null;
 		}
