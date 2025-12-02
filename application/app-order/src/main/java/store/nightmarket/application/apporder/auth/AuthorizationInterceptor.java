@@ -46,7 +46,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 	}
 
 	private boolean isNotValidAuthentication(SecurityContext.Authentication authentication) {
-		return (authentication != null) && (authentication.principal().userId() != null);
+		return (authentication == null) || (authentication.principal().userId() == null);
 	}
 
 	private static boolean hasRole(SecurityContext.Authentication authentication) {
