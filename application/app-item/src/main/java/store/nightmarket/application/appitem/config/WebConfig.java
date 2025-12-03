@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import lombok.RequiredArgsConstructor;
+import store.nightmarket.application.appitem.auth.AuthenticationInterceptor;
 import store.nightmarket.application.appitem.auth.AuthorizationInterceptor;
 import store.nightmarket.application.appitem.config.resolver.AuthorizedUserArgumentResolver;
 
@@ -16,24 +17,28 @@ import store.nightmarket.application.appitem.config.resolver.AuthorizedUserArgum
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
+	private final AuthenticationInterceptor authenticationInterceptor;
 	private final AuthorizationInterceptor authorizationInterceptor;
 	private final AuthorizedUserArgumentResolver authorizedUserArgumentResolver;
+	private final WebProperties webProperties;
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**")
-			.allowedOriginPatterns("http://localhost:3000", "https://localhost:3000",
-				"https://item.syua-test.duckdns.org")
-			.allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
-			.allowedHeaders("*")
-			.allowCredentials(true)
-			.maxAge(3600);
+		registry.addMapping(webProperties.getCors().getPattern())
+			.allowedOriginPatterns(webProperties.getCors().getAllowedOrigins().toArray(new String[0]))
+			.allowedMethods(webProperties.getCors().getAllowedMethods().split(","))
+			.allowedHeaders(webProperties.getCors().getAllowedHeaders())
+			.allowCredentials(webProperties.getCors().isAllowCredentials())
+			.maxAge(webProperties.getCors().getMaxAge());
+
 	}
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(authorizationInterceptor)
-			.addPathPatterns("/api/v1/cart/**");
+		registry.addInterceptor(authenticationInterceptor).order(1)
+			.addPathPatterns(webProperties.getInterceptor().getIncludePatterns().toArray(new String[0]));
+		registry.addInterceptor(authorizationInterceptor).order(2)
+			.addPathPatterns(webProperties.getInterceptor().getIncludePatterns().toArray(new String[0]));
 	}
 
 	@Override

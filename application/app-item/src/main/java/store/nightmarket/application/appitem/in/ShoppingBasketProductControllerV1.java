@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
+import store.nightmarket.application.appitem.auth.RequireRoles;
 import store.nightmarket.application.appitem.auth.UserSession;
+import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
 import store.nightmarket.application.appitem.in.dto.CheckShoppingBasketProductDto;
 import store.nightmarket.application.appitem.in.dto.ModifyShoppingBasketProductDto;
 import store.nightmarket.application.appitem.in.dto.ReadShoppingBasketDto;
@@ -34,12 +35,12 @@ import store.nightmarket.application.appitem.usecase.dto.PutShoppingBasketProduc
 import store.nightmarket.application.appitem.usecase.dto.ReadShoppingBasketUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.ValidateProductStockUseCaseDto;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
-import store.nightmarket.domain.item.valueobject.Name;
-import store.nightmarket.domain.item.valueobject.Price;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
-import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;
 import store.nightmarket.domain.item.model.id.UserId;
+import store.nightmarket.domain.item.valueobject.Name;
+import store.nightmarket.domain.item.valueobject.Price;
+import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.model.id.ProductPostId;
 
@@ -105,6 +106,7 @@ public class ShoppingBasketProductControllerV1 {
 	}
 
 	@PostMapping
+	@RequireRoles({"ROLE_ADMIN", "ROLE_USER", "ROLE_BUYER"})
 	public void saveShoppingBasketProduct(@RequestBody SaveShoppingBasketProductDto.Request request,
 		@AuthorizedUser UserSession userSession) {
 		putShoppingBasketProductUseCase.execute(
@@ -119,6 +121,7 @@ public class ShoppingBasketProductControllerV1 {
 	}
 
 	@DeleteMapping("/{cartId}")
+	@RequireRoles({"ROLE_ADMIN", "ROLE_USER", "ROLE_BUYER"})
 	public void deleteShoppingBasketProduct(@PathVariable("cartId") UUID cartId,
 		@AuthorizedUser UserSession userSession) {
 		deleteShoppingBasketProductUseCase.execute(
@@ -130,6 +133,7 @@ public class ShoppingBasketProductControllerV1 {
 	}
 
 	@PatchMapping("/{cartId}")
+	@RequireRoles({"ROLE_ADMIN", "ROLE_USER", "ROLE_BUYER"})
 	public void modifyShoppingBasketQuantity(
 		@PathVariable("cartId") UUID cartId,
 		@RequestBody ModifyShoppingBasketProductDto.Request request,
