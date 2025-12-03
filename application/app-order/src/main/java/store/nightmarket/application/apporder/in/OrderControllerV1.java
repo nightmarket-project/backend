@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import store.nightmarket.application.apporder.auth.RequireRoles;
 import store.nightmarket.application.apporder.auth.UserSession;
 import store.nightmarket.application.apporder.config.resolver.AuthorizedUser;
 import store.nightmarket.application.apporder.in.dto.ReadListOrderDto;
@@ -112,6 +113,7 @@ public class OrderControllerV1 {
 	}
 
 	@PostMapping
+	@RequireRoles({"ROLE_ADMIN", "ROLE_USER", "ROLE_BUYER"})
 	public SaveOrderDto.Response saveOrder(
 		@RequestBody SaveOrderDto.Request request,
 		@AuthorizedUser UserSession userSession
