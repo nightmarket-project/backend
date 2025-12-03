@@ -1,4 +1,4 @@
-package store.nightmarket.application.apporder.auth;
+package store.nightmarket.application.apporder.config.resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -8,6 +8,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import jakarta.servlet.http.HttpServletRequest;
+import store.nightmarket.application.apporder.auth.UserSession;
+import store.nightmarket.application.apporder.constant.Constant;
 
 @Component
 public class AuthorizedUserArgumentResolver implements HandlerMethodArgumentResolver {
@@ -23,7 +25,7 @@ public class AuthorizedUserArgumentResolver implements HandlerMethodArgumentReso
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 
 		HttpServletRequest request = (HttpServletRequest)webRequest.getNativeRequest();
-		return request.getAttribute("USER_SESSION");
+		return request.getAttribute(Constant.USER_SESSION);
 	}
 
 }

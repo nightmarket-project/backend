@@ -1,4 +1,4 @@
-package store.nightmarket.application.apporder.mapper;
+package store.nightmarket.application.apporder.out.mapper;
 
 import store.nightmarket.domain.order.model.ProductVariant;
 import store.nightmarket.domain.order.model.id.ProductVariantId;

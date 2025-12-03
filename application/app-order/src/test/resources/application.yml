@@ -29,3 +29,17 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.add.type.headers: false
+
+web:
+  cors:
+    pattern: "/**"
+    allowed-origins:
+      - "http://localhost:3000"
+      - "https://localhost:3000"
+    allowed-methods: "GET,POST,PUT,DELETE,PATCH,OPTIONS"
+    allowed-headers: "*"
+    allow-credentials: true
+    max-age: 3600
+  interceptor:
+    include-patterns:
+      - "/api/v1/order/**"

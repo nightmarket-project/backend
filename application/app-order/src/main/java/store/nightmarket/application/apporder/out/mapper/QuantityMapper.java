@@ -1,4 +1,4 @@
-package store.nightmarket.application.apporder.mapper;
+package store.nightmarket.application.apporder.out.mapper;
 
 import store.nightmarket.domain.order.valueobject.Quantity;
 import store.nightmarket.persistence.persistorder.entity.valueobject.QuantityEntity;
