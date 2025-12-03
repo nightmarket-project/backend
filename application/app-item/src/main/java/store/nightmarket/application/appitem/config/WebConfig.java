@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import lombok.RequiredArgsConstructor;
+import store.nightmarket.application.appitem.auth.AuthenticationInterceptor;
 import store.nightmarket.application.appitem.auth.AuthorizationInterceptor;
 import store.nightmarket.application.appitem.config.resolver.AuthorizedUserArgumentResolver;
 
@@ -16,6 +17,7 @@ import store.nightmarket.application.appitem.config.resolver.AuthorizedUserArgum
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
+	private final AuthenticationInterceptor authenticationInterceptor;
 	private final AuthorizationInterceptor authorizationInterceptor;
 	private final AuthorizedUserArgumentResolver authorizedUserArgumentResolver;
 
@@ -32,7 +34,9 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(authorizationInterceptor)
+		registry.addInterceptor(authenticationInterceptor).order(1)
+			.addPathPatterns("/api/v1/cart/**");
+		registry.addInterceptor(authorizationInterceptor).order(2)
 			.addPathPatterns("/api/v1/cart/**");
 	}
 
