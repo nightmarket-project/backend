@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appuser.auth.config.OAuthProviderProperties;
+import store.nightmarket.application.appuser.auth.constant.Constant;
 
 @RestController
 @RequestMapping("/api/v1/oauth")
@@ -37,7 +36,7 @@ public class OAuthController {
 			"&scope=email profile" +
 			"&state=" + state;
 
-		session.setAttribute("session_state", state);
+		session.setAttribute(Constant.SESSION_STATE, state);
 		session.setMaxInactiveInterval(300);
 
 		response.sendRedirect(authorizationUrl);
@@ -50,7 +49,7 @@ public class OAuthController {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
-		Object sessionAttr = session.getAttribute("SPRING_SECURITY_CONTEXT");
+		Object sessionAttr = session.getAttribute(Constant.SESSION_KEY);
 		if (sessionAttr == null) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
