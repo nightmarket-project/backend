@@ -1,4 +1,4 @@
-package store.nightmarket.application.appuser.user.out.dto;
+package store.nightmarket.application.appuser.out.dto;
 
 import java.util.UUID;
 

@@ -1,9 +1,9 @@
-package store.nightmarket.application.appuser.user.out.mapper;
+package store.nightmarket.application.appuser.out.mapper;
 
 import store.nightmarket.domain.user.model.User;
+import store.nightmarket.domain.user.model.id.UserId;
 import store.nightmarket.domain.user.valueobject.Name;
 import store.nightmarket.domain.user.valueobject.Point;
-import store.nightmarket.domain.user.model.id.UserId;
 import store.nightmarket.persistence.persistuser.entity.model.UserEntity;
 import store.nightmarket.persistence.persistuser.entity.valueobject.NameEntity;
 import store.nightmarket.persistence.persistuser.entity.valueobject.PointEntity;

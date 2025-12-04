@@ -11,22 +11,23 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appuser.auth.provider.google.feign.dto.GoogleAccessTokenDto;
-import store.nightmarket.application.appuser.auth.provider.google.feign.dto.GoogleUserDto;
 import store.nightmarket.application.appuser.auth.config.OAuthProviderProperties;
 import store.nightmarket.application.appuser.auth.model.UserAuthentication;
-import store.nightmarket.application.appuser.auth.provider.google.model.GoogleOAuthAuthenticationToken;
 import store.nightmarket.application.appuser.auth.provider.google.feign.GoogleAuthApi;
 import store.nightmarket.application.appuser.auth.provider.google.feign.GoogleUserApi;
-import store.nightmarket.application.appuser.user.out.ReadUserPort;
-import store.nightmarket.application.appuser.user.out.SaveUserPort;
-import store.nightmarket.application.appuser.user.out.adaptor.UserCreatedEventKafkaPublisher;
-import store.nightmarket.application.appuser.user.out.dto.UserCreatedEvent;
+import store.nightmarket.application.appuser.auth.provider.google.feign.dto.GoogleAccessTokenDto;
+import store.nightmarket.application.appuser.auth.provider.google.feign.dto.GoogleUserDto;
+import store.nightmarket.application.appuser.auth.provider.google.model.GoogleOAuthAuthenticationToken;
+import store.nightmarket.application.appuser.out.ReadUserPort;
+import store.nightmarket.application.appuser.out.SaveUserPort;
+import store.nightmarket.application.appuser.out.adaptor.UserCreatedEventKafkaPublisher;
+import store.nightmarket.application.appuser.out.dto.UserCreatedEvent;
 import store.nightmarket.domain.user.model.AuthProvider;
 import store.nightmarket.domain.user.model.User;
 import store.nightmarket.domain.user.model.UserRole;
 import store.nightmarket.domain.user.model.id.UserId;
-import store.nightmarket.domain.user.valueobject.*;
+import store.nightmarket.domain.user.valueobject.Name;
+import store.nightmarket.domain.user.valueobject.Point;
 
 @Component
 @RequiredArgsConstructor
@@ -82,15 +83,15 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 
 	private User saveUserAndPublishUserCreatedEvent(GoogleUserDto googleUser) {
 		User user = saveUserPort.save(User.newInstance(
-                new UserId(UUID.randomUUID()),
-                new Name(googleUser.getName()),
-                googleUser.getEmail(),
-                googleUser.getPicture(),
-                new Point(0L),
-                UserRole.ROLE_BUYER,
-                AuthProvider.GOOGLE,
-                googleUser.getSub()
-        ));
+			new UserId(UUID.randomUUID()),
+			new Name(googleUser.getName()),
+			googleUser.getEmail(),
+			googleUser.getPicture(),
+			new Point(0L),
+			UserRole.ROLE_BUYER,
+			AuthProvider.GOOGLE,
+			googleUser.getSub()
+		));
 
 		userCreatedEventKafkaPublisher.publishEvent(
 			UserCreatedEvent.builder()

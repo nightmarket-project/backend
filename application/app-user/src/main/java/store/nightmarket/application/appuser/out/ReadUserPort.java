@@ -1,4 +1,4 @@
-package store.nightmarket.application.appuser.user.out;
+package store.nightmarket.application.appuser.out;
 
 import java.util.Optional;
 import java.util.UUID;
