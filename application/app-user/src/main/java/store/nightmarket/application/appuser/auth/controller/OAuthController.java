@@ -1,8 +1,11 @@
 package store.nightmarket.application.appuser.auth.controller;
 
 import java.io.IOException;
-import java.util.UUID;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,33 +16,35 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appuser.auth.config.OAuthProviderProperties;
 import store.nightmarket.application.appuser.auth.constant.Constant;
+import store.nightmarket.application.appuser.auth.provider.LoginUrlProvider;
 
 @RestController
 @RequestMapping("/api/v1/oauth")
-@RequiredArgsConstructor
 public class OAuthController {
 
-	private final OAuthProviderProperties properties;
+	private final Map<String, LoginUrlProvider> urlProviderMap;
+	private final RedisTemplate<String, String> redisTemplate;
+
+	public OAuthController(List<LoginUrlProvider> urlProviderList, RedisTemplate<String, String> redisTemplate) {
+		this.urlProviderMap = urlProviderList.stream()
+			.collect(Collectors.toMap(
+				LoginUrlProvider::getProviderName,
+				urlProvider -> urlProvider
+			));
+		this.redisTemplate = redisTemplate;
+	}
 
 	@GetMapping("/authorization/{oauth}")
-	public void redirectToSocialLogin(HttpServletResponse response, HttpSession session,
-		@PathVariable("oauth") String oauth) throws IOException {
-		String state = generateState();
+	public void redirectToSocialLogin(
+		HttpServletResponse response,
+		@PathVariable("oauth") String oauth
+	) throws IOException {
+		LoginUrlProvider loginUrlProvider = urlProviderMap.get(oauth.toUpperCase());
+		String loginUrl = loginUrlProvider.provide();
 
-		String authorizationUrl = properties.getProviders().get(oauth).getSocialLoginUri() +
-			"?client_id=" + properties.getProviders().get(oauth).getClientId() +
-			"&redirect_uri=" + properties.getProviders().get(oauth).getRedirectUri() +
-			"&response_type=code" +
-			"&scope=email profile" +
-			"&state=" + state;
-
-		session.setAttribute(Constant.SESSION_STATE, state);
-		session.setMaxInactiveInterval(300);
-
-		response.sendRedirect(authorizationUrl);
+		redisTemplate.opsForValue().set(Constant.SESSION_STATE, loginUrlProvider.getState());
+		response.sendRedirect(loginUrl);
 	}
 
 	@GetMapping("/session")
@@ -55,10 +60,6 @@ public class OAuthController {
 		}
 
 		return new ResponseEntity<>(HttpStatus.OK);
-	}
-
-	private String generateState() {
-		return UUID.randomUUID().toString();
 	}
 
 }
