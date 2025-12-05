@@ -1,4 +1,4 @@
-package store.nightmarket.application.apporder.config;
+package store.nightmarket.application.appuser.auth.config;
 
 import java.util.List;
 
@@ -15,7 +15,6 @@ import lombok.Setter;
 public class WebProperties {
 
 	private Cors cors;
-	private Interceptor interceptor;
 
 	@Getter
 	@Setter
@@ -26,12 +25,6 @@ public class WebProperties {
 		private List<String> allowedHeaders;
 		private boolean allowCredentials;
 		private long maxAge;
-	}
-
-	@Getter
-	@Setter
-	public static class Interceptor {
-		private List<String> includePatterns;
 	}
 
 }

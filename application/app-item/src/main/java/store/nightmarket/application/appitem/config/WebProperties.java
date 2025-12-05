@@ -22,8 +22,8 @@ public class WebProperties {
 	public static class Cors {
 		private String pattern;
 		private List<String> allowedOrigins;
-		private String allowedMethods;
-		private String allowedHeaders;
+		private List<String> allowedMethods;
+		private List<String> allowedHeaders;
 		private boolean allowCredentials;
 		private long maxAge;
 	}

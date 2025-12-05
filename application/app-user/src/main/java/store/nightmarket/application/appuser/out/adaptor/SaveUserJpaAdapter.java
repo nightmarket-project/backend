@@ -1,12 +1,12 @@
-package store.nightmarket.application.appuser.user.out.adaptor;
+package store.nightmarket.application.appuser.out.adaptor;
 
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appuser.user.out.SaveUserPort;
+import store.nightmarket.application.appuser.out.SaveUserPort;
+import store.nightmarket.application.appuser.out.mapper.UserMapper;
 import store.nightmarket.domain.user.model.User;
 import store.nightmarket.persistence.persistuser.entity.model.UserEntity;
-import store.nightmarket.application.appuser.user.out.mapper.UserMapper;
 import store.nightmarket.persistence.persistuser.repository.UserEntityRepository;
 
 @Component

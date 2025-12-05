@@ -1,4 +1,4 @@
-package store.nightmarket.application.appuser.user.out;
+package store.nightmarket.application.appuser.out;
 
 import store.nightmarket.domain.user.model.User;
 

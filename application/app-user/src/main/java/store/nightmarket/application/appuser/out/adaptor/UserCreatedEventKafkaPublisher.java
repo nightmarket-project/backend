@@ -1,4 +1,4 @@
-package store.nightmarket.application.appuser.user.out.adaptor;
+package store.nightmarket.application.appuser.out.adaptor;
 
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -7,8 +7,8 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import store.nightmarket.application.appuser.user.out.UserCreatedEventPublisher;
-import store.nightmarket.application.appuser.user.out.dto.UserCreatedEvent;
+import store.nightmarket.application.appuser.out.UserCreatedEventPublisher;
+import store.nightmarket.application.appuser.out.dto.UserCreatedEvent;
 
 @Slf4j
 @Component

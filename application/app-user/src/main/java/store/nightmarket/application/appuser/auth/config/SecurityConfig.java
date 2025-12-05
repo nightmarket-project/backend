@@ -23,8 +23,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appuser.auth.handler.OAuthAuthenticationSuccessHandler;
 import store.nightmarket.application.appuser.auth.filter.OAuthCallbackFilter;
+import store.nightmarket.application.appuser.auth.handler.OAuthAuthenticationSuccessHandler;
 import store.nightmarket.application.appuser.auth.provider.google.GoogleAuthenticationGenerator;
 
 @Configuration
@@ -34,6 +34,7 @@ public class SecurityConfig {
 
 	private final GoogleAuthenticationGenerator googleAuthenticationGenerator;
 	private final CorsConfig corsConfig;
+	private final LoginUrlProperties loginUrlProperties;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -68,7 +69,7 @@ public class SecurityConfig {
 					.invalidSessionUrl("/login/invalid");
 			})
 			.securityContext(context -> context
-				.requireExplicitSave(false) //true는 수동
+				.requireExplicitSave(false)
 				.securityContextRepository(securityContextRepository())
 			)
 			.logout(logout -> logout
@@ -84,11 +85,7 @@ public class SecurityConfig {
 			)
 			.addFilterBefore(callBackFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class)
 			.authorizeHttpRequests(auth -> auth
-				//OAuth2
-				.requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-				.requestMatchers("api/v1/order/**").hasRole("BUYER")
 				.requestMatchers("/api/v1/oauth/**").permitAll()
-				.requestMatchers("/api/v1/test/**").permitAll()
 				.requestMatchers("/login/oauth2/code/**").permitAll()
 				.requestMatchers("/h2-console/**").permitAll()
 				.anyRequest().authenticated()
@@ -113,7 +110,7 @@ public class SecurityConfig {
 
 	@Bean
 	public OAuthAuthenticationSuccessHandler successHandler() {
-		return new OAuthAuthenticationSuccessHandler();
+		return new OAuthAuthenticationSuccessHandler(loginUrlProperties);
 	}
 
 	@Bean

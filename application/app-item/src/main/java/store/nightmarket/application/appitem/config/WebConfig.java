@@ -26,8 +26,8 @@ public class WebConfig implements WebMvcConfigurer {
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping(webProperties.getCors().getPattern())
 			.allowedOriginPatterns(webProperties.getCors().getAllowedOrigins().toArray(new String[0]))
-			.allowedMethods(webProperties.getCors().getAllowedMethods().split(","))
-			.allowedHeaders(webProperties.getCors().getAllowedHeaders())
+			.allowedMethods(webProperties.getCors().getAllowedMethods().toArray(new String[0]))
+			.allowedHeaders(webProperties.getCors().getAllowedHeaders().toArray(new String[0]))
 			.allowCredentials(webProperties.getCors().isAllowCredentials())
 			.maxAge(webProperties.getCors().getMaxAge());
 
@@ -36,9 +36,9 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(authenticationInterceptor).order(1)
-			.addPathPatterns(webProperties.getInterceptor().getIncludePatterns().toArray(new String[0]));
+			.addPathPatterns(webProperties.getInterceptor().getIncludePatterns());
 		registry.addInterceptor(authorizationInterceptor).order(2)
-			.addPathPatterns(webProperties.getInterceptor().getIncludePatterns().toArray(new String[0]));
+			.addPathPatterns(webProperties.getInterceptor().getIncludePatterns());
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package store.nightmarket.application.appuser.user.out.adaptor;
+package store.nightmarket.application.appuser.out.adaptor;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -6,9 +6,9 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appuser.user.out.ReadUserPort;
+import store.nightmarket.application.appuser.out.ReadUserPort;
+import store.nightmarket.application.appuser.out.mapper.UserMapper;
 import store.nightmarket.domain.user.model.User;
-import store.nightmarket.application.appuser.user.out.mapper.UserMapper;
 import store.nightmarket.persistence.persistuser.repository.UserEntityRepository;
 
 @Component
