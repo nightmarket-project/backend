@@ -1,5 +1,5 @@
 spring:
   profiles:
     group:
-      local: oauth
-      prod: oauth
+      local: oauth-local
+      prod: oauth-prod

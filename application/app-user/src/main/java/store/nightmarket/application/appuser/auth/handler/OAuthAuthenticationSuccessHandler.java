@@ -7,11 +7,14 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
+import store.nightmarket.application.appuser.auth.config.LoginUrlProperties;
+import store.nightmarket.application.appuser.auth.constant.Constant;
 
-@Slf4j
+@RequiredArgsConstructor
 public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+
+	private final LoginUrlProperties loginUrlProperties;
 
 	@Override
 	public void onAuthenticationSuccess(
@@ -19,14 +22,7 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
 		HttpServletResponse response,
 		Authentication authentication
 	) throws IOException {
-		Object principal = authentication.getPrincipal();
-
-		HttpSession session = request.getSession(false);
-		session.setMaxInactiveInterval(3600);
-
-		log.info("Session created for userId: {} with sessionId: {}", principal, session.getId());
-
-		response.sendRedirect("http://localhost:3000/?login=success");
+		response.sendRedirect(loginUrlProperties.getUrlMap().get(Constant.LOGIN_SUCCESS));
 	}
 
 }
