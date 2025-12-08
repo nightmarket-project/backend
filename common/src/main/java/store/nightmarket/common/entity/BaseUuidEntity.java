@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public abstract class BaseUuidEntity extends BaseEntity implements Persistable<UUID> {
 
 	@Id
-	@Column(name = "id", columnDefinition = "BINARY(16)")
+	@Column(name = "id")
 	protected UUID id;
 
 	@Override

@@ -31,7 +31,7 @@ public class OrderRecordEntity extends BaseUuidEntity {
 	@Column(name = "order_date", nullable = false)
 	private LocalDate orderDate;
 
-	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
+	@Column(name = "user_id", nullable = false)
 	private UUID userId;
 
 	@OneToMany(mappedBy = "orderRecordEntity", fetch = FetchType.LAZY)

@@ -26,7 +26,7 @@ import store.nightmarket.persistence.persistorder.entity.valueobject.QuantityEnt
 @NoArgsConstructor(access = PROTECTED)
 public class DetailOrderRecordEntity extends BaseUuidEntity {
 
-	@Column(name = "product_variant_id", columnDefinition = "BINARY(16)", nullable = false)
+	@Column(name = "product_variant_id", nullable = false)
 	private UUID productVariantId;
 
 	@Embedded
