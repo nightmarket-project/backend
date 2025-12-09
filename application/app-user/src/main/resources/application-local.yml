@@ -9,10 +9,6 @@ server:
         secure: false
         same-site: lax
 
-logging:
-  level:
-    store.nightmarket.application.appitem: DEBUG
-
 session:
   store-type: redis
   redis.namespace: spring:session

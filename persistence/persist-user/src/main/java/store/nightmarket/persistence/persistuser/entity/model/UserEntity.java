@@ -39,7 +39,7 @@ public class UserEntity extends BaseUuidEntity {
 	private PointEntity pointEntity;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "role", nullable = false)
+	@Column(name = "user_role", nullable = false)
 	private UserRole role;
 
 	@Enumerated(EnumType.STRING)

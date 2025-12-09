@@ -24,7 +24,7 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.QuantityEnti
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ShoppingBasketProductEntity extends BaseUuidEntity {
 
-	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
+	@Column(name = "user_id", nullable = false)
 	private UUID userId;
 
 	@Embedded

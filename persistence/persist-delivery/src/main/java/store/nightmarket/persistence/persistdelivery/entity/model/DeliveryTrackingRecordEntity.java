@@ -36,7 +36,7 @@ public class DeliveryTrackingRecordEntity extends BaseUuidEntity {
 	@Column(name = "state", nullable = false)
 	private DetailDeliveryState state;
 
-	@Column(name = "content", columnDefinition = "TEXT")
+	@Column(name = "content")
 	private String content;
 
 	@ManyToOne(fetch = FetchType.LAZY)

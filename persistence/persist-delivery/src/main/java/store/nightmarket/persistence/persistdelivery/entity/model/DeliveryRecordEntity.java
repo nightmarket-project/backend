@@ -27,7 +27,7 @@ public class DeliveryRecordEntity extends BaseUuidEntity {
 	@Column(name = "address", nullable = false)
 	private AddressEntity addressEntity;
 
-	@Column(name = "user_id", columnDefinition = "BINARY(16)", nullable = false)
+	@Column(name = "user_id", nullable = false)
 	private UUID userId;
 
 	@OneToMany(mappedBy = "deliveryRecordEntity", fetch = FetchType.LAZY)

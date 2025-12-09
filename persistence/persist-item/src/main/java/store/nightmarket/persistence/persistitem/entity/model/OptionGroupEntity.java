@@ -23,7 +23,7 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OptionGroupEntity extends BaseUuidEntity {
 
-	@Column(name = "product_id", columnDefinition = "BINARY(16)", nullable = false)
+	@Column(name = "product_id", nullable = false)
 	private UUID productId;
 
 	@Embedded

@@ -23,7 +23,7 @@ public class ProductEntity extends BaseUuidEntity {
 	@Embedded
 	private NameEntity nameEntity;
 
-	@Column(name = "description")
+	@Column(name = "product_description")
 	private String description;
 
 	@Embedded
