@@ -25,7 +25,7 @@ VALUES
 
 
 -- 2. 제품 데이터 INSERT
-INSERT INTO product (id, created_at, updated_at, description, name, price)
+INSERT INTO product (id, created_at, updated_at, product_description, name, price)
 VALUES (X'660e8400e29b41d4a716446655440001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '최신 플래그십 스마트폰', '갤럭시 S24',
         1200000.00),
        (X'660e8400e29b41d4a716446655440002', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '고성능 게이밍 노트북', 'MacBook Pro',
