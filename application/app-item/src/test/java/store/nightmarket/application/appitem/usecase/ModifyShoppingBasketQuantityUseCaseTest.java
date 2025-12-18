@@ -2,7 +2,7 @@ package store.nightmarket.application.appitem.usecase;
 
 import static org.mockito.Mockito.*;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -14,9 +14,9 @@ import store.nightmarket.application.appitem.out.ReadShoppingBasketProductPort;
 import store.nightmarket.application.appitem.out.SaveShoppingBasketProductPort;
 import store.nightmarket.application.appitem.usecase.dto.ModifyShoppingBasketQuantityUseCaseDto;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
-import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;
 import store.nightmarket.domain.item.model.id.UserId;
+import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.itemweb.service.PutProductIntoShoppingBasketItemWebDomainService;
 import store.nightmarket.itemweb.service.dto.PutProductIntoShoppingBasketItemWebDomainServiceDto;
 
@@ -46,14 +46,14 @@ class ModifyShoppingBasketQuantityUseCaseTest {
 		// given
 		ShoppingBasketProductId shoppingBasketProductId = new ShoppingBasketProductId(UUID.randomUUID());
 		UserId userId = new UserId(UUID.randomUUID());
-		Quantity quantity = new Quantity(BigDecimal.TEN);
+		Quantity quantity = new Quantity(BigInteger.TEN);
 		UUID productVariantId = UUID.randomUUID();
 
 		ShoppingBasketProduct shoppingBasketProduct = TestDomainFactory.createShoppingBasketProduct(
 			shoppingBasketProductId.getId(),
 			userId.getId(),
 			productVariantId,
-			BigDecimal.ONE
+			BigInteger.ONE
 		);
 
 		ModifyShoppingBasketQuantityUseCaseDto.Input input = ModifyShoppingBasketQuantityUseCaseDto.Input.builder()
@@ -69,7 +69,7 @@ class ModifyShoppingBasketQuantityUseCaseTest {
 						shoppingBasketProductId.getId(),
 						userId.getId(),
 						productVariantId,
-						BigDecimal.TEN
+						BigInteger.TEN
 					))
 				.build();
 

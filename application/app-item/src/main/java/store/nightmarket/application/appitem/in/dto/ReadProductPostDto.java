@@ -1,6 +1,6 @@
 package store.nightmarket.application.appitem.in.dto;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +23,7 @@ public class ReadProductPostDto {
 	public record ProductInfo(
 		UUID productId,
 		String name,
-		BigDecimal price,
+		BigInteger price,
 		String description
 	) {
 

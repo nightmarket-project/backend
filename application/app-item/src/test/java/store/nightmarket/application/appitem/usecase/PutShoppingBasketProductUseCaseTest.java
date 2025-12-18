@@ -2,7 +2,7 @@ package store.nightmarket.application.appitem.usecase;
 
 import static org.mockito.Mockito.*;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.application.appitem.out.SaveShoppingBasketProductPort;
 import store.nightmarket.application.appitem.usecase.dto.PutShoppingBasketProductUseCaseDto;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
+import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
-import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
-import store.nightmarket.domain.item.model.id.UserId;
 
 class PutShoppingBasketProductUseCaseTest {
 
@@ -37,8 +37,8 @@ class PutShoppingBasketProductUseCaseTest {
 			.productVariantId(new ProductVariantId(UUID.randomUUID()))
 			.userId(new UserId(UUID.randomUUID()))
 			.name(new Name("상품"))
-			.price(new Price(BigDecimal.valueOf(10000)))
-			.quantity(new Quantity(BigDecimal.TEN))
+			.price(new Price(BigInteger.valueOf(10000)))
+			.quantity(new Quantity(BigInteger.TEN))
 			.build();
 
 		// when

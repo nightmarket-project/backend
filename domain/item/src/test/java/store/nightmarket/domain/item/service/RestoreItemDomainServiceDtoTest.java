@@ -2,7 +2,7 @@ package store.nightmarket.domain.item.service;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.UUID;
 
 import org.assertj.core.api.SoftAssertions;
@@ -53,7 +53,7 @@ class RestoreItemDomainServiceDtoTest {
 		Event event = service.execute(input);
 
 		// then
-		Quantity expectedQuantity = new Quantity(BigDecimal.valueOf(220));
+		Quantity expectedQuantity = new Quantity(BigInteger.valueOf(220));
 
 		softly.assertThat(event).isNotNull();
 		softly.assertThat(event.getProductVariant())

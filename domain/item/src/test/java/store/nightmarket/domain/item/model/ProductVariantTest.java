@@ -2,7 +2,7 @@ package store.nightmarket.domain.item.model;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
@@ -20,13 +20,13 @@ class ProductVariantTest {
 	void shouldReduceQuantityWhenProductVariantIsBiggerThanBuyQuantity() {
 		// given
 		ProductVariant cpuProductVariant = testCPUProductVariant(UUID.randomUUID(), 100);
-		Quantity purchaseQuantity = new Quantity(BigDecimal.valueOf(20));
+		Quantity purchaseQuantity = new Quantity(BigInteger.valueOf(20));
 
 		// when
 		cpuProductVariant.purchase(purchaseQuantity);
 
 		// then
-		Quantity expectedQuantity = new Quantity(BigDecimal.valueOf(80));
+		Quantity expectedQuantity = new Quantity(BigInteger.valueOf(80));
 
 		assertThat(cpuProductVariant.getQuantity()).isEqualTo(expectedQuantity);
 	}
@@ -36,7 +36,7 @@ class ProductVariantTest {
 	void shouldThrowQuantityExceptionWhenPurchaseProductQuantityIsInsufficient() {
 		// given
 		ProductVariant cpuProductVariant = testCPUProductVariant(UUID.randomUUID(), 100);
-		Quantity purchaseQuantity = new Quantity(BigDecimal.valueOf(120));
+		Quantity purchaseQuantity = new Quantity(BigInteger.valueOf(120));
 
 		// when
 		// then

@@ -3,7 +3,7 @@ package store.nightmarket.application.appitem.usecase;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +22,8 @@ import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.model.state.ImageType;
 import store.nightmarket.itemweb.model.id.ProductPostId;
+import store.nightmarket.itemweb.model.state.ImageType;
 
 class ReadShoppingBasketUseCaseTest {
 
@@ -62,13 +62,13 @@ class ReadShoppingBasketUseCaseTest {
 				UUID.randomUUID(),
 				userId.getId(),
 				productVariantId1.getId(),
-				BigDecimal.TEN
+				BigInteger.TEN
 			),
 			TestDomainFactory.createShoppingBasketProduct(
 				UUID.randomUUID(),
 				userId.getId(),
 				productVariantId2.getId(),
-				BigDecimal.ONE
+				BigInteger.ONE
 			)
 		);
 		Map<ProductVariantId, ProductPostId> variantIdProductPostIdMap = new HashMap<>();

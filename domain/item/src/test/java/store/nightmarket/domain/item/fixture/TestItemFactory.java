@@ -1,13 +1,13 @@
 package store.nightmarket.domain.item.fixture;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.UUID;
 
 import store.nightmarket.domain.item.model.ProductVariant;
 import store.nightmarket.domain.item.model.id.ProductId;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
-import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.domain.item.model.id.UserId;
+import store.nightmarket.domain.item.valueobject.Quantity;
 
 public class TestItemFactory {
 
@@ -23,7 +23,7 @@ public class TestItemFactory {
 			new ProductId(productId),
 			new UserId(sellerId),
 			SKUId,
-			new Quantity(BigDecimal.valueOf(quantity))
+			new Quantity(BigInteger.valueOf(quantity))
 		);
 	}
 
