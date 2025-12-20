@@ -1,6 +1,5 @@
 package store.nightmarket.application.appitem.in;
 
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -20,18 +19,15 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.auth.RequireRoles;
 import store.nightmarket.application.appitem.auth.UserSession;
 import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
-import store.nightmarket.application.appitem.in.dto.CheckShoppingBasketProductDto;
 import store.nightmarket.application.appitem.in.dto.ModifyShoppingBasketProductDto;
 import store.nightmarket.application.appitem.in.dto.ReadShoppingBasketDto;
 import store.nightmarket.application.appitem.in.dto.SaveShoppingBasketProductDto;
 import store.nightmarket.application.appitem.usecase.DeleteShoppingBasketProductUseCase;
 import store.nightmarket.application.appitem.usecase.ModifyShoppingBasketQuantityUseCase;
-import store.nightmarket.application.appitem.usecase.PreemptProductUseCase;
 import store.nightmarket.application.appitem.usecase.PutShoppingBasketProductUseCase;
 import store.nightmarket.application.appitem.usecase.ReadShoppingBasketUseCase;
 import store.nightmarket.application.appitem.usecase.dto.DeleteShoppingBasketProductUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.ModifyShoppingBasketQuantityUseCaseDto;
-import store.nightmarket.application.appitem.usecase.dto.PreemptProductUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.PutShoppingBasketProductUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadShoppingBasketUseCaseDto;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
@@ -53,22 +49,6 @@ public class ShoppingBasketProductControllerV1 {
 	private final DeleteShoppingBasketProductUseCase deleteShoppingBasketProductUseCase;
 	private final ModifyShoppingBasketQuantityUseCase modifyShoppingBasketQuantityUseCase;
 	private final ReadShoppingBasketUseCase readShoppingBasketUseCase;
-	private final PreemptProductUseCase preemptProductUseCase;
-
-	@PostMapping("/check")
-	public void check(@RequestBody CheckShoppingBasketProductDto.Request request) {
-		PreemptProductUseCaseDto.Input input = PreemptProductUseCaseDto.Input.builder()
-			.preemptionProductList(
-				request.checkProduct().stream()
-					.map(productQuantityDto -> PreemptProductUseCaseDto.PreemptionProduct.builder()
-						.productVariantId(new ProductVariantId(productQuantityDto.productVariantId()))
-						.quantity(new Quantity(BigInteger.valueOf(productQuantityDto.quantity())))
-						.build())
-					.toList())
-			.build();
-
-		preemptProductUseCase.execute(input);
-	}
 
 	@GetMapping
 	public ReadShoppingBasketDto.Response readShoppingBasket(@AuthorizedUser UserSession userSession) {
