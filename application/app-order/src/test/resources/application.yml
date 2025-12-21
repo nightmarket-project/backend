@@ -50,3 +50,7 @@ web:
   interceptor:
     include-patterns:
       - "/api/v1/order/**"
+
+feign:
+  preempt-api:
+    url: "http://localhost:10030"
