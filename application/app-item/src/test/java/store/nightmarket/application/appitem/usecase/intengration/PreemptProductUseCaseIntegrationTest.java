@@ -42,7 +42,7 @@ public class PreemptProductUseCaseIntegrationTest {
 
 	@Autowired
 	private ProductVariantRepository productVariantRepository;
-	
+
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
 
@@ -226,7 +226,7 @@ public class PreemptProductUseCaseIntegrationTest {
 
 		// then
 		assertThat(output.isSuccess()).isFalse();
-		assertThat(output.insufficientProductList().getFirst()).isEqualTo(productVariantId);
+		assertThat(output.insufficientProductList().getFirst()).isEqualTo(productVariantId.getId());
 	}
 
 }
