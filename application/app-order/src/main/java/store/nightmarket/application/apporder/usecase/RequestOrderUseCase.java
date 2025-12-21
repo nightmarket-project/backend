@@ -12,24 +12,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import store.nightmarket.application.apporder.out.ReadProductVariantPort;
 import store.nightmarket.application.apporder.out.SaveOrderPort;
 import store.nightmarket.application.apporder.out.adapter.PaymentRequestEventKafkaPublisher;
 import store.nightmarket.application.apporder.out.dto.PaymentRequestEvent;
+import store.nightmarket.application.apporder.out.feign.PreemptApiCaller;
+import store.nightmarket.application.apporder.out.feign.PreemptRequest;
+import store.nightmarket.application.apporder.out.feign.PreemptResponse;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.order.model.DetailOrderRecord;
 import store.nightmarket.domain.order.model.OrderRecord;
 import store.nightmarket.domain.order.model.ProductVariant;
-import store.nightmarket.domain.order.service.RequestOrderDomainService;
-import store.nightmarket.domain.order.service.dto.RequestOrderDomainServiceDto;
-import store.nightmarket.domain.order.model.status.DetailOrderState;
-import store.nightmarket.domain.order.valueobject.Address;
 import store.nightmarket.domain.order.model.id.DetailOrderRecordId;
 import store.nightmarket.domain.order.model.id.OrderRecordId;
 import store.nightmarket.domain.order.model.id.ProductVariantId;
-import store.nightmarket.domain.order.valueobject.Quantity;
 import store.nightmarket.domain.order.model.id.UserId;
+import store.nightmarket.domain.order.model.status.DetailOrderState;
+import store.nightmarket.domain.order.service.RequestOrderDomainService;
+import store.nightmarket.domain.order.service.dto.RequestOrderDomainServiceDto;
+import store.nightmarket.domain.order.valueobject.Address;
+import store.nightmarket.domain.order.valueobject.Quantity;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RequestOrderUseCase implements BaseUseCase<Input, Output> {
@@ -37,6 +42,7 @@ public class RequestOrderUseCase implements BaseUseCase<Input, Output> {
 	private final SaveOrderPort saveOrderPort;
 	private final ReadProductVariantPort readProductVariantPort;
 	private final RequestOrderDomainService requestOrderDomainService;
+	private final PreemptApiCaller preemptApiCaller;
 	private final PaymentRequestEventKafkaPublisher paymentRequestEventKafkaPublisher;
 
 	@Override
@@ -71,16 +77,39 @@ public class RequestOrderUseCase implements BaseUseCase<Input, Output> {
 
 		saveOrderPort.save(submittedOrderRecord);
 
-		paymentRequestEventKafkaPublisher.publishEvent(
-			PaymentRequestEvent.builder()
+		PreemptResponse preemptResponse = preemptApiCaller.preemptRequest(
+			PreemptRequest.builder()
 				.orderId(submittedOrderRecord.getOrderRecordId().getId())
-				.userId(submittedOrderRecord.getUserId().getId())
-				.price(calculatePrice(submittedOrderRecord))
+				.preemptProductList(
+					submittedOrderRecord.getDetailOrderRecordList().stream()
+						.map(detailOrderRecord -> PreemptRequest.PreemptProduct.builder()
+							.productVariantId(detailOrderRecord.getProductVariantId().getId())
+							.quantity(detailOrderRecord.getQuantity().getValue())
+							.build()
+						)
+						.toList()
+				)
 				.build()
 		);
 
+		if (preemptResponse.isSuccess()) {
+			paymentRequestEventKafkaPublisher.publishEvent(
+				PaymentRequestEvent.builder()
+					.orderId(submittedOrderRecord.getOrderRecordId().getId())
+					.userId(submittedOrderRecord.getUserId().getId())
+					.price(calculatePrice(submittedOrderRecord))
+					.build()
+			);
+
+			return Output.builder()
+				.orderRecordId(submittedOrderRecord.getOrderRecordId().getId())
+				.insufficientProductList(preemptResponse.insufficientProductList())
+				.build();
+		}
+
 		return Output.builder()
 			.orderRecordId(submittedOrderRecord.getOrderRecordId().getId())
+			.insufficientProductList(preemptResponse.insufficientProductList())
 			.build();
 	}
 

@@ -17,7 +17,8 @@ public class SaveOrderDto {
 
 	@Builder
 	public record Response(
-		UUID orderRecordId
+		UUID orderRecordId,
+		List<UUID> insufficientProductList
 	) {
 
 	}
