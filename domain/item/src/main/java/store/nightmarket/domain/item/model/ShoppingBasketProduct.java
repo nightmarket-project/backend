@@ -1,17 +1,17 @@
 package store.nightmarket.domain.item.model;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.exception.ProductException;
-import store.nightmarket.domain.item.valueobject.Name;
-import store.nightmarket.domain.item.valueobject.Price;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
-import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;
 import store.nightmarket.domain.item.model.id.UserId;
+import store.nightmarket.domain.item.valueobject.Name;
+import store.nightmarket.domain.item.valueobject.Price;
+import store.nightmarket.domain.item.valueobject.Quantity;
 
 @Getter
 public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
@@ -126,7 +126,7 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
 	}
 
 	private void validateQuantity(Quantity quantity) {
-		if (quantity.isLessThan(new Quantity(BigDecimal.valueOf(1)))) {
+		if (quantity.isLessThan(new Quantity(BigInteger.valueOf(1)))) {
 			throw new ProductException("수량이 1보다 크거나 같아야 합니다");
 		}
 	}

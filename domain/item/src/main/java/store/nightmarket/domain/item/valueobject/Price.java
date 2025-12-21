@@ -1,22 +1,22 @@
 package store.nightmarket.domain.item.valueobject;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Objects;
 
 import store.nightmarket.domain.item.exception.PriceException;
 
-public record Price(BigDecimal amount) {
+public record Price(BigInteger amount) {
 
 	public Price {
 		validate(amount);
 	}
 
-	private void validate(BigDecimal amount) {
+	private void validate(BigInteger amount) {
 		if (amount == null) {
 			throw new PriceException("Amount cannot be null");
 		}
 
-		if (amount.compareTo(BigDecimal.ZERO) < 0) {
+		if (amount.compareTo(BigInteger.ZERO) < 0) {
 			throw new PriceException("The price must be greater than zero");
 		}
 	}

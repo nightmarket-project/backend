@@ -1,6 +1,6 @@
 package store.nightmarket.application.appitem.in.dto;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +25,7 @@ public class SearchProductDto {
 		UUID productPostId,
 		String imageUrl,
 		String name,
-		BigDecimal price,
+		BigInteger price,
 		Float rating
 	) {
 

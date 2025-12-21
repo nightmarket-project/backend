@@ -1,13 +1,12 @@
 package store.nightmarket.application.appitem.aop;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.redisson.RedissonMultiLock;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.core.annotation.Order;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import store.nightmarket.application.appitem.exception.DistributedLockException;
 
 @Aspect
 @Component
@@ -25,81 +25,70 @@ public class DistributedLockAop {
 
 	private final RedissonClient redissonClient;
 
-	@Around("@annotation(store.nightmarket.application.appitem.aop.DistributedLock)")
-	public Object lock(final ProceedingJoinPoint joinPoint) throws Throwable {
+	@Around("@annotation(distributedLock)")
+	public Object lock(
+		ProceedingJoinPoint joinPoint,
+		DistributedLock distributedLock
+	) throws Throwable {
 		MethodSignature signature = (MethodSignature)joinPoint.getSignature();
-		Method method = signature.getMethod();
-		DistributedLock distributedLock = method.getAnnotation(DistributedLock.class);
 
-		List<String> keys = generateLockKey(
+		List<String> lockKeys = generateLockKeys(
 			signature,
 			joinPoint,
 			distributedLock
 		);
 
-		List<RLock> lockList = new ArrayList<>();
+		List<RLock> locks = lockKeys.stream()
+			.distinct()
+			.sorted()
+			.map(redissonClient::getLock)
+			.toList();
+
+		RLock multiLock = new RedissonMultiLock(
+			locks.toArray(new RLock[0])
+		);
+
+		boolean locked = false;
+
 		try {
-			for (String key : keys) {
-				RLock rLock = redissonClient.getLock(key);
+			locked = multiLock.tryLock(
+				distributedLock.waitTime(),
+				distributedLock.leaseTime(),
+				distributedLock.timeUnit()
+			);
 
-				boolean available = rLock.tryLock(
-					distributedLock.waitTime(),
-					distributedLock.leaseTime(),
-					distributedLock.timeUnit()
-				);
-
-				if (!available) {
-					releaseAllLocks(lockList);
-					return false;
-				}
-
-				lockList.add(rLock);
+			if (!locked) {
+				throw new DistributedLockException("Failed to acquire distributed lock");
 			}
 
 			return joinPoint.proceed();
-		} catch (InterruptedException e) {
-			throw new InterruptedException(); // TODO : custom exception 생성하면 좋음
+		} catch (Exception e) {
+			throw new DistributedLockException(e.getMessage());
 		} finally {
-			try {
-				releaseAllLocks(lockList);
-			} catch (IllegalMonitorStateException e) {
-				log.debug("Redisson Lock Already UnLock {} {}",
-					method.getName(),
-					keys
-				);
-			}
-		}
-	}
-
-	private void releaseAllLocks(List<RLock> locks) {
-		for (RLock lock : locks) {
-			try {
-				if (lock.isHeldByCurrentThread()) {
-					lock.unlock();
+			if (locked && multiLock.isHeldByCurrentThread()) {
+				try {
+					multiLock.unlock();
+				} catch (IllegalMonitorStateException e) {
+					log.warn("MultiLock already unlocked");
 				}
-			} catch (IllegalMonitorStateException e) {
 			}
 		}
 	}
 
-	private List<String> generateLockKey(
+	private List<String> generateLockKeys(
 		MethodSignature signature,
 		ProceedingJoinPoint joinPoint,
 		DistributedLock distributedLock
 	) {
 		if (distributedLock.keys().length > 0) {
-			List<Object> dynamicValue = CustomSpringElpParser.getDynamicValue(
+			return CustomSpringElpParser.getDynamicValue(
 				signature.getParameterNames(),
 				joinPoint.getArgs(),
 				distributedLock.keys()
 			);
-
-			return dynamicValue.stream()
-				.map(Object::toString)
-				.toList();
 		}
 
-		throw new IllegalArgumentException("DistributedLock requires 'keys'");
+		throw new DistributedLockException("DistributedLock requires 'keys'");
 	}
 
 }

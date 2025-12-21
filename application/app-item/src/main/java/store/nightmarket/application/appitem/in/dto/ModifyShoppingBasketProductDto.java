@@ -1,6 +1,6 @@
 package store.nightmarket.application.appitem.in.dto;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import lombok.Builder;
 
@@ -8,7 +8,7 @@ public class ModifyShoppingBasketProductDto {
 
 	@Builder
 	public record Request(
-		BigDecimal quantity
+		BigInteger quantity
 	) {
 
 	}

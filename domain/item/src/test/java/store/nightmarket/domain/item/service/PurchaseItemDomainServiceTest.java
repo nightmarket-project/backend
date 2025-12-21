@@ -2,7 +2,7 @@ package store.nightmarket.domain.item.service;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.UUID;
 
 import org.assertj.core.api.SoftAssertions;
@@ -54,7 +54,7 @@ class PurchaseItemDomainServiceTest {
 		Event event = service.execute(input);
 
 		// then
-		Quantity expectedCpuQuantity = new Quantity(BigDecimal.valueOf(180));
+		Quantity expectedCpuQuantity = new Quantity(BigInteger.valueOf(180));
 
 		softly.assertThat(event)
 			.isNotNull();

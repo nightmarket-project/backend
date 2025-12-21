@@ -1,6 +1,6 @@
 package store.nightmarket.persistence.persistitem.entity.valueobject;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -17,6 +17,6 @@ import lombok.NoArgsConstructor;
 public class QuantityEntity {
 
 	@Column(name = "quantity")
-	private BigDecimal amount;
+	private BigInteger amount;
 
 }

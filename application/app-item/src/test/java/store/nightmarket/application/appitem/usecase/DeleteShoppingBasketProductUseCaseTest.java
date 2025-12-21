@@ -3,7 +3,7 @@ package store.nightmarket.application.appitem.usecase;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -52,7 +52,7 @@ class DeleteShoppingBasketProductUseCaseTest {
 				shoppingBasketProductId.getId(),
 				userId.getId(),
 				UUID.randomUUID(),
-				BigDecimal.valueOf(1)
+				BigInteger.valueOf(1)
 			));
 
 		// when
@@ -82,7 +82,7 @@ class DeleteShoppingBasketProductUseCaseTest {
 				shoppingBasketProductId.getId(),
 				UUID.randomUUID(),
 				UUID.randomUUID(),
-				BigDecimal.valueOf(1)
+				BigInteger.valueOf(1)
 			));
 
 		// when & then

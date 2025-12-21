@@ -3,14 +3,15 @@ package store.nightmarket.application.appitem.out.adaptor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.mapper.ProductVariantMapper;
 import store.nightmarket.application.appitem.out.ReadProductVariantPort;
 import store.nightmarket.application.appitem.out.dto.ProductVariantAdapterDto;
+import store.nightmarket.application.appitem.out.mapper.ProductVariantMapper;
 import store.nightmarket.domain.item.model.ProductVariant;
 import store.nightmarket.domain.item.model.id.ProductId;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
@@ -24,6 +25,11 @@ public class ReadProductVariantAdaptor implements ReadProductVariantPort {
 	private final ProductVariantRepository productVariantRepository;
 
 	@Override
+	public Optional<ProductVariant> read(ProductVariantId id) {
+		return productVariantRepository.findById(id.getId()).map(ProductVariantMapper::toDomain);
+	}
+
+	@Override
 	public List<ProductVariantAdapterDto> readFetchVariantOptionValue(ProductId productId) {
 		return productVariantRepository.findByProductId(productId.getId()).stream()
 			.map(ProductVariantAdapterDto::toDomain)
@@ -31,7 +37,8 @@ public class ReadProductVariantAdaptor implements ReadProductVariantPort {
 	}
 
 	@Override
-	public Map<ProductVariantId, ProductPostId> findProductPostIdsByVariantIds(List<ProductVariantId> productVariantIdList) {
+	public Map<ProductVariantId, ProductPostId> findProductPostIdsByVariantIds(
+		List<ProductVariantId> productVariantIdList) {
 		Map<ProductVariantId, ProductPostId> variantIdProductPostIdMap = new HashMap<>();
 
 		productVariantRepository.findProductPostIdsByProductVariantIds(
@@ -52,7 +59,7 @@ public class ReadProductVariantAdaptor implements ReadProductVariantPort {
 		List<UUID> uuidList = productVariantId.stream()
 			.map(ProductVariantId::getId)
 			.toList();
-		
+
 		return productVariantRepository.findByIdList(uuidList)
 			.stream()
 			.map(ProductVariantMapper::toDomain)

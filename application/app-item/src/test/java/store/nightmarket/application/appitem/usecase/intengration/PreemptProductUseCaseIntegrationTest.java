@@ -1,0 +1,232 @@
+package store.nightmarket.application.appitem.usecase.intengration;
+
+import static org.assertj.core.api.Assertions.*;
+
+import java.math.BigInteger;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.test.context.ActiveProfiles;
+
+import store.nightmarket.application.appitem.out.ReadPreemptionPort;
+import store.nightmarket.application.appitem.usecase.PreemptProductUseCase;
+import store.nightmarket.application.appitem.usecase.dto.PreemptProductUseCaseDto;
+import store.nightmarket.domain.item.model.id.OrderId;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
+import store.nightmarket.domain.item.valueobject.Quantity;
+import store.nightmarket.persistence.persistitem.entity.model.ProductVariantEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.QuantityEntity;
+import store.nightmarket.persistence.persistitem.repository.ProductVariantRepository;
+
+@ActiveProfiles("test")
+@SpringBootTest
+public class PreemptProductUseCaseIntegrationTest {
+
+	@Autowired
+	private PreemptProductUseCase preemptProductUseCase;
+
+	@Autowired
+	private ReadPreemptionPort readPreemptionPort;
+
+	@Autowired
+	private ProductVariantRepository productVariantRepository;
+	
+	@Autowired
+	private RedisTemplate<String, String> redisTemplate;
+
+	@BeforeEach
+	void setUp() {
+		Objects.requireNonNull(redisTemplate.getConnectionFactory())
+			.getConnection()
+			.serverCommands()
+			.flushAll();
+	}
+
+	@Test
+	@DisplayName("단일 상품 구매 동시성 50명 테스트")
+	void shouldDeductSingleProductStockCorrectlyWhen50UsersRequestAtSameTime() throws InterruptedException {
+		// given
+		int numberOfThreads = 50;
+		int requestQuantity = 1;
+
+		ProductVariantId productVariantId = new ProductVariantId(UUID.randomUUID());
+		productVariantRepository.save(ProductVariantEntity.newInstance(
+			productVariantId.getId(),
+			UUID.randomUUID(),
+			UUID.randomUUID(),
+			"test",
+			new QuantityEntity(BigInteger.valueOf(5))
+		));
+
+		ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
+		CountDownLatch latch = new CountDownLatch(numberOfThreads);
+		AtomicInteger successCount = new AtomicInteger(0);
+		AtomicInteger failCount = new AtomicInteger(0);
+
+		// when
+		for (int i = 0; i < numberOfThreads; i++) {
+			executorService.submit(() -> {
+				try {
+					PreemptProductUseCaseDto.Output output = preemptProductUseCase.execute(
+						PreemptProductUseCaseDto.Input.builder()
+							.orderId(new OrderId(UUID.randomUUID()))
+							.preemptionProductList(
+								List.of(
+									PreemptProductUseCaseDto.PreemptionProduct.builder()
+										.productVariantId(productVariantId)
+										.quantity(new Quantity(BigInteger.valueOf(requestQuantity)))
+										.build()
+								)
+							)
+							.build()
+					);
+					if (output.isSuccess()) {
+						successCount.incrementAndGet();
+					} else {
+						failCount.incrementAndGet();
+					}
+				} finally {
+					latch.countDown();
+				}
+			});
+		}
+
+		latch.await();
+
+		// then
+		Long totalPreempted = readPreemptionPort.readPreemptedQuantity(productVariantId.getId(), LocalDateTime.now());
+
+		assertThat(totalPreempted).isEqualTo(5);
+		assertThat(successCount.get()).isEqualTo(5);
+		assertThat(failCount.get()).isEqualTo(45);
+	}
+
+	@Test
+	@DisplayName("다중 상품 구매 동시성 50명 테스트")
+	void shouldDeductSMultiProductStockCorrectlyWhen50UsersRequestAtSameTime() throws InterruptedException {
+		// given
+		int numberOfThreads = 50;
+		int requestQuantity = 1;
+
+		ProductVariantId productVariantIdA = new ProductVariantId(UUID.randomUUID());
+		ProductVariantId productVariantIdB = new ProductVariantId(UUID.randomUUID());
+
+		productVariantRepository.save(
+			ProductVariantEntity.newInstance(
+				productVariantIdA.getId(),
+				UUID.randomUUID(),
+				UUID.randomUUID(),
+				"A",
+				new QuantityEntity(BigInteger.valueOf(5))
+			)
+		);
+
+		productVariantRepository.save(
+			ProductVariantEntity.newInstance(
+				productVariantIdB.getId(),
+				UUID.randomUUID(),
+				UUID.randomUUID(),
+				"B",
+				new QuantityEntity(BigInteger.valueOf(5))
+			)
+		);
+
+		ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
+		CountDownLatch latch = new CountDownLatch(numberOfThreads);
+		AtomicInteger successCount = new AtomicInteger(0);
+		AtomicInteger failCount = new AtomicInteger(0);
+
+		// when
+		for (int i = 0; i < numberOfThreads; i++) {
+			executorService.submit(() -> {
+				try {
+					PreemptProductUseCaseDto.Output output = preemptProductUseCase.execute(
+						PreemptProductUseCaseDto.Input.builder()
+							.orderId(new OrderId(UUID.randomUUID()))
+							.preemptionProductList(
+								List.of(
+									PreemptProductUseCaseDto.PreemptionProduct.builder()
+										.productVariantId(productVariantIdA)
+										.quantity(new Quantity(BigInteger.valueOf(requestQuantity)))
+										.build(),
+									PreemptProductUseCaseDto.PreemptionProduct.builder()
+										.productVariantId(productVariantIdB)
+										.quantity(new Quantity(BigInteger.valueOf(requestQuantity)))
+										.build()
+								)
+							)
+							.build()
+					);
+					if (output.isSuccess()) {
+						successCount.incrementAndGet();
+					} else {
+						failCount.incrementAndGet();
+					}
+				} finally {
+					latch.countDown();
+				}
+			});
+		}
+
+		latch.await();
+
+		// then
+		Long totalPreemptedA = readPreemptionPort.readPreemptedQuantity(productVariantIdA.getId(), LocalDateTime.now());
+		Long totalPreemptedB = readPreemptionPort.readPreemptedQuantity(productVariantIdB.getId(), LocalDateTime.now());
+
+		assertThat(totalPreemptedA).isEqualTo(5);
+		assertThat(totalPreemptedB).isEqualTo(5);
+		assertThat(successCount.get()).isEqualTo(5);
+		assertThat(failCount.get()).isEqualTo(45);
+	}
+
+	@Test
+	@DisplayName("재고 부족 시 해당 상품 아이디를 반환한다")
+	void shouldThrowExceptionWhenOutOfStock() throws InterruptedException {
+		// given
+		ProductVariantId productVariantId = new ProductVariantId(UUID.randomUUID());
+
+		productVariantRepository.save(
+			ProductVariantEntity.newInstance(
+				productVariantId.getId(),
+				UUID.randomUUID(),
+				UUID.randomUUID(),
+				"test-product",
+				new QuantityEntity(BigInteger.valueOf(5))
+			)
+		);
+
+		PreemptProductUseCaseDto.Input input =
+			PreemptProductUseCaseDto.Input.builder()
+				.orderId(new OrderId(UUID.randomUUID()))
+				.preemptionProductList(
+					List.of(
+						PreemptProductUseCaseDto.PreemptionProduct.builder()
+							.productVariantId(productVariantId)
+							.quantity(new Quantity(BigInteger.valueOf(6)))
+							.build()
+					)
+				)
+				.build();
+
+		// when
+		PreemptProductUseCaseDto.Output output = preemptProductUseCase.execute(input);
+
+		// then
+		assertThat(output.isSuccess()).isFalse();
+		assertThat(output.insufficientProductList().getFirst()).isEqualTo(productVariantId);
+	}
+
+}
