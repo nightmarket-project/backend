@@ -134,6 +134,7 @@ public class OrderControllerV1 {
 
 		return SaveOrderDto.Response.builder()
 			.orderRecordId(output.orderRecordId())
+			.insufficientProductList(output.insufficientProductList())
 			.build();
 	}
 

@@ -21,7 +21,8 @@ public class RequestOrderUseCaseDto {
 
 	@Builder
 	public record Output(
-		UUID orderRecordId
+		UUID orderRecordId,
+		List<UUID> insufficientProductList
 	) {
 
 	}

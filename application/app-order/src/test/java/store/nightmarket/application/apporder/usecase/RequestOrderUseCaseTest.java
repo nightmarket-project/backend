@@ -13,6 +13,9 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.application.apporder.out.ReadProductVariantPort;
 import store.nightmarket.application.apporder.out.SaveOrderPort;
 import store.nightmarket.application.apporder.out.adapter.PaymentRequestEventKafkaPublisher;
+import store.nightmarket.application.apporder.out.feign.PreemptApiCaller;
+import store.nightmarket.application.apporder.out.feign.PreemptRequest;
+import store.nightmarket.application.apporder.out.feign.PreemptResponse;
 import store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto;
 import store.nightmarket.domain.order.service.RequestOrderDomainService;
 import store.nightmarket.domain.order.service.dto.RequestOrderDomainServiceDto;
@@ -23,6 +26,7 @@ class RequestOrderUseCaseTest {
 	private SaveOrderPort mockSaveOrderPort;
 	private ReadProductVariantPort mockReadProductVariantPort;
 	private RequestOrderDomainService mockRequestOrderDomainService;
+	private PreemptApiCaller mockPreemptApiCaller;
 	private PaymentRequestEventKafkaPublisher mockPaymentRequestEventKafkaPublisher;
 
 	@BeforeEach
@@ -30,31 +34,42 @@ class RequestOrderUseCaseTest {
 		mockSaveOrderPort = mock(SaveOrderPort.class);
 		mockReadProductVariantPort = mock(ReadProductVariantPort.class);
 		mockRequestOrderDomainService = mock(RequestOrderDomainService.class);
+		mockPreemptApiCaller = mock(PreemptApiCaller.class);
 		mockPaymentRequestEventKafkaPublisher = mock(PaymentRequestEventKafkaPublisher.class);
 
 		requestOrderUseCase = new RequestOrderUseCase(
 			mockSaveOrderPort,
 			mockReadProductVariantPort,
 			mockRequestOrderDomainService,
+			mockPreemptApiCaller,
 			mockPaymentRequestEventKafkaPublisher
 		);
 	}
 
 	@Test
-	@DisplayName("주문을 요청한다")
-	void requestOrder() {
+	@DisplayName("재고가 충분할 경우 주문이 요청된다")
+	void shouldRequestOrderWhenStockEnough() {
 		// given
 		RequestOrderDomainServiceDto.Event event = RequestOrderDomainServiceDto.Event.builder()
 			.orderRecord(makeOrderRecord())
 			.build();
 
-		when(mockRequestOrderDomainService.execute(any(RequestOrderDomainServiceDto.Input.class))).thenReturn(event);
+		when(mockRequestOrderDomainService.execute(any(RequestOrderDomainServiceDto.Input.class)))
+			.thenReturn(event);
 
 		RequestOrderUseCaseDto.Input usecaseInput = RequestOrderUseCaseDto.Input.builder()
 			.addressDto(makeAddress())
 			.userId(UUID.randomUUID())
 			.detailOrderDtoList(List.of(makeDetailOrderDto()))
 			.build();
+
+		PreemptResponse response = PreemptResponse.builder()
+			.isSuccess(true)
+			.insufficientProductList(List.of())
+			.build();
+
+		when(mockPreemptApiCaller.preemptRequest(any(PreemptRequest.class)))
+			.thenReturn(response);
 
 		// when
 		requestOrderUseCase.execute(usecaseInput);
@@ -66,6 +81,8 @@ class RequestOrderUseCaseTest {
 			.readByIdList(any());
 		verify(mockRequestOrderDomainService, times(1))
 			.execute(any());
+		verify(mockPreemptApiCaller, times(1))
+			.preemptRequest(any());
 		verify(mockPaymentRequestEventKafkaPublisher, times(1))
 			.publishEvent(any());
 	}
