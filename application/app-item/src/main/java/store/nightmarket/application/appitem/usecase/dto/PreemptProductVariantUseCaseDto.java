@@ -1,25 +1,24 @@
 package store.nightmarket.application.appitem.usecase.dto;
 
 import java.util.List;
-import java.util.UUID;
 
 import lombok.Builder;
 import store.nightmarket.domain.item.model.id.OrderId;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
 
-public class PreemptProductUseCaseDto {
+public class PreemptProductVariantUseCaseDto {
 
 	@Builder
 	public record Input(
 		OrderId orderId,
-		List<PreemptionProduct> preemptionProductList
+		List<PreemptRequestedProduct> preemptRequestedProductList
 	) {
 
 	}
 
 	@Builder
-	public record PreemptionProduct(
+	public record PreemptRequestedProduct(
 		ProductVariantId productVariantId,
 		Quantity quantity
 	) {
@@ -29,7 +28,7 @@ public class PreemptProductUseCaseDto {
 	@Builder
 	public record Output(
 		boolean isSuccess,
-		List<UUID> insufficientProductList
+		List<ProductVariantId> insufficientProductList
 	) {
 
 	}

@@ -9,7 +9,7 @@ import store.nightmarket.persistence.persistitem.repository.ShoppingBasketProduc
 
 @Component
 @RequiredArgsConstructor
-public class DeleteShoppingBasketProductAdaptor implements DeleteShoppingBasketProductPort {
+public class DeleteShoppingBasketProductAdapter implements DeleteShoppingBasketProductPort {
 
 	private final ShoppingBasketProductRepository shoppingBasketProductRepository;
 

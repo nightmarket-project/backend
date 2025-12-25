@@ -12,7 +12,7 @@ import store.nightmarket.persistence.persistitem.repository.ReviewRepository;
 
 @Component
 @RequiredArgsConstructor
-public class ReadReviewAdaptor implements ReadReviewPort {
+public class ReadReviewAdapter implements ReadReviewPort {
 
 	private final ReviewRepository reviewRepository;
 

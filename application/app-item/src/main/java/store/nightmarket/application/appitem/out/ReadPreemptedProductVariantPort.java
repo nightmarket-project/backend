@@ -5,14 +5,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 import store.nightmarket.domain.item.exception.PreemptionException;
-import store.nightmarket.domain.item.model.Preemption;
-import store.nightmarket.domain.item.model.id.PreemptionId;
+import store.nightmarket.domain.item.model.PreemptedProductVariant;
+import store.nightmarket.domain.item.model.id.PreemptedProductVariantId;
 
-public interface ReadPreemptionPort {
+public interface ReadPreemptedProductVariantPort {
 
-	Optional<Preemption> read(PreemptionId id);
+	Optional<PreemptedProductVariant> read(PreemptedProductVariantId id);
 
-	default Preemption readOrThrow(PreemptionId id) {
+	default PreemptedProductVariant readOrThrow(PreemptedProductVariantId id) {
 		return read(id)
 			.orElseThrow(() -> new PreemptionException("Not Found Preemption"));
 	}

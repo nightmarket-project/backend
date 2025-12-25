@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import lombok.Builder;
 
-public class SaveOrderDto {
+public class RequestOrderDto {
 
 	@Builder
 	public record Request(

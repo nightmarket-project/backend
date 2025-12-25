@@ -20,7 +20,7 @@ import store.nightmarket.persistence.persistitem.repository.ProductVariantReposi
 
 @Component
 @RequiredArgsConstructor
-public class ReadProductVariantAdaptor implements ReadProductVariantPort {
+public class ReadProductVariantAdapter implements ReadProductVariantPort {
 
 	private final ProductVariantRepository productVariantRepository;
 

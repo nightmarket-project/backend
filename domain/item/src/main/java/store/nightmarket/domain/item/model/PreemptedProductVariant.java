@@ -5,18 +5,18 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.model.id.OrderId;
-import store.nightmarket.domain.item.model.id.PreemptionId;
+import store.nightmarket.domain.item.model.id.PreemptedProductVariantId;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
 
 @Getter
-public class Preemption extends BaseModel<PreemptionId> {
+public class PreemptedProductVariant extends BaseModel<PreemptedProductVariantId> {
 
 	private final OrderId orderId;
 	private final ProductVariantId productVariantId;
 	private final Long quantity;
 	private final LocalDateTime expiredAt;
 
-	private Preemption(
+	private PreemptedProductVariant(
 		OrderId orderId,
 		ProductVariantId productVariantId,
 		Long quantity,
@@ -28,8 +28,8 @@ public class Preemption extends BaseModel<PreemptionId> {
 		this.expiredAt = expiredAt;
 	}
 
-	private Preemption(
-		PreemptionId id,
+	private PreemptedProductVariant(
+		PreemptedProductVariantId id,
 		OrderId orderId,
 		ProductVariantId productVariantId,
 		Long quantity,
@@ -42,13 +42,13 @@ public class Preemption extends BaseModel<PreemptionId> {
 		this.expiredAt = expiredAt;
 	}
 
-	public static Preemption newInstance(
+	public static PreemptedProductVariant newInstance(
 		OrderId orderId,
 		ProductVariantId productVariantId,
 		Long quantity,
 		LocalDateTime expiredAt
 	) {
-		return new Preemption(
+		return new PreemptedProductVariant(
 			orderId,
 			productVariantId,
 			quantity,
@@ -56,14 +56,14 @@ public class Preemption extends BaseModel<PreemptionId> {
 		);
 	}
 
-	public static Preemption newInstanceWithId(
-		PreemptionId id,
+	public static PreemptedProductVariant newInstanceWithId(
+		PreemptedProductVariantId id,
 		OrderId orderId,
 		ProductVariantId productVariantId,
 		Long quantity,
 		LocalDateTime expiredAt
 	) {
-		return new Preemption(
+		return new PreemptedProductVariant(
 			id,
 			orderId,
 			productVariantId,
@@ -72,7 +72,7 @@ public class Preemption extends BaseModel<PreemptionId> {
 		);
 	}
 
-	public PreemptionId getPreemptionId() {
+	public PreemptedProductVariantId getPreemptedProductVariantId() {
 		return internalId();
 	}
 

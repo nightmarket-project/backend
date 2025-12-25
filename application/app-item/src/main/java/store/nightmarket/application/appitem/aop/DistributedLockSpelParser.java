@@ -12,9 +12,9 @@ import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
-public class CustomSpringElpParser {
+public class DistributedLockSpelParser {
 
-	private CustomSpringElpParser() {
+	private DistributedLockSpelParser() {
 	}
 
 	public static List<String> getDynamicValue(
@@ -28,8 +28,8 @@ public class CustomSpringElpParser {
 
 		return Arrays.stream(expressions)
 			.map(expr -> parseValue(expr, parser, context))
-			.flatMap(CustomSpringElpParser::flatten)
-			.map(CustomSpringElpParser::toLockKey)
+			.flatMap(DistributedLockSpelParser::flatten)
+			.map(DistributedLockSpelParser::toLockKey)
 			.distinct()
 			.sorted()
 			.toList();

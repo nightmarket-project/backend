@@ -1,6 +1,6 @@
 package store.nightmarket.application.appitem.usecase;
 
-import static store.nightmarket.application.appitem.usecase.dto.PutShoppingBasketProductUseCaseDto.*;
+import static store.nightmarket.application.appitem.usecase.dto.SaveShoppingBasketProductUseCaseDto.*;
 
 import java.util.UUID;
 
@@ -14,7 +14,7 @@ import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;
 
 @Service
 @RequiredArgsConstructor
-public class PutShoppingBasketProductUseCase implements BaseUseCase<Input, Void> {
+public class SaveShoppingBasketProductUseCase implements BaseUseCase<Input, Void> {
 
 	private final SaveShoppingBasketProductPort saveShoppingBasketProductPort;
 

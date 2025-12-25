@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import lombok.Builder;
-import store.nightmarket.application.apporder.in.dto.SaveOrderDto;
+import store.nightmarket.application.apporder.in.dto.RequestOrderDto;
 import store.nightmarket.domain.order.model.id.ProductVariantId;
 import store.nightmarket.domain.order.valueobject.Quantity;
 
@@ -44,7 +44,7 @@ public class RequestOrderUseCaseDto {
 
 	}
 
-	public static List<DetailOrderDto> toUseCaseDto(List<SaveOrderDto.DetailOrderDto> detailOrderDtoList) {
+	public static List<DetailOrderDto> toUseCaseDto(List<RequestOrderDto.DetailOrderDto> detailOrderDtoList) {
 		return detailOrderDtoList.stream()
 			.map(dto -> new DetailOrderDto.DetailOrderDtoBuilder()
 				.productVariantId(new ProductVariantId(dto.productVariantId()))

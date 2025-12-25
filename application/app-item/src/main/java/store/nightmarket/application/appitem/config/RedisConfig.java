@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 @EnableRedisHttpSession
-public class RedissonConfig {
+public class RedisConfig {
 
 	@Bean
 	public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
