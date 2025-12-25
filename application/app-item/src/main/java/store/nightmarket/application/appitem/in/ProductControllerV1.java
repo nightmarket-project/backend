@@ -41,7 +41,7 @@ public class ProductControllerV1 {
 									.map(optionValue ->
 										ReadOptionGroupDto.OptionValueInfo.builder()
 											.optionValueId(optionValue.getOptionValueId().getId())
-											.name(optionValue.getValue())
+											.name(optionValue.getName().getValue())
 											.price(optionValue.getPrice().amount())
 											.displayOrder(optionValue.getOrder())
 											.build())
