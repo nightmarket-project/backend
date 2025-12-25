@@ -1,5 +1,7 @@
 package store.nightmarket.application.appitem.out.adaptor;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,15 @@ public class SavePreemptionJpaAdapter implements SavePreemptionPort {
 	@Override
 	public void save(Preemption preemption) {
 		preemptionRepository.save(PreemptionMapper.toEntity(preemption));
+	}
+
+	@Override
+	public void saveAll(List<Preemption> preemptionList) {
+		preemptionRepository.saveAll(
+			preemptionList.stream()
+				.map(PreemptionMapper::toEntity)
+				.toList()
+		);
 	}
 
 }

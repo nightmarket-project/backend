@@ -193,8 +193,8 @@ public class PreemptProductUseCaseIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("재고 부족 시 해당 상품 아이디를 반환한다")
-	void shouldThrowExceptionWhenOutOfStock() throws InterruptedException {
+	@DisplayName("재고 부족 시 부족한 상품 아이디를 반환한다")
+	void shouldThrowExceptionWhenOutOfStock() {
 		// given
 		ProductVariantId productVariantId = new ProductVariantId(UUID.randomUUID());
 
@@ -226,7 +226,44 @@ public class PreemptProductUseCaseIntegrationTest {
 
 		// then
 		assertThat(output.isSuccess()).isFalse();
-		assertThat(output.insufficientProductList().getFirst()).isEqualTo(productVariantId.getId());
+		assertThat(output.insufficientProductList().getFirst()).isEqualTo(productVariantId);
+	}
+
+	@Test
+	@DisplayName("재고 충분 시 부족한 상품아이디를 반환하지 않는다")
+	void shouldNotReturnProductVariantIdWhenStockEnough() {
+		// given
+		ProductVariantId productVariantId = new ProductVariantId(UUID.randomUUID());
+
+		productVariantRepository.save(
+			ProductVariantEntity.newInstance(
+				productVariantId.getId(),
+				UUID.randomUUID(),
+				UUID.randomUUID(),
+				"test-product",
+				new QuantityEntity(BigInteger.valueOf(5))
+			)
+		);
+
+		PreemptProductUseCaseDto.Input input =
+			PreemptProductUseCaseDto.Input.builder()
+				.orderId(new OrderId(UUID.randomUUID()))
+				.preemptionProductList(
+					List.of(
+						PreemptProductUseCaseDto.PreemptionProduct.builder()
+							.productVariantId(productVariantId)
+							.quantity(new Quantity(BigInteger.valueOf(1)))
+							.build()
+					)
+				)
+				.build();
+
+		// when
+		PreemptProductUseCaseDto.Output output = preemptProductUseCase.execute(input);
+
+		// then
+		assertThat(output.isSuccess()).isTrue();
+		assertThat(output.insufficientProductList().size()).isEqualTo(0);
 	}
 
 }
