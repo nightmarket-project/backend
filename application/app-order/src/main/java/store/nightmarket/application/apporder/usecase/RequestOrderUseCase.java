@@ -1,5 +1,6 @@
 package store.nightmarket.application.apporder.usecase;
 
+import static store.nightmarket.application.apporder.out.feign.PreemptApiDto.*;
 import static store.nightmarket.application.apporder.usecase.dto.RequestOrderUseCaseDto.*;
 
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import store.nightmarket.application.apporder.out.ReadProductVariantPort;
@@ -18,9 +20,8 @@ import store.nightmarket.application.apporder.out.SaveOrderPort;
 import store.nightmarket.application.apporder.out.adapter.PaymentRequestEventKafkaPublisher;
 import store.nightmarket.application.apporder.out.dto.PaymentRequestEvent;
 import store.nightmarket.application.apporder.out.feign.PreemptApiCaller;
-import store.nightmarket.application.apporder.out.feign.PreemptRequest;
-import store.nightmarket.application.apporder.out.feign.PreemptResponse;
 import store.nightmarket.common.application.usecase.BaseUseCase;
+import store.nightmarket.domain.order.exception.OrderException;
 import store.nightmarket.domain.order.model.DetailOrderRecord;
 import store.nightmarket.domain.order.model.OrderRecord;
 import store.nightmarket.domain.order.model.ProductVariant;
@@ -48,7 +49,38 @@ public class RequestOrderUseCase implements BaseUseCase<Input, Output> {
 	@Override
 	@Transactional
 	public Output execute(Input input) {
-		OrderRecord orderRecord = OrderRecord.newInstance(
+		OrderRecord orderRecord = makeOrderRecord(input);
+
+		RequestOrderDomainServiceDto.Event event = requestOrderDomainService.execute(
+			RequestOrderDomainServiceDto.Input.builder()
+				.orderRecord(orderRecord)
+				.build()
+		);
+
+		OrderRecord submittedOrderRecord = event.getOrderRecord();
+
+		saveOrderPort.save(submittedOrderRecord);
+
+		PreemptResponse preemptResponse = preempt(submittedOrderRecord);
+
+		if (preemptResponse.isSuccess()) {
+			paymentRequestEventKafkaPublisher.publishEvent(
+				PaymentRequestEvent.builder()
+					.orderId(submittedOrderRecord.getOrderRecordId().getId())
+					.userId(submittedOrderRecord.getUserId().getId())
+					.price(calculatePrice(submittedOrderRecord))
+					.build()
+			);
+		}
+
+		return Output.builder()
+			.orderRecordId(submittedOrderRecord.getOrderRecordId().getId())
+			.insufficientProductList(preemptResponse.insufficientProductList())
+			.build();
+	}
+
+	private OrderRecord makeOrderRecord(Input input) {
+		return OrderRecord.newInstance(
 			new OrderRecordId(UUID.randomUUID()),
 			new Address(
 				input.addressDto().zipCode(),
@@ -66,50 +98,30 @@ public class RequestOrderUseCase implements BaseUseCase<Input, Output> {
 				))
 				.toList()
 		);
+	}
 
-		RequestOrderDomainServiceDto.Input domainInput = RequestOrderDomainServiceDto.Input.builder()
-			.orderRecord(orderRecord)
-			.build();
+	public PreemptResponse preempt(OrderRecord submittedOrderRecord) {
+		try {
+			return preemptApiCaller.preemptRequest(buildRequest(submittedOrderRecord));
+		} catch (FeignException e) {
+			log.error("Preempt API 호출 실패. orderId={}", submittedOrderRecord.getOrderRecordId(), e);
+			throw new OrderException("Preempt API Call Fail");
+		}
+	}
 
-		RequestOrderDomainServiceDto.Event event = requestOrderDomainService.execute(domainInput);
-
-		OrderRecord submittedOrderRecord = event.getOrderRecord();
-
-		saveOrderPort.save(submittedOrderRecord);
-
-		PreemptResponse preemptResponse = preemptApiCaller.preemptRequest(
-			PreemptRequest.builder()
-				.orderId(submittedOrderRecord.getOrderRecordId().getId())
-				.preemptProductList(
-					submittedOrderRecord.getDetailOrderRecordList().stream()
-						.map(detailOrderRecord -> PreemptRequest.PreemptProduct.builder()
+	private PreemptRequest buildRequest(OrderRecord submittedOrderRecord) {
+		return PreemptRequest.builder()
+			.orderId(submittedOrderRecord.getOrderRecordId().getId())
+			.preemptProductList(
+				submittedOrderRecord.getDetailOrderRecordList().stream()
+					.map(detailOrderRecord ->
+						PreemptRequest.PreemptProduct.builder()
 							.productVariantId(detailOrderRecord.getProductVariantId().getId())
 							.quantity(detailOrderRecord.getQuantity().getValue())
 							.build()
-						)
-						.toList()
-				)
-				.build()
-		);
-
-		if (preemptResponse.isSuccess()) {
-			paymentRequestEventKafkaPublisher.publishEvent(
-				PaymentRequestEvent.builder()
-					.orderId(submittedOrderRecord.getOrderRecordId().getId())
-					.userId(submittedOrderRecord.getUserId().getId())
-					.price(calculatePrice(submittedOrderRecord))
-					.build()
-			);
-
-			return Output.builder()
-				.orderRecordId(submittedOrderRecord.getOrderRecordId().getId())
-				.insufficientProductList(preemptResponse.insufficientProductList())
-				.build();
-		}
-
-		return Output.builder()
-			.orderRecordId(submittedOrderRecord.getOrderRecordId().getId())
-			.insufficientProductList(preemptResponse.insufficientProductList())
+					)
+					.toList()
+			)
 			.build();
 	}
 

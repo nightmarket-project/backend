@@ -18,7 +18,7 @@ import store.nightmarket.application.apporder.auth.UserSession;
 import store.nightmarket.application.apporder.config.resolver.AuthorizedUser;
 import store.nightmarket.application.apporder.in.dto.ReadListOrderDto;
 import store.nightmarket.application.apporder.in.dto.ReadOrderDto;
-import store.nightmarket.application.apporder.in.dto.SaveOrderDto;
+import store.nightmarket.application.apporder.in.dto.RequestOrderDto;
 import store.nightmarket.application.apporder.usecase.ReadOrderListUseCase;
 import store.nightmarket.application.apporder.usecase.ReadOrderUseCase;
 import store.nightmarket.application.apporder.usecase.RequestOrderUseCase;
@@ -114,8 +114,8 @@ public class OrderControllerV1 {
 
 	@PostMapping
 	@RequireRoles({"ROLE_ADMIN", "ROLE_USER", "ROLE_BUYER"})
-	public SaveOrderDto.Response saveOrder(
-		@RequestBody SaveOrderDto.Request request,
+	public RequestOrderDto.Response requestOrder(
+		@RequestBody RequestOrderDto.Request request,
 		@AuthorizedUser UserSession userSession
 	) {
 		Output output = requestOrderUseCase.execute(
@@ -132,7 +132,7 @@ public class OrderControllerV1 {
 				.build()
 		);
 
-		return SaveOrderDto.Response.builder()
+		return RequestOrderDto.Response.builder()
 			.orderRecordId(output.orderRecordId())
 			.insufficientProductList(output.insufficientProductList())
 			.build();
