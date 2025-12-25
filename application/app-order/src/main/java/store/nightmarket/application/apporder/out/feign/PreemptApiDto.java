@@ -10,10 +10,10 @@ public class PreemptApiDto {
 	@Builder
 	public record PreemptRequest(
 		UUID orderId,
-		List<PreemptProduct> preemptProductList
+		List<PreemptRequestedProduct> preemptRequestedProductList
 	) {
 		@Builder
-		public record PreemptProduct(
+		public record PreemptRequestedProduct(
 			UUID productVariantId,
 			long quantity
 		) {

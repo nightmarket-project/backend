@@ -13,9 +13,9 @@ import store.nightmarket.common.entity.BaseAutoIncrementIdEntity;
 
 @Getter
 @Entity
-@Table(name = "preemption")
+@Table(name = "preempted_product_variant")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PreemptionEntity extends BaseAutoIncrementIdEntity {
+public class PreemptedProductVariantEntity extends BaseAutoIncrementIdEntity {
 
 	@Column(name = "order_id", nullable = false)
 	private UUID orderId;
@@ -29,7 +29,7 @@ public class PreemptionEntity extends BaseAutoIncrementIdEntity {
 	@Column(name = "expired_at", nullable = false)
 	private LocalDateTime expiredAt;
 
-	private PreemptionEntity(
+	private PreemptedProductVariantEntity(
 		UUID orderId,
 		UUID productVariantId,
 		Long quantity,
@@ -41,7 +41,7 @@ public class PreemptionEntity extends BaseAutoIncrementIdEntity {
 		this.expiredAt = expiredAt;
 	}
 
-	private PreemptionEntity(
+	private PreemptedProductVariantEntity(
 		Long id,
 		UUID orderId,
 		UUID productVariantId,
@@ -55,13 +55,13 @@ public class PreemptionEntity extends BaseAutoIncrementIdEntity {
 		this.expiredAt = expiredAt;
 	}
 
-	public static PreemptionEntity newInstance(
+	public static PreemptedProductVariantEntity newInstance(
 		UUID orderId,
 		UUID productVariantId,
 		Long quantity,
 		LocalDateTime expiredAt
 	) {
-		return new PreemptionEntity(
+		return new PreemptedProductVariantEntity(
 			orderId,
 			productVariantId,
 			quantity,
@@ -69,14 +69,14 @@ public class PreemptionEntity extends BaseAutoIncrementIdEntity {
 		);
 	}
 
-	public static PreemptionEntity newInstanceWithId(
+	public static PreemptedProductVariantEntity newInstanceWithId(
 		Long id,
 		UUID orderId,
 		UUID productVariantId,
 		Long quantity,
 		LocalDateTime expiredAt
 	) {
-		return new PreemptionEntity(
+		return new PreemptedProductVariantEntity(
 			id,
 			orderId,
 			productVariantId,

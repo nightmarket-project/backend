@@ -20,9 +20,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
-import store.nightmarket.application.appitem.out.ReadPreemptionPort;
-import store.nightmarket.application.appitem.usecase.PreemptProductUseCase;
-import store.nightmarket.application.appitem.usecase.dto.PreemptProductUseCaseDto;
+import store.nightmarket.application.appitem.out.ReadPreemptedProductVariantPort;
+import store.nightmarket.application.appitem.usecase.PreemptProductVariantUseCase;
+import store.nightmarket.application.appitem.usecase.dto.PreemptProductVariantUseCaseDto;
 import store.nightmarket.domain.item.model.id.OrderId;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
@@ -32,13 +32,13 @@ import store.nightmarket.persistence.persistitem.repository.ProductVariantReposi
 
 @ActiveProfiles("test")
 @SpringBootTest
-public class PreemptProductUseCaseIntegrationTest {
+public class PreemptProductVariantUseCaseTest {
 
 	@Autowired
-	private PreemptProductUseCase preemptProductUseCase;
+	private PreemptProductVariantUseCase preemptProductVariantUseCase;
 
 	@Autowired
-	private ReadPreemptionPort readPreemptionPort;
+	private ReadPreemptedProductVariantPort readPreemptedProductVariantPort;
 
 	@Autowired
 	private ProductVariantRepository productVariantRepository;
@@ -79,12 +79,12 @@ public class PreemptProductUseCaseIntegrationTest {
 		for (int i = 0; i < numberOfThreads; i++) {
 			executorService.submit(() -> {
 				try {
-					PreemptProductUseCaseDto.Output output = preemptProductUseCase.execute(
-						PreemptProductUseCaseDto.Input.builder()
+					PreemptProductVariantUseCaseDto.Output output = preemptProductVariantUseCase.execute(
+						PreemptProductVariantUseCaseDto.Input.builder()
 							.orderId(new OrderId(UUID.randomUUID()))
-							.preemptionProductList(
+							.preemptRequestedProductList(
 								List.of(
-									PreemptProductUseCaseDto.PreemptionProduct.builder()
+									PreemptProductVariantUseCaseDto.PreemptRequestedProduct.builder()
 										.productVariantId(productVariantId)
 										.quantity(new Quantity(BigInteger.valueOf(requestQuantity)))
 										.build()
@@ -106,7 +106,8 @@ public class PreemptProductUseCaseIntegrationTest {
 		latch.await();
 
 		// then
-		Long totalPreempted = readPreemptionPort.readPreemptedQuantity(productVariantId.getId(), LocalDateTime.now());
+		Long totalPreempted = readPreemptedProductVariantPort.readPreemptedQuantity(productVariantId.getId(),
+			LocalDateTime.now());
 
 		assertThat(totalPreempted).isEqualTo(5);
 		assertThat(successCount.get()).isEqualTo(5);
@@ -152,16 +153,16 @@ public class PreemptProductUseCaseIntegrationTest {
 		for (int i = 0; i < numberOfThreads; i++) {
 			executorService.submit(() -> {
 				try {
-					PreemptProductUseCaseDto.Output output = preemptProductUseCase.execute(
-						PreemptProductUseCaseDto.Input.builder()
+					PreemptProductVariantUseCaseDto.Output output = preemptProductVariantUseCase.execute(
+						PreemptProductVariantUseCaseDto.Input.builder()
 							.orderId(new OrderId(UUID.randomUUID()))
-							.preemptionProductList(
+							.preemptRequestedProductList(
 								List.of(
-									PreemptProductUseCaseDto.PreemptionProduct.builder()
+									PreemptProductVariantUseCaseDto.PreemptRequestedProduct.builder()
 										.productVariantId(productVariantIdA)
 										.quantity(new Quantity(BigInteger.valueOf(requestQuantity)))
 										.build(),
-									PreemptProductUseCaseDto.PreemptionProduct.builder()
+									PreemptProductVariantUseCaseDto.PreemptRequestedProduct.builder()
 										.productVariantId(productVariantIdB)
 										.quantity(new Quantity(BigInteger.valueOf(requestQuantity)))
 										.build()
@@ -183,8 +184,10 @@ public class PreemptProductUseCaseIntegrationTest {
 		latch.await();
 
 		// then
-		Long totalPreemptedA = readPreemptionPort.readPreemptedQuantity(productVariantIdA.getId(), LocalDateTime.now());
-		Long totalPreemptedB = readPreemptionPort.readPreemptedQuantity(productVariantIdB.getId(), LocalDateTime.now());
+		Long totalPreemptedA = readPreemptedProductVariantPort.readPreemptedQuantity(productVariantIdA.getId(),
+			LocalDateTime.now());
+		Long totalPreemptedB = readPreemptedProductVariantPort.readPreemptedQuantity(productVariantIdB.getId(),
+			LocalDateTime.now());
 
 		assertThat(totalPreemptedA).isEqualTo(5);
 		assertThat(totalPreemptedB).isEqualTo(5);
@@ -208,12 +211,12 @@ public class PreemptProductUseCaseIntegrationTest {
 			)
 		);
 
-		PreemptProductUseCaseDto.Input input =
-			PreemptProductUseCaseDto.Input.builder()
+		PreemptProductVariantUseCaseDto.Input input =
+			PreemptProductVariantUseCaseDto.Input.builder()
 				.orderId(new OrderId(UUID.randomUUID()))
-				.preemptionProductList(
+				.preemptRequestedProductList(
 					List.of(
-						PreemptProductUseCaseDto.PreemptionProduct.builder()
+						PreemptProductVariantUseCaseDto.PreemptRequestedProduct.builder()
 							.productVariantId(productVariantId)
 							.quantity(new Quantity(BigInteger.valueOf(6)))
 							.build()
@@ -222,7 +225,7 @@ public class PreemptProductUseCaseIntegrationTest {
 				.build();
 
 		// when
-		PreemptProductUseCaseDto.Output output = preemptProductUseCase.execute(input);
+		PreemptProductVariantUseCaseDto.Output output = preemptProductVariantUseCase.execute(input);
 
 		// then
 		assertThat(output.isSuccess()).isFalse();
@@ -245,12 +248,12 @@ public class PreemptProductUseCaseIntegrationTest {
 			)
 		);
 
-		PreemptProductUseCaseDto.Input input =
-			PreemptProductUseCaseDto.Input.builder()
+		PreemptProductVariantUseCaseDto.Input input =
+			PreemptProductVariantUseCaseDto.Input.builder()
 				.orderId(new OrderId(UUID.randomUUID()))
-				.preemptionProductList(
+				.preemptRequestedProductList(
 					List.of(
-						PreemptProductUseCaseDto.PreemptionProduct.builder()
+						PreemptProductVariantUseCaseDto.PreemptRequestedProduct.builder()
 							.productVariantId(productVariantId)
 							.quantity(new Quantity(BigInteger.valueOf(1)))
 							.build()
@@ -259,7 +262,7 @@ public class PreemptProductUseCaseIntegrationTest {
 				.build();
 
 		// when
-		PreemptProductUseCaseDto.Output output = preemptProductUseCase.execute(input);
+		PreemptProductVariantUseCaseDto.Output output = preemptProductVariantUseCase.execute(input);
 
 		// then
 		assertThat(output.isSuccess()).isTrue();

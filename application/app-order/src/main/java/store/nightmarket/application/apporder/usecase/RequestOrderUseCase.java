@@ -112,10 +112,10 @@ public class RequestOrderUseCase implements BaseUseCase<Input, Output> {
 	private PreemptRequest buildRequest(OrderRecord submittedOrderRecord) {
 		return PreemptRequest.builder()
 			.orderId(submittedOrderRecord.getOrderRecordId().getId())
-			.preemptProductList(
+			.preemptRequestedProductList(
 				submittedOrderRecord.getDetailOrderRecordList().stream()
 					.map(detailOrderRecord ->
-						PreemptRequest.PreemptProduct.builder()
+						PreemptRequest.PreemptRequestedProduct.builder()
 							.productVariantId(detailOrderRecord.getProductVariantId().getId())
 							.quantity(detailOrderRecord.getQuantity().getValue())
 							.build()

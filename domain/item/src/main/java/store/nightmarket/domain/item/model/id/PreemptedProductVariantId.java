@@ -4,11 +4,11 @@ import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseId;
 
 @Getter
-public class PreemptionId extends BaseId<Long> {
+public class PreemptedProductVariantId extends BaseId<Long> {
 
 	private final Long id;
 
-	public PreemptionId(Long id) {
+	public PreemptedProductVariantId(Long id) {
 		this.id = id;
 	}
 

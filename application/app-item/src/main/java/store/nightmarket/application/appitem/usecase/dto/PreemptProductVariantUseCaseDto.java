@@ -7,18 +7,18 @@ import store.nightmarket.domain.item.model.id.OrderId;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
 
-public class PreemptProductUseCaseDto {
+public class PreemptProductVariantUseCaseDto {
 
 	@Builder
 	public record Input(
 		OrderId orderId,
-		List<PreemptionProduct> preemptionProductList
+		List<PreemptRequestedProduct> preemptRequestedProductList
 	) {
 
 	}
 
 	@Builder
-	public record PreemptionProduct(
+	public record PreemptRequestedProduct(
 		ProductVariantId productVariantId,
 		Quantity quantity
 	) {

@@ -1,7 +1,7 @@
 package store.nightmarket.application.appitem.usecase;
 
 import static store.nightmarket.application.appitem.constant.Constant.*;
-import static store.nightmarket.application.appitem.usecase.dto.PreemptProductUseCaseDto.*;
+import static store.nightmarket.application.appitem.usecase.dto.PreemptProductVariantUseCaseDto.*;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -16,11 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import store.nightmarket.application.appitem.aop.DistributedLock;
-import store.nightmarket.application.appitem.out.ReadPreemptionPort;
+import store.nightmarket.application.appitem.out.ReadPreemptedProductVariantPort;
 import store.nightmarket.application.appitem.out.ReadProductVariantPort;
-import store.nightmarket.application.appitem.out.SavePreemptionPort;
+import store.nightmarket.application.appitem.out.SavePreemptedProductVariantPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
-import store.nightmarket.domain.item.model.Preemption;
+import store.nightmarket.domain.item.model.PreemptedProductVariant;
 import store.nightmarket.domain.item.model.ProductVariant;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
 
@@ -28,22 +28,21 @@ import store.nightmarket.domain.item.model.id.ProductVariantId;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class PreemptProductUseCase implements BaseUseCase<Input, Output> {
+public class PreemptProductVariantUseCase implements BaseUseCase<Input, Output> {
 
 	private final ReadProductVariantPort readProductVariantPort;
-	private final ReadPreemptionPort readPreemptionPort;
-	private final SavePreemptionPort savePreemptionPort;
+	private final ReadPreemptedProductVariantPort readPreemptedProductVariantPort;
+	private final SavePreemptedProductVariantPort savePreemptedProductVariantPort;
 
 	@Override
-	@DistributedLock(keys = "#input.preemptionProductList.![productVariantId.id]")
+	@DistributedLock(keys = "#input.preemptRequestedProductList.![productVariantId.id]")
 	public Output execute(Input input) {
-
-		List<PreemptionProduct> preemptionProducts = input.preemptionProductList().stream()
+		List<PreemptRequestedProduct> preemptRequestedProducts = input.preemptRequestedProductList().stream()
 			.sorted(Comparator.comparing(p -> p.productVariantId().getId()))
 			.toList();
 
-		List<ProductVariantId> productVariantIds = preemptionProducts.stream()
-			.map(PreemptionProduct::productVariantId)
+		List<ProductVariantId> productVariantIds = preemptRequestedProducts.stream()
+			.map(PreemptRequestedProduct::productVariantId)
 			.toList();
 
 		Map<ProductVariantId, ProductVariant> productVariantMap =
@@ -53,11 +52,11 @@ public class PreemptProductUseCase implements BaseUseCase<Input, Output> {
 		Map<ProductVariantId, Long> preemptedQuantityMap = productVariantIds.stream()
 			.collect(Collectors.toMap(
 				Function.identity(),
-				id -> readPreemptionPort.readPreemptedQuantity(id.getId(), LocalDateTime.now())
+				id -> readPreemptedProductVariantPort.readPreemptedQuantity(id.getId(), LocalDateTime.now())
 			));
 
 		List<ProductVariantId> insufficientProducts =
-			getInsufficientProducts(preemptionProducts, productVariantMap, preemptedQuantityMap);
+			getInsufficientProducts(preemptRequestedProducts, productVariantMap, preemptedQuantityMap);
 
 		if (!insufficientProducts.isEmpty()) {
 			return Output.builder()
@@ -66,9 +65,10 @@ public class PreemptProductUseCase implements BaseUseCase<Input, Output> {
 				.build();
 		}
 
-		List<Preemption> preemptionList = createPreemptionList(input, preemptionProducts);
+		List<PreemptedProductVariant> preemptedProductVariantList =
+			createPreemptedProductVariantList(input, preemptRequestedProducts);
 
-		savePreemptionPort.saveAll(preemptionList);
+		savePreemptedProductVariantPort.saveAll(preemptedProductVariantList);
 
 		return Output.builder()
 			.isSuccess(true)
@@ -77,11 +77,11 @@ public class PreemptProductUseCase implements BaseUseCase<Input, Output> {
 	}
 
 	private List<ProductVariantId> getInsufficientProducts(
-		List<PreemptionProduct> preemptionProducts,
+		List<PreemptRequestedProduct> preemptRequestedProducts,
 		Map<ProductVariantId, ProductVariant> productVariantMap,
 		Map<ProductVariantId, Long> preemptedQuantityMap
 	) {
-		return preemptionProducts.stream()
+		return preemptRequestedProducts.stream()
 			.filter(product -> {
 				ProductVariant variant = productVariantMap.get(product.productVariantId());
 
@@ -91,16 +91,16 @@ public class PreemptProductUseCase implements BaseUseCase<Input, Output> {
 
 				return stock < alreadyPreempted + requested;
 			})
-			.map(PreemptionProduct::productVariantId)
+			.map(PreemptRequestedProduct::productVariantId)
 			.toList();
 	}
 
-	private List<Preemption> createPreemptionList(
+	private List<PreemptedProductVariant> createPreemptedProductVariantList(
 		Input input,
-		List<PreemptionProduct> preemptionProducts
+		List<PreemptRequestedProduct> preemptRequestedProducts
 	) {
-		return preemptionProducts.stream()
-			.map(product -> Preemption.newInstance(
+		return preemptRequestedProducts.stream()
+			.map(product -> PreemptedProductVariant.newInstance(
 				input.orderId(),
 				product.productVariantId(),
 				product.quantity().value().longValue(),

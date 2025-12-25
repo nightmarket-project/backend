@@ -5,18 +5,18 @@ import java.util.UUID;
 
 import lombok.Builder;
 
-public class PreemptProductDto {
+public class PreemptProductVariantDto {
 
 	@Builder
 	public record Request(
 		UUID orderId,
-		List<PreemptProduct> preemptProductList
+		List<PreemptRequestedProduct> preemptRequestedProductList
 	) {
 
 	}
 
 	@Builder
-	public record PreemptProduct(
+	public record PreemptRequestedProduct(
 		UUID productVariantId,
 		long quantity
 	) {
