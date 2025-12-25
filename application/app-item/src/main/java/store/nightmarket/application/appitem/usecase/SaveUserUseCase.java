@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.SaveUserPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.model.User;
-import store.nightmarket.domain.item.valueobject.Name;
-import store.nightmarket.domain.item.model.id.UserId;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +18,8 @@ public class SaveUserUseCase implements BaseUseCase<Input, Void> {
 	@Override
 	public Void execute(Input input) {
 		User user = User.newInstance(
-			new UserId(input.userId()),
-			new Name(input.name())
+			input.userId(),
+			input.name()
 		);
 
 		saveUserPort.save(user);

@@ -1,15 +1,15 @@
 package store.nightmarket.application.appitem.usecase.dto;
 
-import java.util.UUID;
-
 import lombok.Builder;
+import store.nightmarket.domain.item.model.id.UserId;
+import store.nightmarket.domain.item.valueobject.Name;
 
 public class SaveUserUseCaseDto {
 
 	@Builder
 	public record Input(
-		UUID userId,
-		String name
+		UserId userId,
+		Name name
 	) {
 
 	}

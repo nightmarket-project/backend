@@ -39,7 +39,11 @@ public class PreemptControllerV1 {
 
 		return PreemptProductDto.Response.builder()
 			.isSuccess(output.isSuccess())
-			.insufficientProductList(output.insufficientProductList())
+			.insufficientProductList(
+				output.insufficientProductList().stream()
+					.map(ProductVariantId::getId)
+					.toList()
+			)
 			.build();
 	}
 

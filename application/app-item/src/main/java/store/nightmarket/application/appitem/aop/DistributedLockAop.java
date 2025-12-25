@@ -62,8 +62,6 @@ public class DistributedLockAop {
 			}
 
 			return joinPoint.proceed();
-		} catch (Exception e) {
-			throw new DistributedLockException(e.getMessage());
 		} finally {
 			if (locked && multiLock.isHeldByCurrentThread()) {
 				try {
@@ -81,7 +79,7 @@ public class DistributedLockAop {
 		DistributedLock distributedLock
 	) {
 		if (distributedLock.keys().length > 0) {
-			return CustomSpringElpParser.getDynamicValue(
+			return DistributedLockSpelParser.getDynamicValue(
 				signature.getParameterNames(),
 				joinPoint.getArgs(),
 				distributedLock.keys()

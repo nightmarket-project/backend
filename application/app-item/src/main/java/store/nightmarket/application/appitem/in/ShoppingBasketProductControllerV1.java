@@ -24,12 +24,12 @@ import store.nightmarket.application.appitem.in.dto.ReadShoppingBasketDto;
 import store.nightmarket.application.appitem.in.dto.SaveShoppingBasketProductDto;
 import store.nightmarket.application.appitem.usecase.DeleteShoppingBasketProductUseCase;
 import store.nightmarket.application.appitem.usecase.ModifyShoppingBasketQuantityUseCase;
-import store.nightmarket.application.appitem.usecase.PutShoppingBasketProductUseCase;
 import store.nightmarket.application.appitem.usecase.ReadShoppingBasketUseCase;
+import store.nightmarket.application.appitem.usecase.SaveShoppingBasketProductUseCase;
 import store.nightmarket.application.appitem.usecase.dto.DeleteShoppingBasketProductUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.ModifyShoppingBasketQuantityUseCaseDto;
-import store.nightmarket.application.appitem.usecase.dto.PutShoppingBasketProductUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.ReadShoppingBasketUseCaseDto;
+import store.nightmarket.application.appitem.usecase.dto.SaveShoppingBasketProductUseCaseDto;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;
@@ -45,7 +45,7 @@ import store.nightmarket.itemweb.model.id.ProductPostId;
 @RequiredArgsConstructor
 public class ShoppingBasketProductControllerV1 {
 
-	private final PutShoppingBasketProductUseCase putShoppingBasketProductUseCase;
+	private final SaveShoppingBasketProductUseCase saveShoppingBasketProductUseCase;
 	private final DeleteShoppingBasketProductUseCase deleteShoppingBasketProductUseCase;
 	private final ModifyShoppingBasketQuantityUseCase modifyShoppingBasketQuantityUseCase;
 	private final ReadShoppingBasketUseCase readShoppingBasketUseCase;
@@ -89,8 +89,8 @@ public class ShoppingBasketProductControllerV1 {
 	@RequireRoles({"ROLE_ADMIN", "ROLE_USER", "ROLE_BUYER"})
 	public void saveShoppingBasketProduct(@RequestBody SaveShoppingBasketProductDto.Request request,
 		@AuthorizedUser UserSession userSession) {
-		putShoppingBasketProductUseCase.execute(
-			PutShoppingBasketProductUseCaseDto.Input.builder()
+		saveShoppingBasketProductUseCase.execute(
+			SaveShoppingBasketProductUseCaseDto.Input.builder()
 				.productVariantId(new ProductVariantId(request.productVariantId()))
 				.userId(new UserId(UUID.fromString(userSession.userId())))
 				.name(new Name(request.name()))

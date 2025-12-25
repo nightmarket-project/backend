@@ -10,7 +10,6 @@ import store.nightmarket.domain.item.model.OptionGroup;
 import store.nightmarket.domain.item.model.OptionValue;
 import store.nightmarket.persistence.persistitem.entity.model.OptionGroupEntity;
 
-// TODO : AdaptorDto 네이밍 수정 필요(AdaptorDto 모두)
 @Builder
 @Getter
 public class OptionGroupAdapterDto {

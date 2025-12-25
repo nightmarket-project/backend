@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.mapper.ShoppingBasketProductMapper;
 import store.nightmarket.application.appitem.out.ReadShoppingBasketProductPort;
+import store.nightmarket.application.appitem.out.mapper.ShoppingBasketProductMapper;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;
 import store.nightmarket.domain.item.model.id.UserId;
@@ -15,7 +15,7 @@ import store.nightmarket.persistence.persistitem.repository.ShoppingBasketProduc
 
 @Component
 @RequiredArgsConstructor
-public class ReadShoppingBasketProductAdaptor implements ReadShoppingBasketProductPort {
+public class ReadShoppingBasketProductAdapter implements ReadShoppingBasketProductPort {
 
 	private final ShoppingBasketProductRepository shoppingBasketProductRepository;
 

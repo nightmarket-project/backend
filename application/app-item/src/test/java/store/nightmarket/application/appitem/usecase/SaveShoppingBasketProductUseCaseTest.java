@@ -10,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import store.nightmarket.application.appitem.out.SaveShoppingBasketProductPort;
-import store.nightmarket.application.appitem.usecase.dto.PutShoppingBasketProductUseCaseDto;
+import store.nightmarket.application.appitem.usecase.dto.SaveShoppingBasketProductUseCaseDto;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.model.id.UserId;
@@ -18,22 +18,22 @@ import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
 import store.nightmarket.domain.item.valueobject.Quantity;
 
-class PutShoppingBasketProductUseCaseTest {
+class SaveShoppingBasketProductUseCaseTest {
 
 	private SaveShoppingBasketProductPort mockSaveShoppingBasketProductPort;
-	private PutShoppingBasketProductUseCase putShoppingBasketProductUseCase;
+	private SaveShoppingBasketProductUseCase saveShoppingBasketProductUseCase;
 
 	@BeforeEach
 	void setUp() {
 		mockSaveShoppingBasketProductPort = mock(SaveShoppingBasketProductPort.class);
-		putShoppingBasketProductUseCase = new PutShoppingBasketProductUseCase(mockSaveShoppingBasketProductPort);
+		saveShoppingBasketProductUseCase = new SaveShoppingBasketProductUseCase(mockSaveShoppingBasketProductPort);
 	}
 
 	@Test
 	@DisplayName("장바구니에 물건 담기")
 	void putProductIntoShoppingBasket() {
 		// given
-		PutShoppingBasketProductUseCaseDto.Input input = PutShoppingBasketProductUseCaseDto.Input.builder()
+		SaveShoppingBasketProductUseCaseDto.Input input = SaveShoppingBasketProductUseCaseDto.Input.builder()
 			.productVariantId(new ProductVariantId(UUID.randomUUID()))
 			.userId(new UserId(UUID.randomUUID()))
 			.name(new Name("상품"))
@@ -42,7 +42,7 @@ class PutShoppingBasketProductUseCaseTest {
 			.build();
 
 		// when
-		putShoppingBasketProductUseCase.execute(input);
+		saveShoppingBasketProductUseCase.execute(input);
 
 		// then
 		verify(mockSaveShoppingBasketProductPort, times(1))

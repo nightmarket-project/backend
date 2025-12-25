@@ -12,7 +12,7 @@ import store.nightmarket.persistence.persistitem.repository.OptionGroupRepositor
 
 @Component
 @RequiredArgsConstructor
-public class ReadOptionGroupAdaptor implements ReadOptionGroupPort {
+public class ReadOptionGroupAdapter implements ReadOptionGroupPort {
 
 	private final OptionGroupRepository optionGroupRepository;
 

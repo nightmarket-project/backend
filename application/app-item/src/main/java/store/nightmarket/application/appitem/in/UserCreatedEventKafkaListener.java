@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import store.nightmarket.application.appitem.in.dto.UserCreatedEvent;
 import store.nightmarket.application.appitem.usecase.SaveUserUseCase;
 import store.nightmarket.application.appitem.usecase.dto.SaveUserUseCaseDto;
+import store.nightmarket.domain.item.model.id.UserId;
+import store.nightmarket.domain.item.valueobject.Name;
 
 @Slf4j
 @Component
@@ -22,8 +24,8 @@ public class UserCreatedEventKafkaListener {
 
 		saveUserUseCase.execute(
 			SaveUserUseCaseDto.Input.builder()
-				.userId(event.userId())
-				.name(event.name())
+				.userId(new UserId(event.userId()))
+				.name(new Name(event.name()))
 				.build()
 		);
 	}

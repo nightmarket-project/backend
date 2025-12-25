@@ -14,7 +14,7 @@ import store.nightmarket.persistence.persistitem.repository.ProductPostRepositor
 
 @Component
 @RequiredArgsConstructor
-public class ReadProductPostAdaptor implements ReadProductPostPort {
+public class ReadProductPostAdapter implements ReadProductPostPort {
 
 	private final ProductPostRepository productPostRepository;
 
