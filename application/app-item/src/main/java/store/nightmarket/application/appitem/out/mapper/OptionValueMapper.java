@@ -3,9 +3,11 @@ package store.nightmarket.application.appitem.out.mapper;
 import store.nightmarket.domain.item.model.OptionValue;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
 import store.nightmarket.domain.item.model.id.OptionValueId;
+import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
 import store.nightmarket.persistence.persistitem.entity.model.OptionGroupEntity;
 import store.nightmarket.persistence.persistitem.entity.model.OptionValueEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
 import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
 
 public class OptionValueMapper {
@@ -15,7 +17,7 @@ public class OptionValueMapper {
 			new OptionValueId(entity.getId()),
 			entity.getCreatedAt(),
 			new OptionGroupId(entity.getOptionGroupEntity().getId()),
-			entity.getName(),
+			new Name(entity.getNameEntity().getValue()),
 			new Price(entity.getPriceEntity().getAmount()),
 			entity.getDisplayOrder()
 		);
@@ -28,7 +30,7 @@ public class OptionValueMapper {
 		return OptionValueEntity.newInstanceWithCreatedAt(
 			domain.getOptionValueId().getId(),
 			domain.getCreatedAt(),
-			domain.getValue(),
+			new NameEntity(domain.getName().getValue()),
 			new PriceEntity(domain.getPrice().amount()),
 			domain.getOrder(),
 			optionGroupEntity

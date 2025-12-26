@@ -7,9 +7,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.auth.RequireRoles;
+import store.nightmarket.application.appitem.in.dto.RegisterOptionDto;
 import store.nightmarket.application.appitem.in.dto.RegisterProductDto;
+import store.nightmarket.application.appitem.usecase.RegisterOptionUseCase;
 import store.nightmarket.application.appitem.usecase.RegisterProductUseCase;
+import store.nightmarket.application.appitem.usecase.dto.RegisterOptionUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.RegisterProductUseCaseDto;
+import store.nightmarket.domain.item.model.id.ProductId;
 import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
 
@@ -19,6 +23,7 @@ import store.nightmarket.domain.item.valueobject.Price;
 public class AdminProductControllerV1 {
 
 	private final RegisterProductUseCase registerProductUseCase;
+	private final RegisterOptionUseCase registerOptionUseCase;
 
 	@PostMapping
 	@RequireRoles({"ROLE_ADMIN", "ROLE_BUYER"})
@@ -32,4 +37,26 @@ public class AdminProductControllerV1 {
 		);
 	}
 
+	@PostMapping
+	@RequireRoles({"ROLE_ADMIN", "ROLE_BUYER"})
+	public void registerProduct(@RequestBody RegisterOptionDto.Request request) {
+		registerOptionUseCase.execute(
+			RegisterOptionUseCaseDto.Input.builder()
+				.productId(new ProductId(request.productId()))
+				.name(new Name(request.name()))
+				.displayOrder(request.displayOrder())
+				.optionValueDtoList(
+					request.optionValueDtoList().stream()
+						.map(requestList ->
+							RegisterOptionUseCaseDto.OptionValueDto.builder()
+								.name(new Name(requestList.name()))
+								.price(new Price(requestList.price()))
+								.displayOrder(requestList.displayOrder())
+								.build()
+						)
+						.toList()
+				)
+				.build()
+		);
+	}
 }

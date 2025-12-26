@@ -127,7 +127,7 @@ public class TestDomainFactory {
 		return OptionValue.newInstance(
 			new OptionValueId(optionValueId),
 			new OptionGroupId(optionGroupId),
-			"옵션 이름",
+			new Name("옵션 이름"),
 			new Price(BigInteger.valueOf(1000)),
 			1
 		);
