@@ -91,3 +91,4 @@ web:
   interceptor:
     include-patterns:
       - "/api/v1/cart/**"
+      - "/api/v1/admin/product/**"
