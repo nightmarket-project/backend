@@ -2,6 +2,8 @@ package store.nightmarket.application.appitem.out.adaptor;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,12 @@ public class ReadProductJpaAdapter implements ReadProductPort {
 	@Override
 	public Optional<Product> read(ProductId id) {
 		return productRepository.findById(id.getId())
+			.map(ProductMapper::toDomain);
+	}
+
+	@Override
+	public Page<Product> readAll(Pageable pageable) {
+		return productRepository.findAll(pageable)
 			.map(ProductMapper::toDomain);
 	}
 
