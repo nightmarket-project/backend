@@ -14,6 +14,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
+import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
 import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
 
 @Getter
@@ -22,8 +23,8 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OptionValueEntity extends BaseUuidEntity {
 
-	@Column(name = "name")
-	private String name;
+	@Embedded
+	private NameEntity nameEntity;
 
 	@Embedded
 	private PriceEntity priceEntity;
@@ -37,13 +38,13 @@ public class OptionValueEntity extends BaseUuidEntity {
 
 	private OptionValueEntity(
 		UUID id,
-		String name,
+		NameEntity nameEntity,
 		PriceEntity priceEntity,
 		int displayOrder,
 		OptionGroupEntity optionGroupEntity
 	) {
 		super(id);
-		this.name = name;
+		this.nameEntity = nameEntity;
 		this.priceEntity = priceEntity;
 		this.displayOrder = displayOrder;
 		this.optionGroupEntity = optionGroupEntity;
@@ -52,13 +53,13 @@ public class OptionValueEntity extends BaseUuidEntity {
 	private OptionValueEntity(
 		UUID id,
 		LocalDateTime createdAt,
-		String name,
+		NameEntity nameEntity,
 		PriceEntity priceEntity,
 		int displayOrder,
 		OptionGroupEntity optionGroupEntity
 	) {
 		super(id, createdAt);
-		this.name = name;
+		this.nameEntity = nameEntity;
 		this.priceEntity = priceEntity;
 		this.displayOrder = displayOrder;
 		this.optionGroupEntity = optionGroupEntity;
@@ -66,14 +67,14 @@ public class OptionValueEntity extends BaseUuidEntity {
 
 	public static OptionValueEntity newInstance(
 		UUID id,
-		String name,
+		NameEntity nameEntity,
 		PriceEntity priceEntity,
 		int displayOrder,
 		OptionGroupEntity optionGroupEntity
 	) {
 		return new OptionValueEntity(
 			id,
-			name,
+			nameEntity,
 			priceEntity,
 			displayOrder,
 			optionGroupEntity
@@ -83,7 +84,7 @@ public class OptionValueEntity extends BaseUuidEntity {
 	public static OptionValueEntity newInstanceWithCreatedAt(
 		UUID id,
 		LocalDateTime createdAt,
-		String name,
+		NameEntity nameEntity,
 		PriceEntity priceEntity,
 		int displayOrder,
 		OptionGroupEntity optionGroupEntity
@@ -91,7 +92,7 @@ public class OptionValueEntity extends BaseUuidEntity {
 		return new OptionValueEntity(
 			id,
 			createdAt,
-			name,
+			nameEntity,
 			priceEntity,
 			displayOrder,
 			optionGroupEntity

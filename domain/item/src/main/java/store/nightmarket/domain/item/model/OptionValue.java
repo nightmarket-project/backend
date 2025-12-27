@@ -6,26 +6,27 @@ import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
 import store.nightmarket.domain.item.model.id.OptionValueId;
+import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
 
 @Getter
 public class OptionValue extends BaseModel<OptionValueId> {
 
 	private final OptionGroupId optionGroupId;
-	private String value;
+	private Name name;
 	private Price price;
 	private int order;
 
 	private OptionValue(
 		OptionValueId id,
 		OptionGroupId optionGroupId,
-		String value,
+		Name name,
 		Price price,
 		int order
 	) {
 		super(id);
 		this.optionGroupId = optionGroupId;
-		this.value = value;
+		this.name = name;
 		this.price = price;
 		this.order = order;
 	}
@@ -34,13 +35,13 @@ public class OptionValue extends BaseModel<OptionValueId> {
 		OptionValueId id,
 		LocalDateTime createdAt,
 		OptionGroupId optionGroupId,
-		String value,
+		Name name,
 		Price price,
 		int order
 	) {
 		super(id, createdAt);
 		this.optionGroupId = optionGroupId;
-		this.value = value;
+		this.name = name;
 		this.price = price;
 		this.order = order;
 	}
@@ -48,14 +49,14 @@ public class OptionValue extends BaseModel<OptionValueId> {
 	public static OptionValue newInstance(
 		OptionValueId id,
 		OptionGroupId optionGroupId,
-		String value,
+		Name name,
 		Price price,
 		int order
 	) {
 		return new OptionValue(
 			id,
 			optionGroupId,
-			value,
+			name,
 			price,
 			order
 		);
@@ -65,7 +66,7 @@ public class OptionValue extends BaseModel<OptionValueId> {
 		OptionValueId id,
 		LocalDateTime createdAt,
 		OptionGroupId optionGroupId,
-		String value,
+		Name name,
 		Price price,
 		int order
 	) {
@@ -73,7 +74,7 @@ public class OptionValue extends BaseModel<OptionValueId> {
 			id,
 			createdAt,
 			optionGroupId,
-			value,
+			name,
 			price,
 			order
 		);
