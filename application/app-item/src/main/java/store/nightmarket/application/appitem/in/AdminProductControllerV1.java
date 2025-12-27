@@ -2,6 +2,8 @@ package store.nightmarket.application.appitem.in;
 
 import java.util.UUID;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +13,15 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.auth.RequireRoles;
 import store.nightmarket.application.appitem.auth.UserSession;
 import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
+import store.nightmarket.application.appitem.in.dto.ReadProductDto;
 import store.nightmarket.application.appitem.in.dto.RegisterOptionDto;
 import store.nightmarket.application.appitem.in.dto.RegisterProductDto;
 import store.nightmarket.application.appitem.in.dto.RegisterProductVariantDto;
+import store.nightmarket.application.appitem.usecase.ReadProductUseCase;
 import store.nightmarket.application.appitem.usecase.RegisterOptionUseCase;
 import store.nightmarket.application.appitem.usecase.RegisterProductUseCase;
 import store.nightmarket.application.appitem.usecase.RegisterProductVariantUseCase;
+import store.nightmarket.application.appitem.usecase.dto.ReadProductUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.RegisterOptionUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.RegisterProductUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.RegisterProductVariantUseCaseDto;
@@ -33,9 +38,27 @@ import store.nightmarket.domain.item.valueobject.Quantity;
 @RequiredArgsConstructor
 public class AdminProductControllerV1 {
 
+	private final ReadProductUseCase readProductUseCase;
 	private final RegisterProductUseCase registerProductUseCase;
 	private final RegisterOptionUseCase registerOptionUseCase;
 	private final RegisterProductVariantUseCase registerProductVariantUseCase;
+
+	@GetMapping("/{productId}")
+	@RequireRoles({"ROLE_ADMIN", "ROLE_BUYER"})
+	public ReadProductDto.Response readProduct(@PathVariable("productId") UUID productId) {
+		ReadProductUseCaseDto.Output output = readProductUseCase.execute(
+			ReadProductUseCaseDto.Input.builder()
+				.productId(new ProductId(productId))
+				.build()
+		);
+
+		return ReadProductDto.Response.builder()
+			.productId(output.product().getProductId().getId())
+			.name(output.product().getName().getValue())
+			.description(output.product().getDescription())
+			.price(output.product().getPrice().amount())
+			.build();
+	}
 
 	@PostMapping
 	@RequireRoles({"ROLE_ADMIN", "ROLE_BUYER"})
