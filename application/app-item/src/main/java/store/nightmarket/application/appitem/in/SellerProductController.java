@@ -2,6 +2,8 @@ package store.nightmarket.application.appitem.in;
 
 import java.util.UUID;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +15,10 @@ import store.nightmarket.application.appitem.auth.UserSession;
 import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
 import store.nightmarket.application.appitem.in.dto.RegisterOptionDto;
 import store.nightmarket.application.appitem.in.dto.RegisterProductVariantDto;
+import store.nightmarket.application.appitem.usecase.DeleteOptionGroupUseCase;
 import store.nightmarket.application.appitem.usecase.RegisterOptionUseCase;
 import store.nightmarket.application.appitem.usecase.RegisterProductVariantUseCase;
+import store.nightmarket.application.appitem.usecase.dto.DeleteOptionGroupUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.RegisterOptionUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.RegisterProductVariantUseCaseDto;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
@@ -32,6 +36,7 @@ public class SellerProductController {
 
 	private final RegisterOptionUseCase registerOptionUseCase;
 	private final RegisterProductVariantUseCase registerProductVariantUseCase;
+	private final DeleteOptionGroupUseCase deleteOptionGroupUseCase;
 
 	@PostMapping("/option")
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
@@ -56,6 +61,20 @@ public class SellerProductController {
 						)
 						.toList()
 				)
+				.build()
+		);
+	}
+
+	@DeleteMapping("/option/{optionGroupId}")
+	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
+	public void deleteOptionGroup(
+		@PathVariable("optionGroupId") UUID optionGroupId,
+		@AuthorizedUser UserSession userSession
+	) {
+		deleteOptionGroupUseCase.execute(
+			DeleteOptionGroupUseCaseDto.Input.builder()
+				.optionGroupId(new OptionGroupId(optionGroupId))
+				.userId(new UserId(UUID.fromString(userSession.userId())))
 				.build()
 		);
 	}

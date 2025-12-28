@@ -1,6 +1,7 @@
 package store.nightmarket.persistence.persistitem.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,12 @@ public interface OptionGroupRepository extends JpaRepository<OptionGroupEntity, 
 
 	@Query("SELECT optionGroupEntity FROM OptionGroupEntity optionGroupEntity "
 		+ "JOIN FETCH optionGroupEntity.optionValueEntityList optionValueEntityList "
+		+ "WHERE optionGroupEntity.id = :optionGroupId")
+	Optional<OptionGroupEntity> findByIdFetchOptionValue(@Param("optionGroupId") UUID optionGroupId);
+
+	@Query("SELECT optionGroupEntity FROM OptionGroupEntity optionGroupEntity "
+		+ "JOIN FETCH optionGroupEntity.optionValueEntityList optionValueEntityList "
 		+ "WHERE optionGroupEntity.productId = :productId")
-	public List<OptionGroupEntity> findByProductPostId(@Param("productId") UUID productId);
+	List<OptionGroupEntity> findByProductPostId(@Param("productId") UUID productId);
 
 }
