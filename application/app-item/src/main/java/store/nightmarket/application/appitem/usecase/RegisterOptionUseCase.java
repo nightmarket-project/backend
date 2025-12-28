@@ -37,6 +37,7 @@ public class RegisterOptionUseCase implements BaseUseCase<Input, Void> {
 		return OptionGroup.newInstance(
 			optionGroupId,
 			input.productId(),
+			input.userId(),
 			input.name(),
 			input.displayOrder()
 		);

@@ -110,11 +110,13 @@ public class TestDomainFactory {
 
 	public static OptionGroup createOptionGroup(
 		UUID optionGroupId,
-		UUID productId
+		UUID productId,
+		UUID userId
 	) {
 		return OptionGroup.newInstance(
 			new OptionGroupId(optionGroupId),
 			new ProductId(productId),
+			new UserId(userId),
 			new Name("그룹 이름1"),
 			1
 		);
