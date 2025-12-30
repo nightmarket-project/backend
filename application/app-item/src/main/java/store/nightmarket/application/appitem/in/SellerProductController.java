@@ -16,9 +16,11 @@ import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
 import store.nightmarket.application.appitem.in.dto.RegisterOptionDto;
 import store.nightmarket.application.appitem.in.dto.RegisterProductVariantDto;
 import store.nightmarket.application.appitem.usecase.DeleteOptionGroupUseCase;
+import store.nightmarket.application.appitem.usecase.DeleteOptionValueUseCase;
 import store.nightmarket.application.appitem.usecase.RegisterOptionUseCase;
 import store.nightmarket.application.appitem.usecase.RegisterProductVariantUseCase;
 import store.nightmarket.application.appitem.usecase.dto.DeleteOptionGroupUseCaseDto;
+import store.nightmarket.application.appitem.usecase.dto.DeleteOptionValueUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.RegisterOptionUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.RegisterProductVariantUseCaseDto;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
@@ -37,6 +39,7 @@ public class SellerProductController {
 	private final RegisterOptionUseCase registerOptionUseCase;
 	private final RegisterProductVariantUseCase registerProductVariantUseCase;
 	private final DeleteOptionGroupUseCase deleteOptionGroupUseCase;
+	private final DeleteOptionValueUseCase deleteOptionValueUseCase;
 
 	@PostMapping("/option")
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
@@ -74,6 +77,22 @@ public class SellerProductController {
 		deleteOptionGroupUseCase.execute(
 			DeleteOptionGroupUseCaseDto.Input.builder()
 				.optionGroupId(new OptionGroupId(optionGroupId))
+				.userId(new UserId(UUID.fromString(userSession.userId())))
+				.build()
+		);
+	}
+
+	@DeleteMapping("/option/{optionGroupId}/value/{optionValueId}")
+	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
+	public void deleteOptionValue(
+		@PathVariable("optionGroupId") UUID optionGroupId,
+		@PathVariable("optionValueId") UUID optionValueId,
+		@AuthorizedUser UserSession userSession
+	) {
+		deleteOptionValueUseCase.execute(
+			DeleteOptionValueUseCaseDto.Input.builder()
+				.optionGroupId(new OptionGroupId(optionGroupId))
+				.optionValueId(new OptionValueId(optionValueId))
 				.userId(new UserId(UUID.fromString(userSession.userId())))
 				.build()
 		);
