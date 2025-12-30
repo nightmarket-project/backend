@@ -14,7 +14,6 @@ import store.nightmarket.application.appitem.out.SaveOptionPort;
 import store.nightmarket.application.appitem.usecase.dto.RegisterOptionUseCaseDto;
 import store.nightmarket.domain.item.model.OptionGroup;
 import store.nightmarket.domain.item.model.id.ProductId;
-import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
 
@@ -35,7 +34,6 @@ public class RegisterOptionUseCaseTest {
 		// given
 		RegisterOptionUseCaseDto.Input input = RegisterOptionUseCaseDto.Input.builder()
 			.productId(new ProductId(UUID.randomUUID()))
-			.userId(new UserId(UUID.randomUUID()))
 			.name(new Name("옵션 그룹"))
 			.displayOrder(1)
 			.optionValueDtoList(

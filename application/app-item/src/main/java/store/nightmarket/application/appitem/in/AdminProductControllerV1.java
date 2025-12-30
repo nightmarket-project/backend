@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.auth.RequireRoles;
+import store.nightmarket.application.appitem.auth.UserSession;
+import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
 import store.nightmarket.application.appitem.in.dto.ReadProductDto;
 import store.nightmarket.application.appitem.in.dto.ReadProductListDto;
 import store.nightmarket.application.appitem.in.dto.RegisterProductDto;
@@ -22,6 +24,7 @@ import store.nightmarket.application.appitem.usecase.dto.ReadProductListUseCaseD
 import store.nightmarket.application.appitem.usecase.dto.ReadProductUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.RegisterProductUseCaseDto;
 import store.nightmarket.domain.item.model.id.ProductId;
+import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
 
@@ -86,9 +89,13 @@ public class AdminProductControllerV1 {
 
 	@PostMapping
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
-	public void registerProduct(@RequestBody RegisterProductDto.Request request) {
+	public void registerProduct(
+		@RequestBody RegisterProductDto.Request request,
+		@AuthorizedUser UserSession userSession
+	) {
 		registerProductUseCase.execute(
 			RegisterProductUseCaseDto.Input.builder()
+				.userId(new UserId(UUID.fromString(userSession.userId())))
 				.name(new Name(request.name()))
 				.description(request.description())
 				.price(new Price(request.price()))

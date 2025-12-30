@@ -43,14 +43,10 @@ public class SellerProductController {
 
 	@PostMapping("/option")
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
-	public void registerOption(
-		@RequestBody RegisterOptionDto.Request request,
-		@AuthorizedUser UserSession userSession
-	) {
+	public void registerOption(@RequestBody RegisterOptionDto.Request request) {
 		registerOptionUseCase.execute(
 			RegisterOptionUseCaseDto.Input.builder()
 				.productId(new ProductId(request.productId()))
-				.userId(new UserId(UUID.fromString(userSession.userId())))
 				.name(new Name(request.name()))
 				.displayOrder(request.displayOrder())
 				.optionValueDtoList(

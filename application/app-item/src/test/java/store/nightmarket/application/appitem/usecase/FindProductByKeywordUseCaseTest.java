@@ -20,8 +20,8 @@ import store.nightmarket.application.appitem.usecase.dto.FindProductByKeywordUse
 import store.nightmarket.domain.item.model.Product;
 import store.nightmarket.itemweb.model.ImageManager;
 import store.nightmarket.itemweb.model.ProductPost;
-import store.nightmarket.itemweb.model.state.ImageType;
 import store.nightmarket.itemweb.model.id.ProductPostId;
+import store.nightmarket.itemweb.model.state.ImageType;
 
 class FindProductByKeywordUseCaseTest {
 
@@ -96,11 +96,12 @@ class FindProductByKeywordUseCaseTest {
 
 	private ProductPostAdapterDto createProductPostAdapterDto(UUID productPostId) {
 		UUID productId = UUID.randomUUID();
+		UUID userId = UUID.randomUUID();
 		ProductPost productPost = TestDomainFactory.createProductPost(
 			productPostId,
 			productId
 		);
-		Product product = TestDomainFactory.createProduct(productId);
+		Product product = TestDomainFactory.createProduct(productId, userId);
 
 		return ProductPostAdapterDto.builder()
 			.productPost(productPost)

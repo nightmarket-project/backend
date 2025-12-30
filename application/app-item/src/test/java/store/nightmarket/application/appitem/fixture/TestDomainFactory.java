@@ -48,9 +48,10 @@ public class TestDomainFactory {
 		);
 	}
 
-	public static Product createProduct(UUID productId) {
+	public static Product createProduct(UUID productId, UUID userId) {
 		return Product.newInstance(
 			new ProductId(productId),
+			new UserId(userId),
 			new Name("상품"),
 			"좋은 상품",
 			new Price(BigInteger.valueOf(10000))
@@ -110,13 +111,11 @@ public class TestDomainFactory {
 
 	public static OptionGroup createOptionGroup(
 		UUID optionGroupId,
-		UUID productId,
-		UUID userId
+		UUID productId
 	) {
 		return OptionGroup.newInstance(
 			new OptionGroupId(optionGroupId),
 			new ProductId(productId),
-			new UserId(userId),
 			new Name("그룹 이름1"),
 			1
 		);

@@ -26,9 +26,6 @@ public class OptionGroupEntity extends BaseUuidEntity {
 	@Column(name = "product_id", nullable = false)
 	private UUID productId;
 
-	@Column(name = "user_id", nullable = false)
-	private UUID userId;
-
 	@Embedded
 	private NameEntity name;
 
@@ -41,13 +38,11 @@ public class OptionGroupEntity extends BaseUuidEntity {
 	private OptionGroupEntity(
 		UUID id,
 		UUID productId,
-		UUID userId,
 		NameEntity name,
 		int displayOrder
 	) {
 		super(id);
 		this.productId = productId;
-		this.userId = userId;
 		this.name = name;
 		this.displayOrder = displayOrder;
 	}
@@ -56,13 +51,11 @@ public class OptionGroupEntity extends BaseUuidEntity {
 		UUID id,
 		LocalDateTime createdAt,
 		UUID productId,
-		UUID userId,
 		NameEntity name,
 		int displayOrder
 	) {
 		super(id, createdAt);
 		this.productId = productId;
-		this.userId = userId;
 		this.name = name;
 		this.displayOrder = displayOrder;
 	}
@@ -70,14 +63,12 @@ public class OptionGroupEntity extends BaseUuidEntity {
 	public static OptionGroupEntity newInstance(
 		UUID id,
 		UUID productId,
-		UUID userId,
 		NameEntity name,
 		int displayOrder
 	) {
 		return new OptionGroupEntity(
 			id,
 			productId,
-			userId,
 			name,
 			displayOrder
 		);
@@ -87,7 +78,6 @@ public class OptionGroupEntity extends BaseUuidEntity {
 		UUID id,
 		LocalDateTime createdAt,
 		UUID productId,
-		UUID userId,
 		NameEntity name,
 		int displayOrder
 	) {
@@ -95,7 +85,6 @@ public class OptionGroupEntity extends BaseUuidEntity {
 			id,
 			createdAt,
 			productId,
-			userId,
 			name,
 			displayOrder
 		);

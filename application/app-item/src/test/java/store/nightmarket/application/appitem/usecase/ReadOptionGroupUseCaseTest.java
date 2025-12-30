@@ -34,10 +34,9 @@ class ReadOptionGroupUseCaseTest {
 		ProductId productId = new ProductId(UUID.randomUUID());
 		UUID optionGroupId = UUID.randomUUID();
 		UUID optionValueId = UUID.randomUUID();
-		UUID userId = UUID.randomUUID();
 
 		OptionGroupAdapterDto optionGroupAdapterDto = OptionGroupAdapterDto.builder()
-			.optionGroup(TestDomainFactory.createOptionGroup(optionGroupId, productId.getId(), userId))
+			.optionGroup(TestDomainFactory.createOptionGroup(optionGroupId, productId.getId()))
 			.optionValueList(List.of(TestDomainFactory.createOptionValue(optionValueId, optionGroupId)))
 			.build();
 
