@@ -20,6 +20,9 @@ import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductEntity extends BaseUuidEntity {
 
+	@Column(name = "user_id", nullable = false)
+	private UUID userId;
+
 	@Embedded
 	private NameEntity nameEntity;
 
@@ -31,11 +34,13 @@ public class ProductEntity extends BaseUuidEntity {
 
 	private ProductEntity(
 		UUID id,
+		UUID userId,
 		NameEntity nameEntity,
 		String description,
 		PriceEntity priceEntity
 	) {
 		super(id);
+		this.userId = userId;
 		this.nameEntity = nameEntity;
 		this.description = description;
 		this.priceEntity = priceEntity;
@@ -44,11 +49,13 @@ public class ProductEntity extends BaseUuidEntity {
 	private ProductEntity(
 		UUID id,
 		LocalDateTime createdAt,
+		UUID userId,
 		NameEntity nameEntity,
 		String description,
 		PriceEntity priceEntity
 	) {
 		super(id, createdAt);
+		this.userId = userId;
 		this.nameEntity = nameEntity;
 		this.description = description;
 		this.priceEntity = priceEntity;
@@ -56,12 +63,14 @@ public class ProductEntity extends BaseUuidEntity {
 
 	public static ProductEntity newInstance(
 		UUID id,
+		UUID userId,
 		NameEntity nameEntity,
 		String description,
 		PriceEntity priceEntity
 	) {
 		return new ProductEntity(
 			id,
+			userId,
 			nameEntity,
 			description,
 			priceEntity
@@ -71,6 +80,7 @@ public class ProductEntity extends BaseUuidEntity {
 	public static ProductEntity newInstanceWithCreatedAt(
 		UUID id,
 		LocalDateTime createdAt,
+		UUID userId,
 		NameEntity nameEntity,
 		String description,
 		PriceEntity priceEntity
@@ -78,6 +88,7 @@ public class ProductEntity extends BaseUuidEntity {
 		return new ProductEntity(
 			id,
 			createdAt,
+			userId,
 			nameEntity,
 			description,
 			priceEntity

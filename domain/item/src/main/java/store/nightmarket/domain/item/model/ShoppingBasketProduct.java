@@ -16,7 +16,7 @@ import store.nightmarket.domain.item.valueobject.Quantity;
 @Getter
 public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
 
-	private final ProductVariantId variantId;
+	private final ProductVariantId productVariantId;
 	private final UserId userId;
 	private final Name name;
 	private final Price unitPrice;
@@ -24,7 +24,7 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
 
 	private ShoppingBasketProduct(
 		ShoppingBasketProductId id,
-		ProductVariantId variantId,
+		ProductVariantId productVariantId,
 		UserId userId,
 		Name name,
 		Price unitPrice,
@@ -32,7 +32,7 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
 	) {
 		super(id);
 		validateQuantity(quantity);
-		this.variantId = variantId;
+		this.productVariantId = productVariantId;
 		this.userId = userId;
 		this.name = name;
 		this.unitPrice = unitPrice;
@@ -42,7 +42,7 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
 	private ShoppingBasketProduct(
 		ShoppingBasketProductId id,
 		LocalDateTime createdAt,
-		ProductVariantId variantId,
+		ProductVariantId productVariantId,
 		UserId userId,
 		Name name,
 		Price unitPrice,
@@ -50,7 +50,7 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
 	) {
 		super(id, createdAt);
 		validateQuantity(quantity);
-		this.variantId = variantId;
+		this.productVariantId = productVariantId;
 		this.userId = userId;
 		this.name = name;
 		this.unitPrice = unitPrice;
@@ -59,7 +59,7 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
 
 	public static ShoppingBasketProduct newInstance(
 		ShoppingBasketProductId id,
-		ProductVariantId variantId,
+		ProductVariantId productVariantId,
 		UserId userId,
 		Name name,
 		Price unitPrice,
@@ -67,7 +67,7 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
 	) {
 		return new ShoppingBasketProduct(
 			id,
-			variantId,
+			productVariantId,
 			userId,
 			name,
 			unitPrice,
@@ -78,7 +78,7 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
 	public static ShoppingBasketProduct newInstanceWithCreatedAt(
 		ShoppingBasketProductId id,
 		LocalDateTime createdAt,
-		ProductVariantId variantId,
+		ProductVariantId productVariantId,
 		UserId userId,
 		Name name,
 		Price unitPrice,
@@ -87,7 +87,7 @@ public class ShoppingBasketProduct extends BaseModel<ShoppingBasketProductId> {
 		return new ShoppingBasketProduct(
 			id,
 			createdAt,
-			variantId,
+			productVariantId,
 			userId,
 			name,
 			unitPrice,

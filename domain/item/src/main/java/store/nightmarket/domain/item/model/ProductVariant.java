@@ -7,15 +7,15 @@ import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.item.exception.QuantityException;
 import store.nightmarket.domain.item.model.id.ProductId;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
-import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.domain.item.model.id.UserId;
+import store.nightmarket.domain.item.valueobject.Quantity;
 
 @Getter
 public class ProductVariant extends BaseModel<ProductVariantId> {
 
 	private final ProductId productId;
 	private final UserId seller;
-	private final String SKUCode;
+	private String SKUCode;
 	private Quantity quantity;
 
 	private ProductVariant(

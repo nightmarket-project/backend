@@ -32,8 +32,10 @@ class ReadProductPostUseCaseTest {
 		// given
 		ProductPostId productPostId = new ProductPostId(UUID.randomUUID());
 		UUID productId = UUID.randomUUID();
+		UUID userId = UUID.randomUUID();
+
 		ProductPostAdapterDto productPostAdapterDto = ProductPostAdapterDto.builder()
-			.product(TestDomainFactory.createProduct(productId))
+			.product(TestDomainFactory.createProduct(productId, userId))
 			.productPost(TestDomainFactory.createProductPost(productPostId.getId(), productId))
 			.build();
 

@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
-import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
 import store.nightmarket.domain.item.model.id.ProductId;
+import store.nightmarket.domain.item.valueobject.Name;
 
 @Getter
 public class OptionGroup extends BaseModel<OptionGroupId> {

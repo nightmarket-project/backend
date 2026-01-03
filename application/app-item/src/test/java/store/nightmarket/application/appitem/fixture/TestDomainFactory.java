@@ -48,9 +48,10 @@ public class TestDomainFactory {
 		);
 	}
 
-	public static Product createProduct(UUID productId) {
+	public static Product createProduct(UUID productId, UUID userId) {
 		return Product.newInstance(
 			new ProductId(productId),
+			new UserId(userId),
 			new Name("상품"),
 			"좋은 상품",
 			new Price(BigInteger.valueOf(10000))

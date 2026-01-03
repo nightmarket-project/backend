@@ -41,6 +41,7 @@ public class ReadProductListUseCaseTest {
 
 		UUID productIdA = UUID.randomUUID();
 		UUID productIdB = UUID.randomUUID();
+		UUID userId = UUID.randomUUID();
 
 		ReadProductListUseCaseDto.Input input = ReadProductListUseCaseDto.Input.builder()
 			.page(page)
@@ -48,8 +49,8 @@ public class ReadProductListUseCaseTest {
 			.build();
 
 		List<Product> productList = List.of(
-			TestDomainFactory.createProduct(productIdA),
-			TestDomainFactory.createProduct(productIdB)
+			TestDomainFactory.createProduct(productIdA, userId),
+			TestDomainFactory.createProduct(productIdB, userId)
 		);
 
 		PageImpl<Product> productPage = new PageImpl<>(

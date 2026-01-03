@@ -1,13 +1,12 @@
 package store.nightmarket.application.appitem.out.mapper;
 
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
-import store.nightmarket.domain.item.valueobject.Name;
-import store.nightmarket.domain.item.valueobject.Price;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
-import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;
 import store.nightmarket.domain.item.model.id.UserId;
-import store.nightmarket.persistence.persistitem.entity.model.ProductVariantEntity;
+import store.nightmarket.domain.item.valueobject.Name;
+import store.nightmarket.domain.item.valueobject.Price;
+import store.nightmarket.domain.item.valueobject.Quantity;
 import store.nightmarket.persistence.persistitem.entity.model.ShoppingBasketProductEntity;
 import store.nightmarket.persistence.persistitem.entity.valueobject.NameEntity;
 import store.nightmarket.persistence.persistitem.entity.valueobject.PriceEntity;
@@ -19,7 +18,7 @@ public class ShoppingBasketProductMapper {
 		return ShoppingBasketProduct.newInstanceWithCreatedAt(
 			new ShoppingBasketProductId(entity.getId()),
 			entity.getCreatedAt(),
-			new ProductVariantId(entity.getProductVariantEntity().getId()),
+			new ProductVariantId(entity.getProductVariantId()),
 			new UserId(entity.getUserId()),
 			new Name(entity.getNameEntity().getValue()),
 			new Price(entity.getPriceEntity().getAmount()),
@@ -27,10 +26,7 @@ public class ShoppingBasketProductMapper {
 		);
 	}
 
-	public static ShoppingBasketProductEntity toEntity(
-		ShoppingBasketProduct domain,
-		ProductVariantEntity productVariantEntity
-	) {
+	public static ShoppingBasketProductEntity toEntity(ShoppingBasketProduct domain) {
 		return ShoppingBasketProductEntity.newInstanceWithCreatedAt(
 			domain.getShoppingBasketProductId().getId(),
 			domain.getCreatedAt(),
@@ -38,7 +34,7 @@ public class ShoppingBasketProductMapper {
 			new NameEntity(domain.getName().getValue()),
 			new QuantityEntity(domain.getQuantity().value()),
 			new PriceEntity(domain.getUnitPrice().amount()),
-			productVariantEntity
+			domain.getProductVariantId().getId()
 		);
 	}
 
