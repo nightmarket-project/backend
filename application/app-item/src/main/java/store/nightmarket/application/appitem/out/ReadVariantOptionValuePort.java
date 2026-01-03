@@ -6,6 +6,7 @@ import java.util.Optional;
 import store.nightmarket.domain.item.exception.OptionException;
 import store.nightmarket.domain.item.model.VariantOptionValue;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
+import store.nightmarket.domain.item.model.id.OptionValueId;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.model.id.VariantOptionValueId;
 
@@ -19,5 +20,7 @@ public interface ReadVariantOptionValuePort {
 	}
 
 	List<ProductVariantId> readProductVariantIdsByOptionGroupId(OptionGroupId optionGroupId);
+
+	List<ProductVariantId> readProductVariantIdsByOptionValueId(OptionValueId optionValueId);
 
 }

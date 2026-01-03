@@ -10,6 +10,7 @@ import store.nightmarket.application.appitem.out.ReadVariantOptionValuePort;
 import store.nightmarket.application.appitem.out.mapper.VariantOptionValueMapper;
 import store.nightmarket.domain.item.model.VariantOptionValue;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
+import store.nightmarket.domain.item.model.id.OptionValueId;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.model.id.VariantOptionValueId;
 import store.nightmarket.persistence.persistitem.repository.VariantOptionValueRepository;
@@ -29,6 +30,14 @@ public class ReadVariantOptionValueJpaAdapter implements ReadVariantOptionValueP
 	@Override
 	public List<ProductVariantId> readProductVariantIdsByOptionGroupId(OptionGroupId optionGroupId) {
 		return variantOptionValueRepository.findProductVariantIdsByOptionGroupId(optionGroupId.getId())
+			.stream()
+			.map(ProductVariantId::new)
+			.toList();
+	}
+
+	@Override
+	public List<ProductVariantId> readProductVariantIdsByOptionValueId(OptionValueId optionValueId) {
+		return variantOptionValueRepository.findProductVariantIdsByOptionValueId(optionValueId.getId())
 			.stream()
 			.map(ProductVariantId::new)
 			.toList();

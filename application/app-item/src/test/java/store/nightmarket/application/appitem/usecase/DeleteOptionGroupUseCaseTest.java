@@ -108,17 +108,18 @@ public class DeleteOptionGroupUseCaseTest {
 		verify(mockReadVariantOptionValuePort, times(1))
 			.readProductVariantIdsByOptionGroupId(optionGroupId);
 
-		verify(mockDeleteOptionGroupPort, times(1))
-			.deleteById(optionGroupId);
-
 		verify(mockDeleteVariantOptionValuePort, times(1))
 			.deleteByOptionGroupId(optionGroupId);
+
+		verify(mockDeleteOptionValuePort, times(1))
+			.deleteByOptionGroupId(optionGroupId);
+
+		verify(mockDeleteOptionGroupPort, times(1))
+			.deleteById(optionGroupId);
 
 		//verify(mockDeleteProductVariantPort, times(1))
 		//	.deleteAll(List.of(productVariantId1, productVariantId2));
 		/// TO-DO 추후 수정시 변경
-		verify(mockDeleteOptionValuePort, times(1))
-			.deleteByOptionGroupId(optionGroupId);
 	}
 
 	@Test
@@ -155,20 +156,26 @@ public class DeleteOptionGroupUseCaseTest {
 		assertThatThrownBy(() -> deleteOptionGroupUseCase.execute(input))
 			.isInstanceOf(OptionException.class);
 
+		verify(mockReadOptionGroupPort, times(1))
+			.readOrThrow(optionGroupId);
+
+		verify(mockReadProductPort, times(1))
+			.readOrThrow(productId);
+
 		verify(mockReadVariantOptionValuePort, never())
 			.readProductVariantIdsByOptionGroupId(optionGroupId);
-
-		verify(mockDeleteOptionGroupPort, never())
-			.deleteById(optionGroupId);
 
 		verify(mockDeleteVariantOptionValuePort, never())
 			.deleteByOptionGroupId(any());
 
-		verify(mockDeleteProductVariantPort, never())
-			.deleteAll(any());
-
 		verify(mockDeleteOptionValuePort, never())
 			.deleteByOptionGroupId(optionGroupId);
+
+		verify(mockDeleteOptionGroupPort, never())
+			.deleteById(optionGroupId);
+
+		verify(mockDeleteProductVariantPort, never())
+			.deleteAll(any());
 	}
 
 }
