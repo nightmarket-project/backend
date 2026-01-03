@@ -8,21 +8,21 @@ import store.nightmarket.domain.item.service.dto.RestoreItemDomainServiceDto.Eve
 import store.nightmarket.domain.item.service.dto.RestoreItemDomainServiceDto.Input;
 
 public class RestoreItemDomainServiceDto
-    implements BaseDomainService<Input, Event> {
+	implements BaseDomainService<Input, Event> {
 
-    @Override
-    public Event execute(Input input) {
-        ProductVariant productVariant = input.getProductVariant();
-        ShoppingBasketProduct shoppingBasketProduct = input.getShoppingBasketProduct();
+	@Override
+	public Event execute(Input input) {
+		ProductVariant productVariant = input.getProductVariant();
+		ShoppingBasketProduct shoppingBasketProduct = input.getShoppingBasketProduct();
 
-        if (productVariant.isNotSameAsProduct(shoppingBasketProduct.getVariantId())) {
-            throw new ProductException("제품과 장바구니 상품이 일치하지 않습니다.");
-        }
-        productVariant.restoreQuantity(shoppingBasketProduct.getQuantity());
+		if (productVariant.isNotSameAsProduct(shoppingBasketProduct.getProductVariantId())) {
+			throw new ProductException("제품과 장바구니 상품이 일치하지 않습니다.");
+		}
+		productVariant.restoreQuantity(shoppingBasketProduct.getQuantity());
 
-        return Event.builder()
-            .productVariant(productVariant)
-            .build();
-    }
+		return Event.builder()
+			.productVariant(productVariant)
+			.build();
+	}
 
 }

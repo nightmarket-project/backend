@@ -28,13 +28,16 @@ public class ReadShoppingBasketUseCase implements BaseUseCase<Input, Output> {
 
 	@Override
 	public Output execute(Input input) {
-		List<ShoppingBasketProduct> shoppingBasketProductlist = readShoppingBasketProductPort.readListByUserId(input.userId());
+		List<ShoppingBasketProduct> shoppingBasketProductlist = readShoppingBasketProductPort.readListByUserId(
+			input.userId());
 		List<ProductVariantId> productVariantIdList = shoppingBasketProductlist.stream()
-			.map(ShoppingBasketProduct::getVariantId)
+			.map(ShoppingBasketProduct::getProductVariantId)
 			.toList();
-		Map<ProductVariantId, ProductPostId> variantPostIdMap = readProductVariantPort.findProductPostIdsByVariantIds(productVariantIdList);
+		Map<ProductVariantId, ProductPostId> variantPostIdMap = readProductVariantPort.findProductPostIdsByVariantIds(
+			productVariantIdList);
 
-		List<ImageManager> imageManagerList = readImageManagerPort.readThumbnailList(new ArrayList<>(variantPostIdMap.values()));
+		List<ImageManager> imageManagerList = readImageManagerPort.readThumbnailList(
+			new ArrayList<>(variantPostIdMap.values()));
 
 		return Output.builder()
 			.shoppingBasketProductList(shoppingBasketProductlist)

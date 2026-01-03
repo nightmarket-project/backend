@@ -203,7 +203,7 @@ VALUES (X'dd0e8400e29b41d4a716446655440001', CURRENT_TIMESTAMP, CURRENT_TIMESTAM
 
 
 -- 9. 장바구니 제품 데이터 INSERT
-INSERT INTO shopping_basket_product (id, created_at, updated_at, product_variant, user_id, name, price, quantity)
+INSERT INTO shopping_basket_product (id, created_at, updated_at, product_variant_id, user_id, name, price, quantity)
 VALUES (X'ee0e8400e29b41d4a716446655440001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
         X'990e8400e29b41d4a716446655440001',
         X'550e8400e29b41d4a716446655440001', '갤럭시 S24 퍼플 128GB', 1200000, 1),
