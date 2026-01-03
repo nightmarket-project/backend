@@ -22,13 +22,13 @@ public class ReadOptionGroupAdapter implements ReadOptionGroupPort {
 
 	@Override
 	public Optional<OptionGroup> read(OptionGroupId optionGroupId) {
-		return optionGroupRepository.findByIdFetchOptionValue(optionGroupId.getId())
+		return optionGroupRepository.findById(optionGroupId.getId())
 			.map(OptionGroupMapper::toDomain);
 	}
 
 	@Override
 	public List<OptionGroupAdapterDto> readFetchOptionValue(ProductId productId) {
-		return optionGroupRepository.findByProductPostId(productId.getId()).stream()
+		return optionGroupRepository.findByProductId(productId.getId()).stream()
 			.map(OptionGroupAdapterDto::toDomain)
 			.toList();
 	}

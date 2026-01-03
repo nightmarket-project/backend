@@ -11,7 +11,7 @@ public class OptionGroupMapper {
 
 	public static OptionGroup toDomain(OptionGroupEntity entity) {
 		return OptionGroup.newInstanceWithCreatedAt(
-			new OptionGroupId(entity.getProductId()),
+			new OptionGroupId(entity.getId()),
 			entity.getCreatedAt(),
 			new ProductId(entity.getProductId()),
 			new Name(entity.getName().getValue()),

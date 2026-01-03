@@ -32,7 +32,7 @@ import store.nightmarket.domain.item.valueobject.Price;
 import store.nightmarket.domain.item.valueobject.Quantity;
 
 @RestController
-@RequestMapping("api/v1/seller/product")
+@RequestMapping("api/v1/seller/products")
 @RequiredArgsConstructor
 public class SellerProductController {
 
@@ -41,7 +41,7 @@ public class SellerProductController {
 	private final DeleteOptionGroupUseCase deleteOptionGroupUseCase;
 	private final DeleteOptionValueUseCase deleteOptionValueUseCase;
 
-	@PostMapping("/option")
+	@PostMapping("/options")
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
 	public void registerOption(@RequestBody RegisterOptionDto.Request request) {
 		registerOptionUseCase.execute(
@@ -64,7 +64,7 @@ public class SellerProductController {
 		);
 	}
 
-	@DeleteMapping("/option/{optionGroupId}")
+	@DeleteMapping("/options/{optionGroupId}")
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
 	public void deleteOptionGroup(
 		@PathVariable("optionGroupId") UUID optionGroupId,
@@ -78,7 +78,7 @@ public class SellerProductController {
 		);
 	}
 
-	@DeleteMapping("/option/{optionGroupId}/value/{optionValueId}")
+	@DeleteMapping("/options/{optionGroupId}/values/{optionValueId}")
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
 	public void deleteOptionValue(
 		@PathVariable("optionGroupId") UUID optionGroupId,
@@ -94,7 +94,7 @@ public class SellerProductController {
 		);
 	}
 
-	@PostMapping("/variant")
+	@PostMapping("/variants")
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
 	public void registerProductVariant(
 		@RequestBody RegisterProductVariantDto.Request request,

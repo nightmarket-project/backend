@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -27,10 +28,16 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariantEn
 		"JOIN ProductEntity productEntity ON productEntity.id = productVariantEntity.productId " +
 		"JOIN ProductPostEntity productPostEntity ON productPostEntity.productEntity.id = productEntity.id " +
 		"WHERE productVariantEntity.id IN :productVariantIds")
-	List<ProductVariantPostIdSummary> findProductPostIdsByProductVariantIds(@Param("productVariantIds") List<UUID> productVariantIds);
+	List<ProductVariantPostIdSummary> findProductPostIdsByProductVariantIds(
+		@Param("productVariantIds") List<UUID> productVariantIds);
 
 	@Query("SELECT productVariantEntity FROM ProductVariantEntity productVariantEntity " +
 		"WHERE productVariantEntity.id IN (:idList)")
 	List<ProductVariantEntity> findByIdList(@Param("idList") List<UUID> idList);
 
+	@Modifying(flushAutomatically = true, clearAutomatically = true)
+	@Query("DELETE FROM ProductVariantEntity productVariantEntity " +
+		"WHERE productVariantEntity.id IN (:idList)")
+	void deleteAllById(@Param("idList") List<UUID> idList);
+	
 }

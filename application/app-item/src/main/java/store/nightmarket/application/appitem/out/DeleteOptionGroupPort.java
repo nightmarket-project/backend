@@ -1,9 +1,9 @@
 package store.nightmarket.application.appitem.out;
 
-import store.nightmarket.domain.item.model.OptionGroup;
+import store.nightmarket.domain.item.model.id.OptionGroupId;
 
 public interface DeleteOptionGroupPort {
 
-	void delete(OptionGroup optionGroup);
+	void deleteById(OptionGroupId optionGroupId);
 
 }
