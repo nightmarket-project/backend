@@ -65,12 +65,13 @@ public class ProductVariantControllerV1 {
 	@PostMapping
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
 	public void registerProductVariant(
+		@PathVariable("productId") UUID productId,
 		@RequestBody RegisterProductVariantDto.Request request,
 		@AuthorizedUser UserSession userSession
 	) {
 		registerProductVariantUseCase.execute(
 			RegisterProductVariantUseCaseDto.Input.builder()
-				.productId(new ProductId(request.productId()))
+				.productId(new ProductId(productId))
 				.userId(new UserId(UUID.fromString(userSession.userId())))
 				.SKUCode(request.SKUCode())
 				.quantity(new Quantity(request.quantity()))

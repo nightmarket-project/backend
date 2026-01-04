@@ -70,10 +70,13 @@ public class ProductOptionControllerV1 {
 
 	@PostMapping
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
-	public void registerOption(@RequestBody RegisterOptionDto.Request request) {
+	public void registerOption(
+		@PathVariable("productId") UUID productId,
+		@RequestBody RegisterOptionDto.Request request
+	) {
 		registerOptionUseCase.execute(
 			RegisterOptionUseCaseDto.Input.builder()
-				.productId(new ProductId(request.productId()))
+				.productId(new ProductId(productId))
 				.name(new Name(request.name()))
 				.displayOrder(request.displayOrder())
 				.optionValueDtoList(
