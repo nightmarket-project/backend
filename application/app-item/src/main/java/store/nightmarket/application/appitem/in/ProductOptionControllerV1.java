@@ -3,6 +3,7 @@ package store.nightmarket.application.appitem.in;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,35 +14,61 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.auth.RequireRoles;
 import store.nightmarket.application.appitem.auth.UserSession;
 import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
+import store.nightmarket.application.appitem.in.dto.ReadOptionGroupDto;
 import store.nightmarket.application.appitem.in.dto.RegisterOptionDto;
-import store.nightmarket.application.appitem.in.dto.RegisterProductVariantDto;
 import store.nightmarket.application.appitem.usecase.DeleteOptionGroupUseCase;
 import store.nightmarket.application.appitem.usecase.DeleteOptionValueUseCase;
+import store.nightmarket.application.appitem.usecase.ReadOptionGroupUseCase;
 import store.nightmarket.application.appitem.usecase.RegisterOptionUseCase;
-import store.nightmarket.application.appitem.usecase.RegisterProductVariantUseCase;
 import store.nightmarket.application.appitem.usecase.dto.DeleteOptionGroupUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.DeleteOptionValueUseCaseDto;
+import store.nightmarket.application.appitem.usecase.dto.ReadOptionGroupUseCaseDto;
 import store.nightmarket.application.appitem.usecase.dto.RegisterOptionUseCaseDto;
-import store.nightmarket.application.appitem.usecase.dto.RegisterProductVariantUseCaseDto;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
 import store.nightmarket.domain.item.model.id.OptionValueId;
 import store.nightmarket.domain.item.model.id.ProductId;
 import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
-import store.nightmarket.domain.item.valueobject.Quantity;
 
 @RestController
-@RequestMapping("api/v1/seller/products")
+@RequestMapping("api/v1/products/{productId}/options")
 @RequiredArgsConstructor
-public class SellerProductController {
+public class ProductOptionControllerV1 {
 
+	private final ReadOptionGroupUseCase readOptionGroupUseCase;
 	private final RegisterOptionUseCase registerOptionUseCase;
-	private final RegisterProductVariantUseCase registerProductVariantUseCase;
 	private final DeleteOptionGroupUseCase deleteOptionGroupUseCase;
 	private final DeleteOptionValueUseCase deleteOptionValueUseCase;
 
-	@PostMapping("/options")
+	@GetMapping
+	public ReadOptionGroupDto.Response readProductPostOption(@PathVariable("productId") UUID productId) {
+		ReadOptionGroupUseCaseDto.Output output = readOptionGroupUseCase.execute(new ProductId(productId));
+
+		return ReadOptionGroupDto.Response.builder()
+			.optionGroupList(
+				output.optionGroupAdapterDtoList().stream()
+					.map(optionGroupDto ->
+						ReadOptionGroupDto.OptionGroupInfo.builder()
+							.optionGroupId(optionGroupDto.getOptionGroup().getOptionGroupId().getId())
+							.name(optionGroupDto.getOptionGroup().getName().getValue())
+							.displayOrder(optionGroupDto.getOptionGroup().getOrder())
+							.optionValueList(
+								optionGroupDto.getOptionValueList().stream()
+									.map(optionValue ->
+										ReadOptionGroupDto.OptionValueInfo.builder()
+											.optionValueId(optionValue.getOptionValueId().getId())
+											.name(optionValue.getName().getValue())
+											.price(optionValue.getPrice().amount())
+											.displayOrder(optionValue.getOrder())
+											.build())
+									.toList())
+							.build())
+					.toList())
+			.build();
+	}
+
+	@PostMapping
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
 	public void registerOption(@RequestBody RegisterOptionDto.Request request) {
 		registerOptionUseCase.execute(
@@ -64,58 +91,36 @@ public class SellerProductController {
 		);
 	}
 
-	@DeleteMapping("/options/{optionGroupId}")
+	@DeleteMapping("/{optionGroupId}")
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
 	public void deleteOptionGroup(
+		@PathVariable("productId") UUID productId,
 		@PathVariable("optionGroupId") UUID optionGroupId,
 		@AuthorizedUser UserSession userSession
 	) {
 		deleteOptionGroupUseCase.execute(
 			DeleteOptionGroupUseCaseDto.Input.builder()
+				.productId(new ProductId(productId))
 				.optionGroupId(new OptionGroupId(optionGroupId))
 				.userId(new UserId(UUID.fromString(userSession.userId())))
 				.build()
 		);
 	}
 
-	@DeleteMapping("/options/{optionGroupId}/values/{optionValueId}")
+	@DeleteMapping("/{optionGroupId}/values/{optionValueId}")
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
 	public void deleteOptionValue(
+		@PathVariable("productId") UUID productId,
 		@PathVariable("optionGroupId") UUID optionGroupId,
 		@PathVariable("optionValueId") UUID optionValueId,
 		@AuthorizedUser UserSession userSession
 	) {
 		deleteOptionValueUseCase.execute(
 			DeleteOptionValueUseCaseDto.Input.builder()
+				.productId(new ProductId(productId))
 				.optionGroupId(new OptionGroupId(optionGroupId))
 				.optionValueId(new OptionValueId(optionValueId))
 				.userId(new UserId(UUID.fromString(userSession.userId())))
-				.build()
-		);
-	}
-
-	@PostMapping("/variants")
-	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
-	public void registerProductVariant(
-		@RequestBody RegisterProductVariantDto.Request request,
-		@AuthorizedUser UserSession userSession
-	) {
-		registerProductVariantUseCase.execute(
-			RegisterProductVariantUseCaseDto.Input.builder()
-				.productId(new ProductId(request.productId()))
-				.userId(new UserId(UUID.fromString(userSession.userId())))
-				.SKUCode(request.SKUCode())
-				.quantity(new Quantity(request.quantity()))
-				.optionCombinationList(
-					request.optionCombinationList().stream()
-						.map(optionCombination ->
-							RegisterProductVariantUseCaseDto.OptionCombination.builder()
-								.optionGroupId(new OptionGroupId(optionCombination.optionGroupId()))
-								.optionValueId(new OptionValueId(optionCombination.optionValueId()))
-								.build()
-						)
-						.toList()
-				)
 				.build()
 		);
 	}

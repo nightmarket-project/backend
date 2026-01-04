@@ -67,6 +67,7 @@ public class DeleteOptionGroupUseCaseTest {
 		UserId userId = new UserId(UUID.randomUUID());
 
 		DeleteOptionGroupUseCaseDto.Input input = DeleteOptionGroupUseCaseDto.Input.builder()
+			.productId(productId)
 			.optionGroupId(optionGroupId)
 			.userId(userId)
 			.build();
@@ -131,6 +132,7 @@ public class DeleteOptionGroupUseCaseTest {
 		UserId userId = new UserId(UUID.randomUUID());
 
 		DeleteOptionGroupUseCaseDto.Input input = DeleteOptionGroupUseCaseDto.Input.builder()
+			.productId(productId)
 			.optionGroupId(optionGroupId)
 			.userId(userId)
 			.build();

@@ -39,7 +39,7 @@ public class DeleteOptionValueUseCase implements BaseUseCase<Input, Void> {
 	public Void execute(Input input) {
 		OptionValue optionValue = readOptionValuePort.readOrThrow(input.optionValueId());
 		OptionGroup optionGroup = readOptionGroupPort.readOrThrow(input.optionGroupId());
-		Product product = readProductPort.readOrThrow(optionGroup.getProductId());
+		Product product = readProductPort.readOrThrow(input.productId());
 
 		if (!product.isOwner(input.userId())) {
 			throw new OptionException("Not Owner For OptionGroup");

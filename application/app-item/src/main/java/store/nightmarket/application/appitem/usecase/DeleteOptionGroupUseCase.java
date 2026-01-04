@@ -37,7 +37,7 @@ public class DeleteOptionGroupUseCase implements BaseUseCase<Input, Void> {
 	@Transactional
 	public Void execute(Input input) {
 		OptionGroup optionGroup = readOptionGroupPort.readOrThrow(input.optionGroupId());
-		Product product = readProductPort.readOrThrow(optionGroup.getProductId());
+		Product product = readProductPort.readOrThrow(input.productId());
 
 		if (!product.isOwner(input.userId())) {
 			throw new OptionException("Not Owner For OptionGroup");
