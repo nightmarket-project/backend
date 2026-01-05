@@ -10,22 +10,22 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import store.nightmarket.application.appitem.out.option.SaveOptionPort;
+import store.nightmarket.application.appitem.out.option.SaveOptionGroupPort;
 import store.nightmarket.application.appitem.usecase.option.dto.RegisterOptionUseCaseDto;
 import store.nightmarket.domain.item.model.OptionGroup;
 import store.nightmarket.domain.item.model.id.ProductId;
 import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
 
-public class RegisterOptionUseCaseTest {
+public class RegisterOptionGroupUseCaseTest {
 
-	private RegisterOptionUseCase registerOptionUseCase;
-	private SaveOptionPort mockSaveOptionPort;
+	private RegisterOptionGroupUseCase registerOptionGroupUseCase;
+	private SaveOptionGroupPort mockSaveOptionGroupPort;
 
 	@BeforeEach
 	void setUp() {
-		mockSaveOptionPort = mock(SaveOptionPort.class);
-		registerOptionUseCase = new RegisterOptionUseCase(mockSaveOptionPort);
+		mockSaveOptionGroupPort = mock(SaveOptionGroupPort.class);
+		registerOptionGroupUseCase = new RegisterOptionGroupUseCase(mockSaveOptionGroupPort);
 	}
 
 	@Test
@@ -52,10 +52,10 @@ public class RegisterOptionUseCaseTest {
 			)
 			.build();
 		// when
-		registerOptionUseCase.execute(input);
+		registerOptionGroupUseCase.execute(input);
 
 		// then
-		verify(mockSaveOptionPort, times(1))
+		verify(mockSaveOptionGroupPort, times(1))
 			.save(any(OptionGroup.class), anyList());
 	}
 }

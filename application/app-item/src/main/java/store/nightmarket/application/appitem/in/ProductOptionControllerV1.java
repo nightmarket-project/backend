@@ -15,11 +15,11 @@ import store.nightmarket.application.appitem.auth.RequireRoles;
 import store.nightmarket.application.appitem.auth.UserSession;
 import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
 import store.nightmarket.application.appitem.in.dto.ReadOptionGroupDto;
-import store.nightmarket.application.appitem.in.dto.RegisterOptionDto;
+import store.nightmarket.application.appitem.in.dto.RegisterOptionGroupDto;
 import store.nightmarket.application.appitem.usecase.option.DeleteOptionGroupUseCase;
 import store.nightmarket.application.appitem.usecase.option.DeleteOptionValueUseCase;
 import store.nightmarket.application.appitem.usecase.option.ReadOptionGroupUseCase;
-import store.nightmarket.application.appitem.usecase.option.RegisterOptionUseCase;
+import store.nightmarket.application.appitem.usecase.option.RegisterOptionGroupUseCase;
 import store.nightmarket.application.appitem.usecase.option.dto.DeleteOptionGroupUseCaseDto;
 import store.nightmarket.application.appitem.usecase.option.dto.DeleteOptionValueUseCaseDto;
 import store.nightmarket.application.appitem.usecase.option.dto.ReadOptionGroupUseCaseDto;
@@ -37,7 +37,7 @@ import store.nightmarket.domain.item.valueobject.Price;
 public class ProductOptionControllerV1 {
 
 	private final ReadOptionGroupUseCase readOptionGroupUseCase;
-	private final RegisterOptionUseCase registerOptionUseCase;
+	private final RegisterOptionGroupUseCase registerOptionGroupUseCase;
 	private final DeleteOptionGroupUseCase deleteOptionGroupUseCase;
 	private final DeleteOptionValueUseCase deleteOptionValueUseCase;
 
@@ -70,11 +70,11 @@ public class ProductOptionControllerV1 {
 
 	@PostMapping
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
-	public void registerOption(
+	public void registerOptionGroup(
 		@PathVariable("productId") UUID productId,
-		@RequestBody RegisterOptionDto.Request request
+		@RequestBody RegisterOptionGroupDto.Request request
 	) {
-		registerOptionUseCase.execute(
+		registerOptionGroupUseCase.execute(
 			RegisterOptionUseCaseDto.Input.builder()
 				.productId(new ProductId(productId))
 				.name(new Name(request.name()))

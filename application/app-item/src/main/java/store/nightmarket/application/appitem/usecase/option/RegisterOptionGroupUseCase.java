@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.option.SaveOptionPort;
+import store.nightmarket.application.appitem.out.option.SaveOptionGroupPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.model.OptionGroup;
 import store.nightmarket.domain.item.model.OptionValue;
@@ -17,15 +17,15 @@ import store.nightmarket.domain.item.model.id.OptionValueId;
 
 @Service
 @RequiredArgsConstructor
-public class RegisterOptionUseCase implements BaseUseCase<Input, Void> {
+public class RegisterOptionGroupUseCase implements BaseUseCase<Input, Void> {
 
-	private final SaveOptionPort saveOptionPort;
+	private final SaveOptionGroupPort saveOptionGroupPort;
 
 	@Override
 	public Void execute(Input input) {
 		OptionGroupId optionGroupId = new OptionGroupId(UUID.randomUUID());
 
-		saveOptionPort.save(
+		saveOptionGroupPort.save(
 			createOptionGroup(input, optionGroupId),
 			createOptionValueList(input, optionGroupId)
 		);
