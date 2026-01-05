@@ -16,22 +16,22 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.in.dto.ReadProductPostDto;
 import store.nightmarket.application.appitem.in.dto.ReadReviewDto;
 import store.nightmarket.application.appitem.in.dto.SearchProductDto;
-import store.nightmarket.application.appitem.out.dto.ProductPostAdapterDto;
-import store.nightmarket.application.appitem.usecase.FindProductByKeywordUseCase;
-import store.nightmarket.application.appitem.usecase.ReadImageManagerListUseCase;
-import store.nightmarket.application.appitem.usecase.ReadProductPostImageUseCase;
-import store.nightmarket.application.appitem.usecase.ReadProductPostUseCase;
-import store.nightmarket.application.appitem.usecase.ReadReviewUseCase;
-import store.nightmarket.application.appitem.usecase.dto.FindProductByKeywordUseCaseDto;
-import store.nightmarket.application.appitem.usecase.dto.ReadImageManagerListUseCaseDto;
-import store.nightmarket.application.appitem.usecase.dto.ReadProductPostImageUseCaseDto;
-import store.nightmarket.application.appitem.usecase.dto.ReadProductPostUseCaseDto;
-import store.nightmarket.application.appitem.usecase.dto.ReadReviewUseCaseDto;
+import store.nightmarket.application.appitem.out.post.mapper.dto.ProductPostAdapterDto;
+import store.nightmarket.application.appitem.usecase.post.FindProductByKeywordUseCase;
+import store.nightmarket.application.appitem.usecase.post.ReadImageManagerListUseCase;
+import store.nightmarket.application.appitem.usecase.post.ReadProductPostImageUseCase;
+import store.nightmarket.application.appitem.usecase.post.ReadProductPostUseCase;
+import store.nightmarket.application.appitem.usecase.post.ReadReviewUseCase;
+import store.nightmarket.application.appitem.usecase.post.dto.FindProductByKeywordUseCaseDto;
+import store.nightmarket.application.appitem.usecase.post.dto.ReadImageManagerListUseCaseDto;
+import store.nightmarket.application.appitem.usecase.post.dto.ReadProductPostImageUseCaseDto;
+import store.nightmarket.application.appitem.usecase.post.dto.ReadProductPostUseCaseDto;
+import store.nightmarket.application.appitem.usecase.post.dto.ReadReviewUseCaseDto;
 import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.model.state.ImageType;
-import store.nightmarket.itemweb.valueobject.Image;
 import store.nightmarket.itemweb.model.id.ImageOwnerId;
 import store.nightmarket.itemweb.model.id.ProductPostId;
+import store.nightmarket.itemweb.model.state.ImageType;
+import store.nightmarket.itemweb.valueobject.Image;
 
 @RestController
 @RequestMapping("api/v1/posts")

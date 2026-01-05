@@ -10,7 +10,6 @@ public class RegisterProductVariantDto {
 
 	@Builder
 	public record Request(
-		UUID productId,
 		String SKUCode,
 		BigInteger quantity,
 		List<OptionCombination> optionCombinationList

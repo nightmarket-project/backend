@@ -4,80 +4,103 @@ import java.util.UUID;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.in.dto.ReadOptionGroupDto;
-import store.nightmarket.application.appitem.in.dto.ReadProductVariantDto;
-import store.nightmarket.application.appitem.usecase.ReadOptionGroupUseCase;
-import store.nightmarket.application.appitem.usecase.ReadProductVariantUseCase;
-import store.nightmarket.application.appitem.usecase.dto.ReadOptionGroupUseCaseDto;
-import store.nightmarket.application.appitem.usecase.dto.ReadProductVariantUseCaseDto;
+import store.nightmarket.application.appitem.auth.RequireRoles;
+import store.nightmarket.application.appitem.auth.UserSession;
+import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
+import store.nightmarket.application.appitem.in.dto.ReadProductDto;
+import store.nightmarket.application.appitem.in.dto.ReadProductListDto;
+import store.nightmarket.application.appitem.in.dto.RegisterProductDto;
+import store.nightmarket.application.appitem.usecase.product.ReadProductListUseCase;
+import store.nightmarket.application.appitem.usecase.product.ReadProductUseCase;
+import store.nightmarket.application.appitem.usecase.product.RegisterProductUseCase;
+import store.nightmarket.application.appitem.usecase.product.dto.ReadProductListUseCaseDto;
+import store.nightmarket.application.appitem.usecase.product.dto.ReadProductUseCaseDto;
+import store.nightmarket.application.appitem.usecase.product.dto.RegisterProductUseCaseDto;
 import store.nightmarket.domain.item.model.id.ProductId;
+import store.nightmarket.domain.item.model.id.UserId;
+import store.nightmarket.domain.item.valueobject.Name;
+import store.nightmarket.domain.item.valueobject.Price;
 
 @RestController
 @RequestMapping("api/v1/products")
 @RequiredArgsConstructor
 public class ProductControllerV1 {
 
-	private final ReadOptionGroupUseCase readOptionGroupUseCase;
-	private final ReadProductVariantUseCase readProductVariantUseCase;
+	private final ReadProductListUseCase readProductListUseCase;
+	private final ReadProductUseCase readProductUseCase;
+	private final RegisterProductUseCase registerProductUseCase;
 
-	@GetMapping("/{productId}/options")
-	public ReadOptionGroupDto.Response readProductPostOption(@PathVariable("productId") UUID productId) {
-		ReadOptionGroupUseCaseDto.Output output = readOptionGroupUseCase.execute(new ProductId(productId));
+	@GetMapping
+	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
+	public ReadProductListDto.Response readProductList(
+		@RequestParam(value = "page", defaultValue = "0") int page,
+		@RequestParam(value = "size", defaultValue = "25") int size
+	) {
+		ReadProductListUseCaseDto.Output output = readProductListUseCase.execute(
+			ReadProductListUseCaseDto.Input.builder()
+				.page(page)
+				.size(size)
+				.build()
+		);
 
-		return ReadOptionGroupDto.Response.builder()
-			.optionGroupList(
-				output.optionGroupAdapterDtoList().stream()
-					.map(optionGroupDto ->
-						ReadOptionGroupDto.OptionGroupInfo.builder()
-							.optionGroupId(optionGroupDto.getOptionGroup().getOptionGroupId().getId())
-							.name(optionGroupDto.getOptionGroup().getName().getValue())
-							.displayOrder(optionGroupDto.getOptionGroup().getOrder())
-							.optionValueList(
-								optionGroupDto.getOptionValueList().stream()
-									.map(optionValue ->
-										ReadOptionGroupDto.OptionValueInfo.builder()
-											.optionValueId(optionValue.getOptionValueId().getId())
-											.name(optionValue.getName().getValue())
-											.price(optionValue.getPrice().amount())
-											.displayOrder(optionValue.getOrder())
-											.build())
-									.toList())
-							.build())
-					.toList())
+		return ReadProductListDto.Response.builder()
+			.contents(output.productPage().getContent().stream()
+				.map(product ->
+					ReadProductListDto.ProductInfo.builder()
+						.productId(product.getProductId().getId())
+						.name(product.getName().getValue())
+						.description(product.getDescription())
+						.price(product.getPrice().amount())
+						.build()
+				)
+				.toList()
+			)
+			.currentPage(page)
+			.numberOfElements(output.productPage().getNumberOfElements())
+			.totalPage(output.productPage().getTotalPages())
+			.totalElements(output.productPage().getTotalElements())
+			.hasNext(output.productPage().hasNext())
 			.build();
 	}
 
-	@GetMapping("/{productId}/combination")
-	public ReadProductVariantDto.Response readProductPostProductVariant(@PathVariable("productId") UUID productId) {
-		ReadProductVariantUseCaseDto.Output output = readProductVariantUseCase.execute(new ProductId(productId));
+	@GetMapping("/{productId}")
+	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
+	public ReadProductDto.Response readProduct(@PathVariable("productId") UUID productId) {
+		ReadProductUseCaseDto.Output output = readProductUseCase.execute(
+			ReadProductUseCaseDto.Input.builder()
+				.productId(new ProductId(productId))
+				.build()
+		);
 
-		return ReadProductVariantDto.Response.builder()
-			.productVariantList(
-				output.productVariantAdapterDtoList().stream()
-					.map(productVariantDto ->
-						ReadProductVariantDto.ProductVariantInfo.builder()
-							.productVariantId(productVariantDto.getProductVariant().getProductVariantId().getId())
-							.variantOptionValue(
-								productVariantDto.getVariantOptionValueAdapterDtoList().stream()
-									.map(variantOptionValueDto ->
-										ReadProductVariantDto.VariantOptionValueInfo.builder()
-											.optionGroupId(
-												variantOptionValueDto.getVariantOptionValue()
-													.getOptionGroupId()
-													.getId())
-											.optionValueId(
-												variantOptionValueDto.getVariantOptionValue()
-													.getOptionValueId()
-													.getId())
-											.build())
-									.toList())
-							.build())
-					.toList())
+		return ReadProductDto.Response.builder()
+			.productId(output.product().getProductId().getId())
+			.name(output.product().getName().getValue())
+			.description(output.product().getDescription())
+			.price(output.product().getPrice().amount())
 			.build();
+	}
+
+	@PostMapping
+	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
+	public void registerProduct(
+		@RequestBody RegisterProductDto.Request request,
+		@AuthorizedUser UserSession userSession
+	) {
+		registerProductUseCase.execute(
+			RegisterProductUseCaseDto.Input.builder()
+				.userId(new UserId(UUID.fromString(userSession.userId())))
+				.name(new Name(request.name()))
+				.description(request.description())
+				.price(new Price(request.price()))
+				.build()
+		);
 	}
 
 }

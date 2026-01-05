@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.in.dto.PreemptProductVariantDto;
-import store.nightmarket.application.appitem.usecase.PreemptProductVariantUseCase;
-import store.nightmarket.application.appitem.usecase.dto.PreemptProductVariantUseCaseDto;
+import store.nightmarket.application.appitem.usecase.preempt.PreemptProductVariantUseCase;
+import store.nightmarket.application.appitem.usecase.preempt.dto.PreemptProductVariantUseCaseDto;
 import store.nightmarket.domain.item.model.id.OrderId;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
