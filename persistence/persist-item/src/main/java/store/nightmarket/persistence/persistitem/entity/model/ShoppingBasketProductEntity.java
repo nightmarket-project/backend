@@ -6,9 +6,6 @@ import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -36,9 +33,8 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 	@Embedded
 	private PriceEntity priceEntity;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "product_variant")
-	private ProductVariantEntity productVariantEntity;
+	@Column(name = "product_variant_id", nullable = false)
+	private UUID productVariantId;
 
 	private ShoppingBasketProductEntity(
 		UUID id,
@@ -46,14 +42,14 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 		NameEntity nameEntity,
 		QuantityEntity quantityEntity,
 		PriceEntity priceEntity,
-		ProductVariantEntity productVariantEntity
+		UUID productVariantId
 	) {
 		super(id);
 		this.userId = userId;
 		this.nameEntity = nameEntity;
 		this.quantityEntity = quantityEntity;
 		this.priceEntity = priceEntity;
-		this.productVariantEntity = productVariantEntity;
+		this.productVariantId = productVariantId;
 	}
 
 	private ShoppingBasketProductEntity(
@@ -63,14 +59,14 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 		NameEntity nameEntity,
 		QuantityEntity quantityEntity,
 		PriceEntity priceEntity,
-		ProductVariantEntity productVariantEntity
+		UUID productVariantId
 	) {
 		super(id, createdAt);
 		this.userId = userId;
 		this.nameEntity = nameEntity;
 		this.quantityEntity = quantityEntity;
 		this.priceEntity = priceEntity;
-		this.productVariantEntity = productVariantEntity;
+		this.productVariantId = productVariantId;
 
 	}
 
@@ -80,7 +76,7 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 		NameEntity nameEntity,
 		QuantityEntity quantityEntity,
 		PriceEntity priceEntity,
-		ProductVariantEntity productVariantEntity
+		UUID productVariantId
 	) {
 		return new ShoppingBasketProductEntity(
 			id,
@@ -88,7 +84,7 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 			nameEntity,
 			quantityEntity,
 			priceEntity,
-			productVariantEntity
+			productVariantId
 		);
 	}
 
@@ -99,7 +95,7 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 		NameEntity nameEntity,
 		QuantityEntity quantityEntity,
 		PriceEntity priceEntity,
-		ProductVariantEntity productVariantEntity
+		UUID productVariantId
 	) {
 		return new ShoppingBasketProductEntity(
 			id,
@@ -108,7 +104,7 @@ public class ShoppingBasketProductEntity extends BaseUuidEntity {
 			nameEntity,
 			quantityEntity,
 			priceEntity,
-			productVariantEntity
+			productVariantId
 		);
 	}
 

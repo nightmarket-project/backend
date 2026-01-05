@@ -25,16 +25,21 @@ VALUES
 
 
 -- 2. 제품 데이터 INSERT
-INSERT INTO product (id, created_at, updated_at, product_description, name, price)
-VALUES (X'660e8400e29b41d4a716446655440001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '최신 플래그십 스마트폰', '갤럭시 S24',
+INSERT INTO product (id, created_at, updated_at, user_id, product_description, name, price)
+VALUES (X'660e8400e29b41d4a716446655440001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, X'550e8400e29b41d4a716446655440001',
+        '최신 플래그십 스마트폰', '갤럭시 S24',
         1200000.00),
-       (X'660e8400e29b41d4a716446655440002', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '고성능 게이밍 노트북', 'MacBook Pro',
+       (X'660e8400e29b41d4a716446655440002', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, X'550e8400e29b41d4a716446655440001',
+        '고성능 게이밍 노트북', 'MacBook Pro',
         2500000.00),
-       (X'660e8400e29b41d4a716446655440003', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '휴대용 태블릿 PC', 'iPad Air',
+       (X'660e8400e29b41d4a716446655440003', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, X'550e8400e29b41d4a716446655440001',
+        '휴대용 태블릿 PC', 'iPad Air',
         800000.00),
-       (X'660e8400e29b41d4a716446655440004', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '노이즈 캔슬링 무선 이어폰', 'AirPods Pro',
+       (X'660e8400e29b41d4a716446655440004', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, X'550e8400e29b41d4a716446655440001',
+        '노이즈 캔슬링 무선 이어폰', 'AirPods Pro',
         300000.00),
-       (X'660e8400e29b41d4a716446655440005', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '건강 관리 스마트 워치', 'Apple Watch',
+       (X'660e8400e29b41d4a716446655440005', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, X'550e8400e29b41d4a716446655440001',
+        '건강 관리 스마트 워치', 'Apple Watch',
         450000.00);
 
 -- 3. 옵션 그룹 데이터 INSERT
@@ -198,7 +203,7 @@ VALUES (X'dd0e8400e29b41d4a716446655440001', CURRENT_TIMESTAMP, CURRENT_TIMESTAM
 
 
 -- 9. 장바구니 제품 데이터 INSERT
-INSERT INTO shopping_basket_product (id, created_at, updated_at, product_variant, user_id, name, price, quantity)
+INSERT INTO shopping_basket_product (id, created_at, updated_at, product_variant_id, user_id, name, price, quantity)
 VALUES (X'ee0e8400e29b41d4a716446655440001', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
         X'990e8400e29b41d4a716446655440001',
         X'550e8400e29b41d4a716446655440001', '갤럭시 S24 퍼플 128GB', 1200000, 1),
