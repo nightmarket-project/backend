@@ -16,14 +16,17 @@ import store.nightmarket.application.appitem.auth.UserSession;
 import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
 import store.nightmarket.application.appitem.in.dto.ReadOptionGroupDto;
 import store.nightmarket.application.appitem.in.dto.RegisterOptionGroupDto;
+import store.nightmarket.application.appitem.in.dto.RegisterOptionValueDto;
 import store.nightmarket.application.appitem.usecase.option.DeleteOptionGroupUseCase;
 import store.nightmarket.application.appitem.usecase.option.DeleteOptionValueUseCase;
 import store.nightmarket.application.appitem.usecase.option.ReadOptionGroupUseCase;
 import store.nightmarket.application.appitem.usecase.option.RegisterOptionGroupUseCase;
+import store.nightmarket.application.appitem.usecase.option.RegisterOptionValueUseCase;
 import store.nightmarket.application.appitem.usecase.option.dto.DeleteOptionGroupUseCaseDto;
 import store.nightmarket.application.appitem.usecase.option.dto.DeleteOptionValueUseCaseDto;
 import store.nightmarket.application.appitem.usecase.option.dto.ReadOptionGroupUseCaseDto;
 import store.nightmarket.application.appitem.usecase.option.dto.RegisterOptionUseCaseDto;
+import store.nightmarket.application.appitem.usecase.option.dto.RegisterOptionValueUseCaseDto;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
 import store.nightmarket.domain.item.model.id.OptionValueId;
 import store.nightmarket.domain.item.model.id.ProductId;
@@ -38,6 +41,7 @@ public class ProductOptionControllerV1 {
 
 	private final ReadOptionGroupUseCase readOptionGroupUseCase;
 	private final RegisterOptionGroupUseCase registerOptionGroupUseCase;
+	private final RegisterOptionValueUseCase registerOptionValueUseCase;
 	private final DeleteOptionGroupUseCase deleteOptionGroupUseCase;
 	private final DeleteOptionValueUseCase deleteOptionValueUseCase;
 
@@ -90,6 +94,26 @@ public class ProductOptionControllerV1 {
 						)
 						.toList()
 				)
+				.build()
+		);
+	}
+
+	@PostMapping("/{optionGroupId}")
+	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
+	public void registerOptionValue(
+		@PathVariable("productId") UUID productId,
+		@PathVariable("optionGroupId") UUID optionGroupId,
+		@AuthorizedUser UserSession userSession,
+		@RequestBody RegisterOptionValueDto.Request request
+	) {
+		registerOptionValueUseCase.execute(
+			RegisterOptionValueUseCaseDto.Input.builder()
+				.productId(new ProductId(productId))
+				.optionGroupId(new OptionGroupId(optionGroupId))
+				.userId(new UserId(UUID.fromString(userSession.userId())))
+				.name(new Name(request.name()))
+				.price(new Price(request.price()))
+				.displayOrder(request.displayOrder())
 				.build()
 		);
 	}
