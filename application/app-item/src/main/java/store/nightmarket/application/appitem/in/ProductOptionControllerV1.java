@@ -25,7 +25,7 @@ import store.nightmarket.application.appitem.usecase.option.RegisterOptionValueU
 import store.nightmarket.application.appitem.usecase.option.dto.DeleteOptionGroupUseCaseDto;
 import store.nightmarket.application.appitem.usecase.option.dto.DeleteOptionValueUseCaseDto;
 import store.nightmarket.application.appitem.usecase.option.dto.ReadOptionGroupUseCaseDto;
-import store.nightmarket.application.appitem.usecase.option.dto.RegisterOptionUseCaseDto;
+import store.nightmarket.application.appitem.usecase.option.dto.RegisterOptionGroupUseCaseDto;
 import store.nightmarket.application.appitem.usecase.option.dto.RegisterOptionValueUseCaseDto;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
 import store.nightmarket.domain.item.model.id.OptionValueId;
@@ -76,17 +76,19 @@ public class ProductOptionControllerV1 {
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
 	public void registerOptionGroup(
 		@PathVariable("productId") UUID productId,
+		@AuthorizedUser UserSession userSession,
 		@RequestBody RegisterOptionGroupDto.Request request
 	) {
 		registerOptionGroupUseCase.execute(
-			RegisterOptionUseCaseDto.Input.builder()
+			RegisterOptionGroupUseCaseDto.Input.builder()
 				.productId(new ProductId(productId))
+				.userId(new UserId(UUID.fromString(userSession.userId())))
 				.name(new Name(request.name()))
 				.displayOrder(request.displayOrder())
 				.optionValueDtoList(
 					request.optionValueDtoList().stream()
 						.map(requestList ->
-							RegisterOptionUseCaseDto.OptionValueDto.builder()
+							RegisterOptionGroupUseCaseDto.OptionValueDto.builder()
 								.name(new Name(requestList.name()))
 								.price(new Price(requestList.price()))
 								.displayOrder(requestList.displayOrder())
