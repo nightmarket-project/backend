@@ -5,7 +5,7 @@ import java.util.List;
 
 import lombok.Builder;
 
-public class RegisterOptionDto {
+public class RegisterOptionGroupDto {
 
 	@Builder
 	public record Request(

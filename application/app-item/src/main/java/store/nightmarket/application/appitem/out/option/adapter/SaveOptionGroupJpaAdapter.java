@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
+import store.nightmarket.application.appitem.out.option.SaveOptionGroupPort;
 import store.nightmarket.application.appitem.out.option.mapper.OptionGroupMapper;
 import store.nightmarket.application.appitem.out.option.mapper.OptionValueMapper;
-import store.nightmarket.application.appitem.out.option.SaveOptionPort;
 import store.nightmarket.domain.item.model.OptionGroup;
 import store.nightmarket.domain.item.model.OptionValue;
 import store.nightmarket.persistence.persistitem.entity.model.OptionGroupEntity;
@@ -16,7 +16,7 @@ import store.nightmarket.persistence.persistitem.repository.OptionValueRepositor
 
 @Component
 @RequiredArgsConstructor
-public class SaveOptionJpaAdapter implements SaveOptionPort {
+public class SaveOptionGroupJpaAdapter implements SaveOptionGroupPort {
 
 	private final OptionGroupRepository optionGroupRepository;
 	private final OptionValueRepository optionValueRepository;
