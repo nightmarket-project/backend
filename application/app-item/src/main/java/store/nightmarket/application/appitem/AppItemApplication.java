@@ -13,7 +13,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @ComponentScan(basePackages = {
 	"store.nightmarket.persistence.persistitem",
 	"store.nightmarket.application.appitem",
-	"store.nightmarket.itemweb",
+	"store.nightmarket.domain.itemweb",
 	"store.nightmarket.domain.item"
 })
 @EnableRedisHttpSession

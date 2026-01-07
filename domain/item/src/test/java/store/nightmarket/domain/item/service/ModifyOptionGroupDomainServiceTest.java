@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import store.nightmarket.domain.item.fixture.TestItemFactory;
+import store.nightmarket.domain.item.fixture.TestFactory;
 import store.nightmarket.domain.item.model.OptionGroup;
 import store.nightmarket.domain.item.service.dto.ModifyOptionGroupDomainServiceDto;
 import store.nightmarket.domain.item.valueobject.Name;
@@ -28,10 +28,10 @@ public class ModifyOptionGroupDomainServiceTest {
 	void shouldReturnUpdatedOptionGroupWhenExecuteService() {
 		// given
 		UUID optionGroupId = UUID.randomUUID();
-		String name = "옵션 그룹2";
-		int order = 2;
+		String editName = "옵션 그룹2";
+		int editOrder = 2;
 
-		OptionGroup optionGroup = TestItemFactory.createOptionGroup(
+		OptionGroup optionGroup = TestFactory.createOptionGroup(
 			optionGroupId,
 			UUID.randomUUID(),
 			"옵션 그룹1",
@@ -40,8 +40,8 @@ public class ModifyOptionGroupDomainServiceTest {
 
 		ModifyOptionGroupDomainServiceDto.Input input = ModifyOptionGroupDomainServiceDto.Input.builder()
 			.optionGroup(optionGroup)
-			.name(new Name(name))
-			.order(order)
+			.name(new Name(editName))
+			.order(editOrder)
 			.build();
 
 		// when
@@ -49,8 +49,8 @@ public class ModifyOptionGroupDomainServiceTest {
 
 		// then
 		softly.assertThat(event).isNotNull();
-		softly.assertThat(event.optionGroup().getName().getValue()).isEqualTo(name);
-		softly.assertThat(event.optionGroup().getOrder()).isEqualTo(order);
+		softly.assertThat(event.optionGroup().getName().getValue()).isEqualTo(editName);
+		softly.assertThat(event.optionGroup().getOrder()).isEqualTo(editOrder);
 		softly.assertAll();
 	}
 

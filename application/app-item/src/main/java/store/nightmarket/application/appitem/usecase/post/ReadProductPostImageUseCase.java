@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.post.ReadImageManagerPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
-import store.nightmarket.itemweb.model.ImageManager;
+import store.nightmarket.domain.itemweb.model.ImageManager;
 
 @Service
 @RequiredArgsConstructor

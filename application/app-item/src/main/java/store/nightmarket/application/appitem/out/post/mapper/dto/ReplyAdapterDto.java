@@ -5,7 +5,7 @@ import lombok.Getter;
 import store.nightmarket.application.appitem.out.post.mapper.ReplyMapper;
 import store.nightmarket.application.appitem.out.user.mapper.UserMapper;
 import store.nightmarket.domain.item.model.User;
-import store.nightmarket.itemweb.model.Reply;
+import store.nightmarket.domain.itemweb.model.Reply;
 import store.nightmarket.persistence.persistitem.entity.model.ReplyEntity;
 
 @Getter

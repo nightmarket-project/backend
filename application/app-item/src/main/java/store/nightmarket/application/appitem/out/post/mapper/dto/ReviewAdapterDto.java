@@ -5,7 +5,7 @@ import lombok.Getter;
 import store.nightmarket.application.appitem.out.post.mapper.ReviewMapper;
 import store.nightmarket.application.appitem.out.user.mapper.UserMapper;
 import store.nightmarket.domain.item.model.User;
-import store.nightmarket.itemweb.model.Review;
+import store.nightmarket.domain.itemweb.model.Review;
 import store.nightmarket.persistence.persistitem.entity.model.ReviewEntity;
 
 @Builder

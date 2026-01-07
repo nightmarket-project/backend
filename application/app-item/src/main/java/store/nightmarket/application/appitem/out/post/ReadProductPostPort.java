@@ -6,8 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import store.nightmarket.application.appitem.out.post.mapper.dto.ProductPostAdapterDto;
-import store.nightmarket.itemweb.exception.ItemWebException;
-import store.nightmarket.itemweb.model.id.ProductPostId;
+import store.nightmarket.domain.itemweb.exception.ItemWebException;
+import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 
 public interface ReadProductPostPort {
 

@@ -1,6 +1,6 @@
 package store.nightmarket.application.appitem.out.post.mapper;
 
-import store.nightmarket.itemweb.model.state.ImageType;
+import store.nightmarket.domain.itemweb.model.state.ImageType;
 import store.nightmarket.persistence.persistitem.entity.state.EntityImageType;
 
 public class ImageTypeMapper {

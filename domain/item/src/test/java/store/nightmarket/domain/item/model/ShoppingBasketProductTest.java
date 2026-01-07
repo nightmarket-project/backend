@@ -9,7 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import store.nightmarket.domain.item.exception.ProductException;
-import store.nightmarket.domain.item.fixture.TestShoppingBasketFactory;
+import store.nightmarket.domain.item.fixture.TestFactory;
 import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.domain.item.valueobject.Price;
 import store.nightmarket.domain.item.valueobject.Quantity;
@@ -21,7 +21,7 @@ class ShoppingBasketProductTest {
 	void shouldChangeQuantityWhenGivenPositiveQuantity() {
 		// given
 		UUID userId = UUID.randomUUID();
-		ShoppingBasketProduct cpu = TestShoppingBasketFactory.createCartProduct(
+		ShoppingBasketProduct cpu = TestFactory.createShoppingBasketProduct(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
 			userId,
@@ -48,7 +48,7 @@ class ShoppingBasketProductTest {
 	void shouldThrowProductExceptionWhenChangeQuantityWithZeroOrNegativeQuantity() {
 		// given
 		UUID userId = UUID.randomUUID();
-		ShoppingBasketProduct cpu = TestShoppingBasketFactory.createCartProduct(
+		ShoppingBasketProduct cpu = TestFactory.createShoppingBasketProduct(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
 			userId,
@@ -74,7 +74,7 @@ class ShoppingBasketProductTest {
 		// given
 		UUID userId = UUID.randomUUID();
 		UUID userId2 = UUID.randomUUID();
-		ShoppingBasketProduct cpu = TestShoppingBasketFactory.createCartProduct(
+		ShoppingBasketProduct cpu = TestFactory.createShoppingBasketProduct(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
 			userId,
@@ -98,7 +98,7 @@ class ShoppingBasketProductTest {
 	@DisplayName("상품의 수량과 단가가 주어졌을 때 총 가격을 올바르게 계산해야 한다")
 	void shouldCalculateTotalPriceWhenGivenQuantityAndUnitPrice() {
 		// given
-		ShoppingBasketProduct cpu = TestShoppingBasketFactory.createCartProduct(
+		ShoppingBasketProduct cpu = TestFactory.createShoppingBasketProduct(
 			UUID.randomUUID(),
 			UUID.randomUUID(),
 			UUID.randomUUID(),

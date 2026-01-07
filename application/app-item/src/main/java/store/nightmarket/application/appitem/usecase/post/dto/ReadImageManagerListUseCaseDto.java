@@ -3,8 +3,8 @@ package store.nightmarket.application.appitem.usecase.post.dto;
 import java.util.List;
 
 import lombok.Builder;
-import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.model.id.ImageOwnerId;
+import store.nightmarket.domain.itemweb.model.ImageManager;
+import store.nightmarket.domain.itemweb.model.id.ImageOwnerId;
 
 public class ReadImageManagerListUseCaseDto {
 

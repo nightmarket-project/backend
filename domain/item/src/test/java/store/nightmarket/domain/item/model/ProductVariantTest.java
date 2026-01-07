@@ -9,7 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import store.nightmarket.domain.item.exception.QuantityException;
-import store.nightmarket.domain.item.fixture.TestItemFactory;
+import store.nightmarket.domain.item.fixture.TestFactory;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.valueobject.Quantity;
 
@@ -80,7 +80,7 @@ class ProductVariantTest {
 		UUID productId = UUID.randomUUID();
 		UUID sellerId = UUID.randomUUID();
 
-		return TestItemFactory.createProductVariant(
+		return TestFactory.createProductVariant(
 			cpuId,
 			productId,
 			sellerId,
