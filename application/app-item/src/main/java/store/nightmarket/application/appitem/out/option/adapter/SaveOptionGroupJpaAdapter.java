@@ -22,6 +22,11 @@ public class SaveOptionGroupJpaAdapter implements SaveOptionGroupPort {
 	private final OptionValueRepository optionValueRepository;
 
 	@Override
+	public void save(OptionGroup optionGroup) {
+		optionGroupRepository.save(OptionGroupMapper.toEntity(optionGroup));
+	}
+
+	@Override
 	public void save(OptionGroup optionGroup, List<OptionValue> optionValueList) {
 		OptionGroupEntity optionGroupEntity = OptionGroupMapper.toEntity(optionGroup);
 		optionGroupRepository.save(optionGroupEntity);

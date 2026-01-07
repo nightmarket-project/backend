@@ -14,9 +14,9 @@ import org.mockito.Mockito;
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.post.ReadImageManagerPort;
 import store.nightmarket.application.appitem.usecase.post.dto.ReadImageManagerListUseCaseDto;
-import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.model.id.ReviewId;
-import store.nightmarket.itemweb.model.state.ImageType;
+import store.nightmarket.domain.itemweb.model.ImageManager;
+import store.nightmarket.domain.itemweb.model.id.ReviewId;
+import store.nightmarket.domain.itemweb.model.state.ImageType;
 
 class ReadImageManagerListUseCaseTest {
 

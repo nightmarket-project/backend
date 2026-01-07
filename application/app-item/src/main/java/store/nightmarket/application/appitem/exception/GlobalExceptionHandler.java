@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import store.nightmarket.domain.item.exception.PreemptionException;
-import store.nightmarket.itemweb.exception.ItemWebException;
+import store.nightmarket.domain.itemweb.exception.ItemWebException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

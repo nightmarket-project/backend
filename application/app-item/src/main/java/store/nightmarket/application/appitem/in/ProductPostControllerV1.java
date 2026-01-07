@@ -27,11 +27,11 @@ import store.nightmarket.application.appitem.usecase.post.dto.ReadImageManagerLi
 import store.nightmarket.application.appitem.usecase.post.dto.ReadProductPostImageUseCaseDto;
 import store.nightmarket.application.appitem.usecase.post.dto.ReadProductPostUseCaseDto;
 import store.nightmarket.application.appitem.usecase.post.dto.ReadReviewUseCaseDto;
-import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.model.id.ImageOwnerId;
-import store.nightmarket.itemweb.model.id.ProductPostId;
-import store.nightmarket.itemweb.model.state.ImageType;
-import store.nightmarket.itemweb.valueobject.Image;
+import store.nightmarket.domain.itemweb.model.ImageManager;
+import store.nightmarket.domain.itemweb.model.id.ImageOwnerId;
+import store.nightmarket.domain.itemweb.model.id.ProductPostId;
+import store.nightmarket.domain.itemweb.model.state.ImageType;
+import store.nightmarket.domain.itemweb.valueobject.Image;
 
 @RestController
 @RequestMapping("api/v1/posts")

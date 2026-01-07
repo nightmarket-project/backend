@@ -8,10 +8,10 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.post.ReadImageManagerPort;
 import store.nightmarket.application.appitem.out.post.mapper.ImageManagerMapper;
 import store.nightmarket.application.appitem.out.post.mapper.ImageTypeMapper;
-import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.model.id.ImageOwnerId;
-import store.nightmarket.itemweb.model.id.ProductPostId;
-import store.nightmarket.itemweb.model.state.ImageType;
+import store.nightmarket.domain.itemweb.model.ImageManager;
+import store.nightmarket.domain.itemweb.model.id.ImageOwnerId;
+import store.nightmarket.domain.itemweb.model.id.ProductPostId;
+import store.nightmarket.domain.itemweb.model.state.ImageType;
 import store.nightmarket.persistence.persistitem.entity.state.EntityImageType;
 import store.nightmarket.persistence.persistitem.repository.ImageManagerRepository;
 

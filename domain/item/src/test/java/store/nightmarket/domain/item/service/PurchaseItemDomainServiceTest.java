@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import store.nightmarket.domain.item.exception.ProductException;
 import store.nightmarket.domain.item.exception.QuantityException;
-import store.nightmarket.domain.item.fixture.TestItemFactory;
-import store.nightmarket.domain.item.fixture.TestShoppingBasketFactory;
+import store.nightmarket.domain.item.fixture.TestFactory;
 import store.nightmarket.domain.item.model.ProductVariant;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.service.dto.PurchaseItemDomainServiceDto.Event;
@@ -123,7 +122,7 @@ class PurchaseItemDomainServiceTest {
 		UUID productId = UUID.randomUUID();
 		UUID sellerId = UUID.randomUUID();
 
-		return TestItemFactory.createProductVariant(
+		return TestFactory.createProductVariant(
 			productVariantId,
 			productId,
 			sellerId,
@@ -136,7 +135,7 @@ class PurchaseItemDomainServiceTest {
 		UUID productVariantId,
 		int productQuantity
 	) {
-		return TestShoppingBasketFactory.createCartProduct(
+		return TestFactory.createShoppingBasketProduct(
 			UUID.randomUUID(),
 			productVariantId,
 			UUID.randomUUID(),

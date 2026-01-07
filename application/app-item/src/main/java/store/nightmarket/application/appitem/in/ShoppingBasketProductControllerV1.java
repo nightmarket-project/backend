@@ -37,8 +37,8 @@ import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
 import store.nightmarket.domain.item.valueobject.Quantity;
-import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.model.id.ProductPostId;
+import store.nightmarket.domain.itemweb.model.ImageManager;
+import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 
 @RestController
 @RequestMapping("api/v1/cart")

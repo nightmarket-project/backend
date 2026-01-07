@@ -15,8 +15,8 @@ import store.nightmarket.application.appitem.out.variant.ReadProductVariantPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
-import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.model.id.ProductPostId;
+import store.nightmarket.domain.itemweb.model.ImageManager;
+import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 
 @Service
 @RequiredArgsConstructor

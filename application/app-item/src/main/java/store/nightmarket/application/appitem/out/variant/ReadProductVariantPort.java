@@ -9,7 +9,7 @@ import store.nightmarket.domain.item.exception.ProductException;
 import store.nightmarket.domain.item.model.ProductVariant;
 import store.nightmarket.domain.item.model.id.ProductId;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
-import store.nightmarket.itemweb.model.id.ProductPostId;
+import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 
 public interface ReadProductVariantPort {
 

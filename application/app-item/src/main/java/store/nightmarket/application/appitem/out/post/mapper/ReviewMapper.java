@@ -1,11 +1,11 @@
 package store.nightmarket.application.appitem.out.post.mapper;
 
 import store.nightmarket.domain.item.model.id.UserId;
-import store.nightmarket.itemweb.model.Review;
-import store.nightmarket.itemweb.valueobject.CommentText;
-import store.nightmarket.itemweb.model.id.ProductPostId;
-import store.nightmarket.itemweb.valueobject.Rating;
-import store.nightmarket.itemweb.model.id.ReviewId;
+import store.nightmarket.domain.itemweb.model.Review;
+import store.nightmarket.domain.itemweb.model.id.ProductPostId;
+import store.nightmarket.domain.itemweb.model.id.ReviewId;
+import store.nightmarket.domain.itemweb.valueobject.CommentText;
+import store.nightmarket.domain.itemweb.valueobject.Rating;
 import store.nightmarket.persistence.persistitem.entity.model.ProductPostEntity;
 import store.nightmarket.persistence.persistitem.entity.model.ReviewEntity;
 import store.nightmarket.persistence.persistitem.entity.model.UserEntity;

@@ -1,9 +1,9 @@
 package store.nightmarket.application.appitem.out.post.mapper;
 
 import store.nightmarket.domain.item.model.id.ProductId;
-import store.nightmarket.itemweb.model.ProductPost;
-import store.nightmarket.itemweb.model.id.ProductPostId;
-import store.nightmarket.itemweb.valueobject.Rating;
+import store.nightmarket.domain.itemweb.model.ProductPost;
+import store.nightmarket.domain.itemweb.model.id.ProductPostId;
+import store.nightmarket.domain.itemweb.valueobject.Rating;
 import store.nightmarket.persistence.persistitem.entity.model.ProductEntity;
 import store.nightmarket.persistence.persistitem.entity.model.ProductPostEntity;
 import store.nightmarket.persistence.persistitem.entity.model.UserEntity;

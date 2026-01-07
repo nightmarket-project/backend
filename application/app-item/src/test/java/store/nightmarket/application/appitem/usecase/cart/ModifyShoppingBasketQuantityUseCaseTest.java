@@ -16,27 +16,27 @@ import store.nightmarket.application.appitem.usecase.cart.dto.ModifyShoppingBask
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;
 import store.nightmarket.domain.item.model.id.UserId;
+import store.nightmarket.domain.item.service.PutProductIntoShoppingBasketDomainService;
+import store.nightmarket.domain.item.service.dto.PutProductIntoShoppingBasketDomainServiceDto;
 import store.nightmarket.domain.item.valueobject.Quantity;
-import store.nightmarket.itemweb.service.PutProductIntoShoppingBasketItemWebDomainService;
-import store.nightmarket.itemweb.service.dto.PutProductIntoShoppingBasketItemWebDomainServiceDto;
 
 class ModifyShoppingBasketQuantityUseCaseTest {
 
 	private ReadShoppingBasketProductPort mockReadShoppingBasketProductPort;
 	private SaveShoppingBasketProductPort mockSaveShoppingBasketProductPort;
-	private PutProductIntoShoppingBasketItemWebDomainService mockPutProductIntoShoppingBasketItemWebDomainService;
+	private PutProductIntoShoppingBasketDomainService mockPutProductIntoShoppingBasketDomainService;
 	private ModifyShoppingBasketQuantityUseCase modifyShoppingBasketQuantity;
 
 	@BeforeEach
 	void setUp() {
 		mockReadShoppingBasketProductPort = mock(ReadShoppingBasketProductPort.class);
 		mockSaveShoppingBasketProductPort = mock(SaveShoppingBasketProductPort.class);
-		mockPutProductIntoShoppingBasketItemWebDomainService =
-			mock(PutProductIntoShoppingBasketItemWebDomainService.class);
+		mockPutProductIntoShoppingBasketDomainService =
+			mock(PutProductIntoShoppingBasketDomainService.class);
 		modifyShoppingBasketQuantity = new ModifyShoppingBasketQuantityUseCase(
 			mockReadShoppingBasketProductPort,
 			mockSaveShoppingBasketProductPort,
-			mockPutProductIntoShoppingBasketItemWebDomainService
+			mockPutProductIntoShoppingBasketDomainService
 		);
 	}
 
@@ -62,8 +62,8 @@ class ModifyShoppingBasketQuantityUseCaseTest {
 			.quantity(quantity)
 			.build();
 
-		PutProductIntoShoppingBasketItemWebDomainServiceDto.Event serviceEvent =
-			PutProductIntoShoppingBasketItemWebDomainServiceDto.Event.builder()
+		PutProductIntoShoppingBasketDomainServiceDto.Event serviceEvent =
+			PutProductIntoShoppingBasketDomainServiceDto.Event.builder()
 				.shoppingBasketProduct(
 					TestDomainFactory.createShoppingBasketProduct(
 						shoppingBasketProductId.getId(),
@@ -75,8 +75,8 @@ class ModifyShoppingBasketQuantityUseCaseTest {
 
 		when(mockReadShoppingBasketProductPort.readOrThrow(any(ShoppingBasketProductId.class)))
 			.thenReturn(shoppingBasketProduct);
-		when(mockPutProductIntoShoppingBasketItemWebDomainService.execute(
-			any(PutProductIntoShoppingBasketItemWebDomainServiceDto.Input.class)))
+		when(mockPutProductIntoShoppingBasketDomainService.execute(
+			any(PutProductIntoShoppingBasketDomainServiceDto.Input.class)))
 			.thenReturn(serviceEvent);
 
 		// when
@@ -85,7 +85,7 @@ class ModifyShoppingBasketQuantityUseCaseTest {
 		// then
 		verify(mockReadShoppingBasketProductPort, times(1))
 			.readOrThrow(shoppingBasketProductId);
-		verify(mockPutProductIntoShoppingBasketItemWebDomainService, times(1))
+		verify(mockPutProductIntoShoppingBasketDomainService, times(1))
 			.execute(any());
 		verify(mockSaveShoppingBasketProductPort, times(1))
 			.save(any());

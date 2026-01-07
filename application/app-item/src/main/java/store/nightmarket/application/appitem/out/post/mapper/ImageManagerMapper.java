@@ -1,9 +1,9 @@
 package store.nightmarket.application.appitem.out.post.mapper;
 
-import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.valueobject.Image;
-import store.nightmarket.itemweb.model.id.ImageManagerId;
-import store.nightmarket.itemweb.model.id.ImageOwnerId;
+import store.nightmarket.domain.itemweb.model.ImageManager;
+import store.nightmarket.domain.itemweb.model.id.ImageManagerId;
+import store.nightmarket.domain.itemweb.model.id.ImageOwnerId;
+import store.nightmarket.domain.itemweb.valueobject.Image;
 import store.nightmarket.persistence.persistitem.entity.model.ImageManagerEntity;
 import store.nightmarket.persistence.persistitem.entity.model.ImageOwnerModelEntity;
 import store.nightmarket.persistence.persistitem.entity.valueobject.ImageEntity;

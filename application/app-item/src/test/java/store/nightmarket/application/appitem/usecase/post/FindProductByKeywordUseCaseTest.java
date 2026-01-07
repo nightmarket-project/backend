@@ -18,10 +18,10 @@ import store.nightmarket.application.appitem.out.post.ReadProductPostPort;
 import store.nightmarket.application.appitem.out.post.mapper.dto.ProductPostAdapterDto;
 import store.nightmarket.application.appitem.usecase.post.dto.FindProductByKeywordUseCaseDto;
 import store.nightmarket.domain.item.model.Product;
-import store.nightmarket.itemweb.model.ImageManager;
-import store.nightmarket.itemweb.model.ProductPost;
-import store.nightmarket.itemweb.model.id.ProductPostId;
-import store.nightmarket.itemweb.model.state.ImageType;
+import store.nightmarket.domain.itemweb.model.ImageManager;
+import store.nightmarket.domain.itemweb.model.ProductPost;
+import store.nightmarket.domain.itemweb.model.id.ProductPostId;
+import store.nightmarket.domain.itemweb.model.state.ImageType;
 
 class FindProductByKeywordUseCaseTest {
 

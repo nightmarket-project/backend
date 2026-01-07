@@ -9,8 +9,8 @@ import store.nightmarket.application.appitem.out.cart.ReadShoppingBasketProductP
 import store.nightmarket.application.appitem.out.cart.SaveShoppingBasketProductPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
-import store.nightmarket.itemweb.service.PutProductIntoShoppingBasketItemWebDomainService;
-import store.nightmarket.itemweb.service.dto.PutProductIntoShoppingBasketItemWebDomainServiceDto;
+import store.nightmarket.domain.item.service.PutProductIntoShoppingBasketDomainService;
+import store.nightmarket.domain.item.service.dto.PutProductIntoShoppingBasketDomainServiceDto;
 
 @Service
 @RequiredArgsConstructor
@@ -18,20 +18,20 @@ public class ModifyShoppingBasketQuantityUseCase implements BaseUseCase<Input, V
 
 	private final ReadShoppingBasketProductPort readShoppingBasketProductPort;
 	private final SaveShoppingBasketProductPort saveShoppingBasketProductPort;
-	private final PutProductIntoShoppingBasketItemWebDomainService putProductIntoShoppingBasketItemWebDomainService;
+	private final PutProductIntoShoppingBasketDomainService putProductIntoShoppingBasketDomainService;
 
 	@Override
 	public Void execute(Input input) {
 		ShoppingBasketProduct shoppingBasketProduct = readShoppingBasketProductPort.readOrThrow(
 			input.shoppingBasketProductId());
 
-		PutProductIntoShoppingBasketItemWebDomainServiceDto.Input domainInput = PutProductIntoShoppingBasketItemWebDomainServiceDto.Input.builder()
+		PutProductIntoShoppingBasketDomainServiceDto.Input domainInput = PutProductIntoShoppingBasketDomainServiceDto.Input.builder()
 			.shoppingBasketProduct(shoppingBasketProduct)
 			.userId(input.userId())
 			.quantity(input.quantity())
 			.build();
 
-		PutProductIntoShoppingBasketItemWebDomainServiceDto.Event event = putProductIntoShoppingBasketItemWebDomainService
+		PutProductIntoShoppingBasketDomainServiceDto.Event event = putProductIntoShoppingBasketDomainService
 			.execute(domainInput);
 
 		saveShoppingBasketProductPort.save(event.getShoppingBasketProduct());
