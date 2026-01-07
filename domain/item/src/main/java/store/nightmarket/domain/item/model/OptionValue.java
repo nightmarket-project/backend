@@ -1,6 +1,7 @@
 package store.nightmarket.domain.item.model;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
@@ -82,6 +83,16 @@ public class OptionValue extends BaseModel<OptionValueId> {
 
 	public OptionValueId getOptionValueId() {
 		return internalId();
+	}
+
+	public void edit(
+		Name editName,
+		Price edtiPrice,
+		int editOrder
+	) {
+		this.name = Optional.of(editName).orElseGet(() -> name);
+		this.price = Optional.of(edtiPrice).orElseGet(() -> price);
+		this.order = Optional.of(editOrder).orElseGet(() -> order);
 	}
 
 }

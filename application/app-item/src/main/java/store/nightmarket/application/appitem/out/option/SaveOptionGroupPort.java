@@ -7,6 +7,8 @@ import store.nightmarket.domain.item.model.OptionValue;
 
 public interface SaveOptionGroupPort {
 
+	void save(OptionGroup optionGroup);
+
 	void save(OptionGroup optionGroup, List<OptionValue> optionValueList);
 
 }
