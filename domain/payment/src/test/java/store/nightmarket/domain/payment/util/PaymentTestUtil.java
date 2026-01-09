@@ -4,6 +4,7 @@ import store.nightmarket.domain.payment.model.DetailPaymentRecord;
 import store.nightmarket.domain.payment.model.PaymentRecord;
 import store.nightmarket.domain.payment.model.Product;
 import store.nightmarket.domain.payment.model.id.DetailPaymentRecordId;
+import store.nightmarket.domain.payment.model.id.OrderId;
 import store.nightmarket.domain.payment.model.id.PaymentRecordId;
 import store.nightmarket.domain.payment.model.id.ProductId;
 import store.nightmarket.domain.payment.model.id.UserId;
@@ -19,11 +20,13 @@ public class PaymentTestUtil {
     public static PaymentRecord createTestPayment(
             UUID recordId,
             UUID userId,
+            UUID orderId,
             List<DetailPaymentRecord> details
     ) {
        return PaymentRecord.newInstance(
                 new PaymentRecordId(recordId),
                 new UserId(userId),
+                new OrderId(orderId),
                 details
         );
     }
