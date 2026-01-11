@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.payment.exception.PaymentException;
+import store.nightmarket.domain.payment.model.id.OrderId;
 import store.nightmarket.domain.payment.model.id.PaymentRecordId;
 import store.nightmarket.domain.payment.model.id.UserId;
 
@@ -13,15 +14,18 @@ import store.nightmarket.domain.payment.model.id.UserId;
 public class PaymentRecord extends BaseModel<PaymentRecordId> {
 
 	private UserId userId;
+	private OrderId orderId;
 	private List<DetailPaymentRecord> detailPaymentRecordList;
 
 	private PaymentRecord(
 		PaymentRecordId id,
 		UserId userId,
+		OrderId orderId,
 		List<DetailPaymentRecord> detailPaymentRecordList
 	) {
 		super(id);
 		this.userId = userId;
+		this.orderId = orderId;
 		this.detailPaymentRecordList = detailPaymentRecordList;
 	}
 
@@ -29,21 +33,25 @@ public class PaymentRecord extends BaseModel<PaymentRecordId> {
 		PaymentRecordId id,
 		LocalDateTime createdAt,
 		UserId userId,
+		OrderId orderId,
 		List<DetailPaymentRecord> detailPaymentRecordList
 	) {
 		super(id, createdAt);
 		this.userId = userId;
+		this.orderId = orderId;
 		this.detailPaymentRecordList = detailPaymentRecordList;
 	}
 
 	public static PaymentRecord newInstance(
 		PaymentRecordId id,
 		UserId userId,
+		OrderId orderId,
 		List<DetailPaymentRecord> detailPaymentRecordList
 	) {
 		return new PaymentRecord(
 			id,
 			userId,
+			orderId,
 			detailPaymentRecordList
 		);
 	}
@@ -52,12 +60,14 @@ public class PaymentRecord extends BaseModel<PaymentRecordId> {
 		PaymentRecordId id,
 		LocalDateTime createdAt,
 		UserId userId,
+		OrderId orderId,
 		List<DetailPaymentRecord> detailPaymentRecordList
 	) {
 		return new PaymentRecord(
 			id,
 			createdAt,
 			userId,
+			orderId,
 			detailPaymentRecordList
 		);
 	}

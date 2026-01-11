@@ -24,16 +24,21 @@ public class PaymentRecordEntity extends BaseUuidEntity {
 	@Column(name = "user_id", nullable = false)
 	private UUID userId;
 
+	@Column(name = "order_id", nullable = false)
+	private UUID orderId;
+
 	@OneToMany(mappedBy = "paymentRecordEntity", fetch = FetchType.LAZY)
 	private List<DetailPaymentRecordEntity> detailPaymentRecordEntityList = new ArrayList<>();
 
 	public PaymentRecordEntity(
 		UUID id,
 		UUID userId,
+		UUID orderId,
 		List<DetailPaymentRecordEntity> detailPaymentRecordEntityList
 	) {
 		super(id);
 		this.userId = userId;
+		this.orderId = orderId;
 		this.detailPaymentRecordEntityList = detailPaymentRecordEntityList;
 	}
 
@@ -41,10 +46,12 @@ public class PaymentRecordEntity extends BaseUuidEntity {
 		UUID id,
 		LocalDateTime createdAt,
 		UUID userId,
+		UUID orderId,
 		List<DetailPaymentRecordEntity> detailPaymentRecordEntityList
 	) {
 		super(id, createdAt);
 		this.userId = userId;
+		this.orderId = orderId;
 		this.detailPaymentRecordEntityList = detailPaymentRecordEntityList;
 	}
 
