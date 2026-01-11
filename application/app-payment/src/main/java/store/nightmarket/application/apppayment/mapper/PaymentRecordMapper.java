@@ -5,6 +5,7 @@ import java.util.List;
 
 import store.nightmarket.domain.payment.model.DetailPaymentRecord;
 import store.nightmarket.domain.payment.model.PaymentRecord;
+import store.nightmarket.domain.payment.model.id.OrderId;
 import store.nightmarket.domain.payment.model.id.PaymentRecordId;
 import store.nightmarket.domain.payment.model.id.UserId;
 import store.nightmarket.persistence.persistpayment.entity.model.DetailPaymentRecordEntity;
@@ -20,6 +21,7 @@ public class PaymentRecordMapper {
 			new PaymentRecordId(entity.getId()),
 			entity.getCreatedAt(),
 			new UserId(entity.getUserId()),
+			new OrderId(entity.getOrderId()),
 			detailPaymentRecords
 		);
 	}
@@ -29,6 +31,7 @@ public class PaymentRecordMapper {
 			domain.getPaymentRecordId().getId(),
 			domain.getCreatedAt(),
 			domain.getUserId().getId(),
+			domain.getOrderId().getId(),
 			new ArrayList<>()
 		);
 

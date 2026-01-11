@@ -10,7 +10,7 @@ public class PriceMapper {
 	}
 
 	public static PriceEntity toEntity(Price domain) {
-		return new PriceEntity(domain.getPrice());
+		return new PriceEntity(domain.value());
 	}
 
 }

@@ -1,7 +1,5 @@
 package store.nightmarket.persistence.persistpayment.entity.valueobject;
 
-import java.math.BigDecimal;
-
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,6 +14,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class PriceEntity {
 
-	private BigDecimal price;
+	private long price;
 
 }
