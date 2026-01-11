@@ -23,4 +23,6 @@ public interface ReadVariantOptionValuePort {
 
 	List<ProductVariantId> readProductVariantIdsByOptionValueId(OptionValueId optionValueId);
 
+	List<VariantOptionValue> readByIdProductVariantId(ProductVariantId productVariantId);
+
 }
