@@ -55,7 +55,7 @@ public class ProductOptionControllerV1 {
 	private final ModifyOptionValueUseCase modifyOptionValueUseCase;
 
 	@GetMapping
-	public ReadOptionGroupDto.Response readProductPostOption(@PathVariable("productId") UUID productId) {
+	public ReadOptionGroupDto.Response readProductOption(@PathVariable("productId") UUID productId) {
 		ReadOptionGroupUseCaseDto.Output output = readOptionGroupUseCase.execute(new ProductId(productId));
 
 		return ReadOptionGroupDto.Response.builder()

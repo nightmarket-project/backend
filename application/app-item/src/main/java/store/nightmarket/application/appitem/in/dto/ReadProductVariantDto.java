@@ -17,6 +17,8 @@ public class ReadProductVariantDto {
 	@Builder
 	public record ProductVariantInfo(
 		UUID productVariantId,
+		String SKUCode,
+		long quantity,
 		List<VariantOptionValueInfo> variantOptionValue
 	) {
 

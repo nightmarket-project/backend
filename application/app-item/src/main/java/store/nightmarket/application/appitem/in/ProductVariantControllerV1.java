@@ -48,6 +48,8 @@ public class ProductVariantControllerV1 {
 					.map(productVariantDto ->
 						ReadProductVariantDto.ProductVariantInfo.builder()
 							.productVariantId(productVariantDto.getProductVariant().getProductVariantId().getId())
+							.SKUCode(productVariantDto.getProductVariant().getSKUCode())
+							.quantity(productVariantDto.getProductVariant().getQuantity().value().longValue())
 							.variantOptionValue(
 								productVariantDto.getVariantOptionValueAdapterDtoList().stream()
 									.map(variantOptionValueDto ->
