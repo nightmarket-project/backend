@@ -5,21 +5,11 @@ import java.util.UUID;
 
 import lombok.Builder;
 
-public class ReadProductVariantDto {
+public class ReadVariantOptionValueDto {
 
 	@Builder
 	public record Response(
-		List<ProductVariantInfo> productVariantList
-	) {
-
-	}
-
-	@Builder
-	public record ProductVariantInfo(
-		UUID productVariantId,
-		String SKUCode,
-		long quantity,
-		List<VariantOptionValueInfo> variantOptionValue
+		List<VariantOptionValueInfo> variantOptionValueList
 	) {
 
 	}
@@ -31,4 +21,5 @@ public class ReadProductVariantDto {
 	) {
 
 	}
+
 }

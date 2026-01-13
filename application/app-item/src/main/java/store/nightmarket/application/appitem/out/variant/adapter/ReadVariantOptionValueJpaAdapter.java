@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.variant.mapper.VariantOptionValueMapper;
 import store.nightmarket.application.appitem.out.variant.ReadVariantOptionValuePort;
+import store.nightmarket.application.appitem.out.variant.mapper.VariantOptionValueMapper;
 import store.nightmarket.domain.item.model.VariantOptionValue;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
 import store.nightmarket.domain.item.model.id.OptionValueId;
@@ -40,6 +40,14 @@ public class ReadVariantOptionValueJpaAdapter implements ReadVariantOptionValueP
 		return variantOptionValueRepository.findProductVariantIdsByOptionValueId(optionValueId.getId())
 			.stream()
 			.map(ProductVariantId::new)
+			.toList();
+	}
+
+	@Override
+	public List<VariantOptionValue> readByIdProductVariantId(ProductVariantId productVariantId) {
+		return variantOptionValueRepository.findByIdProductVariantId(productVariantId.getId())
+			.stream()
+			.map(VariantOptionValueMapper::toDomain)
 			.toList();
 	}
 

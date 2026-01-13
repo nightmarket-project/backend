@@ -14,14 +14,18 @@ import store.nightmarket.application.appitem.auth.RequireRoles;
 import store.nightmarket.application.appitem.auth.UserSession;
 import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
 import store.nightmarket.application.appitem.in.dto.ReadProductVariantDto;
+import store.nightmarket.application.appitem.in.dto.ReadVariantOptionValueDto;
 import store.nightmarket.application.appitem.in.dto.RegisterProductVariantDto;
 import store.nightmarket.application.appitem.usecase.variant.ReadProductVariantUseCase;
+import store.nightmarket.application.appitem.usecase.variant.ReadVariantOptionValueUseCase;
 import store.nightmarket.application.appitem.usecase.variant.RegisterProductVariantUseCase;
 import store.nightmarket.application.appitem.usecase.variant.dto.ReadProductVariantUseCaseDto;
+import store.nightmarket.application.appitem.usecase.variant.dto.ReadVariantOptionValueUseCaseDto;
 import store.nightmarket.application.appitem.usecase.variant.dto.RegisterProductVariantUseCaseDto;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
 import store.nightmarket.domain.item.model.id.OptionValueId;
 import store.nightmarket.domain.item.model.id.ProductId;
+import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.domain.item.valueobject.Quantity;
 
@@ -31,10 +35,11 @@ import store.nightmarket.domain.item.valueobject.Quantity;
 public class ProductVariantControllerV1 {
 
 	private final ReadProductVariantUseCase readProductVariantUseCase;
+	private final ReadVariantOptionValueUseCase readVariantOptionValueUseCase;
 	private final RegisterProductVariantUseCase registerProductVariantUseCase;
 
 	@GetMapping
-	public ReadProductVariantDto.Response readProductPostProductVariant(@PathVariable("productId") UUID productId) {
+	public ReadProductVariantDto.Response readProductVariant(@PathVariable("productId") UUID productId) {
 		ReadProductVariantUseCaseDto.Output output = readProductVariantUseCase.execute(new ProductId(productId));
 
 		return ReadProductVariantDto.Response.builder()
@@ -43,6 +48,8 @@ public class ProductVariantControllerV1 {
 					.map(productVariantDto ->
 						ReadProductVariantDto.ProductVariantInfo.builder()
 							.productVariantId(productVariantDto.getProductVariant().getProductVariantId().getId())
+							.SKUCode(productVariantDto.getProductVariant().getSKUCode())
+							.quantity(productVariantDto.getProductVariant().getQuantity().value().longValue())
 							.variantOptionValue(
 								productVariantDto.getVariantOptionValueAdapterDtoList().stream()
 									.map(variantOptionValueDto ->
@@ -59,6 +66,31 @@ public class ProductVariantControllerV1 {
 									.toList())
 							.build())
 					.toList())
+			.build();
+	}
+
+	@GetMapping("/{variantId}/options")
+	public ReadVariantOptionValueDto.Response readVariantOptionValue(
+		@PathVariable("productId") UUID productId,
+		@PathVariable("variantId") UUID productVariantId
+	) {
+		ReadVariantOptionValueUseCaseDto.Output output = readVariantOptionValueUseCase.execute(
+			ReadVariantOptionValueUseCaseDto.Input.builder()
+				.productVariantId(new ProductVariantId(productVariantId))
+				.build()
+		);
+
+		return ReadVariantOptionValueDto.Response.builder()
+			.variantOptionValueList(
+				output.variantOptionValueList().stream()
+					.map(variantOptionValue ->
+						ReadVariantOptionValueDto.VariantOptionValueInfo.builder()
+							.optionGroupId(variantOptionValue.getOptionGroupId().getId())
+							.optionValueId(variantOptionValue.getOptionValueId().getId())
+							.build()
+					)
+					.toList()
+			)
 			.build();
 	}
 
