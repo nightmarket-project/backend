@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.post.ReadImageManagerPort;
+import store.nightmarket.application.appitem.out.ReadImageManagerPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.itemweb.model.ImageManager;
 

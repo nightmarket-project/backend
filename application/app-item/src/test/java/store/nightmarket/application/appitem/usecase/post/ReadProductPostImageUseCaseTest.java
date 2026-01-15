@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
-import store.nightmarket.application.appitem.out.post.ReadImageManagerPort;
+import store.nightmarket.application.appitem.out.ReadImageManagerPort;
 import store.nightmarket.application.appitem.usecase.post.dto.ReadProductPostImageUseCaseDto;
 import store.nightmarket.domain.itemweb.model.ImageManager;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;

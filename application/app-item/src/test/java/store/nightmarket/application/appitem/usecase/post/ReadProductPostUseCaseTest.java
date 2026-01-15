@@ -10,8 +10,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
-import store.nightmarket.application.appitem.out.post.ReadProductPostPort;
-import store.nightmarket.application.appitem.out.post.mapper.dto.ProductPostAdapterDto;
+import store.nightmarket.application.appitem.out.ReadProductPostPort;
+import store.nightmarket.application.appitem.out.mapper.dto.ProductPostAdapterDto;
 import store.nightmarket.application.appitem.usecase.post.dto.ReadProductPostUseCaseDto;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 

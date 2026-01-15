@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import lombok.Builder;
-import store.nightmarket.application.appitem.out.post.mapper.dto.ProductPostAdapterDto;
+import store.nightmarket.application.appitem.out.mapper.dto.ProductPostAdapterDto;
 import store.nightmarket.domain.itemweb.model.ImageManager;
 
 public class FindProductByKeywordUseCaseDto {

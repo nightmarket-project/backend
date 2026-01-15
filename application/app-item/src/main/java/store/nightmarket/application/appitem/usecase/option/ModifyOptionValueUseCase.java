@@ -5,10 +5,10 @@ import static store.nightmarket.application.appitem.usecase.option.dto.ModifyOpt
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.option.ReadOptionGroupPort;
-import store.nightmarket.application.appitem.out.option.ReadOptionValuePort;
-import store.nightmarket.application.appitem.out.option.SaveOptionValuePort;
-import store.nightmarket.application.appitem.out.product.ReadProductPort;
+import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
+import store.nightmarket.application.appitem.out.ReadOptionValuePort;
+import store.nightmarket.application.appitem.out.SaveOptionValuePort;
+import store.nightmarket.application.appitem.out.ReadProductPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.exception.OptionException;
 import store.nightmarket.domain.item.model.OptionGroup;

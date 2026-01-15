@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import store.nightmarket.application.appitem.out.cart.SaveShoppingBasketProductPort;
+import store.nightmarket.application.appitem.out.SaveShoppingBasketProductPort;
 import store.nightmarket.application.appitem.usecase.cart.dto.SaveShoppingBasketProductUseCaseDto;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.model.id.ProductVariantId;

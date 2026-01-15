@@ -13,9 +13,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
-import store.nightmarket.application.appitem.out.post.ReadImageManagerPort;
-import store.nightmarket.application.appitem.out.post.ReadProductPostPort;
-import store.nightmarket.application.appitem.out.post.mapper.dto.ProductPostAdapterDto;
+import store.nightmarket.application.appitem.out.ReadImageManagerPort;
+import store.nightmarket.application.appitem.out.ReadProductPostPort;
+import store.nightmarket.application.appitem.out.mapper.dto.ProductPostAdapterDto;
 import store.nightmarket.application.appitem.usecase.post.dto.FindProductByKeywordUseCaseDto;
 import store.nightmarket.domain.item.model.Product;
 import store.nightmarket.domain.itemweb.model.ImageManager;

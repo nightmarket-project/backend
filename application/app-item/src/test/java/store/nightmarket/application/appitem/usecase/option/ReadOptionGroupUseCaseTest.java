@@ -11,8 +11,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
-import store.nightmarket.application.appitem.out.option.ReadOptionGroupPort;
-import store.nightmarket.application.appitem.out.option.mapper.dto.OptionGroupAdapterDto;
+import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
+import store.nightmarket.application.appitem.out.mapper.dto.OptionGroupAdapterDto;
 import store.nightmarket.application.appitem.usecase.option.dto.ReadOptionGroupUseCaseDto;
 import store.nightmarket.domain.item.model.id.ProductId;
 

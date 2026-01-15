@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.post.ReadReviewPort;
-import store.nightmarket.application.appitem.out.post.mapper.dto.ReviewAdapterDto;
+import store.nightmarket.application.appitem.out.ReadReviewPort;
+import store.nightmarket.application.appitem.out.mapper.dto.ReviewAdapterDto;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 

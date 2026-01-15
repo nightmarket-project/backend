@@ -5,8 +5,8 @@ import static store.nightmarket.application.appitem.usecase.cart.dto.DeleteShopp
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.cart.DeleteShoppingBasketProductPort;
-import store.nightmarket.application.appitem.out.cart.ReadShoppingBasketProductPort;
+import store.nightmarket.application.appitem.out.DeleteShoppingBasketProductPort;
+import store.nightmarket.application.appitem.out.ReadShoppingBasketProductPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.exception.ShoppingBasketException;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;

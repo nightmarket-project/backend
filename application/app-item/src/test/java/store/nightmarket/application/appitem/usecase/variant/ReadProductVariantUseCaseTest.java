@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
-import store.nightmarket.application.appitem.out.variant.ReadProductVariantPort;
-import store.nightmarket.application.appitem.out.variant.mapper.dto.ProductVariantAdapterDto;
-import store.nightmarket.application.appitem.out.variant.mapper.dto.VariantOptionValueAdapterDto;
+import store.nightmarket.application.appitem.out.ReadProductVariantPort;
+import store.nightmarket.application.appitem.out.mapper.dto.ProductVariantAdapterDto;
+import store.nightmarket.application.appitem.out.mapper.dto.VariantOptionValueAdapterDto;
 import store.nightmarket.application.appitem.usecase.variant.dto.ReadProductVariantUseCaseDto;
 import store.nightmarket.domain.item.model.id.ProductId;
 

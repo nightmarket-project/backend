@@ -5,7 +5,7 @@ import static store.nightmarket.application.appitem.usecase.user.dto.SaveUserUse
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.user.SaveUserPort;
+import store.nightmarket.application.appitem.out.SaveUserPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.model.User;
 

@@ -8,8 +8,8 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.variant.SaveProductVariantPort;
-import store.nightmarket.application.appitem.out.variant.SaveVariantOptionValuePort;
+import store.nightmarket.application.appitem.out.SaveProductVariantPort;
+import store.nightmarket.application.appitem.out.SaveVariantOptionValuePort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.model.ProductVariant;
 import store.nightmarket.domain.item.model.VariantOptionValue;
