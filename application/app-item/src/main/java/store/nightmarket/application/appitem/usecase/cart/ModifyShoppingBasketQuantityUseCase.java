@@ -5,8 +5,8 @@ import static store.nightmarket.application.appitem.usecase.cart.dto.ModifyShopp
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.cart.ReadShoppingBasketProductPort;
-import store.nightmarket.application.appitem.out.cart.SaveShoppingBasketProductPort;
+import store.nightmarket.application.appitem.out.ReadShoppingBasketProductPort;
+import store.nightmarket.application.appitem.out.SaveShoppingBasketProductPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.service.PutProductIntoShoppingBasketDomainService;

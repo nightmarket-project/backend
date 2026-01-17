@@ -10,8 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import store.nightmarket.application.appitem.out.variant.SaveProductVariantPort;
-import store.nightmarket.application.appitem.out.variant.SaveVariantOptionValuePort;
+import store.nightmarket.application.appitem.out.SaveProductVariantPort;
+import store.nightmarket.application.appitem.out.SaveVariantOptionValuePort;
 import store.nightmarket.application.appitem.usecase.variant.dto.RegisterProductVariantUseCaseDto;
 import store.nightmarket.domain.item.model.ProductVariant;
 import store.nightmarket.domain.item.model.id.OptionGroupId;

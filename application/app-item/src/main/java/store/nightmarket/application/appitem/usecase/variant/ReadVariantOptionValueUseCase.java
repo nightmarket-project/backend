@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.variant.ReadVariantOptionValuePort;
+import store.nightmarket.application.appitem.out.ReadVariantOptionValuePort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.model.VariantOptionValue;
 

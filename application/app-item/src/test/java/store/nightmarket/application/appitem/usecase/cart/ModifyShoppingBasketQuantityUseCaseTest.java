@@ -10,8 +10,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
-import store.nightmarket.application.appitem.out.cart.ReadShoppingBasketProductPort;
-import store.nightmarket.application.appitem.out.cart.SaveShoppingBasketProductPort;
+import store.nightmarket.application.appitem.out.ReadShoppingBasketProductPort;
+import store.nightmarket.application.appitem.out.SaveShoppingBasketProductPort;
 import store.nightmarket.application.appitem.usecase.cart.dto.ModifyShoppingBasketQuantityUseCaseDto;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;

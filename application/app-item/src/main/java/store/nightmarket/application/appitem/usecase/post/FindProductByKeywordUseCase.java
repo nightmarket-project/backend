@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.post.ReadImageManagerPort;
-import store.nightmarket.application.appitem.out.post.ReadProductPostPort;
-import store.nightmarket.application.appitem.out.post.mapper.dto.ProductPostAdapterDto;
+import store.nightmarket.application.appitem.out.ReadImageManagerPort;
+import store.nightmarket.application.appitem.out.ReadProductPostPort;
+import store.nightmarket.application.appitem.out.mapper.dto.ProductPostAdapterDto;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.itemweb.model.ImageManager;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;

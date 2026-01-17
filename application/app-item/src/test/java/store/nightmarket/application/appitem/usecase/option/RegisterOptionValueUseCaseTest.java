@@ -12,9 +12,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
-import store.nightmarket.application.appitem.out.option.ReadOptionGroupPort;
-import store.nightmarket.application.appitem.out.option.SaveOptionValuePort;
-import store.nightmarket.application.appitem.out.product.ReadProductPort;
+import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
+import store.nightmarket.application.appitem.out.SaveOptionValuePort;
+import store.nightmarket.application.appitem.out.ReadProductPort;
 import store.nightmarket.application.appitem.usecase.option.dto.RegisterOptionValueUseCaseDto;
 import store.nightmarket.domain.item.exception.OptionException;
 import store.nightmarket.domain.item.model.OptionGroup;

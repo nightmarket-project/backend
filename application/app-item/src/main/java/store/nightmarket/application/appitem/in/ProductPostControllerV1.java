@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.in.dto.ReadProductPostDto;
 import store.nightmarket.application.appitem.in.dto.ReadReviewDto;
 import store.nightmarket.application.appitem.in.dto.SearchProductDto;
-import store.nightmarket.application.appitem.out.post.mapper.dto.ProductPostAdapterDto;
+import store.nightmarket.application.appitem.out.mapper.dto.ProductPostAdapterDto;
 import store.nightmarket.application.appitem.usecase.post.FindProductByKeywordUseCase;
 import store.nightmarket.application.appitem.usecase.post.ReadImageManagerListUseCase;
 import store.nightmarket.application.appitem.usecase.post.ReadProductPostImageUseCase;

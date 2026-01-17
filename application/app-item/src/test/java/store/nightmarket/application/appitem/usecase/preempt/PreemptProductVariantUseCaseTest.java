@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
-import store.nightmarket.application.appitem.out.preempt.ReadPreemptedProductVariantPort;
+import store.nightmarket.application.appitem.out.ReadPreemptedProductVariantPort;
 import store.nightmarket.application.appitem.usecase.preempt.dto.PreemptProductVariantUseCaseDto;
 import store.nightmarket.domain.item.model.id.OrderId;
 import store.nightmarket.domain.item.model.id.ProductVariantId;

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
-import store.nightmarket.application.appitem.out.variant.ReadVariantOptionValuePort;
+import store.nightmarket.application.appitem.out.ReadVariantOptionValuePort;
 import store.nightmarket.application.appitem.usecase.variant.dto.ReadVariantOptionValueUseCaseDto;
 import store.nightmarket.domain.item.model.VariantOptionValue;
 import store.nightmarket.domain.item.model.id.ProductId;

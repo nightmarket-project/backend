@@ -1,8 +1,8 @@
 CREATE TABLE users
 (
     id                VARCHAR(36)   NOT NULL,
-    created_at        datetime     NOT NULL,
-    updated_at        datetime     NOT NULL,
+    created_at        TIMESTAMP     NOT NULL,
+    updated_at        TIMESTAMP     NOT NULL,
     email             VARCHAR(255) NOT NULL,
     profile_image_url VARCHAR(255) NULL,
     user_role            VARCHAR(255) NOT NULL,

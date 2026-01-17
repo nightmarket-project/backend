@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import store.nightmarket.application.appitem.out.product.ReadProductPort;
+import store.nightmarket.application.appitem.out.ReadProductPort;
 import store.nightmarket.application.appitem.usecase.product.dto.ReadProductUseCaseDto;
 import store.nightmarket.domain.item.model.Product;
 import store.nightmarket.domain.item.model.id.ProductId;

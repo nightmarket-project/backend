@@ -11,8 +11,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
-import store.nightmarket.application.appitem.out.cart.DeleteShoppingBasketProductPort;
-import store.nightmarket.application.appitem.out.cart.ReadShoppingBasketProductPort;
+import store.nightmarket.application.appitem.out.DeleteShoppingBasketProductPort;
+import store.nightmarket.application.appitem.out.ReadShoppingBasketProductPort;
 import store.nightmarket.application.appitem.usecase.cart.dto.DeleteShoppingBasketProductUseCaseDto;
 import store.nightmarket.domain.item.exception.ShoppingBasketException;
 import store.nightmarket.domain.item.model.id.ShoppingBasketProductId;

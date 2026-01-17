@@ -5,7 +5,7 @@ import static store.nightmarket.application.appitem.usecase.product.dto.ReadProd
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.product.ReadProductPort;
+import store.nightmarket.application.appitem.out.ReadProductPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.model.Product;
 

@@ -13,7 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
-import store.nightmarket.application.appitem.out.product.ReadProductPort;
+import store.nightmarket.application.appitem.out.ReadProductPort;
 import store.nightmarket.application.appitem.usecase.product.dto.ReadProductListUseCaseDto;
 import store.nightmarket.domain.item.model.Product;
 

@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.variant.ReadProductVariantPort;
-import store.nightmarket.application.appitem.out.variant.mapper.dto.ProductVariantAdapterDto;
+import store.nightmarket.application.appitem.out.ReadProductVariantPort;
+import store.nightmarket.application.appitem.out.mapper.dto.ProductVariantAdapterDto;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.model.id.ProductId;
 

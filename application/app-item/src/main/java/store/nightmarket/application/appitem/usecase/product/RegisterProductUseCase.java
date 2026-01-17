@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.product.SaveProductPort;
+import store.nightmarket.application.appitem.out.SaveProductPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.model.Product;
 import store.nightmarket.domain.item.model.id.ProductId;

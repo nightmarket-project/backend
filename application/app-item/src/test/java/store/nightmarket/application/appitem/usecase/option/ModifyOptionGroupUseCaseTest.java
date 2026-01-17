@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
-import store.nightmarket.application.appitem.out.option.ReadOptionGroupPort;
-import store.nightmarket.application.appitem.out.option.SaveOptionGroupPort;
-import store.nightmarket.application.appitem.out.product.ReadProductPort;
+import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
+import store.nightmarket.application.appitem.out.SaveOptionGroupPort;
+import store.nightmarket.application.appitem.out.ReadProductPort;
 import store.nightmarket.application.appitem.usecase.option.dto.ModifyOptionGroupUseCaseDto;
 import store.nightmarket.domain.item.exception.OptionException;
 import store.nightmarket.domain.item.model.OptionGroup;

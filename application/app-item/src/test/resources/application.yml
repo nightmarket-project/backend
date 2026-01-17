@@ -26,6 +26,10 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: true
 
+  sql:
+    init:
+      mode: never
+
 web:
   cors:
     pattern: "/**"
@@ -46,4 +50,4 @@ web:
   interceptor:
     include-patterns:
       - "/api/v1/cart/**"
-      - "/api/v1/products/***"
+      - "/api/v1/admin/products/***"

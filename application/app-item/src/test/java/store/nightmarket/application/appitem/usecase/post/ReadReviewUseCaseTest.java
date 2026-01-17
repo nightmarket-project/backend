@@ -11,9 +11,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
-import store.nightmarket.application.appitem.out.post.ReadReviewPort;
-import store.nightmarket.application.appitem.out.post.mapper.dto.ReplyAdapterDto;
-import store.nightmarket.application.appitem.out.post.mapper.dto.ReviewAdapterDto;
+import store.nightmarket.application.appitem.out.ReadReviewPort;
+import store.nightmarket.application.appitem.out.mapper.dto.ReplyAdapterDto;
+import store.nightmarket.application.appitem.out.mapper.dto.ReviewAdapterDto;
 import store.nightmarket.application.appitem.usecase.post.dto.ReadReviewUseCaseDto;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 
