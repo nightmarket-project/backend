@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.DeleteOptionGroupPort;
 import store.nightmarket.application.appitem.out.DeleteOptionValuePort;
-import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
-import store.nightmarket.application.appitem.out.ReadProductPort;
 import store.nightmarket.application.appitem.out.DeleteProductVariantPort;
 import store.nightmarket.application.appitem.out.DeleteVariantOptionValuePort;
+import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
+import store.nightmarket.application.appitem.out.ReadProductPort;
 import store.nightmarket.application.appitem.out.ReadVariantOptionValuePort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.item.exception.OptionException;
@@ -46,11 +46,10 @@ public class DeleteOptionGroupUseCase implements BaseUseCase<Input, Void> {
 		List<ProductVariantId> productVariantIdList
 			= readVariantOptionValuePort.readProductVariantIdsByOptionGroupId(optionGroup.getOptionGroupId());
 
-		deleteVariantOptionValuePort.deleteByOptionGroupId(optionGroup.getOptionGroupId());
+		deleteProductVariantPort.deleteAll(productVariantIdList);
+		deleteVariantOptionValuePort.deleteAllByProductVariantIdList(productVariantIdList);
 		deleteOptionValuePort.deleteByOptionGroupId(optionGroup.getOptionGroupId());
 		deleteOptionGroupPort.deleteById(input.optionGroupId());
-		//deleteProductVariantPort.deleteAll(productVariantIdList);
-		/// TO-DO: 추후 도메인 상의 후 반영
 		return null;
 	}
 
