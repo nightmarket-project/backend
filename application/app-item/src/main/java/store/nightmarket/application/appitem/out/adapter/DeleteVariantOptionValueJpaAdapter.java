@@ -34,6 +34,11 @@ public class DeleteVariantOptionValueJpaAdapter implements DeleteVariantOptionVa
 	}
 
 	@Override
+	public void deleteByProductVariantId(ProductVariantId productVariantId) {
+		variantOptionValueRepository.deleteAllByProductVariantId(productVariantId.getId());
+	}
+
+	@Override
 	public void deleteAllByProductVariantIdList(List<ProductVariantId> productVariantId) {
 		variantOptionValueRepository.deleteAllByProductVariantIdList(
 			productVariantId.stream()

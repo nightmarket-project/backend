@@ -15,6 +15,8 @@ public interface DeleteVariantOptionValuePort {
 
 	void deleteByOptionValueId(OptionValueId optionValueId);
 
+	void deleteByProductVariantId(ProductVariantId productVariantId);
+
 	void deleteAllByProductVariantIdList(List<ProductVariantId> productVariantId);
 
 }

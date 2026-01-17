@@ -40,6 +40,11 @@ public interface VariantOptionValueRepository extends JpaRepository<VariantOptio
 
 	@Modifying(flushAutomatically = true, clearAutomatically = true)
 	@Query("DELETE FROM VariantOptionValueEntity variantOptionValueEntity " +
+		"WHERE variantOptionValueEntity.productVariantEntity.id = :productVariantId")
+	void deleteAllByProductVariantId(@Param("productVariantId") UUID productVariantId);
+
+	@Modifying(flushAutomatically = true, clearAutomatically = true)
+	@Query("DELETE FROM VariantOptionValueEntity variantOptionValueEntity " +
 		"WHERE variantOptionValueEntity.productVariantEntity.id IN(:productVariantIdList)")
 	void deleteAllByProductVariantIdList(@Param("productVariantIdList") List<UUID> productVariantIdList);
 

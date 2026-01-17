@@ -2,6 +2,7 @@ package store.nightmarket.application.appitem.in;
 
 import java.util.UUID;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,8 +16,10 @@ import store.nightmarket.application.appitem.auth.UserSession;
 import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
 import store.nightmarket.application.appitem.in.dto.ReadVariantOptionValueDto;
 import store.nightmarket.application.appitem.in.dto.RegisterProductVariantDto;
+import store.nightmarket.application.appitem.usecase.variant.DeleteProductVariantUseCase;
 import store.nightmarket.application.appitem.usecase.variant.ReadVariantOptionValueUseCase;
 import store.nightmarket.application.appitem.usecase.variant.RegisterProductVariantUseCase;
+import store.nightmarket.application.appitem.usecase.variant.dto.DeleteProductVariantUseCaseDto;
 import store.nightmarket.application.appitem.usecase.variant.dto.ReadVariantOptionValueUseCaseDto;
 import store.nightmarket.application.appitem.usecase.variant.dto.RegisterProductVariantUseCaseDto;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
@@ -33,6 +36,7 @@ public class AdminProductVariantControllerV1 {
 
 	private final ReadVariantOptionValueUseCase readVariantOptionValueUseCase;
 	private final RegisterProductVariantUseCase registerProductVariantUseCase;
+	private final DeleteProductVariantUseCase deleteProductVariantUseCase;
 
 	@GetMapping("/{variantId}/options")
 	public ReadVariantOptionValueDto.Response readVariantOptionValue(
@@ -82,6 +86,22 @@ public class AdminProductVariantControllerV1 {
 						)
 						.toList()
 				)
+				.build()
+		);
+	}
+
+	@DeleteMapping("/{variantId}")
+	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
+	public void deleteProductVariant(
+		@PathVariable("productId") UUID productId,
+		@PathVariable("variantId") UUID variantId,
+		@AuthorizedUser UserSession userSession
+	) {
+		deleteProductVariantUseCase.execute(
+			DeleteProductVariantUseCaseDto.Input.builder()
+				.productId(new ProductId(productId))
+				.productVariantId(new ProductVariantId(variantId))
+				.userId(new UserId(UUID.fromString(userSession.userId())))
 				.build()
 		);
 	}
