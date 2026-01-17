@@ -29,9 +29,9 @@ import store.nightmarket.domain.item.valueobject.Name;
 import store.nightmarket.domain.item.valueobject.Price;
 
 @RestController
-@RequestMapping("api/v1/products")
+@RequestMapping("api/v1/admin/products")
 @RequiredArgsConstructor
-public class ProductControllerV1 {
+public class AdminProductControllerV1 {
 
 	private final ReadProductListUseCase readProductListUseCase;
 	private final ReadProductUseCase readProductUseCase;

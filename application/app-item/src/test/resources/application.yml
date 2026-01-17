@@ -50,4 +50,4 @@ web:
   interceptor:
     include-patterns:
       - "/api/v1/cart/**"
-      - "/api/v1/products/***"
+      - "/api/v1/admin/products/***"
