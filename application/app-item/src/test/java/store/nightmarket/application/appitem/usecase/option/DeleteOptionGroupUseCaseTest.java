@@ -13,10 +13,10 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.DeleteOptionGroupPort;
 import store.nightmarket.application.appitem.out.DeleteOptionValuePort;
-import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
-import store.nightmarket.application.appitem.out.ReadProductPort;
 import store.nightmarket.application.appitem.out.DeleteProductVariantPort;
 import store.nightmarket.application.appitem.out.DeleteVariantOptionValuePort;
+import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
+import store.nightmarket.application.appitem.out.ReadProductPort;
 import store.nightmarket.application.appitem.out.ReadVariantOptionValuePort;
 import store.nightmarket.application.appitem.usecase.option.dto.DeleteOptionGroupUseCaseDto;
 import store.nightmarket.domain.item.exception.OptionException;
@@ -109,18 +109,17 @@ public class DeleteOptionGroupUseCaseTest {
 		verify(mockReadVariantOptionValuePort, times(1))
 			.readProductVariantIdsByOptionGroupId(optionGroupId);
 
+		verify(mockDeleteProductVariantPort, times(1))
+			.deleteAll(List.of(productVariantId1, productVariantId2));
+
 		verify(mockDeleteVariantOptionValuePort, times(1))
-			.deleteByOptionGroupId(optionGroupId);
+			.deleteAllByProductVariantIdList(productVariantIdList);
 
 		verify(mockDeleteOptionValuePort, times(1))
 			.deleteByOptionGroupId(optionGroupId);
 
 		verify(mockDeleteOptionGroupPort, times(1))
 			.deleteById(optionGroupId);
-
-		//verify(mockDeleteProductVariantPort, times(1))
-		//	.deleteAll(List.of(productVariantId1, productVariantId2));
-		/// TO-DO 추후 수정시 변경
 	}
 
 	@Test
@@ -167,17 +166,17 @@ public class DeleteOptionGroupUseCaseTest {
 		verify(mockReadVariantOptionValuePort, never())
 			.readProductVariantIdsByOptionGroupId(optionGroupId);
 
+		verify(mockDeleteProductVariantPort, never())
+			.deleteAll(any());
+
 		verify(mockDeleteVariantOptionValuePort, never())
-			.deleteByOptionGroupId(any());
+			.deleteAllByProductVariantIdList(any());
 
 		verify(mockDeleteOptionValuePort, never())
 			.deleteByOptionGroupId(optionGroupId);
 
 		verify(mockDeleteOptionGroupPort, never())
 			.deleteById(optionGroupId);
-
-		verify(mockDeleteProductVariantPort, never())
-			.deleteAll(any());
 	}
 
 }

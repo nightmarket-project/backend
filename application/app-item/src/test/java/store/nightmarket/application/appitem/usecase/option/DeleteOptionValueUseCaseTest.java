@@ -13,11 +13,11 @@ import org.junit.jupiter.api.Test;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.DeleteOptionValuePort;
+import store.nightmarket.application.appitem.out.DeleteProductVariantPort;
+import store.nightmarket.application.appitem.out.DeleteVariantOptionValuePort;
 import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
 import store.nightmarket.application.appitem.out.ReadOptionValuePort;
 import store.nightmarket.application.appitem.out.ReadProductPort;
-import store.nightmarket.application.appitem.out.DeleteProductVariantPort;
-import store.nightmarket.application.appitem.out.DeleteVariantOptionValuePort;
 import store.nightmarket.application.appitem.out.ReadVariantOptionValuePort;
 import store.nightmarket.application.appitem.usecase.option.dto.DeleteOptionValueUseCaseDto;
 import store.nightmarket.domain.item.exception.OptionException;
@@ -125,15 +125,14 @@ public class DeleteOptionValueUseCaseTest {
 		verify(mockReadVariantOptionValuePort, times(1))
 			.readProductVariantIdsByOptionValueId(optionValueId);
 
+		verify(mockDeleteProductVariantPort, times(1))
+			.deleteAll(productVariantIdList);
+
 		verify(mockDeleteVariantOptionValuePort, times(1))
-			.deleteByOptionValueId(optionValueId);
+			.deleteAllByProductVariantIdList(productVariantIdList);
 
 		verify(mockDeleteOptionValuePort, times(1))
 			.delete(optionValueId);
-
-		//verify(mockDeleteProductVariantPort, times(1))
-		//	.deleteAll(productVariantIdList);
-		/// TO-DO 추후 수정시 변경
 	}
 
 	@Test
@@ -198,14 +197,14 @@ public class DeleteOptionValueUseCaseTest {
 		verify(mockReadVariantOptionValuePort, never())
 			.readProductVariantIdsByOptionValueId(optionValueId);
 
+		verify(mockDeleteProductVariantPort, never())
+			.deleteAll(productVariantIdList);
+
 		verify(mockDeleteVariantOptionValuePort, never())
-			.deleteByOptionValueId(optionValueId);
+			.deleteAllByProductVariantIdList(productVariantIdList);
 
 		verify(mockDeleteOptionValuePort, never())
 			.delete(optionValueId);
-
-		verify(mockDeleteProductVariantPort, never())
-			.deleteAll(productVariantIdList);
 	}
 
 }
