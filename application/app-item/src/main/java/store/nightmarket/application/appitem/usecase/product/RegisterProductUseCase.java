@@ -15,22 +15,27 @@ import store.nightmarket.domain.item.model.id.UserId;
 
 @Service
 @RequiredArgsConstructor
-public class RegisterProductUseCase implements BaseUseCase<Input, Void> {
+public class RegisterProductUseCase implements BaseUseCase<Input, Output> {
 
 	private final SaveProductPort saveProductPort;
 
 	@Override
-	public Void execute(Input input) {
+	public Output execute(Input input) {
+		ProductId productId = new ProductId(UUID.randomUUID());
+
 		saveProductPort.save(
 			Product.newInstance(
-				new ProductId(UUID.randomUUID()),
+				productId,
 				new UserId(input.userId().getId()),
 				input.name(),
 				input.description(),
 				input.price()
 			)
 		);
-		return null;
+
+		return Output.builder()
+			.productId(productId)
+			.build();
 	}
 
 }

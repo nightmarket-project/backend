@@ -5,9 +5,11 @@ import static org.mockito.Mockito.*;
 import java.math.BigInteger;
 import java.util.UUID;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import store.nightmarket.application.appitem.out.SaveProductPort;
 import store.nightmarket.application.appitem.usecase.product.dto.RegisterProductUseCaseDto;
@@ -39,11 +41,16 @@ public class RegisterProductUseCaseTest {
 			.build();
 
 		// when
-		registerProductUseCase.execute(input);
+		RegisterProductUseCaseDto.Output output = registerProductUseCase.execute(input);
 
 		// then
+		ArgumentCaptor<Product> argumentCaptor = ArgumentCaptor.forClass(Product.class);
+
 		verify(mockSaveProductPort, times(1))
-			.save(any(Product.class));
+			.save(argumentCaptor.capture());
+
+		Assertions.assertThat(output.productId()).isNotNull();
+		Assertions.assertThat(output.productId()).isEqualTo(argumentCaptor.getValue().getProductId());
 	}
 
 }

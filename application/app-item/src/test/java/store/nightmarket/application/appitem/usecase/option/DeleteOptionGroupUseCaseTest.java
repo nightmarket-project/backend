@@ -110,7 +110,7 @@ public class DeleteOptionGroupUseCaseTest {
 			.readProductVariantIdsByOptionGroupId(optionGroupId);
 
 		verify(mockDeleteProductVariantPort, times(1))
-			.deleteAll(List.of(productVariantId1, productVariantId2));
+			.deleteAll(productVariantIdList);
 
 		verify(mockDeleteVariantOptionValuePort, times(1))
 			.deleteAllByProductVariantIdList(productVariantIdList);
