@@ -1,6 +1,7 @@
 package store.nightmarket.domain.item.model;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
@@ -102,6 +103,14 @@ public class ProductVariant extends BaseModel<ProductVariantId> {
 
 	private boolean isNotAbleToPurchase(Quantity purchaseQuantity) {
 		return quantity.isLessThan(purchaseQuantity);
+	}
+
+	public void edit(
+		String editSKUCode,
+		Quantity editQuantity
+	) {
+		this.SKUCode = Optional.of(editSKUCode).orElseGet(() -> SKUCode);
+		this.quantity = Optional.of(editQuantity).orElseGet(() -> quantity);
 	}
 
 }
