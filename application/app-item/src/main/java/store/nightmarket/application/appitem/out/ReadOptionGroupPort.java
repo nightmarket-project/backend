@@ -20,4 +20,6 @@ public interface ReadOptionGroupPort {
 
 	List<OptionGroupAdapterDto> readFetchOptionValue(ProductId id);
 
+	List<OptionGroupId> readOptionGroupIdsByProductId(ProductId productId);
+
 }

@@ -6,9 +6,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appitem.out.mapper.dto.OptionGroupAdapterDto;
-import store.nightmarket.application.appitem.out.mapper.OptionGroupMapper;
 import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
+import store.nightmarket.application.appitem.out.mapper.OptionGroupMapper;
+import store.nightmarket.application.appitem.out.mapper.dto.OptionGroupAdapterDto;
 import store.nightmarket.domain.item.model.OptionGroup;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
 import store.nightmarket.domain.item.model.id.ProductId;
@@ -30,6 +30,14 @@ public class ReadOptionGroupAdapter implements ReadOptionGroupPort {
 	public List<OptionGroupAdapterDto> readFetchOptionValue(ProductId productId) {
 		return optionGroupRepository.findByProductId(productId.getId()).stream()
 			.map(OptionGroupAdapterDto::toDomain)
+			.toList();
+	}
+
+	@Override
+	public List<OptionGroupId> readOptionGroupIdsByProductId(ProductId productId) {
+		return optionGroupRepository.findOptionGroupIdByProductId(productId.getId())
+			.stream()
+			.map(OptionGroupId::new)
 			.toList();
 	}
 

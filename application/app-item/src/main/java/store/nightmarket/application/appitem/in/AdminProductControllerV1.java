@@ -2,6 +2,7 @@ package store.nightmarket.application.appitem.in;
 
 import java.util.UUID;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,9 +18,11 @@ import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
 import store.nightmarket.application.appitem.in.dto.ReadProductDto;
 import store.nightmarket.application.appitem.in.dto.ReadProductListDto;
 import store.nightmarket.application.appitem.in.dto.RegisterProductDto;
+import store.nightmarket.application.appitem.usecase.product.DeleteProductUseCase;
 import store.nightmarket.application.appitem.usecase.product.ReadProductListUseCase;
 import store.nightmarket.application.appitem.usecase.product.ReadProductUseCase;
 import store.nightmarket.application.appitem.usecase.product.RegisterProductUseCase;
+import store.nightmarket.application.appitem.usecase.product.dto.DeleteProductUseCaseDto;
 import store.nightmarket.application.appitem.usecase.product.dto.ReadProductListUseCaseDto;
 import store.nightmarket.application.appitem.usecase.product.dto.ReadProductUseCaseDto;
 import store.nightmarket.application.appitem.usecase.product.dto.RegisterProductUseCaseDto;
@@ -36,6 +39,7 @@ public class AdminProductControllerV1 {
 	private final ReadProductListUseCase readProductListUseCase;
 	private final ReadProductUseCase readProductUseCase;
 	private final RegisterProductUseCase registerProductUseCase;
+	private final DeleteProductUseCase deleteProductUseCase;
 
 	@GetMapping
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
@@ -89,16 +93,34 @@ public class AdminProductControllerV1 {
 
 	@PostMapping
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
-	public void registerProduct(
+	public RegisterProductDto.Response registerProduct(
 		@RequestBody RegisterProductDto.Request request,
 		@AuthorizedUser UserSession userSession
 	) {
-		registerProductUseCase.execute(
+		RegisterProductUseCaseDto.Output output = registerProductUseCase.execute(
 			RegisterProductUseCaseDto.Input.builder()
 				.userId(new UserId(UUID.fromString(userSession.userId())))
 				.name(new Name(request.name()))
 				.description(request.description())
 				.price(new Price(request.price()))
+				.build()
+		);
+
+		return RegisterProductDto.Response.builder()
+			.productId(output.productId().getId())
+			.build();
+	}
+
+	@DeleteMapping("/{productId}")
+	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
+	public void deleteOptionGroup(
+		@PathVariable("productId") UUID productId,
+		@AuthorizedUser UserSession userSession
+	) {
+		deleteProductUseCase.execute(
+			DeleteProductUseCaseDto.Input.builder()
+				.productId(new ProductId(productId))
+				.userId(new UserId(UUID.fromString(userSession.userId())))
 				.build()
 		);
 	}

@@ -24,4 +24,9 @@ public interface OptionValueRepository extends JpaRepository<OptionValueEntity, 
 		"WHERE optionValueEntity.optionGroupEntity.id = :optionGroupId")
 	void deleteByOptionGroupId(@Param("optionGroupId") UUID optionGroupId);
 
+	@Modifying(flushAutomatically = true, clearAutomatically = true)
+	@Query("DELETE FROM OptionValueEntity optionValueEntity " +
+		"WHERE optionValueEntity.optionGroupEntity.id IN (:optionGroupIdList)")
+	void deleteAllByOptionGroupId(@Param("optionGroupIdList") List<UUID> optionGroupIdList);
+
 }
