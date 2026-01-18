@@ -1,9 +1,11 @@
 package store.nightmarket.application.appitem.in;
 
+import java.math.BigInteger;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,12 +16,15 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.auth.RequireRoles;
 import store.nightmarket.application.appitem.auth.UserSession;
 import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
+import store.nightmarket.application.appitem.in.dto.ModifyProductVariantDto;
 import store.nightmarket.application.appitem.in.dto.ReadVariantOptionValueDto;
 import store.nightmarket.application.appitem.in.dto.RegisterProductVariantDto;
 import store.nightmarket.application.appitem.usecase.variant.DeleteProductVariantUseCase;
+import store.nightmarket.application.appitem.usecase.variant.ModifyProductVariantUseCase;
 import store.nightmarket.application.appitem.usecase.variant.ReadVariantOptionValueUseCase;
 import store.nightmarket.application.appitem.usecase.variant.RegisterProductVariantUseCase;
 import store.nightmarket.application.appitem.usecase.variant.dto.DeleteProductVariantUseCaseDto;
+import store.nightmarket.application.appitem.usecase.variant.dto.ModifyProductVariantUseCaseDto;
 import store.nightmarket.application.appitem.usecase.variant.dto.ReadVariantOptionValueUseCaseDto;
 import store.nightmarket.application.appitem.usecase.variant.dto.RegisterProductVariantUseCaseDto;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
@@ -37,6 +42,7 @@ public class AdminProductVariantControllerV1 {
 	private final ReadVariantOptionValueUseCase readVariantOptionValueUseCase;
 	private final RegisterProductVariantUseCase registerProductVariantUseCase;
 	private final DeleteProductVariantUseCase deleteProductVariantUseCase;
+	private final ModifyProductVariantUseCase modifyProductVariantUseCase;
 
 	@GetMapping("/{variantId}/options")
 	public ReadVariantOptionValueDto.Response readVariantOptionValue(
@@ -102,6 +108,25 @@ public class AdminProductVariantControllerV1 {
 				.productId(new ProductId(productId))
 				.productVariantId(new ProductVariantId(variantId))
 				.userId(new UserId(UUID.fromString(userSession.userId())))
+				.build()
+		);
+	}
+
+	@PatchMapping("/{variantId}")
+	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
+	public void modifyProductVariant(
+		@PathVariable("productId") UUID productId,
+		@PathVariable("variantId") UUID variantId,
+		@RequestBody ModifyProductVariantDto.Request request,
+		@AuthorizedUser UserSession userSession
+	) {
+		modifyProductVariantUseCase.execute(
+			ModifyProductVariantUseCaseDto.Input.builder()
+				.productId(new ProductId(productId))
+				.productVariantId(new ProductVariantId(variantId))
+				.userId(new UserId(UUID.fromString(userSession.userId())))
+				.SKUCode(request.SKUCode())
+				.quantity(new Quantity(BigInteger.valueOf(request.quantity())))
 				.build()
 		);
 	}
