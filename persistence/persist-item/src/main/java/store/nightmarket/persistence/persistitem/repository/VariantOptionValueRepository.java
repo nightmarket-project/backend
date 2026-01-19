@@ -24,6 +24,11 @@ public interface VariantOptionValueRepository extends JpaRepository<VariantOptio
 		"WHERE variantOptionValueEntity.optionValueEntity.id = :optionValueId")
 	List<UUID> findProductVariantIdsByOptionValueId(@Param("optionValueId") UUID optionValueId);
 
+	@Query("SELECT DISTINCT variantOptionValueEntity.productVariantEntity.id " +
+		"FROM VariantOptionValueEntity variantOptionValueEntity " +
+		"WHERE variantOptionValueEntity.productVariantEntity.productId = :productId")
+	List<UUID> findProductVariantIdsByproductId(@Param("productId") UUID productId);
+
 	@Query("SELECT variantOptionValueEntity FROM VariantOptionValueEntity variantOptionValueEntity " +
 		"WHERE variantOptionValueEntity.productVariantEntity.id = :productVariantId")
 	List<VariantOptionValueEntity> findByIdProductVariantId(@Param("productVariantId") UUID productVariantId);

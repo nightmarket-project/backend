@@ -1,5 +1,7 @@
 package store.nightmarket.application.appitem.out.adapter;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -24,4 +26,12 @@ public class DeleteOptionValueJpaAdapter implements DeleteOptionValuePort {
 		optionValueRepository.deleteByOptionGroupId(optionGroupId.getId());
 	}
 
+	@Override
+	public void deleteAllByOptionGroupId(List<OptionGroupId> optionGroupIdList) {
+		optionValueRepository.deleteAllByOptionGroupId(
+			optionGroupIdList.stream()
+				.map(OptionGroupId::getId)
+				.toList()
+		);
+	}
 }

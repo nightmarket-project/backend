@@ -1,4 +1,4 @@
-package store.nightmarket.application.appitem.usecase.option;
+package store.nightmarket.application.appitem.usecase.product;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -13,69 +13,65 @@ import org.junit.jupiter.api.Test;
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.DeleteOptionGroupPort;
 import store.nightmarket.application.appitem.out.DeleteOptionValuePort;
+import store.nightmarket.application.appitem.out.DeleteProductPort;
 import store.nightmarket.application.appitem.out.DeleteProductVariantPort;
 import store.nightmarket.application.appitem.out.DeleteVariantOptionValuePort;
 import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
 import store.nightmarket.application.appitem.out.ReadProductPort;
 import store.nightmarket.application.appitem.out.ReadVariantOptionValuePort;
-import store.nightmarket.application.appitem.usecase.option.dto.DeleteOptionGroupUseCaseDto;
-import store.nightmarket.domain.item.exception.OptionException;
-import store.nightmarket.domain.item.model.OptionGroup;
+import store.nightmarket.application.appitem.usecase.product.dto.DeleteProductUseCaseDto;
+import store.nightmarket.domain.item.exception.ProductException;
 import store.nightmarket.domain.item.model.Product;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
 import store.nightmarket.domain.item.model.id.ProductId;
 import store.nightmarket.domain.item.model.id.ProductVariantId;
 import store.nightmarket.domain.item.model.id.UserId;
 
-public class DeleteOptionGroupUseCaseTest {
+public class DeleteProductUseCaseTest {
 
-	private DeleteOptionGroupUseCase deleteOptionGroupUseCase;
-	private ReadOptionGroupPort mockReadOptionGroupPort;
+	private DeleteProductUseCase deleteProductUseCase;
 	private ReadProductPort mockReadProductPort;
 	private ReadVariantOptionValuePort mockReadVariantOptionValuePort;
+	private ReadOptionGroupPort mockReadOptionGroupPort;
+	private DeleteProductPort mockDeleteProductPort;
 	private DeleteOptionGroupPort mockDeleteOptionGroupPort;
-	private DeleteVariantOptionValuePort mockDeleteVariantOptionValuePort;
-	private DeleteProductVariantPort mockDeleteProductVariantPort;
 	private DeleteOptionValuePort mockDeleteOptionValuePort;
+	private DeleteProductVariantPort mockDeleteProductVariantPort;
+	private DeleteVariantOptionValuePort mockDeleteVariantOptionValuePort;
 
 	@BeforeEach
 	void setUp() {
-		mockReadOptionGroupPort = mock(ReadOptionGroupPort.class);
 		mockReadProductPort = mock(ReadProductPort.class);
 		mockReadVariantOptionValuePort = mock(ReadVariantOptionValuePort.class);
-		mockDeleteOptionGroupPort = mock(DeleteOptionGroupPort.class);
-		mockDeleteVariantOptionValuePort = mock(DeleteVariantOptionValuePort.class);
+		mockReadOptionGroupPort = mock(ReadOptionGroupPort.class);
 		mockDeleteProductVariantPort = mock(DeleteProductVariantPort.class);
+		mockDeleteVariantOptionValuePort = mock(DeleteVariantOptionValuePort.class);
 		mockDeleteOptionValuePort = mock(DeleteOptionValuePort.class);
-		deleteOptionGroupUseCase = new DeleteOptionGroupUseCase(
-			mockReadOptionGroupPort,
+		mockDeleteOptionGroupPort = mock(DeleteOptionGroupPort.class);
+		mockDeleteProductPort = mock(DeleteProductPort.class);
+		deleteProductUseCase = new DeleteProductUseCase(
 			mockReadProductPort,
 			mockReadVariantOptionValuePort,
-			mockDeleteOptionGroupPort,
-			mockDeleteVariantOptionValuePort,
+			mockReadOptionGroupPort,
 			mockDeleteProductVariantPort,
-			mockDeleteOptionValuePort
+			mockDeleteVariantOptionValuePort,
+			mockDeleteOptionValuePort,
+			mockDeleteOptionGroupPort,
+			mockDeleteProductPort
 		);
 	}
 
 	@Test
-	@DisplayName("옵션 그룹 삭제")
-	void deleteOptionGroup() {
+	@DisplayName("상품 삭제")
+	void deleteProduct() {
 		// given
-		OptionGroupId optionGroupId = new OptionGroupId(UUID.randomUUID());
 		ProductId productId = new ProductId(UUID.randomUUID());
 		UserId userId = new UserId(UUID.randomUUID());
 
-		DeleteOptionGroupUseCaseDto.Input input = DeleteOptionGroupUseCaseDto.Input.builder()
+		DeleteProductUseCaseDto.Input input = DeleteProductUseCaseDto.Input.builder()
 			.productId(productId)
-			.optionGroupId(optionGroupId)
 			.userId(userId)
 			.build();
-
-		OptionGroup optionGroup = TestDomainFactory.createOptionGroup(
-			optionGroupId.getId(),
-			productId.getId()
-		);
 
 		Product product = TestDomainFactory.createProduct(
 			productId.getId(),
@@ -87,27 +83,32 @@ public class DeleteOptionGroupUseCaseTest {
 
 		List<ProductVariantId> productVariantIdList = List.of(productVariantId1, productVariantId2);
 
-		when(mockReadOptionGroupPort.readOrThrow(optionGroupId))
-			.thenReturn(optionGroup);
+		OptionGroupId optionGroupId1 = new OptionGroupId(UUID.randomUUID());
+		OptionGroupId optionGroupId2 = new OptionGroupId(UUID.randomUUID());
+
+		List<OptionGroupId> optionGroupIdList = List.of(optionGroupId1, optionGroupId2);
 
 		when(mockReadProductPort.readOrThrow(productId))
 			.thenReturn(product);
 
-		when(mockReadVariantOptionValuePort.readProductVariantIdsByOptionGroupId(optionGroupId))
+		when(mockReadVariantOptionValuePort.readProductVariantIdsByProductId(productId))
 			.thenReturn(productVariantIdList);
 
+		when(mockReadOptionGroupPort.readOptionGroupIdsByProductId(productId))
+			.thenReturn(optionGroupIdList);
+
 		// when
-		deleteOptionGroupUseCase.execute(input);
+		deleteProductUseCase.execute(input);
 
 		// then
-		verify(mockReadOptionGroupPort, times(1))
-			.readOrThrow(optionGroupId);
-
 		verify(mockReadProductPort, times(1))
 			.readOrThrow(productId);
 
 		verify(mockReadVariantOptionValuePort, times(1))
-			.readProductVariantIdsByOptionGroupId(optionGroupId);
+			.readProductVariantIdsByProductId(productId);
+
+		verify(mockReadOptionGroupPort, times(1))
+			.readOptionGroupIdsByProductId(productId);
 
 		verify(mockDeleteProductVariantPort, times(1))
 			.deleteAll(productVariantIdList);
@@ -116,55 +117,48 @@ public class DeleteOptionGroupUseCaseTest {
 			.deleteAllByProductVariantIdList(productVariantIdList);
 
 		verify(mockDeleteOptionValuePort, times(1))
-			.deleteByOptionGroupId(optionGroupId);
+			.deleteAllByOptionGroupId(optionGroupIdList);
 
 		verify(mockDeleteOptionGroupPort, times(1))
-			.deleteById(optionGroupId);
+			.deleteAll(optionGroupIdList);
+
+		verify(mockDeleteProductPort, times(1))
+			.delete(productId);
 	}
 
 	@Test
-	@DisplayName("옵션 그룹의 주인이 아닌 사람이 삭제를 하면 예외를 던진다")
+	@DisplayName("상품의 주인이 아닌 사람이 삭제를 하면 예외를 던진다")
 	void shouldThrowExceptionWhenNotOwner() {
 		// given
-		OptionGroupId optionGroupId = new OptionGroupId(UUID.randomUUID());
 		ProductId productId = new ProductId(UUID.randomUUID());
 		UserId userId = new UserId(UUID.randomUUID());
 
-		DeleteOptionGroupUseCaseDto.Input input = DeleteOptionGroupUseCaseDto.Input.builder()
+		DeleteProductUseCaseDto.Input input = DeleteProductUseCaseDto.Input.builder()
 			.productId(productId)
-			.optionGroupId(optionGroupId)
 			.userId(userId)
 			.build();
-
-		OptionGroup optionGroup = TestDomainFactory.createOptionGroup(
-			optionGroupId.getId(),
-			productId.getId()
-		);
 
 		Product product = TestDomainFactory.createProduct(
 			productId.getId(),
 			UUID.randomUUID()
 		);
 
-		when(mockReadOptionGroupPort.readOrThrow(any()))
-			.thenReturn(optionGroup);
-
-		when(mockReadProductPort.readOrThrow(any()))
+		when(mockReadProductPort.readOrThrow(productId))
 			.thenReturn(product);
 
 		// when
 		// then
-		assertThatThrownBy(() -> deleteOptionGroupUseCase.execute(input))
-			.isInstanceOf(OptionException.class);
-
-		verify(mockReadOptionGroupPort, times(1))
-			.readOrThrow(optionGroupId);
+		assertThatThrownBy(() -> deleteProductUseCase.execute(input))
+			.isInstanceOf(ProductException.class);
 
 		verify(mockReadProductPort, times(1))
 			.readOrThrow(productId);
 
 		verify(mockReadVariantOptionValuePort, never())
-			.readProductVariantIdsByOptionGroupId(optionGroupId);
+			.readProductVariantIdsByProductId(productId);
+
+		verify(mockReadOptionGroupPort, never())
+			.readOptionGroupIdsByProductId(productId);
 
 		verify(mockDeleteProductVariantPort, never())
 			.deleteAll(any());
@@ -173,10 +167,13 @@ public class DeleteOptionGroupUseCaseTest {
 			.deleteAllByProductVariantIdList(any());
 
 		verify(mockDeleteOptionValuePort, never())
-			.deleteByOptionGroupId(optionGroupId);
+			.deleteAllByOptionGroupId(any());
 
 		verify(mockDeleteOptionGroupPort, never())
-			.deleteById(optionGroupId);
+			.deleteAll(any());
+
+		verify(mockDeleteProductPort, never())
+			.delete(productId);
 	}
 
 }
