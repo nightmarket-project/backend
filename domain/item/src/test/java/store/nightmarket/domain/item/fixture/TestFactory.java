@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import store.nightmarket.domain.item.model.OptionGroup;
 import store.nightmarket.domain.item.model.OptionValue;
+import store.nightmarket.domain.item.model.Product;
 import store.nightmarket.domain.item.model.ProductVariant;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.model.id.OptionGroupId;
@@ -18,6 +19,22 @@ import store.nightmarket.domain.item.valueobject.Price;
 import store.nightmarket.domain.item.valueobject.Quantity;
 
 public class TestFactory {
+
+	public static Product createProduct(
+		UUID productId,
+		UUID sellerId,
+		String name,
+		String description,
+		int price
+	) {
+		return Product.newInstance(
+			new ProductId(productId),
+			new UserId(sellerId),
+			new Name(name),
+			description,
+			new Price(BigInteger.valueOf(price))
+		);
+	}
 
 	public static ProductVariant createProductVariant(
 		UUID productVariantId,

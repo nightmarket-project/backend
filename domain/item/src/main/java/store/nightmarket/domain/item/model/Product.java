@@ -1,6 +1,7 @@
 package store.nightmarket.domain.item.model;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import lombok.Getter;
 import store.nightmarket.common.domain.model.BaseModel;
@@ -86,6 +87,16 @@ public class Product extends BaseModel<ProductId> {
 
 	public boolean isOwner(UserId userId) {
 		return this.userId.equals(userId);
+	}
+
+	public void edit(
+		Name editName,
+		String editDescription,
+		Price editPrice
+	) {
+		this.name = Optional.of(editName).orElseGet(() -> name);
+		this.description = Optional.of(editDescription).orElseGet(() -> description);
+		this.price = Optional.of(editPrice).orElseGet(() -> price);
 	}
 
 }
