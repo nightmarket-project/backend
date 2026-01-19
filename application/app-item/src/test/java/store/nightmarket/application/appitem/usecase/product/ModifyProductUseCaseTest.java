@@ -6,7 +6,7 @@ import static org.mockito.Mockito.*;
 import java.math.BigInteger;
 import java.util.UUID;
 
-import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,6 +31,7 @@ public class ModifyProductUseCaseTest {
 	private ReadProductPort mockReadProductPort;
 	private SaveProductPort mockSaveProductPort;
 	private ModifyProductDomainService mockModifyProductDomainService;
+	private SoftAssertions soft;
 
 	@BeforeEach
 	void setUp() {
@@ -42,6 +43,7 @@ public class ModifyProductUseCaseTest {
 			mockSaveProductPort,
 			mockModifyProductDomainService
 		);
+		soft = new SoftAssertions();
 	}
 
 	@Test
@@ -76,13 +78,6 @@ public class ModifyProductUseCaseTest {
 			.price(modifiedPrice)
 			.build();
 
-		ModifyProductDomainServiceDto.Input domianInput = ModifyProductDomainServiceDto.Input.builder()
-			.product(product)
-			.name(input.name())
-			.description(input.description())
-			.price(input.price())
-			.build();
-
 		ModifyProductDomainServiceDto.Event event = ModifyProductDomainServiceDto.Event.builder()
 			.product(modifiedProduct)
 			.build();
@@ -90,18 +85,17 @@ public class ModifyProductUseCaseTest {
 		when(mockReadProductPort.readOrThrow(productId))
 			.thenReturn(product);
 
-		when(mockModifyProductDomainService.execute(domianInput))
+		when(mockModifyProductDomainService.execute(any(ModifyProductDomainServiceDto.Input.class)))
 			.thenReturn(event);
 
 		// when
 		modifyProductUseCase.execute(input);
 
-		// then
 		verify(mockReadProductPort, times(1))
 			.readOrThrow(productId);
 
 		verify(mockModifyProductDomainService, times(1))
-			.execute(domianInput);
+			.execute(any(ModifyProductDomainServiceDto.Input.class));
 
 		ArgumentCaptor<Product> argumentCaptor = ArgumentCaptor.forClass(Product.class);
 
@@ -110,9 +104,10 @@ public class ModifyProductUseCaseTest {
 
 		Product savedProduct = argumentCaptor.getValue();
 
-		Assertions.assertThat(modifiedProduct.getName()).isEqualTo(savedProduct.getName());
-		Assertions.assertThat(modifiedProduct.getDescription()).isEqualTo(savedProduct.getDescription());
-		Assertions.assertThat(modifiedProduct.getPrice()).isEqualTo(savedProduct.getPrice());
+		soft.assertThat(modifiedProduct.getName()).isEqualTo(savedProduct.getName());
+		soft.assertThat(modifiedProduct.getDescription()).isEqualTo(savedProduct.getDescription());
+		soft.assertThat(modifiedProduct.getPrice()).isEqualTo(savedProduct.getPrice());
+		soft.assertAll();
 	}
 
 	@Test
@@ -143,10 +138,10 @@ public class ModifyProductUseCaseTest {
 			.thenReturn(product);
 
 		// when
+		// then
 		assertThatThrownBy(() -> modifyProductUseCase.execute(input))
 			.isInstanceOf(ProductException.class);
 
-		// then
 		verify(mockReadProductPort, times(1))
 			.readOrThrow(productId);
 

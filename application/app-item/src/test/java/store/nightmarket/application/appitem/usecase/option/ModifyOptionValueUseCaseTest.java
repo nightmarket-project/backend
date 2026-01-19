@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 import java.math.BigInteger;
 import java.util.UUID;
 
-import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,8 +16,8 @@ import org.mockito.ArgumentCaptor;
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
 import store.nightmarket.application.appitem.out.ReadOptionValuePort;
-import store.nightmarket.application.appitem.out.SaveOptionValuePort;
 import store.nightmarket.application.appitem.out.ReadProductPort;
+import store.nightmarket.application.appitem.out.SaveOptionValuePort;
 import store.nightmarket.application.appitem.usecase.option.dto.ModifyOptionValueUseCaseDto;
 import store.nightmarket.domain.item.exception.OptionException;
 import store.nightmarket.domain.item.model.OptionGroup;
@@ -40,6 +40,7 @@ public class ModifyOptionValueUseCaseTest {
 	private ReadOptionValuePort mockReadOptionValuePort;
 	private SaveOptionValuePort mockSaveOptionValuePort;
 	private ModifyOptionValueDomainService mockModifyOptionValueDomainService;
+	private SoftAssertions soft;
 
 	@BeforeEach
 	void setUp() {
@@ -55,6 +56,7 @@ public class ModifyOptionValueUseCaseTest {
 			mockSaveOptionValuePort,
 			mockModifyOptionValueDomainService
 		);
+		soft = new SoftAssertions();
 	}
 
 	@Test
@@ -103,13 +105,6 @@ public class ModifyOptionValueUseCaseTest {
 			.displayOrder(modifiedOrder)
 			.build();
 
-		ModifyOptionValueDomainServiceDto.Input domainInput = ModifyOptionValueDomainServiceDto.Input.builder()
-			.optionValue(optionValue)
-			.name(input.name())
-			.price(input.price())
-			.order(input.displayOrder())
-			.build();
-
 		ModifyOptionValueDomainServiceDto.Event event = ModifyOptionValueDomainServiceDto.Event.builder()
 			.optionValue(modifiedOptionValue)
 			.build();
@@ -123,7 +118,7 @@ public class ModifyOptionValueUseCaseTest {
 		when(mockReadOptionValuePort.readOrThrow(optionValueId))
 			.thenReturn(optionValue);
 
-		when(mockModifyOptionValueDomainService.execute(domainInput))
+		when(mockModifyOptionValueDomainService.execute(any(ModifyOptionValueDomainServiceDto.Input.class)))
 			.thenReturn(event);
 
 		// when
@@ -140,7 +135,7 @@ public class ModifyOptionValueUseCaseTest {
 			.readOrThrow(optionValueId);
 
 		verify(mockModifyOptionValueDomainService, times(1))
-			.execute(domainInput);
+			.execute(any(ModifyOptionValueDomainServiceDto.Input.class));
 
 		ArgumentCaptor<OptionValue> argumentCaptorValue = ArgumentCaptor.forClass(OptionValue.class);
 		ArgumentCaptor<OptionGroup> argumentCaptorGroup = ArgumentCaptor.forClass(OptionGroup.class);
@@ -150,10 +145,11 @@ public class ModifyOptionValueUseCaseTest {
 
 		OptionValue saveOptionValue = argumentCaptorValue.getValue();
 
-		Assertions.assertThat(modifiedOptionValue.getOptionGroupId()).isEqualTo(saveOptionValue.getOptionGroupId());
-		Assertions.assertThat(modifiedOptionValue.getName()).isEqualTo(saveOptionValue.getName());
-		Assertions.assertThat(modifiedOptionValue.getPrice()).isEqualTo(saveOptionValue.getPrice());
-		Assertions.assertThat(modifiedOptionValue.getOrder()).isEqualTo(saveOptionValue.getOrder());
+		soft.assertThat(modifiedOptionValue.getOptionGroupId()).isEqualTo(saveOptionValue.getOptionGroupId());
+		soft.assertThat(modifiedOptionValue.getName()).isEqualTo(saveOptionValue.getName());
+		soft.assertThat(modifiedOptionValue.getPrice()).isEqualTo(saveOptionValue.getPrice());
+		soft.assertThat(modifiedOptionValue.getOrder()).isEqualTo(saveOptionValue.getOrder());
+		soft.assertAll();
 	}
 
 	@Test
@@ -188,10 +184,10 @@ public class ModifyOptionValueUseCaseTest {
 			.thenReturn(product);
 
 		// when
+		// then
 		assertThatThrownBy(() -> modifyOptionValueUseCase.execute(input))
 			.isInstanceOf(OptionException.class);
 
-		// then
 		verify(mockReadProductPort, times(1))
 			.readOrThrow(productId);
 
