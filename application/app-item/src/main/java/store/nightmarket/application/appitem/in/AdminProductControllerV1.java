@@ -1,9 +1,11 @@
 package store.nightmarket.application.appitem.in;
 
+import java.math.BigInteger;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,14 +17,17 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.auth.RequireRoles;
 import store.nightmarket.application.appitem.auth.UserSession;
 import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
+import store.nightmarket.application.appitem.in.dto.ModifyProductDto;
 import store.nightmarket.application.appitem.in.dto.ReadProductDto;
 import store.nightmarket.application.appitem.in.dto.ReadProductListDto;
 import store.nightmarket.application.appitem.in.dto.RegisterProductDto;
 import store.nightmarket.application.appitem.usecase.product.DeleteProductUseCase;
+import store.nightmarket.application.appitem.usecase.product.ModifyProductUseCase;
 import store.nightmarket.application.appitem.usecase.product.ReadProductListUseCase;
 import store.nightmarket.application.appitem.usecase.product.ReadProductUseCase;
 import store.nightmarket.application.appitem.usecase.product.RegisterProductUseCase;
 import store.nightmarket.application.appitem.usecase.product.dto.DeleteProductUseCaseDto;
+import store.nightmarket.application.appitem.usecase.product.dto.ModifyProductUseCaseDto;
 import store.nightmarket.application.appitem.usecase.product.dto.ReadProductListUseCaseDto;
 import store.nightmarket.application.appitem.usecase.product.dto.ReadProductUseCaseDto;
 import store.nightmarket.application.appitem.usecase.product.dto.RegisterProductUseCaseDto;
@@ -40,6 +45,7 @@ public class AdminProductControllerV1 {
 	private final ReadProductUseCase readProductUseCase;
 	private final RegisterProductUseCase registerProductUseCase;
 	private final DeleteProductUseCase deleteProductUseCase;
+	private final ModifyProductUseCase modifyProductUseCase;
 
 	@GetMapping
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
@@ -113,7 +119,7 @@ public class AdminProductControllerV1 {
 
 	@DeleteMapping("/{productId}")
 	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
-	public void deleteOptionGroup(
+	public void deleteProduct(
 		@PathVariable("productId") UUID productId,
 		@AuthorizedUser UserSession userSession
 	) {
@@ -121,6 +127,24 @@ public class AdminProductControllerV1 {
 			DeleteProductUseCaseDto.Input.builder()
 				.productId(new ProductId(productId))
 				.userId(new UserId(UUID.fromString(userSession.userId())))
+				.build()
+		);
+	}
+
+	@PatchMapping("/{productId}")
+	@RequireRoles({"ROLE_ADMIN", "ROLE_SELLER"})
+	public void modifyProduct(
+		@PathVariable("productId") UUID productId,
+		@RequestBody ModifyProductDto.Request request,
+		@AuthorizedUser UserSession userSession
+	) {
+		modifyProductUseCase.execute(
+			ModifyProductUseCaseDto.Input.builder()
+				.productId(new ProductId(productId))
+				.userId(new UserId(UUID.fromString(userSession.userId())))
+				.name(new Name(request.name()))
+				.description(request.description())
+				.price(new Price(BigInteger.valueOf(request.price())))
 				.build()
 		);
 	}
