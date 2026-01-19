@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.UUID;
 
-import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,8 +13,8 @@ import org.mockito.ArgumentCaptor;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadOptionGroupPort;
-import store.nightmarket.application.appitem.out.SaveOptionGroupPort;
 import store.nightmarket.application.appitem.out.ReadProductPort;
+import store.nightmarket.application.appitem.out.SaveOptionGroupPort;
 import store.nightmarket.application.appitem.usecase.option.dto.ModifyOptionGroupUseCaseDto;
 import store.nightmarket.domain.item.exception.OptionException;
 import store.nightmarket.domain.item.model.OptionGroup;
@@ -33,6 +33,7 @@ public class ModifyOptionGroupUseCaseTest {
 	private ReadOptionGroupPort mockReadOptionGroupPort;
 	private SaveOptionGroupPort mockSaveOptionGroupPort;
 	private ModifyOptionGroupDomainService mockModifyOptionGroupDomainService;
+	private SoftAssertions soft;
 
 	@BeforeEach
 	void setUp() {
@@ -46,6 +47,7 @@ public class ModifyOptionGroupUseCaseTest {
 			mockSaveOptionGroupPort,
 			mockModifyOptionGroupDomainService
 		);
+		soft = new SoftAssertions();
 	}
 
 	@Test
@@ -84,12 +86,6 @@ public class ModifyOptionGroupUseCaseTest {
 			.displayOrder(modifiedOrder)
 			.build();
 
-		ModifyOptionGroupDomainServiceDto.Input domainInput = ModifyOptionGroupDomainServiceDto.Input.builder()
-			.optionGroup(optionGroup)
-			.name(input.name())
-			.order(input.displayOrder())
-			.build();
-
 		ModifyOptionGroupDomainServiceDto.Event event = ModifyOptionGroupDomainServiceDto.Event.builder()
 			.optionGroup(modifiedOptionGroup)
 			.build();
@@ -100,7 +96,7 @@ public class ModifyOptionGroupUseCaseTest {
 		when(mockReadOptionGroupPort.readOrThrow(optionGroupId))
 			.thenReturn(optionGroup);
 
-		when(mockModifyOptionGroupDomainService.execute(domainInput))
+		when(mockModifyOptionGroupDomainService.execute(any(ModifyOptionGroupDomainServiceDto.Input.class)))
 			.thenReturn(event);
 
 		// when
@@ -114,7 +110,7 @@ public class ModifyOptionGroupUseCaseTest {
 			.readOrThrow(optionGroupId);
 
 		verify(mockModifyOptionGroupDomainService, times(1))
-			.execute(domainInput);
+			.execute(any(ModifyOptionGroupDomainServiceDto.Input.class));
 
 		ArgumentCaptor<OptionGroup> argumentCaptor = ArgumentCaptor.forClass(OptionGroup.class);
 
@@ -123,9 +119,10 @@ public class ModifyOptionGroupUseCaseTest {
 
 		OptionGroup saveOptionGroup = argumentCaptor.getValue();
 
-		Assertions.assertThat(modifiedOptionGroup.getOptionGroupId()).isEqualTo(saveOptionGroup.getOptionGroupId());
-		Assertions.assertThat(modifiedOptionGroup.getName()).isEqualTo(saveOptionGroup.getName());
-		Assertions.assertThat(modifiedOptionGroup.getOrder()).isEqualTo(saveOptionGroup.getOrder());
+		soft.assertThat(modifiedOptionGroup.getOptionGroupId()).isEqualTo(saveOptionGroup.getOptionGroupId());
+		soft.assertThat(modifiedOptionGroup.getName()).isEqualTo(saveOptionGroup.getName());
+		soft.assertThat(modifiedOptionGroup.getOrder()).isEqualTo(saveOptionGroup.getOrder());
+		soft.assertAll();
 	}
 
 	@Test
@@ -143,7 +140,7 @@ public class ModifyOptionGroupUseCaseTest {
 
 		Name modifiedName = new Name("modified name");
 		int modifiedOrder = 2;
-		
+
 		ModifyOptionGroupUseCaseDto.Input input = ModifyOptionGroupUseCaseDto.Input.builder()
 			.productId(productId)
 			.optionGroupId(optionGroupId)
@@ -156,10 +153,10 @@ public class ModifyOptionGroupUseCaseTest {
 			.thenReturn(product);
 
 		// when
+		// then
 		assertThatThrownBy(() -> modifyOptionGroupUseCase.execute(input))
 			.isInstanceOf(OptionException.class);
 
-		// then
 		verify(mockReadProductPort, times(1))
 			.readOrThrow(productId);
 

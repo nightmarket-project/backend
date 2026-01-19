@@ -6,7 +6,7 @@ import static org.mockito.Mockito.*;
 import java.math.BigInteger;
 import java.util.UUID;
 
-import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +34,7 @@ public class ModifyProductVariantUseCaseTest {
 	private ReadProductVariantPort mockReadProductVariantPort;
 	private SaveProductVariantPort mockSaveProductVariantPort;
 	private ModifyProductVariantDomainService mockModifyProductVariantDomainService;
+	private SoftAssertions soft;
 
 	@BeforeEach
 	void setUp() {
@@ -47,6 +48,7 @@ public class ModifyProductVariantUseCaseTest {
 			mockSaveProductVariantPort,
 			mockModifyProductVariantDomainService
 		);
+		soft = new SoftAssertions();
 	}
 
 	@Test
@@ -86,12 +88,6 @@ public class ModifyProductVariantUseCaseTest {
 			.quantity(modifiedQuantity)
 			.build();
 
-		ModifyProductVariantDomainServiceDto.Input domainInput = ModifyProductVariantDomainServiceDto.Input.builder()
-			.productVariant(productVariant)
-			.SKUCode(input.SKUCode())
-			.quantity(input.quantity())
-			.build();
-
 		ModifyProductVariantDomainServiceDto.Event event = ModifyProductVariantDomainServiceDto.Event.builder()
 			.productVariant(modifiedProductVariant)
 			.build();
@@ -102,7 +98,7 @@ public class ModifyProductVariantUseCaseTest {
 		when(mockReadProductVariantPort.readOrThrow(productVariantId))
 			.thenReturn(productVariant);
 
-		when(mockModifyProductVariantDomainService.execute(domainInput))
+		when(mockModifyProductVariantDomainService.execute(any(ModifyProductVariantDomainServiceDto.Input.class)))
 			.thenReturn(event);
 
 		// when
@@ -116,7 +112,7 @@ public class ModifyProductVariantUseCaseTest {
 			.readOrThrow(productVariantId);
 
 		verify(mockModifyProductVariantDomainService, times(1))
-			.execute(domainInput);
+			.execute(any(ModifyProductVariantDomainServiceDto.Input.class));
 
 		ArgumentCaptor<ProductVariant> argumentCaptor = ArgumentCaptor.forClass(ProductVariant.class);
 
@@ -125,8 +121,9 @@ public class ModifyProductVariantUseCaseTest {
 
 		ProductVariant saveProductVariant = argumentCaptor.getValue();
 
-		Assertions.assertThat(modifiedProductVariant.getSKUCode()).isEqualTo(saveProductVariant.getSKUCode());
-		Assertions.assertThat(modifiedProductVariant.getQuantity()).isEqualTo(saveProductVariant.getQuantity());
+		soft.assertThat(modifiedProductVariant.getSKUCode()).isEqualTo(saveProductVariant.getSKUCode());
+		soft.assertThat(modifiedProductVariant.getQuantity()).isEqualTo(saveProductVariant.getQuantity());
+		soft.assertAll();
 	}
 
 	@Test

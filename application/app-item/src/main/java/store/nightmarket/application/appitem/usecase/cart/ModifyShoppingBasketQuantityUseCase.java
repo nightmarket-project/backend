@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadShoppingBasketProductPort;
 import store.nightmarket.application.appitem.out.SaveShoppingBasketProductPort;
 import store.nightmarket.common.application.usecase.BaseUseCase;
+import store.nightmarket.domain.item.exception.ShoppingBasketException;
 import store.nightmarket.domain.item.model.ShoppingBasketProduct;
 import store.nightmarket.domain.item.service.PutProductIntoShoppingBasketDomainService;
 import store.nightmarket.domain.item.service.dto.PutProductIntoShoppingBasketDomainServiceDto;
@@ -22,8 +23,12 @@ public class ModifyShoppingBasketQuantityUseCase implements BaseUseCase<Input, V
 
 	@Override
 	public Void execute(Input input) {
-		ShoppingBasketProduct shoppingBasketProduct = readShoppingBasketProductPort.readOrThrow(
-			input.shoppingBasketProductId());
+		ShoppingBasketProduct shoppingBasketProduct
+			= readShoppingBasketProductPort.readOrThrow(input.shoppingBasketProductId());
+
+		if (!shoppingBasketProduct.isOwner(input.userId())) {
+			throw new ShoppingBasketException("Not Owner for ShoppingBasketProduct");
+		}
 
 		PutProductIntoShoppingBasketDomainServiceDto.Input domainInput = PutProductIntoShoppingBasketDomainServiceDto.Input.builder()
 			.shoppingBasketProduct(shoppingBasketProduct)
