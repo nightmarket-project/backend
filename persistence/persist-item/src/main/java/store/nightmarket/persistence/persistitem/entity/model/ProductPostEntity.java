@@ -9,6 +9,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -17,6 +19,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import store.nightmarket.domain.itemweb.model.state.PostState;
 import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity;
 
 @Getter
@@ -40,21 +43,32 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 	@OneToMany(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
 	private List<ReviewEntity> reviewEntityList = new ArrayList<>();
 
-	@Column(name = "deleted", nullable = false)
-	private boolean deleted;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "state", nullable = false)
+	private PostState state;
+
+	@Column(name = "publish_at")
+	private LocalDateTime publishAt;
+
+	@Column(name = "expired_at")
+	private LocalDateTime expiredAt;
 
 	private ProductPostEntity(
 		UUID id,
 		ProductEntity productEntity,
 		UserEntity userEntity,
 		RatingEntity ratingEntity,
-		boolean deleted
+		PostState state,
+		LocalDateTime publishAt,
+		LocalDateTime expiredAt
 	) {
 		super(id);
 		this.productEntity = productEntity;
 		this.userEntity = userEntity;
 		this.ratingEntity = ratingEntity;
-		this.deleted = deleted;
+		this.state = state;
+		this.publishAt = publishAt;
+		this.expiredAt = expiredAt;
 	}
 
 	private ProductPostEntity(
@@ -63,13 +77,17 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 		ProductEntity productEntity,
 		UserEntity userEntity,
 		RatingEntity ratingEntity,
-		boolean deleted
+		PostState state,
+		LocalDateTime publishAt,
+		LocalDateTime expiredAt
 	) {
 		super(id, createdAt);
 		this.productEntity = productEntity;
 		this.userEntity = userEntity;
 		this.ratingEntity = ratingEntity;
-		this.deleted = deleted;
+		this.state = state;
+		this.publishAt = publishAt;
+		this.expiredAt = expiredAt;
 	}
 
 	public static ProductPostEntity newInstance(
@@ -77,14 +95,18 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 		ProductEntity productEntity,
 		UserEntity userEntity,
 		RatingEntity ratingEntity,
-		boolean deleted
+		PostState state,
+		LocalDateTime publishAt,
+		LocalDateTime expiredAt
 	) {
 		return new ProductPostEntity(
 			id,
 			productEntity,
 			userEntity,
 			ratingEntity,
-			deleted
+			state,
+			publishAt,
+			expiredAt
 		);
 	}
 
@@ -94,7 +116,9 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 		ProductEntity productEntity,
 		UserEntity userEntity,
 		RatingEntity ratingEntity,
-		boolean deleted
+		PostState state,
+		LocalDateTime publishAt,
+		LocalDateTime expiredAt
 	) {
 		return new ProductPostEntity(
 			id,
@@ -102,7 +126,9 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 			productEntity,
 			userEntity,
 			ratingEntity,
-			deleted
+			state,
+			publishAt,
+			expiredAt
 		);
 	}
 

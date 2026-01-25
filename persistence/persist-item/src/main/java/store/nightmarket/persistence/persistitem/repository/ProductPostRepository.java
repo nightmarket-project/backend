@@ -1,5 +1,7 @@
 package store.nightmarket.persistence.persistitem.repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,14 +17,24 @@ import store.nightmarket.persistence.persistitem.entity.model.ProductPostEntity;
 @Repository
 public interface ProductPostRepository extends JpaRepository<ProductPostEntity, UUID> {
 
-	@Query("SELECT productPostEntity FROM ProductPostEntity productPostEntity " +
-		"JOIN FETCH productPostEntity.productEntity productEntity " +
-		"WHERE productEntity.nameEntity.value LIKE %:keyword%")
+	@Query("""
+			SELECT productPostEntity FROM ProductPostEntity productPostEntity
+			JOIN FETCH productPostEntity.productEntity productEntity
+			WHERE productEntity.nameEntity.value LIKE %:keyword%
+		""")
 	Page<ProductPostEntity> findByKeywordContaining(@Param("keyword") String keyword, Pageable pageable);
 
-	@Query("SELECT productPostEntity FROM ProductPostEntity productPostEntity " +
-		"JOIN FETCH productPostEntity.productEntity productEntity " +
-		"WHERE productPostEntity.id = :postId")
+	@Query("""
+			SELECT productPostEntity FROM ProductPostEntity productPostEntity
+			JOIN FETCH productPostEntity.productEntity productEntity
+			WHERE productPostEntity.id = :postId
+		""")
 	Optional<ProductPostEntity> findByPostId(@Param("postId") UUID postId);
 
+	@Query("""
+			SELECT productPostEntity FROM ProductPostEntity productPostEntity
+			WHERE productPostEntity.state IN ('SCHEDULED', 'PUBLISHED')
+			AND (productPostEntity.publishAt <= :now OR productPostEntity.expiredAt <= :now)
+		""")
+	List<ProductPostEntity> findByRefreshProductPost(@Param("now") LocalDateTime now);
 }
