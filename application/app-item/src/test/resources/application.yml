@@ -51,3 +51,6 @@ web:
     include-patterns:
       - "/api/v1/cart/**"
       - "/api/v1/admin/products/***"
+
+schedules:
+  cron: 0/1 * * * * *

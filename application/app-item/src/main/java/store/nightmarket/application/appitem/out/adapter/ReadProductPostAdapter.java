@@ -1,5 +1,7 @@
 package store.nightmarket.application.appitem.out.adapter;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -8,7 +10,9 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadProductPostPort;
+import store.nightmarket.application.appitem.out.mapper.ProductPostMapper;
 import store.nightmarket.application.appitem.out.mapper.dto.ProductPostAdapterDto;
+import store.nightmarket.domain.itemweb.model.ProductPost;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 import store.nightmarket.persistence.persistitem.repository.ProductPostRepository;
 
@@ -28,6 +32,14 @@ public class ReadProductPostAdapter implements ReadProductPostPort {
 	public Optional<ProductPostAdapterDto> readFetch(ProductPostId productPostId) {
 		return productPostRepository.findByPostId(productPostId.getId())
 			.map(ProductPostAdapterDto::toDomain);
+	}
+
+	@Override
+	public List<ProductPost> readRefreshProductPost(LocalDateTime now) {
+		return productPostRepository.findByRefreshProductPost(now)
+			.stream()
+			.map(ProductPostMapper::toDomain)
+			.toList();
 	}
 
 }
