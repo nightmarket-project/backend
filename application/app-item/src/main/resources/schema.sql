@@ -59,8 +59,10 @@ CREATE TABLE product_post
     id         VARCHAR(36) NOT NULL,
     product_id VARCHAR(36) NULL,
     user_id    VARCHAR(36) NULL,
-    deleted    BOOLEAN     NOT NULL,
     rating     FLOAT      NULL,
+    state      VARCHAR(50) NOT NULL,
+    publish_at TIMESTAMP    NOT NULL,
+    expired_at TIMESTAMP    NOT NULL,
     CONSTRAINT pk_product_post PRIMARY KEY (id)
 );
 

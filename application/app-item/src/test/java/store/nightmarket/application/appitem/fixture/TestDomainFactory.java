@@ -1,6 +1,7 @@
 package store.nightmarket.application.appitem.fixture;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import store.nightmarket.domain.item.model.OptionGroup;
@@ -30,6 +31,7 @@ import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 import store.nightmarket.domain.itemweb.model.id.ReplyId;
 import store.nightmarket.domain.itemweb.model.id.ReviewId;
 import store.nightmarket.domain.itemweb.model.state.ImageType;
+import store.nightmarket.domain.itemweb.model.state.PostState;
 import store.nightmarket.domain.itemweb.valueobject.CommentText;
 import store.nightmarket.domain.itemweb.valueobject.Image;
 import store.nightmarket.domain.itemweb.valueobject.Rating;
@@ -44,7 +46,25 @@ public class TestDomainFactory {
 			new ProductPostId(productPostId),
 			new ProductId(productId),
 			new Rating(4.5f),
-			false
+			PostState.DRAFT,
+			LocalDateTime.now(),
+			LocalDateTime.now()
+		);
+	}
+
+	public static ProductPost createProductPost(
+		UUID productPostId,
+		UUID productId,
+		LocalDateTime publishAt,
+		LocalDateTime expiredAt
+	) {
+		return ProductPost.newInstance(
+			new ProductPostId(productPostId),
+			new ProductId(productId),
+			new Rating(4.5f),
+			PostState.DRAFT,
+			publishAt,
+			expiredAt
 		);
 	}
 
