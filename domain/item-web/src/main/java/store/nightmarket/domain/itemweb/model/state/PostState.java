@@ -4,19 +4,15 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public enum PostState {
-	DRAFT,        // 임시저장
-	SCHEDULED,    // 예약됨
+	UNPUBLISHED,  // 게시안됨
 	PUBLISHED,    // 게시중
-	EXPIRED,    // 게시 종료
-	DELETED;        // 삭제됨
+	DELETED;      // 삭제됨
 
 	private Set<PostState> nextStates;
 
 	static {
-		DRAFT.nextStates = EnumSet.of(SCHEDULED, PUBLISHED, DELETED);
-		SCHEDULED.nextStates = EnumSet.of(PUBLISHED, DELETED);
-		PUBLISHED.nextStates = EnumSet.of(EXPIRED, DELETED);
-		EXPIRED.nextStates = EnumSet.of(DELETED);
+		UNPUBLISHED.nextStates = EnumSet.of(PUBLISHED, DELETED);
+		PUBLISHED.nextStates = EnumSet.of(UNPUBLISHED, DELETED);
 		DELETED.nextStates = EnumSet.noneOf(PostState.class);
 	}
 

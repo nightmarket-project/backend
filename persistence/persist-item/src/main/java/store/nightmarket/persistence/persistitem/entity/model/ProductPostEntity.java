@@ -47,28 +47,18 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 	@Column(name = "state", nullable = false)
 	private PostState state;
 
-	@Column(name = "publish_at")
-	private LocalDateTime publishAt;
-
-	@Column(name = "expired_at")
-	private LocalDateTime expiredAt;
-
 	private ProductPostEntity(
 		UUID id,
 		ProductEntity productEntity,
 		UserEntity userEntity,
 		RatingEntity ratingEntity,
-		PostState state,
-		LocalDateTime publishAt,
-		LocalDateTime expiredAt
+		PostState state
 	) {
 		super(id);
 		this.productEntity = productEntity;
 		this.userEntity = userEntity;
 		this.ratingEntity = ratingEntity;
 		this.state = state;
-		this.publishAt = publishAt;
-		this.expiredAt = expiredAt;
 	}
 
 	private ProductPostEntity(
@@ -77,17 +67,13 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 		ProductEntity productEntity,
 		UserEntity userEntity,
 		RatingEntity ratingEntity,
-		PostState state,
-		LocalDateTime publishAt,
-		LocalDateTime expiredAt
+		PostState state
 	) {
 		super(id, createdAt);
 		this.productEntity = productEntity;
 		this.userEntity = userEntity;
 		this.ratingEntity = ratingEntity;
 		this.state = state;
-		this.publishAt = publishAt;
-		this.expiredAt = expiredAt;
 	}
 
 	public static ProductPostEntity newInstance(
@@ -95,18 +81,14 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 		ProductEntity productEntity,
 		UserEntity userEntity,
 		RatingEntity ratingEntity,
-		PostState state,
-		LocalDateTime publishAt,
-		LocalDateTime expiredAt
+		PostState state
 	) {
 		return new ProductPostEntity(
 			id,
 			productEntity,
 			userEntity,
 			ratingEntity,
-			state,
-			publishAt,
-			expiredAt
+			state
 		);
 	}
 
@@ -116,9 +98,7 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 		ProductEntity productEntity,
 		UserEntity userEntity,
 		RatingEntity ratingEntity,
-		PostState state,
-		LocalDateTime publishAt,
-		LocalDateTime expiredAt
+		PostState state
 	) {
 		return new ProductPostEntity(
 			id,
@@ -126,9 +106,7 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 			productEntity,
 			userEntity,
 			ratingEntity,
-			state,
-			publishAt,
-			expiredAt
+			state
 		);
 	}
 

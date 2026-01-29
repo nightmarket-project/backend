@@ -97,6 +97,3 @@ web:
       - "/api/v1/cart/**"
       - "/api/v1/admin/products/**"
       - "/api/v1/admin/posts/**"
-
-schedules:
-  cron: 0 0/1 * * * *

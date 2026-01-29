@@ -61,8 +61,6 @@ CREATE TABLE product_post
     user_id    VARCHAR(36) NULL,
     rating     FLOAT      NULL,
     state      VARCHAR(50) NOT NULL,
-    publish_at TIMESTAMP    NOT NULL,
-    expired_at TIMESTAMP    NOT NULL,
     CONSTRAINT pk_product_post PRIMARY KEY (id)
 );
 
@@ -142,5 +140,13 @@ CREATE TABLE preempted_product_variant (
     expired_at TIMESTAMP NOT NULL,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE schedule_post (
+    id                  VARCHAR(36) NOT NULL,
+    product_post_id     VARCHAR(36) NOT NULL,
+    scheduled_at        TIMESTAMP NOT NULL,
+    state               VARCHAR(50) NOT NULL,
+    CONSTRAINT pk_schedule_post PRIMARY KEY (id)
 );
 

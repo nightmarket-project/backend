@@ -17,9 +17,7 @@ public class ProductPostMapper {
 			entity.getCreatedAt(),
 			new ProductId(entity.getProductEntity().getId()),
 			new Rating(entity.getRatingEntity().getAmount()),
-			entity.getState(),
-			entity.getPublishAt(),
-			entity.getExpiredAt()
+			entity.getState()
 		);
 	}
 
@@ -34,9 +32,7 @@ public class ProductPostMapper {
 			productEntity,
 			userEntity,
 			new RatingEntity(domain.getRating().value()),
-			domain.getState(),
-			domain.getPublishAt(),
-			domain.getExpiredAt()
+			domain.getState()
 		);
 	}
 

@@ -53,7 +53,7 @@ public class TestFactory {
 			new ProductPostId(UUID.randomUUID()),
 			new ProductId(productId),
 			new Rating(5.0f),
-			PostState.DRAFT
+			PostState.UNPUBLISHED
 		);
 	}
 

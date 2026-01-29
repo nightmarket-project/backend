@@ -1,7 +1,5 @@
 package store.nightmarket.persistence.persistitem.repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,11 +28,4 @@ public interface ProductPostRepository extends JpaRepository<ProductPostEntity, 
 			WHERE productPostEntity.id = :postId
 		""")
 	Optional<ProductPostEntity> findByPostId(@Param("postId") UUID postId);
-
-	@Query("""
-			SELECT productPostEntity FROM ProductPostEntity productPostEntity
-			WHERE productPostEntity.state IN ('SCHEDULED', 'PUBLISHED')
-			AND (productPostEntity.publishAt <= :now OR productPostEntity.expiredAt <= :now)
-		""")
-	List<ProductPostEntity> findByRefreshProductPost(@Param("now") LocalDateTime now);
 }
