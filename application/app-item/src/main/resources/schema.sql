@@ -58,7 +58,6 @@ CREATE TABLE product_post
 (
     id         VARCHAR(36) NOT NULL,
     product_id VARCHAR(36) NULL,
-    user_id    VARCHAR(36) NULL,
     rating     FLOAT      NULL,
     state      VARCHAR(50) NOT NULL,
     CONSTRAINT pk_product_post PRIMARY KEY (id)
