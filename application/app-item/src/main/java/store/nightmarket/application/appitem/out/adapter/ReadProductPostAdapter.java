@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadProductPostPort;
+import store.nightmarket.application.appitem.out.mapper.ProductPostMapper;
 import store.nightmarket.application.appitem.out.mapper.dto.ProductPostAdapterDto;
+import store.nightmarket.domain.itemweb.model.ProductPost;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 import store.nightmarket.persistence.persistitem.repository.ProductPostRepository;
 
@@ -17,6 +19,12 @@ import store.nightmarket.persistence.persistitem.repository.ProductPostRepositor
 public class ReadProductPostAdapter implements ReadProductPostPort {
 
 	private final ProductPostRepository productPostRepository;
+
+	@Override
+	public Optional<ProductPost> read(ProductPostId id) {
+		return productPostRepository.findByPostId(id.getId())
+			.map(ProductPostMapper::toDomain);
+	}
 
 	@Override
 	public Page<ProductPostAdapterDto> findProductPostListByKeyword(String keyword, Pageable pageable) {

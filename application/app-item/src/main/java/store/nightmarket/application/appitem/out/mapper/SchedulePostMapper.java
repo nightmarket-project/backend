@@ -13,7 +13,8 @@ public class SchedulePostMapper {
 			entity.getCreatedAt(),
 			new ProductPostId(entity.getProductPostId()),
 			entity.getScheduledAt(),
-			entity.getState()
+			entity.getState(),
+			entity.getType()
 		);
 	}
 
@@ -23,7 +24,8 @@ public class SchedulePostMapper {
 			domain.getCreatedAt(),
 			domain.getProductPostId().getId(),
 			domain.getScheduledAt(),
-			domain.getState()
+			domain.getState(),
+			domain.getType()
 		);
 	}
 

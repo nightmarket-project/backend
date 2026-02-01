@@ -7,9 +7,17 @@ import org.springframework.data.domain.Pageable;
 
 import store.nightmarket.application.appitem.out.mapper.dto.ProductPostAdapterDto;
 import store.nightmarket.domain.itemweb.exception.ProductPostException;
+import store.nightmarket.domain.itemweb.model.ProductPost;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 
 public interface ReadProductPostPort {
+
+	Optional<ProductPost> read(ProductPostId id);
+
+	default ProductPost readOrThrow(ProductPostId id) {
+		return read(id)
+			.orElseThrow(() -> new ProductPostException("Not Found ProductPost"));
+	}
 
 	Page<ProductPostAdapterDto> findProductPostListByKeyword(String keyword, Pageable pageable);
 

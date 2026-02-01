@@ -1,6 +1,7 @@
 package store.nightmarket.domain.itemweb.model;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import lombok.Getter;
 import store.nightmarket.domain.item.model.id.ProductId;
@@ -83,11 +84,22 @@ public class ProductPost extends ImageOwnerModel<ProductPostId> {
 		this.state = PostState.PUBLISHED;
 	}
 
+	public void unpublish() {
+		if (!state.canTransitionTo(PostState.UNPUBLISHED)) {
+			throw new ProductPostException("cannot change state to unpublished");
+		}
+		this.state = PostState.UNPUBLISHED;
+	}
+
 	public void delete() {
 		if (!state.canTransitionTo(PostState.DELETED)) {
 			throw new ProductPostException("cannot change state to deleted");
 		}
 		this.state = PostState.DELETED;
+	}
+
+	public void edit(Rating editRating) {
+		this.rating = Optional.of(editRating).orElseGet(() -> rating);
 	}
 
 }

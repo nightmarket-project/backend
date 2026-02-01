@@ -143,9 +143,12 @@ CREATE TABLE preempted_product_variant (
 
 CREATE TABLE schedule_post (
     id                  VARCHAR(36) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
     product_post_id     VARCHAR(36) NOT NULL,
     scheduled_at        TIMESTAMP NOT NULL,
     state               VARCHAR(50) NOT NULL,
+    type                VARCHAR(50) NOT NULL,
     CONSTRAINT pk_schedule_post PRIMARY KEY (id)
 );
 

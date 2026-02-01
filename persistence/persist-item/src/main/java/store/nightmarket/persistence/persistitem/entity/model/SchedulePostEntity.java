@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
+import store.nightmarket.domain.itemweb.model.state.ScheduleActionType;
 import store.nightmarket.domain.itemweb.model.state.SchedulePostState;
 
 @Getter
@@ -30,16 +31,22 @@ public class SchedulePostEntity extends BaseUuidEntity {
 	@Column(name = "state", nullable = false)
 	private SchedulePostState state;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type", nullable = false)
+	private ScheduleActionType type;
+
 	private SchedulePostEntity(
 		UUID id,
 		UUID productPostId,
 		LocalDateTime scheduledAt,
-		SchedulePostState state
+		SchedulePostState state,
+		ScheduleActionType type
 	) {
 		super(id);
 		this.productPostId = productPostId;
 		this.scheduledAt = scheduledAt;
 		this.state = state;
+		this.type = type;
 	}
 
 	private SchedulePostEntity(
@@ -47,25 +54,29 @@ public class SchedulePostEntity extends BaseUuidEntity {
 		LocalDateTime createdAt,
 		UUID productPostId,
 		LocalDateTime scheduledAt,
-		SchedulePostState state
+		SchedulePostState state,
+		ScheduleActionType type
 	) {
 		super(id, createdAt);
 		this.productPostId = productPostId;
 		this.scheduledAt = scheduledAt;
 		this.state = state;
+		this.type = type;
 	}
 
 	public static SchedulePostEntity newInstance(
 		UUID id,
 		UUID productPostId,
 		LocalDateTime scheduledAt,
-		SchedulePostState state
+		SchedulePostState state,
+		ScheduleActionType type
 	) {
 		return new SchedulePostEntity(
 			id,
 			productPostId,
 			scheduledAt,
-			state
+			state,
+			type
 		);
 	}
 
@@ -74,14 +85,16 @@ public class SchedulePostEntity extends BaseUuidEntity {
 		LocalDateTime createdAt,
 		UUID productPostId,
 		LocalDateTime scheduledAt,
-		SchedulePostState state
+		SchedulePostState state,
+		ScheduleActionType type
 	) {
 		return new SchedulePostEntity(
 			id,
 			createdAt,
 			productPostId,
 			scheduledAt,
-			state
+			state,
+			type
 		);
 	}
 

@@ -5,4 +5,5 @@ public class Constant {
 	public static final String USER_SESSION = "USER_SESSION";
 	public static final int PREEMPT_TTL_MINUTE = 15;
 	public static final String LOCK_PREFIX = "LOCK:";
+	public static final String SCHEDULED_TASK = "SCHEDULED_TASK:";
 }
