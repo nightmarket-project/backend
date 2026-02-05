@@ -17,19 +17,22 @@ public class SchedulePost extends BaseModel<SchedulePostId> {
 	private LocalDateTime scheduledAt;
 	private SchedulePostState state;
 	private ScheduleActionType type;
+	private String context;
 
 	private SchedulePost(
 		SchedulePostId id,
 		ProductPostId productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type
+		ScheduleActionType type,
+		String context
 	) {
 		super(id);
 		this.productPostId = productPostId;
 		this.scheduledAt = scheduledAt;
 		this.state = state;
 		this.type = type;
+		this.context = context;
 	}
 
 	private SchedulePost(
@@ -38,13 +41,15 @@ public class SchedulePost extends BaseModel<SchedulePostId> {
 		ProductPostId productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type
+		ScheduleActionType type,
+		String context
 	) {
 		super(id, createdAt);
 		this.productPostId = productPostId;
 		this.scheduledAt = scheduledAt;
 		this.state = state;
 		this.type = type;
+		this.context = context;
 	}
 
 	public static SchedulePost newInstance(
@@ -52,14 +57,16 @@ public class SchedulePost extends BaseModel<SchedulePostId> {
 		ProductPostId productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type
+		ScheduleActionType type,
+		String context
 	) {
 		return new SchedulePost(
 			id,
 			productPostId,
 			scheduledAt,
 			state,
-			type
+			type,
+			context
 		);
 	}
 
@@ -69,7 +76,8 @@ public class SchedulePost extends BaseModel<SchedulePostId> {
 		ProductPostId productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type
+		ScheduleActionType type,
+		String context
 	) {
 		return new SchedulePost(
 			id,
@@ -77,7 +85,8 @@ public class SchedulePost extends BaseModel<SchedulePostId> {
 			productPostId,
 			scheduledAt,
 			state,
-			type
+			type,
+			context
 		);
 	}
 

@@ -7,6 +7,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
+
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadSchedulePostPort;
 import store.nightmarket.application.appitem.usecase.post.ExecuteSchedulePostUseCase;
@@ -23,6 +25,11 @@ public class RescheduleService {
 
 	@Transactional
 	@EventListener(ApplicationReadyEvent.class)
+	@SchedulerLock(
+		name = "reschedule-posts",
+		lockAtMostFor = "PT10S",
+		lockAtLeastFor = "PT10S"
+	)
 	public void restoreSchedules() {
 		List<SchedulePost> schedules = readSchedulePostPort.readAllByReady();
 
@@ -36,7 +43,6 @@ public class RescheduleService {
 				schedule.getSchedulePostId()
 			)
 		);
-
 	}
 
 }

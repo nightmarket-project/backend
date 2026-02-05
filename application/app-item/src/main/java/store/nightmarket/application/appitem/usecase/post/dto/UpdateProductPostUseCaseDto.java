@@ -1,21 +1,16 @@
 package store.nightmarket.application.appitem.usecase.post.dto;
 
-import java.time.LocalDateTime;
-
 import lombok.Builder;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
-import store.nightmarket.domain.itemweb.model.state.ScheduleActionType;
+import store.nightmarket.domain.itemweb.valueobject.Rating;
 
-public class ScheduleProductPostUseCaseDto {
+public class UpdateProductPostUseCaseDto {
 
 	@Builder
 	public record Input(
 		ProductPostId productPostId,
-		LocalDateTime scheduledAt,
-		ScheduleActionType type,
-		Object payload
+		Rating rating
 	) {
 
 	}
-
 }

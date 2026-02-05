@@ -149,6 +149,14 @@ CREATE TABLE schedule_post (
     scheduled_at        TIMESTAMP NOT NULL,
     state               VARCHAR(50) NOT NULL,
     type                VARCHAR(50) NOT NULL,
+    context             VARCHAR(255) NULL,
     CONSTRAINT pk_schedule_post PRIMARY KEY (id)
+);
+
+CREATE TABLE shedlock (
+    name VARCHAR(64) PRIMARY KEY,
+    lock_until TIMESTAMP,
+    locked_at TIMESTAMP,
+    locked_by VARCHAR(255)
 );
 

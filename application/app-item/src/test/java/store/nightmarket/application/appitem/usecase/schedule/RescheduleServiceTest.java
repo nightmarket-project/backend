@@ -51,7 +51,8 @@ public class RescheduleServiceTest {
 			new ProductPostId(UUID.randomUUID()),
 			LocalDateTime.now().plusMinutes(10),
 			SchedulePostState.READY,
-			ScheduleActionType.PUBLISH
+			ScheduleActionType.PUBLISH,
+			null
 		);
 
 		SchedulePost schedule2 = SchedulePost.newInstance(
@@ -59,7 +60,8 @@ public class RescheduleServiceTest {
 			new ProductPostId(UUID.randomUUID()),
 			LocalDateTime.now().plusMinutes(20),
 			SchedulePostState.READY,
-			ScheduleActionType.UNPUBLISH
+			ScheduleActionType.UNPUBLISH,
+			null
 		);
 
 		when(mockReadSchedulePostPort.readAllByReady())

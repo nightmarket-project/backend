@@ -34,19 +34,24 @@ public class SchedulePostEntity extends BaseUuidEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "type", nullable = false)
 	private ScheduleActionType type;
+	
+	@Column(name = "context")
+	private String context;
 
 	private SchedulePostEntity(
 		UUID id,
 		UUID productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type
+		ScheduleActionType type,
+		String context
 	) {
 		super(id);
 		this.productPostId = productPostId;
 		this.scheduledAt = scheduledAt;
 		this.state = state;
 		this.type = type;
+		this.context = context;
 	}
 
 	private SchedulePostEntity(
@@ -55,13 +60,15 @@ public class SchedulePostEntity extends BaseUuidEntity {
 		UUID productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type
+		ScheduleActionType type,
+		String context
 	) {
 		super(id, createdAt);
 		this.productPostId = productPostId;
 		this.scheduledAt = scheduledAt;
 		this.state = state;
 		this.type = type;
+		this.context = context;
 	}
 
 	public static SchedulePostEntity newInstance(
@@ -69,14 +76,16 @@ public class SchedulePostEntity extends BaseUuidEntity {
 		UUID productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type
+		ScheduleActionType type,
+		String context
 	) {
 		return new SchedulePostEntity(
 			id,
 			productPostId,
 			scheduledAt,
 			state,
-			type
+			type,
+			context
 		);
 	}
 
@@ -86,7 +95,8 @@ public class SchedulePostEntity extends BaseUuidEntity {
 		UUID productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type
+		ScheduleActionType type,
+		String context
 	) {
 		return new SchedulePostEntity(
 			id,
@@ -94,7 +104,8 @@ public class SchedulePostEntity extends BaseUuidEntity {
 			productPostId,
 			scheduledAt,
 			state,
-			type
+			type,
+			context
 		);
 	}
 

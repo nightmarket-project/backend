@@ -1,27 +1,28 @@
 package store.nightmarket.application.appitem.usecase.post;
 
+import static org.assertj.core.api.SoftAssertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.UUID;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadProductPostPort;
 import store.nightmarket.application.appitem.out.SaveProductPostPort;
-import store.nightmarket.application.appitem.usecase.post.dto.UnpublishProductPostUseCaseDto;
+import store.nightmarket.application.appitem.usecase.post.dto.UpdateProductPostUseCaseDto;
 import store.nightmarket.domain.item.model.id.ProductId;
 import store.nightmarket.domain.itemweb.model.ProductPost;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 import store.nightmarket.domain.itemweb.model.state.PostState;
 import store.nightmarket.domain.itemweb.valueobject.Rating;
 
-public class UnpublishProductPostUseCaseTest {
+public class UpdateProductPostUseCaseTest {
 
-	private UnpublishProductPostUseCase unpublishProductPostUseCase;
+	private UpdateProductPostUseCase updateProductPostUseCase;
 	private ReadProductPostPort mockReadProductPostPort;
 	private SaveProductPostPort mockSaveProductPostPort;
 
@@ -29,35 +30,34 @@ public class UnpublishProductPostUseCaseTest {
 	void setUp() {
 		mockReadProductPostPort = mock(ReadProductPostPort.class);
 		mockSaveProductPostPort = mock(SaveProductPostPort.class);
-		unpublishProductPostUseCase = new UnpublishProductPostUseCase(
+		updateProductPostUseCase = new UpdateProductPostUseCase(
 			mockReadProductPostPort,
 			mockSaveProductPostPort
 		);
 	}
 
 	@Test
-	@DisplayName("상품 게시글을 내린다")
-	void unpublishProductPost() {
+	@DisplayName("상품 게시글을 수정한다")
+	void publishProductPost() {
 		// given
 		ProductPostId productPostId = new ProductPostId(UUID.randomUUID());
 		ProductId productId = new ProductId(UUID.randomUUID());
 
-		ProductPost productPost = ProductPost.newInstance(
-			productPostId,
-			productId,
-			new Rating(0.0f),
-			PostState.PUBLISHED
+		ProductPost productPost = TestDomainFactory.createProductPost(
+			productPostId.getId(),
+			productId.getId()
 		);
 
 		when(mockReadProductPostPort.readOrThrow(productPostId))
 			.thenReturn(productPost);
 
-		UnpublishProductPostUseCaseDto.Input input = UnpublishProductPostUseCaseDto.Input.builder()
+		UpdateProductPostUseCaseDto.Input input = UpdateProductPostUseCaseDto.Input.builder()
 			.productPostId(productPostId)
+			.rating(new Rating(3.0f))
 			.build();
 
 		// when
-		unpublishProductPostUseCase.execute(input);
+		updateProductPostUseCase.execute(input);
 
 		// then
 		verify(mockReadProductPostPort, times(1))
@@ -70,7 +70,10 @@ public class UnpublishProductPostUseCaseTest {
 
 		ProductPost savedProductPost = argumentCaptor.getValue();
 
-		Assertions.assertThat(savedProductPost.getState()).isEqualTo(PostState.UNPUBLISHED);
+		assertSoftly(softly -> {
+			softly.assertThat(savedProductPost.getState()).isEqualTo(PostState.UNPUBLISHED);
+			softly.assertThat(savedProductPost.getRating().value()).isEqualTo(3.0f);
+		});
 	}
 
 }

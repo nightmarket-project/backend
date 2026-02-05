@@ -140,6 +140,7 @@ public class AdminProductPostControllerV1 {
 				.productPostId(new ProductPostId(productPostId))
 				.scheduledAt(request.scheduleAt())
 				.type(ScheduleActionType.valueOf(request.type()))
+				.payload(request.payload())
 				.build()
 		);
 	}

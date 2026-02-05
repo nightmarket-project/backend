@@ -9,11 +9,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.context.ApplicationEventPublisher;
 
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadSchedulePostPort;
 import store.nightmarket.application.appitem.out.SaveSchedulePostPort;
-import store.nightmarket.application.appitem.schedule.SchedulingService;
+import store.nightmarket.application.appitem.schedule.event.ScheduleCanceledEvent;
 import store.nightmarket.application.appitem.usecase.post.dto.CancelScheduleUseCaseDto;
 import store.nightmarket.domain.itemweb.model.SchedulePost;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
@@ -26,17 +27,17 @@ public class CancelScheduleUseCaseTest {
 	private CancelScheduleUseCase cancelScheduleUseCase;
 	private ReadSchedulePostPort mockReadSchedulePostPort;
 	private SaveSchedulePostPort mockSaveSchedulePostPort;
-	private SchedulingService mockSchedulingService;
+	private ApplicationEventPublisher mockEventPublisher;
 
 	@BeforeEach
 	void setUp() {
 		mockReadSchedulePostPort = mock(ReadSchedulePostPort.class);
 		mockSaveSchedulePostPort = mock(SaveSchedulePostPort.class);
-		mockSchedulingService = mock(SchedulingService.class);
+		mockEventPublisher = mock(ApplicationEventPublisher.class);
 		cancelScheduleUseCase = new CancelScheduleUseCase(
 			mockReadSchedulePostPort,
 			mockSaveSchedulePostPort,
-			mockSchedulingService
+			mockEventPublisher
 		);
 	}
 
@@ -50,7 +51,8 @@ public class CancelScheduleUseCaseTest {
 		SchedulePost schedulePost = TestDomainFactory.createSchedulePost(
 			schedulePostId.getId(),
 			productPostId.getId(),
-			ScheduleActionType.PUBLISH
+			ScheduleActionType.PUBLISH,
+			null
 		);
 
 		when(mockReadSchedulePostPort.readOrThrow(schedulePostId))
@@ -73,8 +75,8 @@ public class CancelScheduleUseCaseTest {
 
 		Assertions.assertThat(savedSchedulePost.getState()).isEqualTo(SchedulePostState.CANCELED);
 
-		verify(mockSchedulingService, times(1))
-			.cancelSchedule(any(SchedulePostId.class));
+		verify(mockEventPublisher, times(1))
+			.publishEvent(any(ScheduleCanceledEvent.class));
 
 	}
 

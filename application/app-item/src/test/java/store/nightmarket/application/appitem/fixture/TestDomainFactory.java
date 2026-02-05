@@ -186,14 +186,16 @@ public class TestDomainFactory {
 	public static SchedulePost createSchedulePost(
 		UUID schedulePostId,
 		UUID productPostId,
-		ScheduleActionType type
+		ScheduleActionType type,
+		String context
 	) {
 		return SchedulePost.newInstance(
 			new SchedulePostId(schedulePostId),
 			new ProductPostId(productPostId),
 			LocalDateTime.now().plusDays(1),
 			SchedulePostState.READY,
-			type
+			type,
+			context
 		);
 	}
 

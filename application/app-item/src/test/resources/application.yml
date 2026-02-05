@@ -28,7 +28,9 @@ spring:
 
   sql:
     init:
-      mode: never
+      schema-locations: classpath:schema-shedlock.sql
+      mode: always
+
 
 web:
   cors:
@@ -50,7 +52,5 @@ web:
   interceptor:
     include-patterns:
       - "/api/v1/cart/**"
-      - "/api/v1/admin/products/***"
-
-schedules:
-  cron: 0/1 * * * * *
+      - "/api/v1/admin/products/**"
+      - "/api/v1/admin/posts/**"

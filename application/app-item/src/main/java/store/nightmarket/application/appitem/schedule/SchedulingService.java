@@ -8,7 +8,6 @@ import java.util.function.Consumer;
 
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +19,11 @@ import store.nightmarket.domain.itemweb.model.id.SchedulePostId;
 public class SchedulingService {
 
 	private final TaskScheduler taskScheduler;
-	private final TransactionTemplate transactionTemplate;
 	private final ScheduleTaskMemoryRepository scheduleTaskMemoryRepository;
 
 	public <T> void addSchedule(T targert, Consumer<T> action, LocalDateTime executionTime,
 		SchedulePostId schedulePostId) {
-		SchedulingTask<T> task = new SchedulingTask<>(targert, action, transactionTemplate);
+		SchedulingTask<T> task = new SchedulingTask<>(targert, action);
 		Instant instant = getInstant(executionTime);
 		ScheduledFuture<?> scheduledTask = taskScheduler.schedule(task, instant);
 		scheduleTaskMemoryRepository.save(schedulePostId, scheduledTask);

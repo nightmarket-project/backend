@@ -7,6 +7,9 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.SaveSchedulePostPort;
 import store.nightmarket.application.appitem.schedule.SchedulingService;
@@ -23,6 +26,7 @@ public class ScheduleProductPostUseCase implements BaseUseCase<Input, Void> {
 	private final SaveSchedulePostPort saveSchedulePostPort;
 	private final SchedulingService schedulingService;
 	private final ExecuteSchedulePostUseCase executeSchedulePostUseCase;
+	private final ObjectMapper objectMapper;
 
 	@Override
 	@Transactional
@@ -50,8 +54,22 @@ public class ScheduleProductPostUseCase implements BaseUseCase<Input, Void> {
 			input.productPostId(),
 			input.scheduledAt(),
 			SchedulePostState.READY,
-			input.type()
+			input.type(),
+			serializeContext(input)
 		);
+	}
+
+	private String serializeContext(Input input) {
+		String context = null;
+
+		if (input.payload() != null) {
+			try {
+				context = objectMapper.writeValueAsString(input.payload());
+			} catch (JsonProcessingException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return context;
 	}
 
 }

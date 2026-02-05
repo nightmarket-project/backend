@@ -37,7 +37,7 @@ public class DeleteProductPostUseCaseTest {
 
 	@Test
 	@DisplayName("상품 게시글을 삭제한다")
-	void publishProductPost() {
+	void deleteProductPost() {
 		// given
 		ProductPostId productPostId = new ProductPostId(UUID.randomUUID());
 		ProductId productId = new ProductId(UUID.randomUUID());

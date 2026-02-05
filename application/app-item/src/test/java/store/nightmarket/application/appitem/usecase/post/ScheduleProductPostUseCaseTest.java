@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import store.nightmarket.application.appitem.out.SaveSchedulePostPort;
 import store.nightmarket.application.appitem.schedule.SchedulingService;
 import store.nightmarket.application.appitem.usecase.post.dto.ExecuteSchedulePostUseCaseDto;
@@ -24,16 +26,19 @@ public class ScheduleProductPostUseCaseTest {
 	private SaveSchedulePostPort mockSaveSchedulePostPort;
 	private SchedulingService mockSchedulingService;
 	private ExecuteSchedulePostUseCase mockExecuteSchedulePostUseCase;
+	private ObjectMapper objectMapper;
 
 	@BeforeEach
 	void setUp() {
+		objectMapper = new ObjectMapper();
 		mockSaveSchedulePostPort = mock(SaveSchedulePostPort.class);
 		mockSchedulingService = mock(SchedulingService.class);
 		mockExecuteSchedulePostUseCase = mock(ExecuteSchedulePostUseCase.class);
 		scheduleProductPostUseCase = new ScheduleProductPostUseCase(
 			mockSaveSchedulePostPort,
 			mockSchedulingService,
-			mockExecuteSchedulePostUseCase
+			mockExecuteSchedulePostUseCase,
+			objectMapper
 		);
 	}
 
