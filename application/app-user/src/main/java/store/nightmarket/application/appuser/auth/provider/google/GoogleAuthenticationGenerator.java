@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appuser.auth.constant.Constant;
 import store.nightmarket.application.appuser.auth.exception.OAuthException;
 import store.nightmarket.application.appuser.auth.provider.AuthenticationGenerator;
 import store.nightmarket.application.appuser.auth.provider.google.model.GoogleOAuthAuthenticationToken;
+import store.nightmarket.application.appuser.constant.Constant;
 import store.nightmarket.domain.user.model.AuthProvider;
 
 @Component

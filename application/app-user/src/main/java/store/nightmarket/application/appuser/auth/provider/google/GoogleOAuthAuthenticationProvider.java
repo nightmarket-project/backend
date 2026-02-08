@@ -10,6 +10,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appuser.auth.config.OAuthProviderProperties;
 import store.nightmarket.application.appuser.auth.model.UserAuthentication;
@@ -19,10 +22,12 @@ import store.nightmarket.application.appuser.auth.provider.google.feign.dto.Goog
 import store.nightmarket.application.appuser.auth.provider.google.feign.dto.GoogleUserDto;
 import store.nightmarket.application.appuser.auth.provider.google.model.GoogleOAuthAuthenticationToken;
 import store.nightmarket.application.appuser.out.ReadUserPort;
+import store.nightmarket.application.appuser.out.SaveOutboxPort;
 import store.nightmarket.application.appuser.out.SaveUserPort;
-import store.nightmarket.application.appuser.out.adaptor.UserCreatedEventKafkaPublisher;
 import store.nightmarket.application.appuser.out.dto.UserCreatedEvent;
 import store.nightmarket.domain.user.model.AuthProvider;
+import store.nightmarket.domain.user.model.Outbox;
+import store.nightmarket.domain.user.model.OutboxState;
 import store.nightmarket.domain.user.model.User;
 import store.nightmarket.domain.user.model.UserRole;
 import store.nightmarket.domain.user.model.id.UserId;
@@ -36,9 +41,10 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 	private final OAuthProviderProperties properties;
 	private final ReadUserPort readUserPort;
 	private final SaveUserPort saveUserPort;
+	private final SaveOutboxPort saveOutboxPort;
 	private final GoogleAuthApi googleAuthApi;
 	private final GoogleUserApi googleUserApi;
-	private final UserCreatedEventKafkaPublisher userCreatedEventKafkaPublisher;
+	private final ObjectMapper objectMapper;
 	private static final String PROVIDER_NAME = "google";
 	private static final String GRANT_TYPE = "authorization_code";
 	private static final String AUTHORIZATION_HEADER = "Bearer ";
@@ -56,7 +62,7 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 		GoogleUserDto googleUser = getGoogleUser(accessToken.getAccessToken());
 
 		User user = readUserPort.readByEmail(googleUser.getEmail())
-			.orElseGet(() -> saveUserAndPublishUserCreatedEvent(googleUser));
+			.orElseGet(() -> saveUserAndSaveOutbox(googleUser));
 
 		return new UserAuthentication(
 			user.getUserId().getId().toString(),
@@ -81,7 +87,7 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 		return googleUserApi.getUserInfo(AUTHORIZATION_HEADER + accessToken);
 	}
 
-	private User saveUserAndPublishUserCreatedEvent(GoogleUserDto googleUser) {
+	private User saveUserAndSaveOutbox(GoogleUserDto googleUser) {
 		User user = saveUserPort.save(User.newInstance(
 			new UserId(UUID.randomUUID()),
 			new Name(googleUser.getName()),
@@ -93,11 +99,19 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 			googleUser.getSub()
 		));
 
-		userCreatedEventKafkaPublisher.publishEvent(
-			UserCreatedEvent.builder()
-				.userId(user.getUserId().getId())
-				.name(user.getName().getValue())
-				.build()
+		UserCreatedEvent event = UserCreatedEvent.builder()
+			.userId(user.getUserId().getId())
+			.name(user.getName().getValue())
+			.build();
+
+		saveOutboxPort.save(
+			Outbox.newInstance(
+				"User",
+				user.getUserId().getId().toString(),
+				"UserCreatedEvent",
+				serializePayload(event),
+				OutboxState.READY
+			)
 		);
 
 		return user;
@@ -106,6 +120,14 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 	@Override
 	public boolean supports(Class<?> authentication) {
 		return GoogleOAuthAuthenticationToken.class.isAssignableFrom(authentication);
+	}
+
+	private String serializePayload(UserCreatedEvent event) {
+		try {
+			return objectMapper.writeValueAsString(event);
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

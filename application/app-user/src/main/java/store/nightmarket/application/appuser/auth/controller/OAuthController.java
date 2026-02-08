@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import store.nightmarket.application.appuser.auth.constant.Constant;
 import store.nightmarket.application.appuser.auth.provider.LoginUrlProvider;
+import store.nightmarket.application.appuser.constant.Constant;
 
 @RestController
 @RequestMapping("/api/v1/oauth")
