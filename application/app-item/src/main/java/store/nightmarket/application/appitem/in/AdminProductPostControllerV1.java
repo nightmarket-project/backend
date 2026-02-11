@@ -14,25 +14,25 @@ import store.nightmarket.application.appitem.auth.UserSession;
 import store.nightmarket.application.appitem.config.resolver.AuthorizedUser;
 import store.nightmarket.application.appitem.in.dto.RegisterPostDto;
 import store.nightmarket.application.appitem.in.dto.SchedulePostDto;
-import store.nightmarket.application.appitem.usecase.post.CancelScheduleUseCase;
 import store.nightmarket.application.appitem.usecase.post.DeleteProductPostUseCase;
 import store.nightmarket.application.appitem.usecase.post.PublishProductPostUseCase;
 import store.nightmarket.application.appitem.usecase.post.RegisterProductPostUseCase;
-import store.nightmarket.application.appitem.usecase.post.ScheduleProductPostUseCase;
 import store.nightmarket.application.appitem.usecase.post.UnpublishProductPostUseCase;
 import store.nightmarket.application.appitem.usecase.post.ValidateOwnerUseCase;
-import store.nightmarket.application.appitem.usecase.post.dto.CancelScheduleUseCaseDto;
 import store.nightmarket.application.appitem.usecase.post.dto.DeleteProductPostUseCaseDto;
 import store.nightmarket.application.appitem.usecase.post.dto.PublishProductPostUseCaseDto;
 import store.nightmarket.application.appitem.usecase.post.dto.RegisterProductPostUseCaseDto;
-import store.nightmarket.application.appitem.usecase.post.dto.ScheduleProductPostUseCaseDto;
 import store.nightmarket.application.appitem.usecase.post.dto.UnpublishProductPostUseCaseDto;
 import store.nightmarket.application.appitem.usecase.post.dto.ValidateOwnerUseCaseDto;
+import store.nightmarket.application.appitem.usecase.post.schedule.usecase.CancelScheduleUseCase;
+import store.nightmarket.application.appitem.usecase.post.schedule.usecase.ScheduleProductPostUseCase;
+import store.nightmarket.application.appitem.usecase.post.schedule.usecase.dto.CancelScheduleUseCaseDto;
+import store.nightmarket.application.appitem.usecase.post.schedule.usecase.dto.ScheduleProductPostUseCaseDto;
 import store.nightmarket.domain.item.model.id.ProductId;
 import store.nightmarket.domain.item.model.id.UserId;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 import store.nightmarket.domain.itemweb.model.id.SchedulePostId;
-import store.nightmarket.domain.itemweb.model.state.ScheduleActionType;
+import store.nightmarket.domain.itemweb.model.state.SchedulePostActionType;
 
 @RestController
 @RequestMapping("api/v1/admin/posts")
@@ -139,7 +139,7 @@ public class AdminProductPostControllerV1 {
 			ScheduleProductPostUseCaseDto.Input.builder()
 				.productPostId(new ProductPostId(productPostId))
 				.scheduledAt(request.scheduleAt())
-				.type(ScheduleActionType.valueOf(request.type()))
+				.type(SchedulePostActionType.valueOf(request.type()))
 				.payload(request.payload())
 				.build()
 		);

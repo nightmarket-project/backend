@@ -1,6 +1,6 @@
-package store.nightmarket.application.appitem.usecase.post;
+package store.nightmarket.application.appitem.usecase.post.schedule.usecase;
 
-import static store.nightmarket.application.appitem.usecase.post.dto.CancelScheduleUseCaseDto.*;
+import static store.nightmarket.application.appitem.usecase.post.schedule.usecase.dto.CancelScheduleUseCaseDto.*;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;

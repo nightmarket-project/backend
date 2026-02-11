@@ -11,8 +11,8 @@ import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.ReadSchedulePostPort;
-import store.nightmarket.application.appitem.usecase.post.ExecuteSchedulePostUseCase;
-import store.nightmarket.application.appitem.usecase.post.dto.ExecuteSchedulePostUseCaseDto;
+import store.nightmarket.application.appitem.usecase.post.schedule.strategy.executor.SchedulePostStrategyExecutor;
+import store.nightmarket.application.appitem.usecase.post.schedule.strategy.executor.dto.SchedulePostStrategyExecutorDto;
 import store.nightmarket.domain.itemweb.model.SchedulePost;
 
 @Component
@@ -21,7 +21,7 @@ public class RescheduleService {
 
 	private final SchedulingService schedulingService;
 	private final ReadSchedulePostPort readSchedulePostPort;
-	private final ExecuteSchedulePostUseCase executeSchedulePostUseCase;
+	private final SchedulePostStrategyExecutor schedulePostStrategyExecutor;
 
 	@Transactional
 	@EventListener(ApplicationReadyEvent.class)
@@ -30,15 +30,15 @@ public class RescheduleService {
 		lockAtMostFor = "PT10S",
 		lockAtLeastFor = "PT10S"
 	)
-	public void restoreSchedules() {
+	public void restoreSchedulePosts() {
 		List<SchedulePost> schedules = readSchedulePostPort.readAllByReady();
 
 		schedules.forEach(schedule ->
 			schedulingService.addSchedule(
-				ExecuteSchedulePostUseCaseDto.Input.builder()
+				SchedulePostStrategyExecutorDto.Input.builder()
 					.schedulePostId(schedule.getSchedulePostId())
 					.build(),
-				executeSchedulePostUseCase::execute,
+				schedulePostStrategyExecutor::execute,
 				schedule.getScheduledAt(),
 				schedule.getSchedulePostId()
 			)

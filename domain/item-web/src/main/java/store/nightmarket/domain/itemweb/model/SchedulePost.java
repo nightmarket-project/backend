@@ -7,7 +7,7 @@ import store.nightmarket.common.domain.model.BaseModel;
 import store.nightmarket.domain.itemweb.exception.SchedulePostException;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 import store.nightmarket.domain.itemweb.model.id.SchedulePostId;
-import store.nightmarket.domain.itemweb.model.state.ScheduleActionType;
+import store.nightmarket.domain.itemweb.model.state.SchedulePostActionType;
 import store.nightmarket.domain.itemweb.model.state.SchedulePostState;
 
 @Getter
@@ -16,7 +16,7 @@ public class SchedulePost extends BaseModel<SchedulePostId> {
 	private ProductPostId productPostId;
 	private LocalDateTime scheduledAt;
 	private SchedulePostState state;
-	private ScheduleActionType type;
+	private SchedulePostActionType type;
 	private String context;
 
 	private SchedulePost(
@@ -24,7 +24,7 @@ public class SchedulePost extends BaseModel<SchedulePostId> {
 		ProductPostId productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type,
+		SchedulePostActionType type,
 		String context
 	) {
 		super(id);
@@ -41,7 +41,7 @@ public class SchedulePost extends BaseModel<SchedulePostId> {
 		ProductPostId productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type,
+		SchedulePostActionType type,
 		String context
 	) {
 		super(id, createdAt);
@@ -57,7 +57,7 @@ public class SchedulePost extends BaseModel<SchedulePostId> {
 		ProductPostId productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type,
+		SchedulePostActionType type,
 		String context
 	) {
 		return new SchedulePost(
@@ -76,7 +76,7 @@ public class SchedulePost extends BaseModel<SchedulePostId> {
 		ProductPostId productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type,
+		SchedulePostActionType type,
 		String context
 	) {
 		return new SchedulePost(

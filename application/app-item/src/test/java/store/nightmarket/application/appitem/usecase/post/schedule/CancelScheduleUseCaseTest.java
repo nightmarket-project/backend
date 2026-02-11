@@ -1,4 +1,4 @@
-package store.nightmarket.application.appitem.usecase.post;
+package store.nightmarket.application.appitem.usecase.post.schedule;
 
 import static org.mockito.Mockito.*;
 
@@ -15,11 +15,12 @@ import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadSchedulePostPort;
 import store.nightmarket.application.appitem.out.SaveSchedulePostPort;
 import store.nightmarket.application.appitem.schedule.event.ScheduleCanceledEvent;
-import store.nightmarket.application.appitem.usecase.post.dto.CancelScheduleUseCaseDto;
+import store.nightmarket.application.appitem.usecase.post.schedule.usecase.CancelScheduleUseCase;
+import store.nightmarket.application.appitem.usecase.post.schedule.usecase.dto.CancelScheduleUseCaseDto;
 import store.nightmarket.domain.itemweb.model.SchedulePost;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 import store.nightmarket.domain.itemweb.model.id.SchedulePostId;
-import store.nightmarket.domain.itemweb.model.state.ScheduleActionType;
+import store.nightmarket.domain.itemweb.model.state.SchedulePostActionType;
 import store.nightmarket.domain.itemweb.model.state.SchedulePostState;
 
 public class CancelScheduleUseCaseTest {
@@ -51,7 +52,7 @@ public class CancelScheduleUseCaseTest {
 		SchedulePost schedulePost = TestDomainFactory.createSchedulePost(
 			schedulePostId.getId(),
 			productPostId.getId(),
-			ScheduleActionType.PUBLISH,
+			SchedulePostActionType.PUBLISH,
 			null
 		);
 

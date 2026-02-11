@@ -1,6 +1,6 @@
-package store.nightmarket.application.appitem.usecase.post;
+package store.nightmarket.application.appitem.usecase.post.schedule.usecase;
 
-import static store.nightmarket.application.appitem.usecase.post.dto.ScheduleProductPostUseCaseDto.*;
+import static store.nightmarket.application.appitem.usecase.post.schedule.usecase.dto.ScheduleProductPostUseCaseDto.*;
 
 import java.util.UUID;
 
@@ -13,7 +13,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appitem.out.SaveSchedulePostPort;
 import store.nightmarket.application.appitem.schedule.SchedulingService;
-import store.nightmarket.application.appitem.usecase.post.dto.ExecuteSchedulePostUseCaseDto;
+import store.nightmarket.application.appitem.usecase.post.schedule.strategy.executor.SchedulePostStrategyExecutor;
+import store.nightmarket.application.appitem.usecase.post.schedule.strategy.executor.dto.SchedulePostStrategyExecutorDto;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.itemweb.model.SchedulePost;
 import store.nightmarket.domain.itemweb.model.id.SchedulePostId;
@@ -25,7 +26,7 @@ public class ScheduleProductPostUseCase implements BaseUseCase<Input, Void> {
 
 	private final SaveSchedulePostPort saveSchedulePostPort;
 	private final SchedulingService schedulingService;
-	private final ExecuteSchedulePostUseCase executeSchedulePostUseCase;
+	private final SchedulePostStrategyExecutor schedulePostStrategyExecutor;
 	private final ObjectMapper objectMapper;
 
 	@Override
@@ -35,13 +36,13 @@ public class ScheduleProductPostUseCase implements BaseUseCase<Input, Void> {
 
 		saveSchedulePostPort.save(schedulePost);
 
-		ExecuteSchedulePostUseCaseDto.Input executeInput = ExecuteSchedulePostUseCaseDto.Input.builder()
+		SchedulePostStrategyExecutorDto.Input executorInput = SchedulePostStrategyExecutorDto.Input.builder()
 			.schedulePostId(schedulePost.getSchedulePostId())
 			.build();
 
 		schedulingService.addSchedule(
-			executeInput,
-			executeSchedulePostUseCase::execute,
+			executorInput,
+			schedulePostStrategyExecutor::execute,
 			input.scheduledAt(),
 			schedulePost.getSchedulePostId()
 		);

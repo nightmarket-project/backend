@@ -1,4 +1,4 @@
-package store.nightmarket.application.appitem.usecase.post;
+package store.nightmarket.application.appitem.usecase.post.schedule;
 
 import static org.mockito.Mockito.*;
 
@@ -13,19 +13,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import store.nightmarket.application.appitem.out.SaveSchedulePostPort;
 import store.nightmarket.application.appitem.schedule.SchedulingService;
-import store.nightmarket.application.appitem.usecase.post.dto.ExecuteSchedulePostUseCaseDto;
-import store.nightmarket.application.appitem.usecase.post.dto.ScheduleProductPostUseCaseDto;
+import store.nightmarket.application.appitem.usecase.post.schedule.strategy.executor.SchedulePostStrategyExecutor;
+import store.nightmarket.application.appitem.usecase.post.schedule.strategy.executor.dto.SchedulePostStrategyExecutorDto;
+import store.nightmarket.application.appitem.usecase.post.schedule.usecase.ScheduleProductPostUseCase;
+import store.nightmarket.application.appitem.usecase.post.schedule.usecase.dto.ScheduleProductPostUseCaseDto;
 import store.nightmarket.domain.itemweb.model.SchedulePost;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 import store.nightmarket.domain.itemweb.model.id.SchedulePostId;
-import store.nightmarket.domain.itemweb.model.state.ScheduleActionType;
+import store.nightmarket.domain.itemweb.model.state.SchedulePostActionType;
 
 public class ScheduleProductPostUseCaseTest {
 
 	private ScheduleProductPostUseCase scheduleProductPostUseCase;
 	private SaveSchedulePostPort mockSaveSchedulePostPort;
 	private SchedulingService mockSchedulingService;
-	private ExecuteSchedulePostUseCase mockExecuteSchedulePostUseCase;
+	private SchedulePostStrategyExecutor mockSchedulePostStrategyExecutor;
 	private ObjectMapper objectMapper;
 
 	@BeforeEach
@@ -33,11 +35,11 @@ public class ScheduleProductPostUseCaseTest {
 		objectMapper = new ObjectMapper();
 		mockSaveSchedulePostPort = mock(SaveSchedulePostPort.class);
 		mockSchedulingService = mock(SchedulingService.class);
-		mockExecuteSchedulePostUseCase = mock(ExecuteSchedulePostUseCase.class);
+		mockSchedulePostStrategyExecutor = mock(SchedulePostStrategyExecutor.class);
 		scheduleProductPostUseCase = new ScheduleProductPostUseCase(
 			mockSaveSchedulePostPort,
 			mockSchedulingService,
-			mockExecuteSchedulePostUseCase,
+			mockSchedulePostStrategyExecutor,
 			objectMapper
 		);
 	}
@@ -52,7 +54,7 @@ public class ScheduleProductPostUseCaseTest {
 		ScheduleProductPostUseCaseDto.Input input = ScheduleProductPostUseCaseDto.Input.builder()
 			.productPostId(productPostId)
 			.scheduledAt(scheduledAt)
-			.type(ScheduleActionType.PUBLISH)
+			.type(SchedulePostActionType.PUBLISH)
 			.build();
 
 		// when
@@ -62,7 +64,7 @@ public class ScheduleProductPostUseCaseTest {
 		verify(mockSaveSchedulePostPort, times(1)).save(any(SchedulePost.class));
 
 		verify(mockSchedulingService, times(1)).addSchedule(
-			any(ExecuteSchedulePostUseCaseDto.Input.class),
+			any(SchedulePostStrategyExecutorDto.Input.class),
 			any(),
 			any(LocalDateTime.class),
 			any(SchedulePostId.class)

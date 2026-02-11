@@ -34,7 +34,7 @@ import store.nightmarket.domain.itemweb.model.id.ReviewId;
 import store.nightmarket.domain.itemweb.model.id.SchedulePostId;
 import store.nightmarket.domain.itemweb.model.state.ImageType;
 import store.nightmarket.domain.itemweb.model.state.PostState;
-import store.nightmarket.domain.itemweb.model.state.ScheduleActionType;
+import store.nightmarket.domain.itemweb.model.state.SchedulePostActionType;
 import store.nightmarket.domain.itemweb.model.state.SchedulePostState;
 import store.nightmarket.domain.itemweb.valueobject.CommentText;
 import store.nightmarket.domain.itemweb.valueobject.Image;
@@ -186,7 +186,7 @@ public class TestDomainFactory {
 	public static SchedulePost createSchedulePost(
 		UUID schedulePostId,
 		UUID productPostId,
-		ScheduleActionType type,
+		SchedulePostActionType type,
 		String context
 	) {
 		return SchedulePost.newInstance(

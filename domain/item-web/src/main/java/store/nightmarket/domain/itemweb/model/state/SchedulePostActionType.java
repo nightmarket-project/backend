@@ -1,6 +1,6 @@
 package store.nightmarket.domain.itemweb.model.state;
 
-public enum ScheduleActionType {
+public enum SchedulePostActionType {
 
 	PUBLISH,
 	UNPUBLISH,

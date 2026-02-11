@@ -12,7 +12,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.nightmarket.common.entity.BaseUuidEntity;
-import store.nightmarket.domain.itemweb.model.state.ScheduleActionType;
+import store.nightmarket.domain.itemweb.model.state.SchedulePostActionType;
 import store.nightmarket.domain.itemweb.model.state.SchedulePostState;
 
 @Getter
@@ -33,8 +33,8 @@ public class SchedulePostEntity extends BaseUuidEntity {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "type", nullable = false)
-	private ScheduleActionType type;
-	
+	private SchedulePostActionType type;
+
 	@Column(name = "context")
 	private String context;
 
@@ -43,7 +43,7 @@ public class SchedulePostEntity extends BaseUuidEntity {
 		UUID productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type,
+		SchedulePostActionType type,
 		String context
 	) {
 		super(id);
@@ -60,7 +60,7 @@ public class SchedulePostEntity extends BaseUuidEntity {
 		UUID productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type,
+		SchedulePostActionType type,
 		String context
 	) {
 		super(id, createdAt);
@@ -76,7 +76,7 @@ public class SchedulePostEntity extends BaseUuidEntity {
 		UUID productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type,
+		SchedulePostActionType type,
 		String context
 	) {
 		return new SchedulePostEntity(
@@ -95,7 +95,7 @@ public class SchedulePostEntity extends BaseUuidEntity {
 		UUID productPostId,
 		LocalDateTime scheduledAt,
 		SchedulePostState state,
-		ScheduleActionType type,
+		SchedulePostActionType type,
 		String context
 	) {
 		return new SchedulePostEntity(
