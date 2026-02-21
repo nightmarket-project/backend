@@ -69,7 +69,16 @@ project(':common') {
 
 //domain layer
 
-def domain = [project(':item'), project(":order"), project(":payment"), project(":delivery"), project(':user'), project(':item-web'), project(':logging')]
+def domain = [
+        project(':item'),
+        project(":order"),
+        project(":payment"),
+        project(":delivery"),
+        project(':user'),
+        project(':item-web'),
+        project(':logging'),
+        project(':outbox')
+]
 
 configure(domain) {
     bootJar {
@@ -113,6 +122,16 @@ project(':logging') {
         implementation 'io.micrometer:micrometer-tracing-bridge-brave'
         implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+        implementation 'org.springframework.kafka:spring-kafka'
+    }
+}
+
+project(':outbox') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.springframework.kafka:spring-kafka'
     }
 }
