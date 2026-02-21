@@ -186,6 +186,7 @@ public class TestDomainFactory {
 	public static SchedulePost createSchedulePost(
 		UUID schedulePostId,
 		UUID productPostId,
+		SchedulePostState state,
 		SchedulePostActionType type,
 		String context
 	) {
@@ -193,7 +194,7 @@ public class TestDomainFactory {
 			new SchedulePostId(schedulePostId),
 			new ProductPostId(productPostId),
 			LocalDateTime.now().plusDays(1),
-			SchedulePostState.READY,
+			state,
 			type,
 			context
 		);

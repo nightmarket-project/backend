@@ -21,8 +21,12 @@ public class SchedulingService {
 	private final TaskScheduler taskScheduler;
 	private final ScheduleTaskMemoryRepository scheduleTaskMemoryRepository;
 
-	public <T> void addSchedule(T targert, Consumer<T> action, LocalDateTime executionTime,
-		SchedulePostId schedulePostId) {
+	public <T> void addSchedule(
+		T targert,
+		Consumer<T> action,
+		LocalDateTime executionTime,
+		SchedulePostId schedulePostId
+	) {
 		SchedulingTask<T> task = new SchedulingTask<>(targert, action);
 		Instant instant = getInstant(executionTime);
 		ScheduledFuture<?> scheduledTask = taskScheduler.schedule(task, instant);

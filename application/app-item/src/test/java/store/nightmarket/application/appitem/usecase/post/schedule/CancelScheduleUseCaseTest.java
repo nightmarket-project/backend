@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import store.nightmarket.application.appitem.fixture.TestDomainFactory;
 import store.nightmarket.application.appitem.out.ReadSchedulePostPort;
 import store.nightmarket.application.appitem.out.SaveSchedulePostPort;
-import store.nightmarket.application.appitem.schedule.event.ScheduleCanceledEvent;
+import store.nightmarket.application.appitem.schedule.event.SchedulePostCanceledEvent;
 import store.nightmarket.application.appitem.usecase.post.schedule.usecase.CancelScheduleUseCase;
 import store.nightmarket.application.appitem.usecase.post.schedule.usecase.dto.CancelScheduleUseCaseDto;
 import store.nightmarket.domain.itemweb.model.SchedulePost;
@@ -52,6 +52,7 @@ public class CancelScheduleUseCaseTest {
 		SchedulePost schedulePost = TestDomainFactory.createSchedulePost(
 			schedulePostId.getId(),
 			productPostId.getId(),
+			SchedulePostState.READY,
 			SchedulePostActionType.PUBLISH,
 			null
 		);
@@ -77,7 +78,7 @@ public class CancelScheduleUseCaseTest {
 		Assertions.assertThat(savedSchedulePost.getState()).isEqualTo(SchedulePostState.CANCELED);
 
 		verify(mockEventPublisher, times(1))
-			.publishEvent(any(ScheduleCanceledEvent.class));
+			.publishEvent(any(SchedulePostCanceledEvent.class));
 
 	}
 

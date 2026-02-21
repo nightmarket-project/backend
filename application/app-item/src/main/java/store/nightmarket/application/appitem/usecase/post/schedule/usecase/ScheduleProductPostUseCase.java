@@ -4,6 +4,7 @@ import static store.nightmarket.application.appitem.usecase.post.schedule.usecas
 
 import java.util.UUID;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,23 +12,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import store.nightmarket.application.appitem.out.SaveSchedulePostPort;
-import store.nightmarket.application.appitem.schedule.SchedulingService;
-import store.nightmarket.application.appitem.usecase.post.schedule.strategy.executor.SchedulePostStrategyExecutor;
-import store.nightmarket.application.appitem.usecase.post.schedule.strategy.executor.dto.SchedulePostStrategyExecutorDto;
+import store.nightmarket.application.appitem.schedule.event.SchedulePostCreatedEvent;
 import store.nightmarket.common.application.usecase.BaseUseCase;
 import store.nightmarket.domain.itemweb.model.SchedulePost;
 import store.nightmarket.domain.itemweb.model.id.SchedulePostId;
 import store.nightmarket.domain.itemweb.model.state.SchedulePostState;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ScheduleProductPostUseCase implements BaseUseCase<Input, Void> {
 
 	private final SaveSchedulePostPort saveSchedulePostPort;
-	private final SchedulingService schedulingService;
-	private final SchedulePostStrategyExecutor schedulePostStrategyExecutor;
 	private final ObjectMapper objectMapper;
+	private final ApplicationEventPublisher applicationEventPublisher;
 
 	@Override
 	@Transactional
@@ -36,15 +36,13 @@ public class ScheduleProductPostUseCase implements BaseUseCase<Input, Void> {
 
 		saveSchedulePostPort.save(schedulePost);
 
-		SchedulePostStrategyExecutorDto.Input executorInput = SchedulePostStrategyExecutorDto.Input.builder()
+		applicationEventPublisher.publishEvent(SchedulePostCreatedEvent.builder()
 			.schedulePostId(schedulePost.getSchedulePostId())
-			.build();
+			.build()
+		);
 
-		schedulingService.addSchedule(
-			executorInput,
-			schedulePostStrategyExecutor::execute,
-			input.scheduledAt(),
-			schedulePost.getSchedulePostId()
+		log.info("SchedulePost scheduled: id={}, scheduledAt={}, type={}",
+			schedulePost.getProductPostId(), schedulePost.getScheduledAt(), schedulePost.getType()
 		);
 		return null;
 	}

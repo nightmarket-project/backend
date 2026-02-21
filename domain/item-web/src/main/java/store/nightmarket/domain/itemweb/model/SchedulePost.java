@@ -94,6 +94,13 @@ public class SchedulePost extends BaseModel<SchedulePostId> {
 		return internalId();
 	}
 
+	public void schedule() {
+		if (!state.canTransitionTo(SchedulePostState.SCHEDULED)) {
+			throw new SchedulePostException("cannot change state to scheduled");
+		}
+		this.state = SchedulePostState.SCHEDULED;
+	}
+
 	public void done() {
 		if (!state.canTransitionTo(SchedulePostState.DONE)) {
 			throw new SchedulePostException("cannot change state to done");

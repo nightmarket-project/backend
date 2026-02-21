@@ -8,39 +8,34 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationEventPublisher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import store.nightmarket.application.appitem.out.SaveSchedulePostPort;
-import store.nightmarket.application.appitem.schedule.SchedulingService;
-import store.nightmarket.application.appitem.usecase.post.schedule.strategy.executor.SchedulePostStrategyExecutor;
-import store.nightmarket.application.appitem.usecase.post.schedule.strategy.executor.dto.SchedulePostStrategyExecutorDto;
+import store.nightmarket.application.appitem.schedule.event.SchedulePostCreatedEvent;
 import store.nightmarket.application.appitem.usecase.post.schedule.usecase.ScheduleProductPostUseCase;
 import store.nightmarket.application.appitem.usecase.post.schedule.usecase.dto.ScheduleProductPostUseCaseDto;
 import store.nightmarket.domain.itemweb.model.SchedulePost;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
-import store.nightmarket.domain.itemweb.model.id.SchedulePostId;
 import store.nightmarket.domain.itemweb.model.state.SchedulePostActionType;
 
 public class ScheduleProductPostUseCaseTest {
 
 	private ScheduleProductPostUseCase scheduleProductPostUseCase;
 	private SaveSchedulePostPort mockSaveSchedulePostPort;
-	private SchedulingService mockSchedulingService;
-	private SchedulePostStrategyExecutor mockSchedulePostStrategyExecutor;
 	private ObjectMapper objectMapper;
+	private ApplicationEventPublisher mockApplicationEventPublisher;
 
 	@BeforeEach
 	void setUp() {
 		objectMapper = new ObjectMapper();
 		mockSaveSchedulePostPort = mock(SaveSchedulePostPort.class);
-		mockSchedulingService = mock(SchedulingService.class);
-		mockSchedulePostStrategyExecutor = mock(SchedulePostStrategyExecutor.class);
+		mockApplicationEventPublisher = mock(ApplicationEventPublisher.class);
 		scheduleProductPostUseCase = new ScheduleProductPostUseCase(
 			mockSaveSchedulePostPort,
-			mockSchedulingService,
-			mockSchedulePostStrategyExecutor,
-			objectMapper
+			objectMapper,
+			mockApplicationEventPublisher
 		);
 	}
 
@@ -63,12 +58,7 @@ public class ScheduleProductPostUseCaseTest {
 		// then
 		verify(mockSaveSchedulePostPort, times(1)).save(any(SchedulePost.class));
 
-		verify(mockSchedulingService, times(1)).addSchedule(
-			any(SchedulePostStrategyExecutorDto.Input.class),
-			any(),
-			any(LocalDateTime.class),
-			any(SchedulePostId.class)
-		);
+		verify(mockApplicationEventPublisher, times(1)).publishEvent(any(SchedulePostCreatedEvent.class));
 
 	}
 

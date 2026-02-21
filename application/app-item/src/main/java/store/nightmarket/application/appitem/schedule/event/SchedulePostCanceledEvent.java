@@ -4,7 +4,7 @@ import lombok.Builder;
 import store.nightmarket.domain.itemweb.model.id.SchedulePostId;
 
 @Builder
-public record ScheduleCanceledEvent(
+public record SchedulePostCanceledEvent(
 	SchedulePostId schedulePostId
 ) {
 

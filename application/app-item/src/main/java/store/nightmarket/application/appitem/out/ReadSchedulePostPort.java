@@ -1,5 +1,6 @@
 package store.nightmarket.application.appitem.out;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ public interface ReadSchedulePostPort {
 			.orElseThrow(() -> new ProductPostException("Not Found SchedulePost"));
 	}
 
-	List<SchedulePost> readAllByReady();
+	List<SchedulePost> readReadyChunk(LocalDateTime endOfPeriod, int limit);
 
+	List<SchedulePost> readScheduledChunk(LocalDateTime endOfPeriod, int limit);
 }

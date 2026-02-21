@@ -23,6 +23,7 @@ import store.nightmarket.domain.itemweb.model.SchedulePost;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 import store.nightmarket.domain.itemweb.model.id.SchedulePostId;
 import store.nightmarket.domain.itemweb.model.state.SchedulePostActionType;
+import store.nightmarket.domain.itemweb.model.state.SchedulePostState;
 
 @ExtendWith(MockitoExtension.class)
 public class SchedulePostStrategyExecutorTest {
@@ -57,6 +58,7 @@ public class SchedulePostStrategyExecutorTest {
 		SchedulePost schedulePost = TestDomainFactory.createSchedulePost(
 			schedulePostId.getId(),
 			productPostId.getId(),
+			SchedulePostState.READY,
 			SchedulePostActionType.PUBLISH,
 			null
 		);
