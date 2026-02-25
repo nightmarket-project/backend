@@ -8,6 +8,5 @@ public class Constant {
 	public static final String LOGIN_SUCCESS = "success";
 
 	// outbox
-	public static final String USER_CREATED_EVENT = "UserCreatedEvent";
 	public static final String USER_CREATED_TOPIC = "user.user-created";
 }

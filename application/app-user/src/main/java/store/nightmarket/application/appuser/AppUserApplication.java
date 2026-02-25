@@ -14,10 +14,19 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @ComponentScan(basePackages = {
 	"store.nightmarket.application.appuser",
 	"store.nightmarket.domain.user",
-	"store.nightmarket.persistence.persistuser"
+	"store.nightmarket.persistence.persistuser",
+	"store.nightmarket.application.appoutbox",
+	"store.nightmarket.domain.outbox",
+	"store.nightmarket.persistence.persistoutbox"
 })
-@EnableJpaRepositories(basePackages = "store.nightmarket.persistence.persistuser")
-@EntityScan(basePackages = "store.nightmarket.persistence.persistuser")
+@EnableJpaRepositories(basePackages = {
+	"store.nightmarket.persistence.persistuser",
+	"store.nightmarket.persistence.persistoutbox",
+})
+@EntityScan(basePackages = {
+	"store.nightmarket.persistence.persistuser",
+	"store.nightmarket.persistence.persistoutbox",
+})
 @EnableRedisHttpSession
 @EnableScheduling
 public class AppUserApplication {

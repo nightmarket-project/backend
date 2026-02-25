@@ -87,4 +87,5 @@ web:
     max-age: 3600
 
 schedules:
-  cron: "*/5 * * * * *"
+  outbox:
+    cron: "*/10 * * * * *"
