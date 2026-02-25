@@ -1,28 +1,28 @@
 package store.nightmarket.application.appuser.outbox;
 
-import java.util.List;
-
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import lombok.RequiredArgsConstructor;
-import store.nightmarket.application.appuser.out.ReadOutboxPort;
-import store.nightmarket.domain.user.model.Outbox;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 
+import lombok.extern.slf4j.Slf4j;
+import store.nightmarket.application.appoutbox.service.AbstractOutboxPollingScheduler;
+import store.nightmarket.application.appoutbox.service.OutboxChunkProcessor;
+
+@Slf4j
 @Component
-@RequiredArgsConstructor
-public class OutboxPollingScheduler {
+public class OutboxPollingScheduler extends AbstractOutboxPollingScheduler {
 
-	private final ReadOutboxPort readOutboxPort;
-	private final KafkaEventPublisher kafkaEventPublisher;
+	public OutboxPollingScheduler(OutboxChunkProcessor outboxChunkProcessor) {
+		super(outboxChunkProcessor);
+	}
 
-	@Scheduled(cron = "${schedules.cron}")
+	@Scheduled(cron = "${schedules.outbox.cron}")
+	@SchedulerLock(name = "user-outbox-polling-scheduler", lockAtLeastFor = "9s", lockAtMostFor = "9s")
+	@Override
 	public void pollOutbox() {
-		List<Outbox> outboxes = readOutboxPort.readPublishTarget();
-
-		for (Outbox outbox : outboxes) {
-			kafkaEventPublisher.publish(outbox);
-		}
+		log.info("[User Application]: outbox-polling-scheduler");
+		super.pollOutbox();
 	}
 
 }

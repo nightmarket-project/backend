@@ -18,9 +18,15 @@ CREATE TABLE outbox
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     created_at        TIMESTAMP     NOT NULL,
     updated_at        TIMESTAMP     NOT NULL,
-    aggregate_type  VARCHAR(50) NOT NULL,
-    aggregate_id    VARCHAR(50) NOT NULL,
     event_type      VARCHAR(50) NOT NULL,
     payload         VARCHAR(255) NOT NULL,
     state           VARCHAR(50) NOT NULL
-)
+);
+
+CREATE TABLE shedlock
+(
+    name VARCHAR(64) PRIMARY KEY,
+    lock_until TIMESTAMP,
+    locked_at TIMESTAMP,
+    locked_by VARCHAR(255)
+);

@@ -3,15 +3,13 @@ package store.nightmarket.application.appuser.auth.provider.google;
 import java.util.Collections;
 import java.util.UUID;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appuser.auth.config.OAuthProviderProperties;
@@ -22,12 +20,10 @@ import store.nightmarket.application.appuser.auth.provider.google.feign.dto.Goog
 import store.nightmarket.application.appuser.auth.provider.google.feign.dto.GoogleUserDto;
 import store.nightmarket.application.appuser.auth.provider.google.model.GoogleOAuthAuthenticationToken;
 import store.nightmarket.application.appuser.out.ReadUserPort;
-import store.nightmarket.application.appuser.out.SaveOutboxPort;
 import store.nightmarket.application.appuser.out.SaveUserPort;
+import store.nightmarket.application.appuser.out.dto.UserCreatedApplicationEvent;
 import store.nightmarket.application.appuser.out.dto.UserCreatedEvent;
 import store.nightmarket.domain.user.model.AuthProvider;
-import store.nightmarket.domain.user.model.Outbox;
-import store.nightmarket.domain.user.model.OutboxState;
 import store.nightmarket.domain.user.model.User;
 import store.nightmarket.domain.user.model.UserRole;
 import store.nightmarket.domain.user.model.id.UserId;
@@ -41,10 +37,9 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 	private final OAuthProviderProperties properties;
 	private final ReadUserPort readUserPort;
 	private final SaveUserPort saveUserPort;
-	private final SaveOutboxPort saveOutboxPort;
 	private final GoogleAuthApi googleAuthApi;
 	private final GoogleUserApi googleUserApi;
-	private final ObjectMapper objectMapper;
+	private final ApplicationEventPublisher applicationEventPublisher;
 	private static final String PROVIDER_NAME = "google";
 	private static final String GRANT_TYPE = "authorization_code";
 	private static final String AUTHORIZATION_HEADER = "Bearer ";
@@ -62,7 +57,7 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 		GoogleUserDto googleUser = getGoogleUser(accessToken.getAccessToken());
 
 		User user = readUserPort.readByEmail(googleUser.getEmail())
-			.orElseGet(() -> saveUserAndSaveOutbox(googleUser));
+			.orElseGet(() -> saveUserAndPublishEvent(googleUser));
 
 		return new UserAuthentication(
 			user.getUserId().getId().toString(),
@@ -87,7 +82,7 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 		return googleUserApi.getUserInfo(AUTHORIZATION_HEADER + accessToken);
 	}
 
-	private User saveUserAndSaveOutbox(GoogleUserDto googleUser) {
+	private User saveUserAndPublishEvent(GoogleUserDto googleUser) {
 		User user = saveUserPort.save(User.newInstance(
 			new UserId(UUID.randomUUID()),
 			new Name(googleUser.getName()),
@@ -104,15 +99,7 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 			.name(user.getName().getValue())
 			.build();
 
-		saveOutboxPort.save(
-			Outbox.newInstance(
-				"User",
-				user.getUserId().getId().toString(),
-				"UserCreatedEvent",
-				serializePayload(event),
-				OutboxState.READY
-			)
-		);
+		applicationEventPublisher.publishEvent(new UserCreatedApplicationEvent(this, event));
 
 		return user;
 	}
@@ -120,14 +107,6 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 	@Override
 	public boolean supports(Class<?> authentication) {
 		return GoogleOAuthAuthenticationToken.class.isAssignableFrom(authentication);
-	}
-
-	private String serializePayload(UserCreatedEvent event) {
-		try {
-			return objectMapper.writeValueAsString(event);
-		} catch (JsonProcessingException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 }
