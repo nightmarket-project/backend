@@ -1,7 +1,5 @@
 package store.nightmarket.application.appoutbox.service;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -9,11 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public abstract class AbstractOutboxPollingScheduler {
 
-	@Value("${polling.scheduler.maxIteration}")
-	private int maxIteration;
-
-	@Value("${polling.scheduler.chunkSize}")
-	private int chunkSize;
+	private static final int MAX_ITERATION = 50;
+	private static final int CHUNK_SIZE = 100;
 
 	private final OutboxChunkProcessor outboxChunkProcessor;
 
@@ -21,8 +16,8 @@ public abstract class AbstractOutboxPollingScheduler {
 		log.info("[Outbox] Polling started");
 		int iteration = 0;
 
-		while (iteration++ < maxIteration) {
-			boolean hasMore = outboxChunkProcessor.process(chunkSize);
+		while (iteration++ < MAX_ITERATION) {
+			boolean hasMore = outboxChunkProcessor.process(CHUNK_SIZE);
 			if (!hasMore) {
 				log.info("[Outbox] No more targets. Stopping after {} iterations", iteration);
 				break;
