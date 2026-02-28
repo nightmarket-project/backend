@@ -1,4 +1,4 @@
-package store.nightmarket.domain.outbox.model;
+package store.nightmarket.domain.user.model;
 
 import java.util.EnumSet;
 import java.util.Set;
