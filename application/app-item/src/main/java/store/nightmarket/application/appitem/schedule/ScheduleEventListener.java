@@ -30,19 +30,13 @@ public class ScheduleEventListener {
 	private final SchedulePostStrategyExecutor schedulePostStrategyExecutor;
 	private final SchedulingProperties schedulingProperties;
 
-	/**
-	 * 새 예약 생성 이벤트 처리 (트랜잭션 커밋 후 실행 보장)
-	 *
-	 * threshold 이내인 경우: 즉시 메모리 등록 + SCHEDULED 전이
-	 * threshold 초과인 경우: 배치가 처리하므로 아무것도 안 함
-	 */
 	@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void handleSchedulePostCreated(SchedulePostCreatedEvent event) {
 		SchedulePost schedulePost = readSchedulePostPort.readOrThrow(event.schedulePostId());
 
 		if (!isWithinPeriod(schedulePost.getScheduledAt())) {
-			log.debug("SchedulePost is beyond threshold, will be loaded by batch: id={}", event.schedulePostId());
+			log.debug("SchedulePost is within period, will be loaded on schedule: id={}", event.schedulePostId());
 			return;
 		}
 
@@ -61,9 +55,6 @@ public class ScheduleEventListener {
 		log.info("SchedulePost immediately loaded to memory: id={}", event.schedulePostId());
 	}
 
-	/**
-	 * 예약 취소 이벤트 처리 (트랜잭션 커밋 후 메모리에서 제거)
-	 */
 	@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
 	public void handleSchedulePostCanceled(SchedulePostCanceledEvent event) {
 		schedulingService.cancelSchedule(event.schedulePostId());
