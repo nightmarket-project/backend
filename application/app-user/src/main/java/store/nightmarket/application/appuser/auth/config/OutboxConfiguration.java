@@ -34,9 +34,10 @@ public class OutboxConfiguration {
 	public OutboxChunkProcessor outboxProcessor(
 		ReadOutboxPort readOutboxPort,
 		SaveOutboxPort saveOutboxPort,
-		KafkaMessagePublisher kafkaMessagePublisher
+		KafkaMessagePublisher kafkaMessagePublisher,
+		OutboxEventRegistry outboxEventRegistry
 	) {
-		return new OutboxChunkProcessor(readOutboxPort, saveOutboxPort, kafkaMessagePublisher);
+		return new OutboxChunkProcessor(readOutboxPort, saveOutboxPort, kafkaMessagePublisher, outboxEventRegistry);
 	}
 
 	@Bean

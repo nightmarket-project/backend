@@ -15,6 +15,6 @@ public interface ReadOutboxPort {
 			.orElseThrow(() -> new OutboxException("Not Found Outbox"));
 	}
 
-	List<Outbox> readPublishTarget(int limit);
+	List<Outbox> readPublishTarget(int limit, List<String> eventTypes);
 
 }

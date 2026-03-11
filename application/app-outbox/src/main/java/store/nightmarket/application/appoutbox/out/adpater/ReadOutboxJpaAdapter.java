@@ -24,8 +24,8 @@ public class ReadOutboxJpaAdapter implements ReadOutboxPort {
 	}
 
 	@Override
-	public List<Outbox> readPublishTarget(int limit) {
-		return outboxEntityRepository.findPublishTarget(limit)
+	public List<Outbox> readPublishTarget(int limit, List<String> eventTypes) {
+		return outboxEntityRepository.findPublishTarget(limit, eventTypes)
 			.stream()
 			.map(OutboxMapper::toDomain)
 			.toList();

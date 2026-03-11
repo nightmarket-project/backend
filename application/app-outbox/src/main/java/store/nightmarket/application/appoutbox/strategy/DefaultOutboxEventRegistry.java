@@ -1,6 +1,7 @@
 package store.nightmarket.application.appoutbox.strategy;
 
 import java.util.Map;
+import java.util.Set;
 
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.domain.outbox.exception.OutboxException;
@@ -25,6 +26,11 @@ public class DefaultOutboxEventRegistry implements OutboxEventRegistry {
 		if (type == null)
 			throw new OutboxException("Unknown payloadType for eventType: " + eventType);
 		return type;
+	}
+
+	@Override
+	public Set<String> getSupportedEventTypes() {
+		return topicMap.keySet();
 	}
 
 }

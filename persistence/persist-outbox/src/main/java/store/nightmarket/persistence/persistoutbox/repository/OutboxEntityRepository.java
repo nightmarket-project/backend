@@ -13,9 +13,10 @@ public interface OutboxEntityRepository extends JpaRepository<OutboxEntity, Long
 		    SELECT outboxEntity
 		    FROM OutboxEntity outboxEntity
 		    WHERE outboxEntity.state IN ('READY', 'FAILED')
+		    AND outboxEntity.eventType IN :eventTypes
 		    ORDER BY outboxEntity.id
 		    LIMIT :limit
 		""")
-	List<OutboxEntity> findPublishTarget(int limit);
+	List<OutboxEntity> findPublishTarget(int limit, List<String> eventTypes);
 
 }
