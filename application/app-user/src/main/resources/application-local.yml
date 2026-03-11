@@ -36,6 +36,7 @@ spring:
       enabled: true
 
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: none
     show-sql: true
@@ -85,3 +86,7 @@ web:
       - "*"
     allow-credentials: true
     max-age: 3600
+
+schedules:
+  outbox:
+    cron: "*/10 * * * * *"

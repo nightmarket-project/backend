@@ -69,7 +69,16 @@ project(':common') {
 
 //domain layer
 
-def domain = [project(':item'), project(":order"), project(":payment"), project(":delivery"), project(':user'), project(':item-web'), project(':logging')]
+def domain = [
+        project(':item'),
+        project(":order"),
+        project(":payment"),
+        project(":delivery"),
+        project(':user'),
+        project(':item-web'),
+        project(':logging'),
+        project(':outbox')
+]
 
 configure(domain) {
     bootJar {
@@ -118,7 +127,14 @@ project(':logging') {
 }
 
 //persistence layer
-def persist = [project(':persist-delivery'), project(':persist-order'), project(':persist-payment'), project(':persist-item'), project(':persist-user')]
+def persist = [
+        project(':persist-delivery'),
+        project(':persist-order'),
+        project(':persist-payment'),
+        project(':persist-item'),
+        project(':persist-user'),
+        project(':persist-outbox'),
+]
 
 configure(persist) {
     bootJar {
@@ -190,9 +206,25 @@ project(':persist-user') {
     }
 }
 
+project(':persist-outbox') {
+    bootJar {
+        enabled = false
+    }
+    dependencies {
+        implementation project(':outbox')
+    }
+}
+
 //application layer
 
-def app = [project(':app-item'), project(':app-order'), project(':app-payment'), project(':app-delivery'), project(':app-user')]
+def app = [
+        project(':app-item'),
+        project(':app-order'),
+        project(':app-payment'),
+        project(':app-delivery'),
+        project(':app-user'),
+        project(':app-outbox')
+]
 
 configure(app) {
     dependencies {
@@ -234,6 +266,10 @@ configure(app) {
         implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
         implementation 'org.springframework.boot:spring-boot-starter-actuator'
         implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+
+        //ShedLock
+        implementation 'net.javacrumbs.shedlock:shedlock-spring:5.15.1'
+        implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:5.15.1'
     }
 }
 
@@ -243,12 +279,10 @@ project(':app-item') {
         implementation project(':item-web')
         implementation project(':persist-item')
 
-        //ShedLock
-        implementation 'net.javacrumbs.shedlock:shedlock-spring:5.15.1'
-        implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:5.15.1'
+        implementation project(':app-outbox')
 
         implementation 'org.redisson:redisson-spring-boot-starter:3.45.1'
-        implementation 'it.ozimov:embedded-redis:0.7.2'
+        testImplementation 'it.ozimov:embedded-redis:0.7.2'
     }
 }
 
@@ -278,7 +312,20 @@ project(':app-user') {
         implementation project(':user')
         implementation project(':persist-user')
 
+        //outbox
+        implementation project(':outbox')
+        implementation project(':persist-outbox')
+        implementation project(':app-outbox')
+
         implementation "org.springframework.boot:spring-boot-starter-security"
+    }
+
+}
+
+project(':app-outbox') {
+    dependencies {
+        implementation project(':outbox')
+        implementation project(':persist-outbox')
     }
 
 }

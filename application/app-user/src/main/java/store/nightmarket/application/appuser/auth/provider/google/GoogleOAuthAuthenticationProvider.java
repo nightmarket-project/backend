@@ -3,6 +3,7 @@ package store.nightmarket.application.appuser.auth.provider.google;
 import java.util.Collections;
 import java.util.UUID;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -20,7 +21,7 @@ import store.nightmarket.application.appuser.auth.provider.google.feign.dto.Goog
 import store.nightmarket.application.appuser.auth.provider.google.model.GoogleOAuthAuthenticationToken;
 import store.nightmarket.application.appuser.out.ReadUserPort;
 import store.nightmarket.application.appuser.out.SaveUserPort;
-import store.nightmarket.application.appuser.out.adaptor.UserCreatedEventKafkaPublisher;
+import store.nightmarket.application.appuser.out.dto.UserCreatedApplicationEvent;
 import store.nightmarket.application.appuser.out.dto.UserCreatedEvent;
 import store.nightmarket.domain.user.model.AuthProvider;
 import store.nightmarket.domain.user.model.User;
@@ -38,7 +39,7 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 	private final SaveUserPort saveUserPort;
 	private final GoogleAuthApi googleAuthApi;
 	private final GoogleUserApi googleUserApi;
-	private final UserCreatedEventKafkaPublisher userCreatedEventKafkaPublisher;
+	private final ApplicationEventPublisher applicationEventPublisher;
 	private static final String PROVIDER_NAME = "google";
 	private static final String GRANT_TYPE = "authorization_code";
 	private static final String AUTHORIZATION_HEADER = "Bearer ";
@@ -56,7 +57,7 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 		GoogleUserDto googleUser = getGoogleUser(accessToken.getAccessToken());
 
 		User user = readUserPort.readByEmail(googleUser.getEmail())
-			.orElseGet(() -> saveUserAndPublishUserCreatedEvent(googleUser));
+			.orElseGet(() -> saveUserAndPublishEvent(googleUser));
 
 		return new UserAuthentication(
 			user.getUserId().getId().toString(),
@@ -81,7 +82,7 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 		return googleUserApi.getUserInfo(AUTHORIZATION_HEADER + accessToken);
 	}
 
-	private User saveUserAndPublishUserCreatedEvent(GoogleUserDto googleUser) {
+	private User saveUserAndPublishEvent(GoogleUserDto googleUser) {
 		User user = saveUserPort.save(User.newInstance(
 			new UserId(UUID.randomUUID()),
 			new Name(googleUser.getName()),
@@ -93,12 +94,12 @@ public class GoogleOAuthAuthenticationProvider implements AuthenticationProvider
 			googleUser.getSub()
 		));
 
-		userCreatedEventKafkaPublisher.publishEvent(
-			UserCreatedEvent.builder()
-				.userId(user.getUserId().getId())
-				.name(user.getName().getValue())
-				.build()
-		);
+		UserCreatedEvent event = UserCreatedEvent.builder()
+			.userId(user.getUserId().getId())
+			.name(user.getName().getValue())
+			.build();
+
+		applicationEventPublisher.publishEvent(new UserCreatedApplicationEvent(this, event));
 
 		return user;
 	}

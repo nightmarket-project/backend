@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import store.nightmarket.application.appuser.auth.config.LoginUrlProperties;
-import store.nightmarket.application.appuser.auth.constant.Constant;
+import store.nightmarket.application.appuser.constant.Constant;
 
 @RequiredArgsConstructor
 public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessHandler {

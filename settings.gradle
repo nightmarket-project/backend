@@ -15,6 +15,9 @@ include 'item-web'
 project(':item-web').projectDir = file('domain/item-web')
 include 'user'
 project(':user').projectDir = file('domain/user')
+include 'outbox'
+project(':outbox').projectDir = file('domain/outbox')
+
 
 //persistence layer
 include 'persist-delivery'
@@ -27,6 +30,8 @@ include 'persist-item'
 project(':persist-item').projectDir = file('persistence/persist-item')
 include 'persist-user'
 project(':persist-user').projectDir = file('persistence/persist-user')
+include 'persist-outbox'
+project(':persist-outbox').projectDir = file('persistence/persist-outbox')
 
 
 //application layer
@@ -40,5 +45,7 @@ include 'app-delivery'
 project(':app-delivery').projectDir = file('application/app-delivery')
 include 'app-user'
 project(':app-user').projectDir = file('application/app-user')
+include 'app-outbox'
+project(':app-outbox').projectDir = file('application/app-outbox')
 include 'logging'
 project(':logging').projectDir = file('application/logging')
