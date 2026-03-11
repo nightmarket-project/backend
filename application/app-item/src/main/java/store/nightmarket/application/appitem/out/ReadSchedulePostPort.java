@@ -17,6 +17,10 @@ public interface ReadSchedulePostPort {
 			.orElseThrow(() -> new ProductPostException("Not Found SchedulePost"));
 	}
 
+	List<SchedulePost> readReady(LocalDateTime endOfPeriod);
+
+	List<SchedulePost> readScheduled(LocalDateTime endOfPeriod);
+
 	List<SchedulePost> readReadyChunk(LocalDateTime endOfPeriod, int limit);
 
 	List<SchedulePost> readScheduledChunk(LocalDateTime endOfPeriod, int limit);

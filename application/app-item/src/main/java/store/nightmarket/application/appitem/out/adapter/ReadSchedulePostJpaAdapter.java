@@ -28,6 +28,24 @@ public class ReadSchedulePostJpaAdapter implements ReadSchedulePostPort {
 	}
 
 	@Override
+	public List<SchedulePost> readReady(LocalDateTime endOfPeriod) {
+		return schedulePostRepository.findAllByStateAndScheduledAtBetween(
+				SchedulePostState.READY, LocalDateTime.now(), endOfPeriod)
+			.stream()
+			.map(SchedulePostMapper::toDomain)
+			.toList();
+	}
+
+	@Override
+	public List<SchedulePost> readScheduled(LocalDateTime endOfPeriod) {
+		return schedulePostRepository.findAllByStateAndScheduledAtBetween(
+				SchedulePostState.SCHEDULED, LocalDateTime.now(), endOfPeriod)
+			.stream()
+			.map(SchedulePostMapper::toDomain)
+			.toList();
+	}
+
+	@Override
 	public List<SchedulePost> readReadyChunk(LocalDateTime endOfPeriod, int limit) {
 		return schedulePostRepository.findReadyChunk(
 				SchedulePostState.READY,
