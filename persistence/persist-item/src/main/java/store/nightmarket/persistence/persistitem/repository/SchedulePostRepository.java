@@ -30,4 +30,17 @@ public interface SchedulePostRepository extends JpaRepository<SchedulePostEntity
 		Pageable pageable
 	);
 
+	@Query("""
+			SELECT schedulePostEntity FROM SchedulePostEntity schedulePostEntity
+			WHERE schedulePostEntity.state = :state
+			AND schedulePostEntity.scheduledAt > :from
+			AND schedulePostEntity.scheduledAt <= :to
+			ORDER BY schedulePostEntity.scheduledAt ASC
+		""")
+	List<SchedulePostEntity> findAllByStateAndScheduledAtBetween(
+		@Param("state") SchedulePostState state,
+		@Param("from") LocalDateTime from,
+		@Param("to") LocalDateTime to
+	);
+
 }

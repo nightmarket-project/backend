@@ -34,22 +34,20 @@ public class RescheduleService {
 	@EventListener(ApplicationReadyEvent.class)
 	@SchedulerLock(
 		name = "reschedule-posts",
-		lockAtMostFor = "PT30S",
+		lockAtMostFor = "PT2M",
 		lockAtLeastFor = "PT10S"
 	)
 	public void restoreSchedulePosts() {
 		LocalDateTime endOfPeriod = LocalDateTime.now().plusHours(schedulingProperties.getBatchPeriod());
 
-		int limit = schedulingProperties.getBatchChunkSize();
-
-		int readyCount = restoreReady(endOfPeriod, limit);
-		int scheduledCount = restoreScheduled(endOfPeriod, limit);
+		int readyCount = restoreReady(endOfPeriod);
+		int scheduledCount = restoreScheduled(endOfPeriod);
 
 		log.info("RescheduleService completed: restored READY={}, SCHEDULED={}", readyCount, scheduledCount);
 	}
 
-	private int restoreReady(LocalDateTime endOfPeriod, int limit) {
-		List<SchedulePost> readyList = readSchedulePostPort.readReadyChunk(endOfPeriod, limit);
+	private int restoreReady(LocalDateTime endOfPeriod) {
+		List<SchedulePost> readyList = readSchedulePostPort.readReady(endOfPeriod);
 
 		readyList.forEach(schedulePost -> {
 			addToSchedule(schedulePost);
@@ -60,8 +58,8 @@ public class RescheduleService {
 		return readyList.size();
 	}
 
-	private int restoreScheduled(LocalDateTime endOfPeriod, int limit) {
-		List<SchedulePost> scheduledList = readSchedulePostPort.readScheduledChunk(endOfPeriod, limit);
+	private int restoreScheduled(LocalDateTime endOfPeriod) {
+		List<SchedulePost> scheduledList = readSchedulePostPort.readScheduled(endOfPeriod);
 
 		scheduledList.forEach(this::addToSchedule);
 
