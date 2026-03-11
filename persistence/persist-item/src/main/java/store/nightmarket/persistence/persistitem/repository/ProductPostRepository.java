@@ -15,14 +15,17 @@ import store.nightmarket.persistence.persistitem.entity.model.ProductPostEntity;
 @Repository
 public interface ProductPostRepository extends JpaRepository<ProductPostEntity, UUID> {
 
-	@Query("SELECT productPostEntity FROM ProductPostEntity productPostEntity " +
-		"JOIN FETCH productPostEntity.productEntity productEntity " +
-		"WHERE productEntity.nameEntity.value LIKE %:keyword%")
+	@Query("""
+			SELECT productPostEntity FROM ProductPostEntity productPostEntity
+			JOIN FETCH productPostEntity.productEntity productEntity
+			WHERE productEntity.nameEntity.value LIKE %:keyword%
+		""")
 	Page<ProductPostEntity> findByKeywordContaining(@Param("keyword") String keyword, Pageable pageable);
 
-	@Query("SELECT productPostEntity FROM ProductPostEntity productPostEntity " +
-		"JOIN FETCH productPostEntity.productEntity productEntity " +
-		"WHERE productPostEntity.id = :postId")
+	@Query("""
+			SELECT productPostEntity FROM ProductPostEntity productPostEntity
+			JOIN FETCH productPostEntity.productEntity productEntity
+			WHERE productPostEntity.id = :postId
+		""")
 	Optional<ProductPostEntity> findByPostId(@Param("postId") UUID postId);
-
 }

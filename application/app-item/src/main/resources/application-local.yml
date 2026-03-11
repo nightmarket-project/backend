@@ -96,3 +96,9 @@ web:
     include-patterns:
       - "/api/v1/cart/**"
       - "/api/v1/admin/products/**"
+      - "/api/v1/admin/posts/**"
+
+scheduling:
+  batch-period: 24
+  batch-chunk-size: 100
+  batch-cron: "0 0 0 * * *"

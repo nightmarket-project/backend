@@ -8,7 +8,6 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,9 +23,6 @@ public class UserEntity extends BaseUuidEntity {
 
 	@Embedded
 	private NameEntity name;
-
-	@OneToOne(mappedBy = "userEntity", fetch = FetchType.LAZY)
-	private ProductPostEntity productPostEntity;
 
 	@OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
 	private List<ReviewEntity> reviewEntityList;

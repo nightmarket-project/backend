@@ -58,9 +58,8 @@ CREATE TABLE product_post
 (
     id         VARCHAR(36) NOT NULL,
     product_id VARCHAR(36) NULL,
-    user_id    VARCHAR(36) NULL,
-    deleted    BOOLEAN     NOT NULL,
     rating     FLOAT      NULL,
+    state      VARCHAR(50) NOT NULL,
     CONSTRAINT pk_product_post PRIMARY KEY (id)
 );
 
@@ -140,5 +139,24 @@ CREATE TABLE preempted_product_variant (
     expired_at TIMESTAMP NOT NULL,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE schedule_post (
+    id                  VARCHAR(36) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    product_post_id     VARCHAR(36) NOT NULL,
+    scheduled_at        TIMESTAMP NOT NULL,
+    state               VARCHAR(50) NOT NULL,
+    type                VARCHAR(50) NOT NULL,
+    context             VARCHAR(255) NULL,
+    CONSTRAINT pk_schedule_post PRIMARY KEY (id)
+);
+
+CREATE TABLE shedlock (
+    name VARCHAR(64) PRIMARY KEY,
+    lock_until TIMESTAMP,
+    locked_at TIMESTAMP,
+    locked_by VARCHAR(255)
 );
 

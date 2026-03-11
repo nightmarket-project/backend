@@ -1,6 +1,7 @@
 package store.nightmarket.application.appitem.fixture;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import store.nightmarket.domain.item.model.OptionGroup;
@@ -24,12 +25,17 @@ import store.nightmarket.domain.itemweb.model.ImageManager;
 import store.nightmarket.domain.itemweb.model.ProductPost;
 import store.nightmarket.domain.itemweb.model.Reply;
 import store.nightmarket.domain.itemweb.model.Review;
+import store.nightmarket.domain.itemweb.model.SchedulePost;
 import store.nightmarket.domain.itemweb.model.id.ImageManagerId;
 import store.nightmarket.domain.itemweb.model.id.ImageOwnerId;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 import store.nightmarket.domain.itemweb.model.id.ReplyId;
 import store.nightmarket.domain.itemweb.model.id.ReviewId;
+import store.nightmarket.domain.itemweb.model.id.SchedulePostId;
 import store.nightmarket.domain.itemweb.model.state.ImageType;
+import store.nightmarket.domain.itemweb.model.state.PostState;
+import store.nightmarket.domain.itemweb.model.state.SchedulePostActionType;
+import store.nightmarket.domain.itemweb.model.state.SchedulePostState;
 import store.nightmarket.domain.itemweb.valueobject.CommentText;
 import store.nightmarket.domain.itemweb.valueobject.Image;
 import store.nightmarket.domain.itemweb.valueobject.Rating;
@@ -44,7 +50,7 @@ public class TestDomainFactory {
 			new ProductPostId(productPostId),
 			new ProductId(productId),
 			new Rating(4.5f),
-			false
+			PostState.UNPUBLISHED
 		);
 	}
 
@@ -174,6 +180,23 @@ public class TestDomainFactory {
 			new Name("상품1"),
 			new Price(BigInteger.valueOf(1000)),
 			new Quantity(quantity)
+		);
+	}
+
+	public static SchedulePost createSchedulePost(
+		UUID schedulePostId,
+		UUID productPostId,
+		SchedulePostState state,
+		SchedulePostActionType type,
+		String context
+	) {
+		return SchedulePost.newInstance(
+			new SchedulePostId(schedulePostId),
+			new ProductPostId(productPostId),
+			LocalDateTime.now().plusDays(1),
+			state,
+			type,
+			context
 		);
 	}
 

@@ -6,10 +6,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import store.nightmarket.application.appitem.out.mapper.dto.ProductPostAdapterDto;
-import store.nightmarket.domain.itemweb.exception.ItemWebException;
+import store.nightmarket.domain.itemweb.exception.ProductPostException;
+import store.nightmarket.domain.itemweb.model.ProductPost;
 import store.nightmarket.domain.itemweb.model.id.ProductPostId;
 
 public interface ReadProductPostPort {
+
+	Optional<ProductPost> read(ProductPostId id);
+
+	default ProductPost readOrThrow(ProductPostId id) {
+		return read(id)
+			.orElseThrow(() -> new ProductPostException("Not Found ProductPost"));
+	}
 
 	Page<ProductPostAdapterDto> findProductPostListByKeyword(String keyword, Pageable pageable);
 
@@ -17,7 +25,7 @@ public interface ReadProductPostPort {
 
 	default ProductPostAdapterDto readOrThrowFetch(ProductPostId id) {
 		return readFetch(id)
-			.orElseThrow(() -> new ItemWebException("Not found ProductPost"));
+			.orElseThrow(() -> new ProductPostException("Not found ProductPost"));
 	}
 
 }

@@ -1,0 +1,112 @@
+package store.nightmarket.persistence.persistitem.entity.model;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import store.nightmarket.common.entity.BaseUuidEntity;
+import store.nightmarket.domain.itemweb.model.state.SchedulePostActionType;
+import store.nightmarket.domain.itemweb.model.state.SchedulePostState;
+
+@Getter
+@Entity
+@Table(name = "schedule_post")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class SchedulePostEntity extends BaseUuidEntity {
+
+	@Column(name = "product_post_id", nullable = false)
+	private UUID productPostId;
+
+	@Column(name = "scheduled_at", nullable = false)
+	private LocalDateTime scheduledAt;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "state", nullable = false)
+	private SchedulePostState state;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type", nullable = false)
+	private SchedulePostActionType type;
+
+	@Column(name = "context")
+	private String context;
+
+	private SchedulePostEntity(
+		UUID id,
+		UUID productPostId,
+		LocalDateTime scheduledAt,
+		SchedulePostState state,
+		SchedulePostActionType type,
+		String context
+	) {
+		super(id);
+		this.productPostId = productPostId;
+		this.scheduledAt = scheduledAt;
+		this.state = state;
+		this.type = type;
+		this.context = context;
+	}
+
+	private SchedulePostEntity(
+		UUID id,
+		LocalDateTime createdAt,
+		UUID productPostId,
+		LocalDateTime scheduledAt,
+		SchedulePostState state,
+		SchedulePostActionType type,
+		String context
+	) {
+		super(id, createdAt);
+		this.productPostId = productPostId;
+		this.scheduledAt = scheduledAt;
+		this.state = state;
+		this.type = type;
+		this.context = context;
+	}
+
+	public static SchedulePostEntity newInstance(
+		UUID id,
+		UUID productPostId,
+		LocalDateTime scheduledAt,
+		SchedulePostState state,
+		SchedulePostActionType type,
+		String context
+	) {
+		return new SchedulePostEntity(
+			id,
+			productPostId,
+			scheduledAt,
+			state,
+			type,
+			context
+		);
+	}
+
+	public static SchedulePostEntity newInstanceWithCreatedAt(
+		UUID id,
+		LocalDateTime createdAt,
+		UUID productPostId,
+		LocalDateTime scheduledAt,
+		SchedulePostState state,
+		SchedulePostActionType type,
+		String context
+	) {
+		return new SchedulePostEntity(
+			id,
+			createdAt,
+			productPostId,
+			scheduledAt,
+			state,
+			type,
+			context
+		);
+	}
+
+}

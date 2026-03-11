@@ -28,7 +28,9 @@ spring:
 
   sql:
     init:
-      mode: never
+      schema-locations: classpath:schema-shedlock.sql
+      mode: always
+
 
 web:
   cors:
@@ -50,4 +52,10 @@ web:
   interceptor:
     include-patterns:
       - "/api/v1/cart/**"
-      - "/api/v1/admin/products/***"
+      - "/api/v1/admin/products/**"
+      - "/api/v1/admin/posts/**"
+
+scheduling:
+  batch-period: 24
+  batch-chunk-size: 100
+  batch-cron: "0 */10 * * * *"

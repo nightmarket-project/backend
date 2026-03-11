@@ -9,6 +9,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -17,6 +19,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import store.nightmarket.domain.itemweb.model.state.PostState;
 import store.nightmarket.persistence.persistitem.entity.valueobject.RatingEntity;
 
 @Getter
@@ -30,61 +33,52 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 	@JoinColumn(name = "product_id")
 	private ProductEntity productEntity;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private UserEntity userEntity;
-
 	@Embedded
 	private RatingEntity ratingEntity;
 
 	@OneToMany(mappedBy = "productPostEntity", fetch = FetchType.LAZY)
 	private List<ReviewEntity> reviewEntityList = new ArrayList<>();
 
-	@Column(name = "deleted", nullable = false)
-	private boolean deleted;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "state", nullable = false)
+	private PostState state;
 
 	private ProductPostEntity(
 		UUID id,
 		ProductEntity productEntity,
-		UserEntity userEntity,
 		RatingEntity ratingEntity,
-		boolean deleted
+		PostState state
 	) {
 		super(id);
 		this.productEntity = productEntity;
-		this.userEntity = userEntity;
 		this.ratingEntity = ratingEntity;
-		this.deleted = deleted;
+		this.state = state;
 	}
 
 	private ProductPostEntity(
 		UUID id,
 		LocalDateTime createdAt,
 		ProductEntity productEntity,
-		UserEntity userEntity,
 		RatingEntity ratingEntity,
-		boolean deleted
+		PostState state
 	) {
 		super(id, createdAt);
 		this.productEntity = productEntity;
-		this.userEntity = userEntity;
 		this.ratingEntity = ratingEntity;
-		this.deleted = deleted;
+		this.state = state;
 	}
 
 	public static ProductPostEntity newInstance(
 		UUID id,
 		ProductEntity productEntity,
-		UserEntity userEntity,
 		RatingEntity ratingEntity,
-		boolean deleted
+		PostState state
 	) {
 		return new ProductPostEntity(
 			id,
 			productEntity,
-			userEntity,
 			ratingEntity,
-			deleted
+			state
 		);
 	}
 
@@ -92,17 +86,15 @@ public class ProductPostEntity extends ImageOwnerModelEntity {
 		UUID id,
 		LocalDateTime createdAt,
 		ProductEntity productEntity,
-		UserEntity userEntity,
 		RatingEntity ratingEntity,
-		boolean deleted
+		PostState state
 	) {
 		return new ProductPostEntity(
 			id,
 			createdAt,
 			productEntity,
-			userEntity,
 			ratingEntity,
-			deleted
+			state
 		);
 	}
 
